@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+</head>
+<body>
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, p, ul, form {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        #add_user {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        #inputState {
+            width: 25rem;
+            border-radius: 5px;
+            height: 2rem;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+       </style>   
+          <nav>
+            <a href="/admin/adminhome" class="nav-item list-group-item"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="/admin/listUser" class="nav-item list-group-item"><i class="bi bi-people-fill"></i>User Management</a>
+            <a href="/admin/category" class="nav-item list-group-item"><i class="fa fa-th me-2"></i>Category Management</a>
+            <a href="/admin/product" class="nav-item list-group-item"><i class="fa fa-keyboard me-2"></i>Product Management</a>
+            <a href="/admin/loadorder" class="nav-item list-group-item"><i class="fa fa-table me-2"></i>Order Management</a>
+            <a href="/admin/loadcoupon" class="nav-item list-group-item"><i class="fa fa-chart-bar me-2"></i>Coupon Management</a>
+           
+        </nav>
+
+    <form action="/admin/edit-product/<%= product._id %>" method="POST" id="add_user" enctype="multipart/form-data" onsubmit="return productValidation(event)">
+        <div class="new_uaer">
+            <h2>Edit Product</h2> <br>
+            <div class="form-group">
+                <label for="productName" class="text-light">Product Name</label>
+                <input type="hidden" name="id" value="<%= product._id %>">
+                <input type="text" name="productName" id="productName" value="<%= product.productName %>" placeholder="Product Name">
+                <span id="productNameError" style="color: red;"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputState">Category</label>
+                <select id="inputState" name="category" class="form-control">
+                    <% categories.forEach(category => { %>
+                        <% if (!category.blocked) { %>
+                        <option value="<%= category._id %>" <%= product.category.equals(category._id) ? 'selected' : '' %>><%= category.categoryName %></option>
+                        <% } %>
+                        <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="size" class="text-light">Size</label>
+                <input type="text" name="size" id="size" value="<%= product.size %>" placeholder="Size">
+                <span id="sizeError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="price" class="text-light">Price</label>
+                <input type="text" name="oldPrice" id="price" value="<%= product.oldPrice %>" placeholder="Price">
+                <span id="priceError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="stock" class="text-light">Stock</label>
+                <input type="text" name="stock" id="stock" value="<%= product.stock %>" placeholder="Stock">
+                <span id="stockError" style="color: red;"></span>
+            </div>
+        </div>
+
+        
+      
+
+
+        <div class="form-group">
+            Description <br>
+            <textarea name="description" id="description" cols="50" rows="10"><%= product.description %></textarea>
+            <span id="discriptionError" style="color: red;"></span>
+        </div>
+
+        <label class="sign-form-label" for="form3Example4cd">Product Images</label>
+
+        <!-- Display existing images and allow editing -->
+        <div class="d-flex flex-row align-items-center mb-3">
+            <% for (let i = 0; i < product.images.length; i++) { %>
+                <div class="form-outline flex-fill mb-0">
+                    <label class="sign-form-label" for="form3Example4cd">Image <%= i + 1 %></label>
+                    <img
+                        src="/images/<%= product.images[i] %>"
+                        alt="Existing Image <%= i + 1 %>"
+                        style="max-width: 100px; max-height: 100px; margin-top: 10px; cursor: pointer;"
+                        onclick="document.getElementById('productImage<%= i + 1 %>').click();"
+                    >
+
+                    <!-- Hidden file input to handle image selection -->
+                    <input
+                        type="file"
+                        name="images"
+                        id="productImage<%= i + 1 %>"
+                        onchange="displayImagePreview(this)"
+                        style="display: none;"
+                    >
+
+                    <!-- Preview for the selected image -->
+                    <img
+                        id="imagePreview<%= i + 1 %>"
+                        alt=""
+                        style="max-width: 100px; max-height: 100px; margin-top: 10px; display: none;"
+                    >
+                </div>
+            <% } %>
+        </div>
+
+        <div id="productError" class="px-2 my-2 text-center text-danger"></div>
+        <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+            <div class="form-group">
+                <button type="submit" class="btn text-dark update">Save Changes</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function displayImagePreview(input) {
+            const imagePreview = document.getElementById('imagePreview' + input.id.charAt(input.id.length - 1));
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block"; // Show the image preview
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                imagePreview.src = "";
+                imagePreview.style.display = "none"; // Hide the image preview
+            }
+        }
+    </script>
+    <script>
+        function productValidation(event) {
+            var productName = document.getElementById('productName').value;
+            var size = document.getElementById('size').value;
+            var price = document.getElementById('price').value;
+            var stock = document.getElementById('stock').value;
+            var description = document.getElementById('description').value;
+          
+
+            document.getElementById('productNameError').innerText = "";
+            document.getElementById('sizeError').innerText = "";
+            document.getElementById('priceError').innerText = "";
+            document.getElementById('stockError').innerText = "";
+            document.getElementById('discriptionError').innerText = "";
+          
+
+            // Validate product Name
+            if (productName.trim() === "") {
+                document.getElementById('productNameError').innerText = "Product  Name is required";
+                event.preventDefault();
+            }
+            if (!/^[a-zA-Z]+$/.test(productName)) {
+                document.getElementById('productNameError').innerText = "Product Must Be Characters";
+                event.preventDefault();
+            }
+            // validate size field
+            if (size.trim() === "") {
+                document.getElementById('sizeError').innerText = "Size is required";
+                event.preventDefault();
+            }
+            if (!/^[a-zA-Z]+$/.test(size)) {
+                document.getElementById('sizeError').innerText = " Size Must Be Characters";
+                event.preventDefault();
+            }
+
+            // validate price field
+            if (price.trim() === "") {
+                document.getElementById('priceError').innerText = "Price is required";
+                event.preventDefault();
+            } else {
+                var priceRegex = /^\d+$/;
+
+                if (!priceRegex.test(price) || parseInt(price) <= 0) {
+                    document.getElementById('priceError').innerText = 'Price must be a valid positive integer';
+                    event.preventDefault();
+                }
+            }
+
+            // validate Stock field
+            if (stock.trim() === "") {
+                document.getElementById('stockError').innerText = "Stock is required";
+                event.preventDefault();
+            } else {
+
+                var stockRegex = /^\d+$/;
+
+                if (!stockRegex.test(stock) || parseInt(stock) < 0) {
+                    document.getElementById('stockError').innerText = 'Stock must be a valid positive integer';
+                    event.preventDefault();
+                }
+            }
+            if (offerType && !/^\d+$/.test(offerAmount)) {
+            document.getElementById('offerAmountError').innerText = "Offer Amount must be a valid number";
+            event.preventDefault();
+        }
+
+       
+
+            // description validation
+            if (description.trim() === "") {
+                document.getElementById('discriptionError').innerText = "Description is required";
+                event.preventDefault();
+            }
+        }
+    </script>
+</body>
+</html>

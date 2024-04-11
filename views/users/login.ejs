@@ -1,0 +1,89 @@
+ <% include('../layouts/header.ejs') %> 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <link rel="stylesheet" href="/user/css/login.css">
+</head>
+<body>
+<div class="login">
+  <h2 class="active"> LOGIN </h2>
+  <form  method="post" action="/login" onsubmit="return formValidation()">
+    <span>Email</span>
+    <input type="text" class="text" name="email">
+    <span id="emailError" class="error" style="color: red;"></span>
+    <br>
+    <br>
+    <span>password</span>
+    <input type="password" class="text" name="password">
+    <span id="passwordError" class="error" style="color: red;"></span>
+    <br>
+    <button class="signin">
+      Login
+    </button>
+    <br>
+    <!--<a href="/forgot">Forgot Password?</a>
+    <br><br>-->
+    <h6>Don’t have an account? Sign up Now!</h6>
+    <a href="/register">Create a new account</a>
+    <hr>
+  </form>
+
+
+  <% if (typeof message !== 'undefined') { %>
+ 
+<script>
+  function formValidation() {
+    var email = document.querySelector('[name="email"]');
+    var password = document.querySelector('[name="password"]');
+    
+    // Validate email and password
+    if (validateEmail(email) && validatePassword(password)) {
+      return true;
+    }
+    return false;
+  }
+
+  function validateEmail(email) {
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (email.value.match(mailformat)) {
+      document.getElementById('emailError').innerText = '';
+      return true;
+    } else {
+      document.getElementById('emailError').innerText = 'Invalid email address';
+      email.focus();
+      return false;
+    }
+  }
+
+  function validatePassword(password) {
+    // You can add additional password validation logic here if needed
+    if (password.value.length >= 6) {
+      document.getElementById('passwordError').innerText = '';
+      return true;
+    } else {
+      document.getElementById('passwordError').innerText = 'Password is incorrect';
+      password.focus();
+      return false;
+    }
+  }
+</script>
+
+
+
+
+
+
+  <% } %>
+</div>
+
+
+<% include('../layouts/footer.ejs') %>
+
+
+

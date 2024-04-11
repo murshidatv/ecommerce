@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit category</title>
+</head>
+<body>
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, p, ul, form {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        #add_user {
+            max-width: 400px;
+            margin: 70px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            background-color: rgb(10, 109, 170);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: rgb(10, 109, 170);
+        }
+
+        .error {
+            color: red;
+        }
+    nav {
+        background-color: #333;
+        padding: 10px 0;
+        text-align: center;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+
+    nav a:hover {
+        text-decoration: underline;
+    }
+
+   </style>   
+      <nav>
+        <a href="/admin/adminhome" class="nav-item list-group-item"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+        <a href="/admin/listUser" class="nav-item list-group-item"><i class="bi bi-people-fill"></i>User Management</a>
+        <a href="/admin/category" class="nav-item list-group-item"><i class="fa fa-th me-2"></i>Category Management</a>
+        <a href="/admin/product" class="nav-item list-group-item"><i class="fa fa-keyboard me-2"></i>Product Management</a>
+        <a href="/admin/loadorder" class="nav-item list-group-item"><i class="fa fa-table me-2"></i>Order Management</a>
+        <a href="/admin/loadcoupon" class="nav-item list-group-item"><i class="fa fa-chart-bar me-2"></i>Coupon Management</a>
+       
+    </nav>
+<form action="/admin/edit-category/<%= category._id %>" method="POST" id="add_user" onsubmit="return editCategoryValidation()">
+    <div class="new_user">
+        <div class="form-group">
+            <label for="name" class="text-light">Category Name</label>
+            <input type="text" name="categoryName" id="categoryName" value="<%= category.categoryName %>" placeholder="Zouq Collections">
+            <span id="categoryNameError" class="error" ></span>
+            <% if (typeof message !== 'undefined') { %>
+                <div class="alert alert-danger" style="color: red;">
+                  <%= message %>
+                </div>
+              <% } %>
+              
+        </div>
+          
+      
+
+       
+        
+        
+        <div class="form-group">
+            <button type="submit" class="btn text-dark update">Save</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    function editCategoryValidation(){
+        var categoryName = document.getElementById("categoryName").value;
+
+        document.getElementById('categoryNameError').innerText = "";
+        // Uncomment if radio buttons are uncommented in the HTML
+        // document.getElementById('statusError').innerText = "";
+
+        // Validate Category Name
+        if (categoryName.trim() === "") {
+            document.getElementById('categoryNameError').innerText = "Category Name is required";
+            return false;
+        }
+        if (!/^[a-zA-Z]+$/.test(categoryName)) {
+            document.getElementById('categoryNameError').innerText = "Category Must Be Characters";
+            return false;
+        }
+
+        // Uncomment if radio buttons are uncommented in the HTML
+        /*
+        // Validate Show Status
+        if (!statusActive && !statusInactive) {
+            document.getElementById('statusError').innerText = "Please select a status";
+            return false;
+        }
+        */
+
+        return true;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<% include('../layouts/header.ejs') %>
+
+
+
+<!-- zouq/index-5.html  22 Nov 2019 09:55:58 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Zouq</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Zouq - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/icons/site.html">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Zouq">
+    <meta name="application-name" content="Zouq">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/skins/skin-demo-5.css">
+    <link rel="stylesheet" href="assets/css/demos/demo-5.css">
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <header class="header header-5">
+            <div class="header-middle sticky-header">
+                <div class="container-fluid">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggler">
+                            <span class="sr-only">Toggle mobile menu</span>
+                            <i class="icon-bars"></i>
+                        </button>
+
+                        <a href=/home class="logo">
+                          
+                            <h2 style="color: #ffffff;">Zouq</h2>
+                        </a>
+
+                        <nav class="main-nav">
+                            <ul class="menu sf-arrows">
+                                <li class="megamenu-container active">
+                                    <a href=/home class="sf-with-ul">Home</a>
+
+                                    
+                                            
+                                </li>
+                                <li>
+                                    <a href="/listProduct" class="sf-with-ul">Shop</a>
+
+                                   
+                                </li>
+                                <li>
+                                    <a href="/register" class="sf-with-ul">Product</a>
+
+                                    
+                                </li>
+                               
+                                   
+                            </ul><!-- End .menu -->
+                        </nav><!-- End .main-nav -->
+                    </div><!-- End .header-left -->
+
+                    <div class="header-right">
+                      
+                             
+                     
+                      <div class="header-right">
+                        <ul class="top-menu">
+                            <li>
+                                <a href="#">Links</a>
+                                <ul>
+                                   
+                                    <li>
+                      <% if (isLoggedIn) { %>
+                        <!-- If the user is logged in, show profile and logout -->
+                        <li><a href="/profile">PROFILE</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                        
+                      <% } else { %>
+                        <!-- If the user is not logged in, show login and signup -->
+                        <li><a href="/login">Login</a></li>
+                        <li><a href="/register">Signup</a></li>
+                      <% } %>
+                    </li>
+                                </ul>
+                            </li>
+                        </ul><!-- End .top-menu -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .header-top -->
+                      
+                       
+                        <a href="wishlist.html" class="wishlist-link">
+                            <i class="icon-heart-o"></i>
+                        </a>
+
+                        <div class="dropdown cart-dropdown">
+                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <i class="icon-shopping-cart"></i>
+                               
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <div class="dropdown-cart-products">
+                                    
+                               
+                                
+                                <div class="dropdown-cart-action">
+                                    <a href="cart.html" class="btn btn-primary">View Cart</a>
+                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .dropdown-cart-total -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .cart-dropdown -->
+                    </div><!-- End .header-right -->
+                </div><!-- End .container-fluid -->
+            </div><!-- End .header-middle -->
+        </header><!-- End .header -->
+
+        <main class="main">
+            <div class="intro-slider-container mb-0">
+                <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl" data-owl-options='{"nav": false, "dots": false}'>
+                    <div class="intro-slide" style="background-image: url(assets/images/slider/login.webp);">
+                        <div class="container intro-content text-center">
+                            <h3 class="intro-subtitle text-white">Don’t Miss</h3><!-- End .h3 intro-subtitle -->
+                            <h1 class="intro-title text-white">Mystery Deals</h1><!-- End .intro-title -->
+                            <div class="intro-text text-white">Online Only</div><!-- End .intro-text -->
+                           <!-- <a href="user/product" class="btn btn-primary">Discover NOW</a>-->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+
+                    <div class="intro-slide" style="background-image: url(assets/images/demos/demo-5/slider/slide-2.jpg);">
+                        <div class="container intro-content text-center">
+                            <h3 class="intro-subtitle text-white">Limited time only</h3><!-- End .h3 intro-subtitle -->
+                            <h1 class="intro-title text-white">Treat your self</h1><!-- End .intro-title -->
+                            <div class="intro-text text-white">Up to 50% off</div><!-- End .intro-text -->
+                          <!---  <a href="views/users/product" class="btn btn-primary">Shop NOW</a>-->
+                        </div><!-- End .intro-content -->
+                    </div><!-- End .intro-slide -->
+                </div><!-- End .intro-slider owl-carousel owl-theme -->
+
+                <span class="slider-loader text-white"></span><!-- End .slider-loader -->
+            </div><!-- End .intro-slider-container -->
+
+            <div class="brands-border owl-carousel owl-simple mb-5" data-toggle="owl" 
+                data-owl-options='{
+                    "nav": false, 
+                    "dots": false,
+                    "margin": 0,
+                    "loop": false,
+                    "responsive": {
+                        "0": {
+                            "items":2
+                        },
+                        "420": {
+                            "items":3
+                        },
+                        "600": {
+                            "items":4
+                        },
+                        "900": {
+                            "items":5
+                        },
+                        "1024": {
+                            "items":6
+                        },
+                        "1360": {
+                            "items":7
+                        }
+                    }
+                }'>
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/1.png" alt="Brand Name">
+                </a>
+
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/2.png" alt="Brand Name">
+                </a>
+
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/3.png" alt="Brand Name">
+                </a>
+
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/4.png" alt="Brand Name">
+                </a>
+
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/5.png" alt="Brand Name">
+                </a>
+
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/6.png" alt="Brand Name">
+                </a>
+
+                <a href="#" class="brand">
+                    <img src="assets/images/brands/7.png" alt="Brand Name">
+                </a>
+            </div><!-- End .owl-carousel -->
+
+            <div class="container">
+                <div class="banner-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="banner banner-border">
+                                <a href="#">
+                                    <img src="assets/images/demos/demo-5/banners/bag2.webp" alt="Banner">
+                                </a>
+
+                            </div><!-- End .banner -->
+                        </div><!-- End .col-md-6-->
+
+                        <div class="col-md-6">
+                           
+                            <div class="banner-content">
+                                <h4 class="banner-subtitle"><a href="#">This week we love...</a></h4><!-- End .banner-subtitle -->
+                                <h3 class="banner-title"><a href="#"><span>Womens <br>Office Bags</span></a></h3><!-- End .banner-title -->
+                                <a href="#" class="btn btn-outline-primary-2 banner-link">Discover Now<i class="icon-long-arrow-right"></i></a>
+                            </div><!-- End .banner-content-->
+                        </div><!-- End .banner -->
+                                
+                           
+                        
+                           
+
+                              
+
+
+               
+
+            
+             
+                            
+
+                           
+             
+
+        <footer class="footer footer-2">
+            <div class="footer-middle border-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                               
+                                
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About Zouq</a></li>
+                                    <li><a href="#">How to shop on Zouq</a></li>
+                                    <li><a href="faq.html">FAQ</a></li>
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                    <li><a href="#">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+                    <ul class="footer-menu">
+                        <li><a href="#">Terms Of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul><!-- End .footer-menu -->
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label"></span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+            
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="home.ejs">Home</a>
+
+                    <li>
+                        <a href="/category">Shop</a>
+                        
+                    </li>
+                    <li>
+                        <a href="product.html" class="sf-with-ul">Product</a>
+                       
+                    </li>
+                    <li>
+                        
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+    
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.plugin.min.js"></script>
+    <script src="assets/js/jquery.countdown.min.js"></script>
+    
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/demos/demo-5.js"></script>
+</body>
+
+
+<!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
+</html>
+
+<%include('../layouts/footer.ejs') %>

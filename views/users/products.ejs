@@ -1,0 +1,67 @@
+<%- include('../layouts/productheader') %>
+
+
+
+    <section id="products" class="products">
+        <h1 class="title"> our products </h1>
+        <div>
+
+
+            <select onchange="getProducts()" name="category" class="btn" id="categoryFilter">
+                <option value="">Category</option>
+                <%categories.forEach(function(cat){%>
+                    <option value="<%= cat.title %>">
+                        <%= cat.title %>
+                    </option>
+
+                    <% }) %>
+                        <option value="All">All</option>
+                        <option value="vegan">Vegan</option>
+
+            </select>
+
+
+        </div>
+
+        <div class="box-container">
+            <%if (products.length>0){%>
+                <% products.forEach(function(pro){ %>
+
+                    <div class="box">
+                        <div class="image">
+                            <div class="icons">
+                                <a href="/products/product-details/<%= pro._id %>" class="fas fa-eye"></a>
+                                <button onclick="addToCart('<%=pro._id%>')"><i
+                                        class="fas fa-shopping-cart"></i></button>
+
+                                <button onclick="addToWishlist('<%=pro._id%>')"><i id="<%=pro._id%>-heart"
+                                        class="fas fa-heart"></i></button>
+
+
+
+                            </div>
+                            <img src="/public/images/product-img/<%=pro.image%>" alt="">
+                        </div>
+                        <div class="content">
+                            <h3>
+                                <%=pro.title%>
+                            </h3>
+
+                            <div class="price">₹<%=pro.price%>
+                            </div>
+                        </div>
+                    </div>
+
+                    <%})%>
+                        <%}else{%>
+                            <h2 class="text-center pt-5">No any products available</h2>
+                            <%}%>
+        </div>
+
+    </section>
+
+
+
+    <%- include('../layouts/user-footer-section.ejs') %>
+
+        <%- include('../layouts/productfooter.ejs') %>

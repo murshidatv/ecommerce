@@ -1,0 +1,666 @@
+<%- include('../layouts/productheader') %>
+<style>
+    aside > * {
+    border: 1px solid #000;
+    /* Other styles */
+}
+input[readonly] {
+        cursor: pointer; /* Change cursor to pointer (hand) when hovering over the input */
+    }
+    #referralCodeField {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        #referralCodeField:focus {
+            outline: none;
+            border-color: #007bff;
+            background-color: #fff;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+<div class="header-middle sticky-header">
+    <div class="container">
+        <div class="header-left">
+            <button class="mobile-menu-toggler">
+                <span class="sr-only">Toggle mobile menu</span>
+                <i class="icon-bars"></i>
+            </button>
+
+            <a href="/home" class="logo">
+                <h2 style="color: rgb(237, 152, 4);">Zouq</h2>
+            </a>
+            <nav class="main-nav">
+                <ul class="menu sf-arrows">
+                    <!-- <a href="/home" class="sf-with-ul">Home</a>
+
+                    <li class="megamenu-container active">
+
+                        <div class="megamenu demo">
+                           
+                        
+                            
+                        </div>
+                        End .megamenu -->
+                    <!-- </li> -->
+                    <li>
+                        <a href="/home" class="sf-with-ul">Home</a>
+
+                        <div class="megamenu megamenu-md">
+                           
+                        </div><!-- End .megamenu megamenu-md -->
+                    </li>
+                    <li>
+                        <a href="/product-list" class="sf-with-ul">Shop</a>
+
+                        <div class="megamenu megamenu-md">
+                           
+                        </div><!-- End .megamenu megamenu-md -->
+                    </li>
+                   
+                </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+        </div><!-- End .header-left -->
+
+        <div class="header-right">
+           
+            <div class="dropdown compare-dropdown">
+                <div class="wishlist">
+                    <a href="/wishlist" title="Wishlist">
+                        <i class="icon-heart-o"></i>
+                       
+                </div><!-- End .compare-dropdown -->
+
+                
+            </div><!-- End .compare-dropdown -->
+
+            <div class="dropdown cart-dropdown">
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <i class="icon-shopping-cart"></i>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-cart-products">
+                           
+                    </div><!-- End .cart-product -->
+
+                    <div class="dropdown-cart-total">
+                        
+                    </div><!-- End .dropdown-cart-total -->
+
+                    <div class="dropdown-cart-action">
+                        <a href="/cartlist" class="btn btn-primary">View Cart</a>
+                    </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+            </div><!-- End .cart-dropdown -->
+        </div><!-- End .header-right -->
+    </div><!-- End .container -->
+</div><!-- End .header-middle -->
+</header><!-- End .header -->
+
+<main class="main">
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+        <h1 class="page-title">PROFILE</h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+          
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
+
+<div class="page-content">
+    <div class="checkout">
+        <aside class="col-lg-3" style=" margin-left: 30%;"> 
+            
+                      <div class="card" style="border-radius: 15px;">
+                        <div class="card-body text-center">
+                          <div class="mt-3 mb-4">
+
+                            <% if (user && user.image) { %>
+                                <img src="/userImages/<%= user.image %>" class="rounded-circle img-fluid" id="image" style="width: 100px; position: relative; left: 130px;" />
+                                <button class="btn" ><a href="/editProfileImage">Edit</a></button>
+                              <% } else { %>
+                                <p>No user or user image found</p>
+                              <% } %>
+                            </div>
+                        
+                            <!-- Hidden file input for selecting a new image -->
+                            <input type="file" id="editImageInput" style="display: none;" accept="image/*">
+                        
+                            <script>
+                              document.getElementById('editImageButton').addEventListener('click', function () {
+                                document.getElementById('editImageInput').click();
+                              });
+                        
+                              document.getElementById('editImageInput').addEventListener('change', function () {
+                                const fileInput = this;
+                                const file = fileInput.files[0];
+                        
+                                if (file) {
+                                  const reader = new FileReader();
+                        
+                                  reader.onload = function (e) {
+                                    const newImageUrl = e.target.result;
+                                    updateProfileImageUI(newImageUrl);
+                                  };
+                        
+                                  reader.readAsDataURL(file);
+                                }
+                              });
+                        
+                              function updateProfileImageUI(imageUrl) {
+                                const profileImage = document.getElementById('profileImage');
+                                if (profileImage) {
+                                  profileImage.src = imageUrl;
+                                }
+                              }
+                            </script>
+                         <% if (user) { %>
+                            <h6>Name: <%= user.name %></h6>
+                            <h6>Email: <%= user.email %></h6>
+                        <% } else { %>
+                            <p>User data not available</p>
+                        <% } %>
+                        
+                          <!--  <h6>Name:<%= user.name%></h6>
+                            <h6>Email:<%= user.email%></h6>
+                            
+                          
+                          <a href="/order-history"><button type="button" class="btn  btn-primary btn-rounded btn-lg" style="width: 300px;">
+                          MY ORDERS 
+                          </button>
+                        </a>
+                          <br><br>
+                          <a href="/address" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
+                            ADDRESS
+                          </button></a>
+                         
+                          <br><br>
+                          <a href="/loadcoupon" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
+                            COUPONS
+                          </button></a>
+                          <br><br>
+                          <a href="/wallet" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
+                           Wallet
+                          </button></a>
+                          <h4>Your Referral Code:</h4>
+                          <input type="text" id="referralCodeField" value="<%=user.referralCode%>" readonly>
+                          <button onclick="copyReferralCode()">Copy</button>
+                          <script>
+                            function copyReferralCode() {
+                                const referralCodeField = document.getElementById("referralCodeField");
+                                referralCodeField.select(); // Select the text inside the input field
+                                document.execCommand("copy"); // Copy the selected text to clipboard
+                                alert("Referral code copied!"); // Show a confirmation message
+                            }
+                              
+                        </script>     -->            
+                        </div>
+                      </div>
+              
+                    </div>
+                  </div>
+                </div>
+              </section>
+        </aside>
+        <div class="container ">
+            
+       
+
+           <form action="/updateProfile" method="post" onsubmit="return validateForm()">
+            <div class="form-group col-md-6">
+              <label for="editName">First Name</label>
+              <input type="text" class="form-control" id="editName" name="name" value="<%= user.name %>" required>
+              <span id="nameError" style="color: red;"></span>
+            </div>
+        
+            <div class="form-group col-md-6">
+              <label for="editEmail">Email</label>
+              <input type="email" class="form-control" id="editEmail" name="email" value="<%= user.email %>" required>
+              <span id="emailError" style="color: red;"></span>
+            </div>
+        
+            <div class="form-group col-md-6">
+              <label for="editPhone">Mobile Number</label>
+              <input type="text" class="form-control" id="editPhone" name="phone" value="<%= user.phone %>" required>
+              <span id="phoneError" style="color: red;"></span>
+            </div>
+       <!--- <button  style="border: 2px solid black;"><a href="/change-password">change Password</a></button><br><br>-->
+        
+            <input type="submit" class="btn btn-primary" value="Update Profile">
+
+
+          
+          </form>
+        
+
+
+          <script>
+            function validateForm() {
+              var name = document.getElementById('editName').value;
+              var email = document.getElementById('editEmail').value;
+              var phone = document.getElementById('editPhone').value;
+        
+              // Reset error messages
+              document.getElementById('nameError').innerHTML = '';
+              document.getElementById('emailError').innerHTML = '';
+              document.getElementById('phoneError').innerHTML = '';
+        
+              // Validate name
+              if (name.trim() === '') {
+                document.getElementById('nameError').innerHTML = 'First Name is required';
+                return false;
+              } else if (!isValidName(name)) {
+                document.getElementById('nameError').innerHTML = 'Invalid characters in the name';
+                return false;
+              }
+        
+              // Validate email
+              if (email.trim() === '') {
+                document.getElementById('emailError').innerHTML = 'Email is required';
+                return false;
+              } else if (!isValidEmail(email)) {
+                document.getElementById('emailError').innerHTML = 'Invalid email address';
+                return false;
+              }
+        
+              // Validate phone
+              if (phone.trim() === '') {
+                document.getElementById('phoneError').innerHTML = 'Phone Number is required';
+                return false;
+              } else if (!isValidPhone(phone)) {
+                document.getElementById('phoneError').innerHTML = 'Invalid phone number';
+                return false;
+              }
+        
+              
+        
+              return true; 
+            }
+        
+            function isValidName(name) {
+              // Allow only letters, spaces, and apostrophes
+              return /^[a-zA-Z\s']*$/i.test(name);
+            }
+        
+            function isValidEmail(email) {
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                 return emailRegex.test(email);
+            }
+        
+            function isValidPhone(phone) {
+                var phoneRegex = /^(?:(?!0+$)\d{10})$/;
+                return phoneRegex.test(phone);
+            }
+          </script>
+        
+  
+        </div>
+    </div>
+</div>
+  <!-- End .col-lg-3 -->
+               
+</div><!-- End .row -->
+            
+</div><!-- End .container -->
+    </div><!-- End .checkout -->
+</div><!-- End .page-content -->
+</main><!-- End .main -->
+
+<footer class="footer">
+<div class="footer-middle">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-lg-3">
+                <div class="widget widget-about">
+                    <a href="/home" class="logo">
+                        <h2 style="color: rgb(237, 152, 4);"></h2>
+                    </a>                    <p>Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. </p>
+
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Pinterest"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .widget about-widget -->
+            </div><!-- End .col-sm-6 col-lg-3 -->
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="widget">
+                    <h4 class="widget-title">Useful Links</h4><!-- End .widget-title -->
+
+                    <ul class="widget-list">
+                        <li><a href="about.html">About Molla</a></li>
+                        <li><a href="#">How to shop on Molla</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="contact.html">Contact us</a></li>
+                        <li><a href="login.html">Log in</a></li>
+                    </ul><!-- End .widget-list -->
+                </div><!-- End .widget -->
+            </div><!-- End .col-sm-6 col-lg-3 -->
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="widget">
+                    <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                    <ul class="widget-list">
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Money-back guarantee!</a></li>
+                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Terms and conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul><!-- End .widget-list -->
+                </div><!-- End .widget -->
+            </div><!-- End .col-sm-6 col-lg-3 -->
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="widget">
+                    <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                    <ul class="widget-list">
+                        <li><a href="#">Sign In</a></li>
+                        <li><a href="cart.html">View Cart</a></li>
+                        <li><a href="#">My Wishlist</a></li>
+                        <li><a href="#">Track My Order</a></li>
+                        <li><a href="#">Help</a></li>
+                    </ul><!-- End .widget-list -->
+                </div><!-- End .widget -->
+            </div><!-- End .col-sm-6 col-lg-3 -->
+        </div><!-- End .row -->
+    </div><!-- End .container -->
+</div><!-- End .footer-middle -->
+
+<div class="footer-bottom">
+    <div class="container">
+        <p class="footer-copyright">Copyright © 2019 Molla Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+        <figure class="footer-payments">
+            <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+        </figure><!-- End .footer-payments -->
+    </div><!-- End .container -->
+</div><!-- End .footer-bottom -->
+</footer><!-- End .footer -->
+</div><!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+<div class="mobile-menu-container">
+<div class="mobile-menu-wrapper">
+<span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+<form action="#" method="get" class="mobile-search">
+    <label for="mobile-search" class="sr-only">Search</label>
+    <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+</form>
+
+<nav class="mobile-nav">
+    <ul class="mobile-menu">
+        <li class="active">
+            <a href="/home">Home</a>
+        </li>
+        <li>
+            <a href="/product-list">Shop</a>
+            
+        </li>
+        
+        <li>
+            <a href="#">Pages</a>
+            <ul>
+                <li>
+                    <a href="about.html">About</a>
+
+                    <ul>
+                        <li><a href="about.html">About 01</a></li>
+                        <li><a href="about-2.html">About 02</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="contact.html">Contact</a>
+
+                    <ul>
+                        <li><a href="contact.html">Contact 01</a></li>
+                        <li><a href="contact-2.html">Contact 02</a></li>
+                    </ul>
+                </li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="faq.html">FAQs</a></li>
+                <li><a href="404.html">Error 404</a></li>
+                <li><a href="coming-soon.html">Coming Soon</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="blog.html">Blog</a>
+
+            <ul>
+                <li><a href="blog.html">Classic</a></li>
+                <li><a href="blog-listing.html">Listing</a></li>
+                <li>
+                    <a href="#">Grid</a>
+                    <ul>
+                        <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
+                        <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
+                        <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
+                        <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Masonry</a>
+                    <ul>
+                        <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
+                        <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
+                        <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
+                        <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Mask</a>
+                    <ul>
+                        <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
+                        <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Single Post</a>
+                    <ul>
+                        <li><a href="single.html">Default with sidebar</a></li>
+                        <li><a href="single-fullwidth.html">Fullwidth no sidebar</a></li>
+                        <li><a href="single-fullwidth-sidebar.html">Fullwidth with sidebar</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="elements-list.html">Elements</a>
+            <ul>
+                <li><a href="elements-products.html">Products</a></li>
+                <li><a href="elements-typography.html">Typography</a></li>
+                <li><a href="elements-titles.html">Titles</a></li>
+                <li><a href="elements-banners.html">Banners</a></li>
+                <li><a href="elements-product-/category">Product Category</a></li>
+                <li><a href="elements-video-banners.html">Video Banners</a></li>
+                <li><a href="elements-buttons.html">Buttons</a></li>
+                <li><a href="elements-accordions.html">Accordions</a></li>
+                <li><a href="elements-tabs.html">Tabs</a></li>
+                <li><a href="elements-testimonials.html">Testimonials</a></li>
+                <li><a href="elements-blog-posts.html">Blog Posts</a></li>
+                <li><a href="elements-portfolio.html">Portfolio</a></li>
+                <li><a href="elements-cta.html">Call to Action</a></li>
+                <li><a href="elements-icon-boxes.html">Icon Boxes</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav><!-- End .mobile-nav -->
+
+<div class="social-icons">
+    <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+    <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+    <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+    <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+</div><!-- End .social-icons -->
+</div><!-- End .mobile-menu-wrapper -->
+</div><!-- End .mobile-menu-container -->
+
+<!-- Sign in / Register Modal -->
+<div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal-content">
+    <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+
+        <div class="form-box">
+            <div class="form-tab">
+                <ul class="nav nav-pills nav-fill" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="register-tab" data-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="tab-content-5">
+                    <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="singin-email">Username or email address *</label>
+                                <input type="text" class="form-control" id="singin-email" name="singin-email" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-group">
+                                <label for="singin-password">Password *</label>
+                                <input type="password" class="form-control" id="singin-password" name="singin-password" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>LOG IN</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="signin-remember">
+                                    <label class="custom-control-label" for="signin-remember">Remember Me</label>
+                                </div><!-- End .custom-checkbox -->
+
+                                <a href="#" class="forgot-link">Forgot Your Password?</a>
+                            </div><!-- End .form-footer -->
+                        </form>
+                        <div class="form-choice">
+                            <p class="text-center">or sign in with</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="#" class="btn btn-login btn-g">
+                                        <i class="icon-google"></i>
+                                        Login With Google
+                                    </a>
+                                </div><!-- End .col-6 -->
+                                <div class="col-sm-6">
+                                    <a href="#" class="btn btn-login btn-f">
+                                        <i class="icon-facebook-f"></i>
+                                        Login With Facebook
+                                    </a>
+                                </div><!-- End .col-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .form-choice -->
+                    </div><!-- .End .tab-pane -->
+                    <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                        <form action="#">
+                            <div class="form-group">
+                                <label for="register-email">Your email address *</label>
+                                <input type="email" class="form-control" id="register-email" name="register-email" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-group">
+                                <label for="register-password">Password *</label>
+                                <input type="password" class="form-control" id="register-password" name="register-password" required>
+                            </div><!-- End .form-group -->
+
+                            <div class="form-footer">
+                                <button type="submit" class="btn btn-outline-primary-2">
+                                    <span>SIGN UP</span>
+                                    <i class="icon-long-arrow-right"></i>
+                                </button>
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="register-policy" required>
+                                    <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
+                                </div><!-- End .custom-checkbox -->
+                            </div><!-- End .form-footer -->
+                        </form>
+                        <div class="form-choice">
+                            <p class="text-center">or sign in with</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="#" class="btn btn-login btn-g">
+                                        <i class="icon-google"></i>
+                                        Login With Google
+                                    </a>
+                                </div><!-- End .col-6 -->
+                                <div class="col-sm-6">
+                                    <a href="#" class="btn btn-login  btn-f">
+                                        <i class="icon-facebook-f"></i>
+                                        Login With Facebook
+                                    </a>
+                                </div><!-- End .col-6 -->
+                            </div><!-- End .row -->
+                        </div><!-- End .form-choice -->
+                    </div><!-- .End .tab-pane -->
+                </div><!-- End .tab-content -->
+            </div><!-- End .form-tab -->
+        </div><!-- End .form-box -->
+    </div><!-- End .modal-body -->
+</div><!-- End .modal-content -->
+</div><!-- End .modal-dialog -->
+</div><!-- End .modal -->
+
+
+<script>
+    // Assuming you have a JavaScript file linked to your HTML, you can add code like this:
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Wait for the DOM content to be fully loaded
+
+    const editProfileForm = document.getElementById("editProfileForm");
+
+    editProfileForm.addEventListener("submit", function(event) {
+        // Prevent the default form submission
+        event.preventDefault();
+
+        // Add your validation logic here
+        // For example, check if the required fields are filled, etc.
+
+        // If validation passes, you can submit the form
+        editProfileForm.submit();
+    });
+});
+
+</script>
+<%- include('../layouts/productfooter.ejs') %>

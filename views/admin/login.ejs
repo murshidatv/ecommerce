@@ -1,0 +1,128 @@
+<% include('../layouts/header.ejs') %>
+
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+      <link rel="stylesheet" href="/user/css/login.css">
+      
+      
+  </head>
+  <body >
+
+
+<div class="container">
+
+<%
+if(typeof message !== 'undefined'){
+  %>
+  <h3><%= message %></h3>
+  <%
+    
+}
+
+
+%>
+
+
+
+<div class="container mt-5 col-md-3">
+  
+  <form class="login" method="POST" onsubmit="return formValidation()">
+     
+        <h2>Login</h2>
+        <br>
+        
+        <input type="text" class="text" name="email" placeholder="Enter email">
+        <span id="emailError" class="error" style="color: red;"></span>
+        
+        <br>
+        
+        <input type="password" class="text" name="password" placeholder="Enter Password">
+        <span id="passwordError" class="error" style="color: red;"></span>
+        <br>
+        <button type="submit" class="btn-login" >Login</button>
+   
+    </form>
+     
+</div>
+
+
+
+<script>
+    function formValidation() {
+      var email = document.querySelector('[name="email"]');
+      var password = document.querySelector('[name="password"]');
+      
+      // Validate email and password
+      if (validateEmail(email) && validatePassword(password)) {
+        return true;
+      }
+      return false;
+    }
+  
+    function validateEmail(email) {
+      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+      if (email.value.match(mailformat)) {
+        document.getElementById('emailError').innerText = '';
+        return true;
+      } else {
+        document.getElementById('emailError').innerText = 'Invalid email address';
+        email.focus();
+        return false;
+      }
+    }
+  
+    function validatePassword(password) {
+      // You can add additional password validation logic here if needed
+      if (password.value.length >= 5) {
+        document.getElementById('passwordError').innerText = '';
+        return true;
+      } else {
+        document.getElementById('passwordError').innerText = 'Password is incorrect';
+        password.focus();
+        return false;
+      }
+    }
+  </script>
+
+
+
+<!--
+
+  <script>
+    function formValidation() {
+        var email = document.querySelector('[name="email"]');
+        if (ValidateEmail(email)) {
+            return true;
+        }
+        return false;
+    }
+
+    function ValidateEmail(email) {
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (email.value.match(mailformat)) {
+            return true;
+        } else {
+            alert("You have entered an invalid email address!");
+            email.focus();
+            return false;
+        }
+    }
+</script>
+
+</div>
+</body>
+
+
+
+
+
+
+  
+
+<%include('../layouts/footer.ejs') %>

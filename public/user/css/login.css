@@ -1,0 +1,90 @@
+
+
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-image: url('/assets/images/bag4.webp'); 
+        background-size: cover;
+        
+        
+      }
+      
+      .login {
+        background-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        height: 400px;
+       
+      }
+      
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      
+      form {
+        display: flex;
+        flex-direction: column;
+        
+      }
+      
+      .text {
+        margin-bottom: 10px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      error {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      
+      .signin {
+        background-color: #438adc;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 60px;
+      }
+      
+      .signin:hover {
+        background-color: #4d604e;
+      }
+      .register {
+        background-color: #438adc;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 60px;
+        
+      }
+      
+      .register:hover {
+        background-color: #45a049;
+      }
+      .btn-login {
+        background-color: #35383c;
+        color: #fff;
+        margin-left: 80px;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        align-items: center;
+        width: 100px;
+      }
+      
+      .btn-login:hover {
+        background-color: #0d170e;
+      }
