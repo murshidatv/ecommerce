@@ -1,0 +1,531 @@
+<% include('../layouts/header.ejs') %>
+
+
+
+<!-- zouq/index-5.html  22 Nov 2019 09:55:58 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Zouq</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Zouq - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="assets/images/icons/site.html">
+    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Zouq">
+    <meta name="application-name" content="Zouq">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/skins/skin-demo-5.css">
+    <link rel="stylesheet" href="assets/css/demos/demo-5.css">
+</head>
+
+<style>
+    .header-search-wrapper {
+    position: relative;
+}
+
+.search-input {
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px; /* Adjust the width as needed */
+}
+
+.search-button {
+    padding: 8px 15px;
+    background-color: #e7780a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Custom styling for checkboxes */
+.custom-control {
+  position: relative;
+  padding-left: 30px; /* Adjust as needed */
+  margin-bottom: 10px; /* Adjust as needed */
+  cursor: pointer;
+}
+
+.custom-control-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-top: 4px; /* Adjust as needed */
+}
+
+.custom-control-label {
+  position: relative;
+  padding-left: 35px; /* Adjust as needed */
+  line-height: 1.5;
+}
+
+/* Style the check icon */
+.custom-control-label .fa-check {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(236, 175, 22, 0.724); /* Adjust as needed */
+  font-size: 16px; /* Adjust as needed */
+}
+
+  /* Adjust the size and style of carousel control buttons */
+  .carousel-control-prev, .carousel-control-next {
+        width: 70px; /* Adjust width as needed */
+        height: 146px; /* Adjust height as needed */
+        margin-top: 2px;
+        margin-left: 200px;
+        margin-right: 200px;
+        background-color: rgba(240, 246, 245, 0.959); /* Change background color */
+        border: none; /* Remove border */
+        border-radius: 10%; /* Make it round */
+        color: black;
+    }
+
+    /* Adjust the size and color of the icon inside the buttons */
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        width: 50px; /* Adjust width of the icon */
+        height: 20px; /* Adjust height of the icon */
+        color: rgb(11, 11, 11); /* Change icon color */
+        background-color: transparent; /* Remove icon background color */
+    }
+
+</style>
+<%
+    function formatDate(date) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date ? new Date(date).toLocaleDateString('en-US', options) : '';
+    }
+%>
+<%
+if(typeof message !=='undefined'){
+  %>
+  <script>
+  alert('<%= message %>');
+  // if the registeration is sucees its redirect the login page
+  //  window.location.href='/login';
+</script>
+  <% } %>
+
+
+<body>
+<div class="page-wrapper">
+    <section>
+    <header class="header header-5">
+        <div class="header-middle sticky-header">
+            <div class="container">
+                <div class="header-left">
+                    <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                    </button>
+
+                    <a href="/home" class="logo">
+                    <h2 style="color: #c66">Zouq</h2>
+                    </a>
+                    <nav class="main-nav">
+                        <ul class="menu sf-arrows">
+                        
+                            <li>
+                                <a href="/home" class="sf-with-ul"style="color: #c66">Home</a>
+
+                                <div class="megamenu megamenu-md">
+                            
+                                </div><!-- End .megamenu megamenu-md -->
+                            </li>
+                            <li>
+                                <a href="/product-list" class="sf-with-ul"style="color: #c66">Shop</a>
+
+                                <div class="megamenu megamenu-md">
+                            
+                                </div><!-- End .megamenu megamenu-md -->
+                            </li>
+                   
+                        </ul><!-- End .menu -->
+                    </nav><!-- End .main-nav -->
+                </div><!-- End .header-left -->
+
+                <div class="header-right">
+           
+                    <div class="dropdown compare-dropdown">
+                        <div class="wishlist">
+                            <a href="/wishlist" title="Wishlist">
+                            <i class="icon-heart-o"style="color: #c66;"></i>
+                            
+                        </div><!-- End .compare-dropdown -->
+
+                        
+                    </div><!-- End .compare-dropdown -->
+
+                    <div class="dropdown cart-dropdown">
+                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <i class="icon-shopping-cart" style="color: #c66;"></i>
+                        </a>
+
+
+                          
+                      
+                   
+                    </div><!-- End .cart-dropdown -->
+               
+                </div><!-- End .header-right -->
+            </div><!-- End .container -->
+        </div><!-- End .header-middle -->
+    </header><!-- End .header -->
+</section>
+
+
+<main class="main">
+        
+        		<div class="container">
+        			<h1 style="color: #c66;"style="background-color:black;" class="page-title"><span></span></h1>
+        		</div><!-- End .container -->
+        	
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                
+            </nav><!-- End .breadcrumb-nav -->
+</main>
+      
+    <section>        
+            <div class="page-content">
+                <main class="main">
+                    <div class="page-header text-center" style="background-color:white;">
+                        <div class="container">
+                            <h1 style="color:  #c66;" class="page-title">Product List<span></span></h1>
+                        </div><!-- End .container -->
+                    </div><!-- End .page-header -->
+                    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                        
+                    </nav><!-- End .breadcrumb-nav -->
+        </main>
+            </div>
+    </section>
+                <div class="container">
+                	<div class="row">
+                		<div class="col-lg-9">
+                			<div class="toolbox">
+                				<div class="toolbox-left">
+                					<!-- <a href="/view-offered-categories">View Offered Categories</a> -->
+
+                				</div><!-- End .toolbox-left -->
+
+                				<div class="toolbox-right">
+                					
+                					<div class="toolbox-layout">
+                						
+                					</div><!-- End .toolbox-layout -->
+                				</div><!-- End .toolbox-right -->
+                			</div><!-- End .toolbox -->
+                            <div class="products mb-3">
+                                <div class="row justify-content-center">
+                                    <% products.forEach(product => { %>
+                                        <% const categoryBlocked = product.category && product.category.blocked; %>
+                            
+                                        <% if (!selectedCategory || (selectedCategory && product.category && product.category._id.toString() === selectedCategory)) { %>
+                            
+                                            <% if (!product.blocked && !categoryBlocked) { %>
+                                                <div class="col-6">
+                                                    <div class="product product-7 text-center">
+                                                        <figure class="product-media">
+                                                            <a href="/product/<%= product._id %>">
+                                                                <img src="/images/<%= product.images[0] %>" alt="<%= product.productName %>" class="product-image" style="height: 400px; width: 450px;">
+                                                            </a>
+                            
+                                                            
+                            
+                                                        </figure><!-- End .product-media -->
+                            
+                                                        <div class="product-body">
+                                                            <div class="product-cat">
+                                                                <a href="#"><!-- Display product category --></a>
+                                                            </div><!-- End .product-cat -->
+                                                            <h3 class="product-title">
+                                                                <a href="<%= '/products/' + product._id %>"><%= product.productName %></a>
+                                                            </h3><!-- End .product-title -->
+                                                            <div class="product-price">
+                                                               
+                                                                  <br>
+                                                                 
+                                                             
+                                                                
+                                                              
+                                                                  
+                                                                  <!-- Regular Price -->
+                                                                  <p class="regular-price">Rs.<%= product.Price %>/-</p>
+                                                               
+                                                              </div><!-- End .product-price -->
+                                                              
+                                                        </div><!-- End .product-body -->
+                                                    </div><!-- End .product -->
+                                                </div><!-- End .col-sm-6 -->
+                                            <% } %>
+                                        <% } %>
+                                    <% }); %>
+                                </div><!-- End .row -->
+                            </div><!-- End .products -->
+                            
+
+<!-- Pagination -->
+<div class="toolbox-layout">
+    <nav class="pagination" aria-label="Pagination">
+        <ul class="pagination">
+            <% if (currentPage > 1) { %>
+                <li class="page-item">
+                    <a class="page-link" href="?selectedCategory=<%= selectedCategory %>&sort=<%= sortDropdownValue %>&page=<%= currentPage - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            <% } %>
+
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                    <a class="page-link" href="?selectedCategory=<%= selectedCategory %>&sort=<%= sortDropdownValue %>&page=<%= i %>"><%= i %></a>
+                </li>
+            <% } %>
+
+            <% if (currentPage < totalPages) { %>
+                <li class="page-item">
+                    <a class="page-link" href="?selectedCategory=<%= selectedCategory %>&sort=<%= sortDropdownValue %>&page=<%= currentPage + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+</div>
+                			
+                		</div><!-- End .col-lg-9 -->
+                		<aside class="col-lg-3 order-lg-first">
+                			<div class="sidebar sidebar-shop">
+                				<div class="widget widget-clean">
+                					<label>Filters:</label>
+                					<a href="#" class="sidebar-filter-clear">Clean All</a>
+                				</div><!-- End .widget widget-clean -->
+                                <form action="/product-list" method="GET" id="yourFormId">
+                                    <input type="hidden" id="selectedCategory" name="selectedCategory" value="<%= selectedCategory %>">
+
+                                    <div class="widget widget-collapsible">
+                                        <h3 class="widget-title">
+                                            <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
+                                                Category
+                                            </a>
+                                        </h3><!-- End .widget-title -->
+                                    
+                                        <div class="collapse show" id="widget-1">
+                                            <div class="widget-body">
+                                                <div class="filter-items filter-items-count">
+                                                  
+                                                 <h4> <a href="/product-list" style="color: #c66;"  class="category-link">All Products</a></h4>
+                                                  
+                                                    <% categories.forEach(category => { %>
+                                                        <% if (!category.blocked) { %> <!-- Check if the category is not blocked -->
+                                                            <div class="filter-item">
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <h5><a style="color: #c66; font-weight: 100;" href="/product-list?category=<%= category._id %>&sort=<%= sortDropdownValue %>" class="category-link">
+                                                                        <%= category.categoryName %>
+                                                                        <% if(category.isSelected) { %>
+                                                                            <i class="fas fa-check"></i> <!-- Add your check icon class or HTML here -->
+                                                                        <% } %>
+                                                                    </a></h5>
+                                                                </div><!-- End .custom-checkbox -->
+                                                            </div><!-- End .filter-item -->
+                                                        <% } %>
+                                                    <% }); %>
+                                    
+                                                    <br><br>
+                                                    
+                                                    <!-- Add this inside the toolbox-right section -->
+                                                    <div class="toolbox-layout">
+                                                        <label for="sort" style="color: #c66; font-size: large;">Sort by:</label><br>
+                                                        <select  id="sort" name="sort" style="color: #c66;" onchange="this.form.submit()">
+                                                            <option value="asc">Price Low to High</option>
+                                                            <option value="desc">Price High to Low</option>
+                                                        </select>
+                                                    </div>
+                                                </div><!-- End .filter-items -->
+                                            </div><!-- End .widget-body -->
+                                        </div>
+                                    </div>
+                                    
+                                </form>
+        					
+                			</div><!-- End .sidebar sidebar-shop -->
+                		</aside><!-- End .col-lg-3 -->
+                	</div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        <footer class="footer footer-2">
+            <div class="footer-middle border-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-lg-6">
+                            <div class="widget widget-about">
+                               
+                                
+                                <div class="widget-about-info">
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-4">
+                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                            <a href="tel:123456789">+0123 456 789</a>
+                                        </div><!-- End .col-sm-6 -->
+                                        <div class="col-sm-6 col-md-8">
+                                            <span class="widget-about-title">Payment Method</span>
+                                            <figure class="footer-payments">
+                                                <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
+                                            </figure><!-- End .footer-payments -->
+                                        </div><!-- End .col-sm-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .widget-about-info -->
+                            </div><!-- End .widget about-widget -->
+                        </div><!-- End .col-sm-12 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="about.html">About Zouq</a></li>
+                                    <li><a href="#">How to shop on Zouq</a></li>
+                                    <li><a href="faq.html">FAQ</a></li>
+                                    <li><a href="contact.html">Contact us</a></li>
+                                    <li><a href="login.html">Log in</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Money-back guarantee!</a></li>
+                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Terms and conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-4 col-lg-3 -->
+
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="widget">
+                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                                <ul class="widget-list">
+                                    <li><a href="#">Sign In</a></li>
+                                    <li><a href="cart.html">View Cart</a></li>
+                                    <li><a href="#">My Wishlist</a></li>
+                                    <li><a href="#">Track My Order</a></li>
+                                    <li><a href="#">Help</a></li>
+                                </ul><!-- End .widget-list -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .col-sm-64 col-lg-3 -->
+                    </div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-middle -->
+
+            <div class="footer-bottom">
+                <div class="container">
+                    <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p><!-- End .footer-copyright -->
+                    <ul class="footer-menu">
+                        <li><a href="#">Terms Of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul><!-- End .footer-menu -->
+                    <div class="social-icons social-icons-color">
+                        <span class="social-label"></span>
+                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
+                        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                    </div><!-- End .soial-icons -->
+                </div><!-- End .container -->
+            </div><!-- End .footer-bottom -->
+        </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+            
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="home.ejs">Home</a>
+
+                    <li>
+                        <a href="/category">Shop</a>
+                        
+                    </li>
+                    <li>
+                        <a href="product.html" class="sf-with-ul">Product</a>
+                       
+                    </li>
+                    <li>
+                        
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+    
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.plugin.min.js"></script>
+    <script src="assets/js/jquery.countdown.min.js"></script>
+    
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/demos/demo-5.js"></script>
+</body>
+
+
+<!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
+</html>
+
+<%include('../layouts/footer.ejs') %>

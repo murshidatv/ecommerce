@@ -1,6 +1,7 @@
 const User = require('../../models/userModel');
 const Category=require('../../models/categoryModel')
 const Product=require('../../models/productModel');
+
 const bcrypt = require('bcrypt');
 const path = require('path');
 const crypto = require('crypto');
@@ -10,6 +11,10 @@ const uuid = require('uuid');
 const { v4: uuidv4 } = require('uuid');
 
 const nodemailer=require('nodemailer');
+
+
+const { product } = require('../admin/categoryController');
+const { render } = require('ejs');
 
 const randomstring=require('randomstring');
 const securePassword = async(password)=>{
@@ -27,9 +32,7 @@ const securePassword = async(password)=>{
 // send mail
 const verifyMail=async(name,email,otp)=>{
     try {
-      
         
-          
       const transporter=  nodemailer.createTransport({
             host:'smtp.gmail.com',
             port:587,
@@ -133,7 +136,7 @@ const loadRegister = async(req,res)=>{
     }
 }
 
-/*
+
 const verify = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -168,40 +171,6 @@ const verify = async (req, res) => {
   };
 
 
-*/
-const verify = async (userId, enteredOTP) => {
-  try {
-      const userData = await User.findById(userId);
-      
-      if (!userData) {
-          throw new Error('User not found');
-      }
-
-      const currentTime = Math.floor(new Date().getTime() / 1000);
-      const otpExpiryTime = userData.otp_expiry_time || 0;
-
-      if (otpExpiryTime > 0 && currentTime > otpExpiryTime) {
-          userData.otp = '';
-          userData.otp_expiry_time = 0;
-          await userData.save();
-          return { success: false, message: 'OTP has expired. Please request a new one', expired: true };
-      }
-
-      if (userData.otp === enteredOTP) {
-          userData.is_verified = true;
-          userData.otp_expiry_time = 0;
-          await userData.save();
-          return { success: true, message: 'Email verified successfully' };
-      } else {
-          return { success: false, message: 'Incorrect OTP. Please try again.' };
-      }
-  } catch (error) {
-      console.error(error.message);
-      return { success: false, message: 'Internal Server Error' };
-  }
-};
-
-
 
   const resendOTP = async (req, res) => {
     try {
@@ -224,6 +193,7 @@ const verify = async (userId, enteredOTP) => {
         });
   
         userData.otp = newOTP;
+        console.log(newOTP);
         userData.otp_expiry_time=Math.floor(new Date().getTime()/1000)+300;
         await userData.save();
   
@@ -266,7 +236,7 @@ const loginUser = async(req,res)=>{
     }
 }
 
-/*
+
 const verifyLogin = async(req,res) =>{
     try {
         
@@ -279,12 +249,12 @@ const verifyLogin = async(req,res) =>{
             const passwordMatch = await bcrypt.compare(password,userData.password);
 
             if (passwordMatch && userData.is_admin === 0) {
-                 if (userData.is_verified === 0) {
-                    console.log('Please verify your mail');
-                 } else {
+                // if (userData.is_verified === 0) {
+                //     console.log('Please verify your mail');
+                // } else {
                     req.session.user_id = userData._id;
                     res.redirect('/home');
-                 }
+                // }
             } else {
                 res.render('login',{message:'Incorrect Username and Password'});
             }
@@ -295,87 +265,6 @@ const verifyLogin = async(req,res) =>{
         console.log(error.message);
     }
 }
-*/
-//login user and redirect to home
-/*
-const verifyLogin = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-  
-      if (!email || !password) {
-        return res.render('login', { message: "Email and password are required" });
-      }
-  
-      const userData = await User.findOne({ email });
-  
-      if (!userData) {
-        return res.render('login', { message: "Incorrect email or password..." });
-      }
-  
-      const passwordMatch = await bcrypt.compare(password, userData.password);
-      
-      if (!passwordMatch) {
-        return res.render('login', { message: "Incorrect email or password" });
-      }
-  
-      if (!userData.is_verified) {
-        return res.render('login', { message: "Incorrect email or password" });
-      }
-  
-      if (userData.isBlocked) {
-        return res.render('login', { message: "User account is blocked, choose another account" });
-      }
-      req.session.user_id = userData._id;
-      res.redirect('/home');
-     // req.session.user_id = userLogin._id;
-     // res.redirect('/home');
-    } catch (error) {
-      console.log(error.message);
-      // Handle other error conditions or uncomment the line below to send a generic error response.
-      // res.status(500).send('Internal Server Error');
-    }
-  };
-
-
-
-*/
-const verifyLogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.render('login', { message: "Email and password are required" });
-    }
-
-    const userLogin = await User.findOne({ email });
-    console.log(userLogin);
-    if (!userLogin) {
-      return res.render('login', { message: "Incorrect email or password..." });
-    }
-
-    const passwordMatch = await bcrypt.compare(password, userLogin.password);
-    
-    if (!passwordMatch) {
-      return res.render('login', { message: "Incorrect email or password" });
-    }
-
-    if (!userLogin.is_verified) {
-      return res.render('login', { message: "Incorrect email or password" });
-    }
-
-    if (userLogin.isBlocked) {
-      return res.render('login', { message: "User account is blocked, choose another account" });
-    }
-
-    req.session.user_id = userLogin._id;
-    res.redirect('/home');
-  } catch (error) {
-    console.log(error.message);
-    // Handle other error conditions or uncomment the line below to send a generic error response.
-    // res.status(500).send('Internal Server Error');
-  }
-};
-
 
 
 
@@ -392,9 +281,6 @@ const homePage = async (req, res) => {
   };
   
   
-
-
-
   const userLogout=async(req,res)=>{
       try{
           req.session.destroy();
@@ -406,6 +292,30 @@ const homePage = async (req, res) => {
   
   }
   
+ /* 
+
+const loadHome = async(req,res) =>{
+    try {
+        const userData = await User.findById({_id:req.session.user_id});
+
+        if(userData.is_admin === 0){
+            res.render('home',{user:userData});
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const userLogout = async(req,res)=>{
+    try{
+        req.session.destroy();
+        res.redirect('/');
+
+    }catch(error){
+        console.log(error.message);
+    }
+}
+*/
 
 
 
@@ -417,48 +327,68 @@ const login = async(req,res)=>{
         console.log(error.message);
     }
 
-}
-
-  
-
-
-
-
-// Controller function to list all products with IDs
-const listProducts = async (req, res) => {
-    try {
-        // Retrieve all products from the database
-        const products = await Product.find();
-
-        // Extract relevant data (e.g., ID and other fields) from the products
-        const productList = products.map(product => ({
-            id: product._id,
-            name: product.name,
-            // Include other fields as needed
-        }));
-
-        // Send the list of products as a response
-        res.json({ products: productList });
-    } catch (error) {
-        console.error('Error listing products:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
 };
+//login user and redirect to home
 
 
-
-/*
- 
-  const viewProfile = async (req, res) => {
+const verifylogin = async (req, res) => {
     try {
-      const user = await User.findById(req.session.user_id);
-      res.render('profile', { user });
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return res.render('login', { message: "Email and password are required" });
+      }
+  
+      const userLogin = await User.findOne({ email });
+  
+      if (!userLogin) {
+        return res.render('login', { message: "Incorrect email or password..." });
+      }
+  
+      const passwordMatch = await bcrypt.compare(password, userLogin.password);
+      
+      if (!passwordMatch) {
+        return res.render('login', { message: "Incorrect email or password" });
+      }
+  
+      if (!userLogin.is_verified) {
+        return res.render('login', { message: "Incorrect email or password" });
+      }
+  
+      if (userLogin.isBlocked) {
+        return res.render('login', { message: "User account is blocked, choose another account" });
+      }
+  
+      req.session.user_id = userLogin._id;
+      res.redirect('/home');
     } catch (error) {
-      console.error(error.message);
-      res.status(500).send('Internal Server Error');
+      console.log(error.message);
+      // Handle other error conditions or uncomment the line below to send a generic error response.
+      // res.status(500).send('Internal Server Error');
     }
   };
+
+ 
+const viewProduct = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const product = await Product.findById(productId).populate('category');
+        res.render('single-product', { product });
+    } catch (error) {
+        console.log(error.message);
+    }
+  }
   
+  
+  // const viewProductList=async(req,res)=>{
+  //     try {
+  //         const products = await Product.find();
+  //         const categories=await Category.find();
+  //         res.render('productList',{ products, categories })
+  //     } catch (error) {
+  //         console.log(error.message);
+  //     }
+  // }
   
   const viewProductList = async (req, res) => {
     try {
@@ -495,7 +425,8 @@ const listProducts = async (req, res) => {
         .skip((page - 1) * perPage)
         .limit(perPage);
   
-   
+      // Fetch offered categories
+      //const offeredCategories = await Category.find({ offer: { $exists: true } });
   
       res.render('productList', { 
         products, 
@@ -504,9 +435,9 @@ const listProducts = async (req, res) => {
         sortDropdownValue: sortOption, 
         searchQuery,
         currentPage: page,
-       
+        totalPages,
+        //offeredCategories // Pass offeredCategories to the template
       });
-      
     } catch (error) {
       // Log the error to the console
       console.error('Error occurred while processing request:', error);
@@ -514,36 +445,32 @@ const listProducts = async (req, res) => {
       res.status(500).render('error', { errorMessage: 'An error occurred while processing your request. Please try again later.' });
     }
   };
- */
   
-  const errorload=async(req,res)=>{
-    try {
-      res.status(500).render('error', { errorMessage: 'An error occurred.' });
-  
-    } catch (error) {
-      
-    }
+
+
+const errorload=async(req,res)=>{
+  try {
+    res.status(500).render('error', { errorMessage: 'An error occurred.' });
+
+  } catch (error) {
+    
   }
-  
-  
-  
-  
-  
-  
+}
+
+
 
 module.exports = {
     loadRegister,
     insertUser,
     loginUser,
+    verify,
     verifyLogin,
     homePage,
     userLogout,
     emailVerified,
     resendOTP,
-    //viewProduct,
-    listProducts,
-   // viewProductList,
-   // viewProfile,
-    
+    viewProduct,
+    viewProductList,
+   
     
 }

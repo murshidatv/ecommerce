@@ -18,40 +18,6 @@ const loadlogin = async(req,res)=>{
     }
 
 }
-
-const verifyLogin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (email && password) {
-            const userLogin = await User.findOne({ email: email });
-            if (userLogin) {
-                const passwordMatch = await bcrypt.compare(password, userLogin.password);
-                if (passwordMatch) {
-                   if(userLogin.is_admin === 1)
-                   {
-                    req.session.user_id=userLogin._id;
-                    res.redirect('/admin/home');
-                   }
-                    else{
-                        res.render('login', { message: "Incorrect email or password" });
-  
-                    }
-                } else {
-                    res.render('login', { message: "Incorrect email or password" });
-                }
-            } else {
-                res.render('login', { message: "Incorrect email or password..." });
-            }
-        } else {
-            res.render('login',{ message: "Email and password are required" });
-        }
-    } catch (error) {
-        console.log(error.message);
-        // res.status(500).send('Internal Server Error');
-    }
-  }
-  
-  /*
 const verifyLogin = async(req,res)=>{
     try{
 
@@ -90,7 +56,7 @@ const verifyLogin = async(req,res)=>{
 
     }
 }
-*/
+
 const loadDashboard = async(req,res)=>{
 
 

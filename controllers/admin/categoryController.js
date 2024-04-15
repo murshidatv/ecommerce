@@ -7,63 +7,6 @@ const { upload } = require('../../middleware/multer');
 const sharp=require('sharp');
 
 
-async function updateProductPrices(product) {
-    try {
-        const productId = product._id;
-        const productOffer = product.offer;
-
-        // Retrieve the product by ID
-        const updatedProduct = await Product.findById(productId);
-
-        // Check if the product offer is not expired or deleted
-        if (productOffer && productOffer.endDate) {
-            const currentDate = new Date();
-            const offerEndDate = new Date(productOffer.endDate);
-
-            // Check if the product offer is still valid
-            if (currentDate <= offerEndDate) {
-                // Store the original price if not already stored
-                if (!updatedProduct.oldPrice) {
-                    updatedProduct.oldPrice = updatedProduct.price;
-                }
-
-                // Apply the product offer
-                const productDiscount = productOffer.amount / 100;
-
-                // Check if the product offer amount is greater than zero before updating the price
-                if (productDiscount > 0) {
-                    updatedProduct.price = updatedProduct.oldPrice - (updatedProduct.oldPrice * productDiscount);
-                }
-            } else {
-                // If the product offer is expired, revert to the original price
-                updatedProduct.price = updatedProduct.oldPrice;
-            }
-        } else {
-            // If the product offer is deleted or not present, apply the category offer
-            const category = await Category.findById(product.category);
-            if (category && category.offer && category.offer.endDate) {
-                const currentDate = new Date();
-                const offerEndDate = new Date(category.offer.endDate);
-
-                // Check if the category offer is still valid
-                if (currentDate <= offerEndDate) {
-                    // Apply the category offer
-                    const categoryDiscount = category.offer.amount / 100;
-                    if (categoryDiscount > 0) {
-                        updatedProduct.price = updatedProduct.oldPrice - (updatedProduct.oldPrice * categoryDiscount);
-                    }
-                }
-            }
-        }
-
-        // Save the updated product
-        await updatedProduct.save();
-    } catch (error) {
-        console.error('Error updating product prices:', error);
-    }
-}
-
-
 
 
 
@@ -184,56 +127,7 @@ const updateCategoryStatus = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-/* Function to update product prices based on the category offer
-async function updateProductPricesForCategory(category) {
-    try {
-        const categoryId = category._id;
-        const categoryOffer = category.offer;
 
-        // Retrieve all products under the given category
-        const products = await Product.find({ category: categoryId });
-
-        // Check if the category offer is not expired
-        if (categoryOffer && categoryOffer.endDate) {
-            const currentDate = new Date();
-            const offerEndDate = new Date(categoryOffer.endDate);
-
-            // Check if the category offer is still valid
-            if (currentDate <= offerEndDate) {
-                // Update prices for each product
-                for (const product of products) {
-                    // Store the original price if not already stored
-                    if (!product.oldPrice) {
-                        product.oldPrice = product.price;
-                    }
-                    console.log('Product Offer:', product.offer);
-                    // Check if the product has its own offer
-                    const hasProductOffer = product.offer && typeof product.offer.amount === 'number';
-                    console.log('Product Offer:', product.offer);
-                    console.log('hasProductOffer:', hasProductOffer);
-
-                    // If the product offer is deleted, apply the category offer
-                    if (!hasProductOffer || isNaN(product.offer.amount)) {
-                        const categoryDiscount = categoryOffer.amount / 100;
-                        if (categoryDiscount > 0) {
-                            product.price = product.oldPrice - (product.oldPrice * categoryDiscount);
-                        }
-                    }
-
-                    // Save the updated product
-                    await product.save();
-                }
-            } else {
-                console.log('Category offer is expired.');
-            }
-        } else {
-            console.log('Category offer is not present.');
-        }
-    } catch (error) {
-        console.error('Error updating product prices for category:', error);
-    }
-}
-*/
 const product = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -286,7 +180,7 @@ const loadProduct = async (req, res) => {
 
 const addProduct = async (req, res) => {
     try {
-        const { productName, category, size, oldPrice, stock, description } = req.body;
+        const { productName, category, size, Price, stock, description } = req.body;
 
         let images = [];
         if (req.files && Array.isArray(req.files)) {
@@ -303,11 +197,13 @@ const addProduct = async (req, res) => {
 
                 // Crop the image to 100x100 pixels
                 await sharp(`public/images/${filename}`)
-                    .resize(100, 100)
+                    .resize({ width: 100, height: 100, fit: 'inside', withoutEnlargement: true }) // Resize without enlarging smaller images
+                    .jpeg({ quality: 100 }) // Adjust JPEG quality to improve image quality
                     .toFile(`public/images/cropped_${filename}`);
 
                 // Return the new filename
                 return `cropped_${filename}`;
+               
             }));
         }
 
@@ -315,7 +211,7 @@ const addProduct = async (req, res) => {
             productName,
             category,
             size,
-            oldPrice,
+            Price,
             stock,
             description,
             images,
@@ -323,7 +219,7 @@ const addProduct = async (req, res) => {
         });
 
         await newProduct.save();
-        await updateProductPrices(newProduct);
+        //await updateProductPrices(newProduct);
 
         console.log('Product saved successfully:', newProduct);
         res.redirect('/admin/product');
@@ -349,7 +245,7 @@ const LoadEditProduct = async (req, res) => {
 const editProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
-        const { productName, category, size, oldPrice, stock, description } = req.body;
+        const { productName, category, size, Price, stock, description } = req.body;
         let images = [];
         if (req.files && Array.isArray(req.files)) {
             images = req.files.map((file) => file.filename);
@@ -360,7 +256,7 @@ const editProduct = async (req, res) => {
             productName,
             category,
             size,
-            oldPrice,
+            Price,
             stock,
             description,
            
@@ -378,7 +274,7 @@ const editProduct = async (req, res) => {
         }
 
         // Update product prices based on the updated product
-        await updateProductPrices(updatedProduct);
+       // await updateProductPrices(updatedProduct);
 
         res.redirect('/admin/product');
     } catch (error) {
@@ -409,6 +305,7 @@ const updateProductStatus = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
 
 module.exports = {
    category,

@@ -24,10 +24,8 @@ const mongoose=require("mongoose");
         type: Boolean,
         default: false,
     },
-    oldPrice: {
-        type: Number,
-    },
-    price: {
+   
+    Price: {
         type: Number,
     },
     stock:{
@@ -36,17 +34,6 @@ const mongoose=require("mongoose");
         min: 0, 
     },
 
-    offer: {
-        type: {
-            type: String,
-        },
-        amount: {
-            type: Number,
-        },
-        endDate: {
-            type: Date,
-        },
-    },
     description:{
         type:String
     },

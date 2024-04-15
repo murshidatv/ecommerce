@@ -45,15 +45,6 @@ user_route.post('/verify/:userId', userController.verifyLogin);
 user_route.post('/login', userController.verifyLogin);
 
 
-
-
-
-
-
-user_route.get('/logout',auth.isLogin,userController.userLogout);
-
-
-
 //user_route.get('/',auth.isLogout,userController.loginUser);
 
 user_route.post('/login', userController.verifyLogin);
@@ -68,13 +59,11 @@ user_route.get('/home',auth.isLogin,userController.homePage);
 
 
 user_route.get('/email-verified', userController.emailVerified);
-user_route.post('/resend-otp/:userId',userController.resendOTP);
+user_route.post('/resend-otp/:userDataId',userController.resendOTP);
+user_route.get('/logout',auth.isLogin,userController.userLogout)
 
-
-user_route.get('/single-product',auth.isLogin,userController.listProducts);
-//user_route.get('/Product/:productId',userController.viewProductList);
-
-//user_route.get('/profile',auth.isLogin,userController.viewProfile);
+user_route.get('/product-list',userController.viewProductList);
+user_route.get('/product/:productId',userController.viewProduct);
 
 
 
