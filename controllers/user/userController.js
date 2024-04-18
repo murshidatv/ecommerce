@@ -1,6 +1,7 @@
 const User = require('../../models/userModel');
 const Category=require('../../models/categoryModel')
 const Product=require('../../models/productModel');
+const Order=require('../../models/orderModel');
 
 const bcrypt = require('bcrypt');
 const path = require('path');
@@ -445,7 +446,16 @@ const viewProduct = async (req, res) => {
       res.status(500).render('error', { errorMessage: 'An error occurred while processing your request. Please try again later.' });
     }
   };
-  
+  const viewProfile = async (req, res) => {
+    try {
+      const user = await User.findById(req.session.user_id);
+      res.render('profile', { user });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
 
 
 const errorload=async(req,res)=>{
@@ -455,7 +465,198 @@ const errorload=async(req,res)=>{
   } catch (error) {
     
   }
+};
+
+
+const viewEditProfileImage = async(req, res) => {
+  try {
+    const user = await User.findById(req.session.user_id);
+
+    res.render('editProfileImage',{ user });
+  } catch (error) {
+    console.log(error.message);
+  }
+ 
+};
+
+
+
+
+
+
+
+const updateProfileImage = async (req, res) => {
+  try {
+      const userId = req.session.user_id;
+
+      if (req.file) {
+          const imagePath = req.file.filename;
+
+          // Update the user's image path in the database
+          await User.findByIdAndUpdate(userId, { image: imagePath });
+      }
+
+      res.redirect('/profile');
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Internal Server Error');
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const { name, email, mobile } = req.body;
+    console.log(name,email, mobile)
+    
+    if (!name || !email || !mobile) {
+      return res.status(400).send('Invalid input data');
+    }
+ 
+
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Update user information
+    user.name = name;
+    user.email = email;
+    user.mobile = mobile;
+
+    await user.save();
+
+    res.redirect('/profile'); 
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+const loadchangepassword=async(req,res)=>{
+  try {
+    res.render('changepassword')
+  } catch (error) {
+    console.log(error.message);
+  }
 }
+
+
+const changepassword=async (req,res)=>{
+const { oldPassword, newPassword } = req.body;
+const userId = req.session.user_id;
+
+try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+        return res.status(404).send('User not found');
+    }
+
+    // Compare the old password with the stored hashed password
+    const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordMatch) {
+      res.render('changepassword',{message:"incorrect old password"})
+    }
+
+    // Hash the new password and update the user's password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedNewPassword;
+
+    await user.save();
+
+    res.redirect('/profile')
+} catch (error) {
+    console.error('Error changing password:', error.message);
+    res.status(500).send('Internal Server Error');
+}
+};
+
+const loadCartList=async(req,res)=>{
+  try {
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('cart.product');
+    const cartCount = user.cart.length;
+    res.render('cart', { user ,cartCount,userId});
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+const addtoCart = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
+    const userId = req.session.user_id;
+    if (!userId) {
+      req.flash('error', 'Please log in to add products to your cart.');
+      return res.redirect('/login');
+    }
+
+    const user = await User.findById(userId);
+    if (user && user.cart) {
+      const existingCartItem = user.cart.find(item => item && item.product && item.product.equals(product._id));
+
+      if (existingCartItem) {
+        existingCartItem.quantity += 1;
+      } else {
+        user.cart.push({
+          product: product._id,
+          quantity: 1,
+        });
+      }
+    }
+    await user.save();
+    req.flash('success', `${product.productName} added to the cart!`);
+    return res.redirect('/product-list');
+  } catch (error) {
+    console.log(error.message);
+    req.flash('error', 'Failed to add the product to the cart.');
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
+
+const updateQuantity=async(req,res)=>{
+  const productId = req.params.productId;
+  const newQuantity = req.body.quantity;
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.session.user_id, 'cart.product': productId },
+      { $set: { 'cart.$.quantity': newQuantity } },
+      { new: true }
+      );
+      res.redirect("/cartList")
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const deleteCart = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const productId = req.params.productId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const cartIndex = user.cart.findIndex(item => item.product.equals(productId));
+    if (cartIndex === -1) {
+      return res.status(404).json({ message: 'Cart item not found' });
+    }
+    user.cart.splice(cartIndex, 1);
+    await user.save();
+    res.redirect('/cartList');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 
 
 
@@ -471,6 +672,17 @@ module.exports = {
     resendOTP,
     viewProduct,
     viewProductList,
-   
     
+    viewProfile,
+    viewEditProfileImage,
+    updateProfileImage,
+    changepassword,
+    loadchangepassword,
+    updateProfile,
+    
+    loadCartList,
+    addtoCart,
+    deleteCart,
+
+
 }

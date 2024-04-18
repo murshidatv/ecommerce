@@ -28,6 +28,7 @@ const auth = require("../middleware/adminAuth");
 
 const adminController = require("../controllers/admin/adminController");
 const categoryController=require('../controllers/admin/categoryController');
+const orderController=require('../controllers/admin/orderController');
 
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
 
@@ -64,19 +65,18 @@ admin_route.post('/product/:id/update-status', categoryController.updateProductS
 
 admin_route.get('/logout',auth.isLogin,adminController.logout);
 
-//admin_route.get('/new-user',auth.isLogin,adminController.newUserLoad);
-
-//admin_route.post('/addUser',adminController.addUser);
-
-//admin_route.get('/edit-user',auth.isLogin,adminController.editUserLoad);
-
-//admin_route.post('/edit-user',adminController.updateUsers);
-
-//admin_route.get('/delete-user',adminController.deleteUser);
 admin_route.get('*',function(req,res){
 
     res.redirect('/admin');
 
 })
+
+//order management 
+
+admin_route.get('/loadorder',auth.isLogin,orderController.order);
+admin_route.post('/update-status/:orderId', auth.isLogin, orderController.updateStatus);
+admin_route.post('/confirm-order-cancellation/:orderId',auth.isLogin, orderController.confirmOrderCancellation);
+admin_route.get('/canceled-orders',auth.isLogin, orderController.viewCanceledOrders);
+admin_route.get('/order-return',auth.isLogin,orderController.viewReturnedOrders);
 
 module.exports = admin_route;

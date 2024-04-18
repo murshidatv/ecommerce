@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Address</title>
+</head>
+<body>
+    <style>
+        /* Reset some default styles */
+    body, h1, h2, p, ul, form {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+    }
+    
+    #add_user {
+        max-width: 400px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+    
+    input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    .radio {
+        margin-right: 10px;
+    }
+    
+    .btn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .btn:hover {
+        background-color: #45a049;
+    }
+    #inputState{
+        width: 25rem;
+        border-radius: 5px;
+        height: 2rem;
+    }
+       </style>   
+      <form action="/add-Address" method=POST id="add_user" onsubmit="return addressValidation()"  >
+        <div class="new_uaer">
+            <h2>Add Delivery Address</h2> <br>
+            <div class="form-group">
+                <label for="name" class="text-light">Name</label>
+                <input type="hidden" name="id" value="">
+                <input type="text" name="name" id="name" value="" >
+                <span id="NameError" style="color: red;"></span>
+            </div>
+           
+              <div class="form-group">
+                <label for="size" class="text-light">Mobile</label>
+                <input type="text" name="mobile" value="" id="mobile" >
+                <span id="mobileError" style="color: red;"></span>
+            </div>
+              <div class="form-group">
+                <label for="name" class="text-light">Address</label>
+             
+                <input type="text" name="address" value="" id="address" >
+                <span id="addressError" style="color: red;"></span>
+
+            </div>
+            <div class="form-group">
+                <label for="name" class="text-light">City</label>
+               
+                <input type="text" name="city" value="" id="city" >
+                <span id="cityError" style="color: red;"></span>
+
+            </div>
+            <div class="form-group">
+                <label for="name" class="text-light">pincode</label>
+                <input type="hidden" name="id" value="">
+                <input type="text" name="pincode" id="pincode" value="" >
+                <span id="pincodeError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="name" class="text-light">District</label>
+                <input type="hidden" name="id" value="">
+                <input type="text" name="district" id="district" value="" >
+                <span id="districtError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="name" class="text-light">State</label>
+                <input type="hidden" name="id" value="">
+                <input type="text" name="state" id="state" value="" >
+                <span id="stateError" style="color: red;"></span>
+            </div>
+        
+    </div>
+    
+   
+<div id="productError" class="px-2 my-2 text-center text-danger"></div>
+<div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+    <div class="form-group">
+        <button type="submit" class="btn text-dark update">Save</button>
+    </div>
+    </div>
+   
+    
+   </form> 
+
+
+
+   <script>
+   function addressValidation() {
+    var name = document.getElementById('name').value;
+    var mobile = document.getElementById('mobile').value;
+    var city = document.getElementById('city').value; // Corrected variable name
+    var pincode = document.getElementById('pincode').value;
+    var district = document.getElementById('district').value;
+    var state = document.getElementById('state').value;
+    var address = document.getElementById('address').value;
+
+    // Clear previous error messages
+    document.getElementById('NameError').innerText = "";
+    document.getElementById('mobileError').innerText = "";
+    document.getElementById('cityError').innerText = ""; // Corrected variable name
+    document.getElementById('pincodeError').innerText = "";
+    document.getElementById('districtError').innerText = "";
+    document.getElementById('stateError').innerText = "";
+    document.getElementById('addressError').innerText = "";
+
+    // Validate Name
+    if (name.trim() === "") {
+        document.getElementById('NameError').innerText = "Name is required";
+        return false;
+    }
+    if (!/^[a-zA-Z]+$/.test(name)) {
+        document.getElementById('NameError').innerText = "Name must be characters";
+        return false;
+    }
+
+    // Validate mobile field
+    if (mobile.trim() === '') {
+        document.getElementById('mobileError').innerText = 'Phone number is required.';
+        return false;
+    }
+    var phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(mobile)) {
+        document.getElementById('mobileError').innerText = 'Invalid phone number format.';
+        return false;
+    }
+
+    // Validate city
+    if (city.trim() === "") {
+        document.getElementById('cityError').innerText = "City is required";
+        return false;
+    }
+    if (!/^[a-zA-Z]+$/.test(city)) {
+        document.getElementById('cityError').innerText = "City must be characters";
+        return false;
+    }
+
+    // Validate pincode field
+    if (pincode.trim() === "") {
+        document.getElementById('pincodeError').innerText = "Pincode is required";
+        return false;
+    } else {
+        var priceRegex = /^\d+$/;
+        if (!priceRegex.test(pincode) || parseInt(pincode) <= 0) {
+            document.getElementById('pincodeError').innerText = 'Pincode must be a valid positive integer';
+            return false;
+        }
+    }
+
+    // Validate district field
+    if (district.trim() === "") {
+        document.getElementById('districtError').innerText = "District is required";
+        return false;
+    }
+    if (!/^[a-zA-Z]+$/.test(district)) {
+        document.getElementById('districtError').innerText = "District must be characters";
+        return false;
+    }
+
+    // Validate state
+    if (state.trim() === "") {
+        document.getElementById('stateError').innerText = "State is required";
+        return false;
+    }
+    if (!/^[a-zA-Z]+$/.test(state)) {
+        document.getElementById('stateError').innerText = "State must be characters";
+        return false;
+    }
+
+    // Validate address
+    if (address.trim() === "") {
+        document.getElementById('addressError').innerText = "Address is required";
+        return false;
+    }
+
+    // All validations passed
+    return true;
+}
+
+
+</script>
+
+</body>
+</html>

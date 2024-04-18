@@ -1,0 +1,450 @@
+<%- include('../layouts/adminheader.ejs') %>
+ <style>
+    /* Add this CSS to your existing stylesheet or create a new one */
+
+    body {
+        background-color: #000; /* Set the background color to black */
+        color: #fff; /* Set the text color to white */
+    }
+
+   
+    .container {
+        margin-top: 1px;
+        position: relative;
+        top:10px;
+        justify-content: center;
+        align-items: center; 
+        height: 100vh; 
+    }
+
+    .table {
+        background-color: #222;
+        color: #fff;
+        border-radius: 10px;
+        margin-top: 10px; /* Add margin to the top of the table */
+    }
+
+    .table th, .table td {
+        border-color: #444;
+        margin: 10px;
+        padding: 15px; /* Add padding to the table cells for space between columns */
+    }
+
+    .table th {
+        background-color: #333;
+    }
+
+    /* Optional: Style for the checkbox */
+    .control {
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .control input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+
+    .control__indicator {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background: #fff;
+        border: 1px solid #444;
+        border-radius: 4px;
+    }
+    .sidebar{
+    background-color: #191C24;
+   }
+   .sidebar .navbar-nav .nav-item {
+    width: 110%; /* Set the width to 100% */
+    height: 80px;
+}
+
+.sidebar .navbar-nav .nav-item a {
+    display: block;
+    padding: 15px; /* Adjust the padding as needed */
+    text-decoration: none;
+    color: #e6dbdb; /* Set the text color */
+}
+
+.sidebar .navbar-nav .nav-item:hover,
+.sidebar .navbar-nav .nav-item.active {
+    background-color:#191C24; /* Set the background color on hover or when the link is active */
+}
+
+/* Optional: Add transition for a smooth effect */
+.sidebar .navbar-nav .nav-item a {
+    transition: background-color 0.3s ease;
+}
+.sidebar .navbar-nav{
+    background-color: #000;
+}
+.btn1 {
+    background-color: #1e01027a; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+    /* Add any additional styles you need for your specific design */
+</style>
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-secondary navbar-dark">
+                <a href="index.html" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Admin Panel</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 class="mb-0">Jhon Doe</h6>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="/admin/adminhome" class="nav-item list-group-item"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="/admin/listUser" class="nav-item list-group-item"><i class="bi bi-people-fill"></i>User Management</a>
+                    <a href="/admin/category" class="nav-item list-group-item"><i class="fa fa-th me-2"></i>Category Management</a>
+                    <a href="/admin/product" class="nav-item list-group-item"><i class="fa fa-keyboard me-2"></i>Product Management</a>
+                    <a href="/admin/loadorder" class="nav-item list-group-item"><i class="fa fa-table me-2"></i>Order Management</a>
+                    <a href="" class="nav-item list-group-item"><i class="fa fa-chart-bar me-2"></i>Coupon Management</a>
+                    <a href="" class="nav-item list-group-item"><i class="fa fa-chart-bar me-2"></i>Banner Management</a>
+
+                  </div>
+            </nav>
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <form class="d-none d-md-flex ms-4">
+                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                </form>
+                <div class="navbar-nav align-items-center ms-auto">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-envelope me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Message</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                                    <div class="ms-2">
+                                        <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                        <small>15 minutes ago</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all message</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell me-lg-2"></i>
+                            <span class="d-none d-lg-inline-flex">Notificatin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Profile updated</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">New user added</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item">
+                                <h6 class="fw-normal mb-0">Password changed</h6>
+                                <small>15 minutes ago</small>
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item text-center">See all notifications</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+                            <span class="d-none d-lg-inline-flex">John Doe</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
+                            <a href="#" class="dropdown-item">My Profile</a>
+                            <a href="#" class="dropdown-item">Settings</a>
+                            <a href="/admin/logout" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+
+            <!-- Blank Start -->
+            <!-- <div class="container-fluid pt-4 px-4">
+                <div class="row vh-100 bg-secondary rounded align-items-center justify-content-center mx-0">
+                    <div class="col-md-6 text-center">
+                        <h3>This is blank page</h3>
+                    </div>
+                </div>
+            </div> -->
+            <!-- Blank End -->
+
+
+            <!-- Footer Start -->
+            <!-- <div class="container" >  -->
+                <div class="bg-secondary rounded-topx"> 
+                     <div class="row"> 
+                        <!-- <div class="content"> -->
+                            <div class="container">
+                                <form action="/admin/loadorder" method="GET">
+                                    <input type="text" name="search" placeholder="Search by User Name..." value="<%= searchQuery %>">
+                                    <select name="status">
+                                        <option value="">All Statses</option>
+                                        <% statuses.forEach(status => { %>
+                                            <option value="<%= status %>" <%= status === filterStatus ? 'selected' : '' %>><%= status %></option>
+                                        <% }) %>
+                                    </select>
+                                    <button type="submit">Search</button>
+                                </form>
+                           
+                                
+                        
+                                
+                            <h2 id ="ff" class="mb-5">Order  Management</h2>
+                            <div class="container">
+                                <button class="btn1" onclick="location.href='/admin/canceled-orders'" type="button">
+                                    Cancelled Orders Details
+                                </button>
+                                
+                                <button class="btn1" onclick="location.href='/admin/order-return'" type="button">
+                                    Return Orders Details
+                                </button>
+                                
+                                <div class="table-responsive custom-table-responsive">
+                                    <table class="table custom-table pt-4">
+                                        <thead>
+                                        <tr>
+                                            
+                                           
+                                            <th scope="col">SL.NO</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">product Count</th>
+
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Total Amount</th>
+                                            <th scope="col">Discount Amount</th>
+
+                                            <th scope="col">Payment Method</th>
+                                            <th scope="col">newStatus</th>
+                                            <th scope="col"> update status</th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
+                                            
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (var i = 0; i < order.length; i++) { %>
+                                                <tr>
+                                                <td>
+                                                    <%= i+1 %>
+                                                    <td>
+                                                      
+                                                            <%= order[i].userName %>
+                                                    </td>
+                                                    
+                                                                                                
+                                                    <td>
+                                                        <% if (order[i].products && order[i].products.length > 0) { %>
+                                                          <%= order[i].products.length %> products
+                                                        <% } else { %>
+                                                          0 <!-- If no products, display 0 -->
+                                                        <% } %>
+                                                      </td>
+                                                      <td>
+                                                        <% if (order[i].products && order[i].products.length > 0) { %>
+                                                          <% order[i].products.forEach(product => { %>
+                                                            <% if (product.product && product.product.productName) { %>
+                                                              <strong>Product Name:</strong> <%= product.product.productName %><br>
+                                                            <% } else { %>
+                                                              <strong>Product Name:</strong> N/A<br>
+                                                            <% } %>
+                                                      
+                                                            <strong>Quantity:</strong> <%= product.quantity %><br>
+                                                      
+                                                            <% if (product.product && product.product.price) { %>
+                                                              <strong>Price:</strong> $<%= product.product.price %><br>
+                                                            <% } else { %>
+                                                              <strong>Price:</strong> N/A<br>
+                                                            <% } %>
+                                                      
+                                                            <!-- Add other product details as needed -->
+                                                            <br> <!-- Add a line break between each product's details -->
+                                                          <% }); %>
+                                                        <% } else { %>
+                                                          No products
+                                                        <% } %>
+                                                      </td>
+                                                      
+                                                      
+                                                      
+                                                      
+                                                      
+                                                      
+                                                    <td>
+                                                        <% if (order[i].totalAmount !== undefined && order[i].totalAmount > 0) { %>
+                                                          $<%= order[i].totalAmount %>
+                                                        <% } else { %>
+                                                          N/A
+                                                          <% console.log("No Price found in order:", order[i]); %>
+                                                        <% } %>
+                                                      </td>
+                                                      <td>
+                                                        <% if (order[i].discountAmount !== undefined && order[i].discountAmount > 0) { %>
+                                                          $<%= order[i].discountAmount %>
+                                                        <% } else { %>
+                                                          no discount
+                                                          <% console.log("No discountAmount found in order:", order[i]); %>
+                                                        <% } %>
+                                                      </td>
+                                                      
+                                                    <td>
+                                                        <% if (order[i].payment && order[i].payment.length > 0) { %>
+                                                            <%= order[i].payment %>
+                                                        <% } else { %>
+                                                            N/A
+                                                            <% console.log("No payment found in order:", order[i]); %>
+                                                        <% } %>
+                                                    </td>
+                                                    
+                                                       
+                                                        <td>
+                                                            <%= newStatus ? newStatus : order[i].status %>
+                                                        </td>
+                                                        
+                                                        <td>
+                                                            <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
+                                                                <select name="newStatus">
+                                                                    <option value="processing">Processing</option>
+                                                                    <option value="pending">Pending</option>
+                                                                    <option value="shipped">Shipped</option>
+                                                                    <option value="delivered">Delivered</option>
+
+                                                                </select>
+                                                                <button type="submit">Update Status</button>
+                                                            </form>
+                                                        </td>
+                                                        
+                                                                   
+                                                       
+                                                        <td>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                        
+                                    </table>
+                                    <a href="/admin/home">Back To Home</a>
+                                </div>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                        <% if (currentPage > 1) { %>
+                                            <li class="page-item"><a class="page-link" href="/admin/loadorder?page=1&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">First</a></li>
+                                            <li class="page-item"><a class="page-link" href="/admin/loadorder?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Previous</a></li>
+                                        <% } %>
+                                        
+                                        <% for (var i = 1; i <= totalPages; i++) { %>
+                                            <li class="page-item <%= currentPage === i ? 'active' : '' %>"><a class="page-link" href="/admin/loadorder?page=<%= i %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>"><%= i %></a></li>
+                                        <% } %>
+                                        
+                                        <% if (currentPage < totalPages) { %>
+                                            <li class="page-item"><a class="page-link" href="/admin/loadorder?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Next</a></li>
+                                            <li class="page-item"><a class="page-link" href="/admin/loadorder?page=<%= totalPages %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Last</a></li>
+                                        <% } %>
+                                    </ul>
+                                </nav>
+                            </div>
+                            
+                            </div>
+                        <!-- </div> -->
+                        
+                          
+                        
+                        <script src="js/jquery-3.3.1.min.js"></script>
+                        <script src="js/popper.min.js"></script>
+                        <script src="js/bootstrap.min.js"></script>
+                        <script src="js/main.js"></script>
+                     </div> 
+                 </div> 
+             </div> 
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <script>
+            // Get the current path of the URL
+            var path = window.location.pathname;
+        
+            // Remove trailing slash if it exists
+            path = path.replace(/\/$/, "");
+        
+            // Get all navigation links
+            var navLinks = document.querySelectorAll('.navbar-nav a');
+        
+            // Iterate through each link and check if its href matches the current path
+            navLinks.forEach(function(link) {
+                // Remove the "active" class from all links
+                link.classList.remove('active');
+        
+                // Check if the link's href matches the current path
+                if (link.getAttribute('href') === path) {
+                    // Add the "active" class to the matching link
+                    link.classList.add('active');
+                }
+            });
+        </script>
+
+        <%- include('../layouts/adminfooter.ejs') %>

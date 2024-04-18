@@ -1,223 +1,99 @@
-<% include('../layouts/header.ejs') %>
+<%- include('../layouts/productheader') %>
 
+<div class="header-middle sticky-header">
+    <div class="container">
+        <div class="header-left">
+            <button class="mobile-menu-toggler">
+                <span class="sr-only">Toggle mobile menu</span>
+                <i class="icon-bars"></i>
+            </button>
 
+            <a href="/home" class="logo">
+                <h2 style="color: #c66;;">Zouq</h2>
+            </a>
+            <nav class="main-nav">
+                <ul class="menu sf-arrows">
+                    <!-- <a href="/home" class="sf-with-ul">Home</a>
 
-<!-- zouq/index-5.html  22 Nov 2019 09:55:58 GMT -->
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Zouq</title>
-    <meta name="keywords" content="HTML5 Template">
-    <meta name="description" content="Zouq - Bootstrap eCommerce Template">
-    <meta name="author" content="p-themes">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="manifest" href="assets/images/icons/site.html">
-    <link rel="mask-icon" href="assets/images/icons/safari-pinned-tab.svg" color="#666666">
-    <link rel="shortcut icon" href="assets/images/icons/favicon.ico">
-    <meta name="apple-mobile-web-app-title" content="Zouq">
-    <meta name="application-name" content="Zouq">
-    <meta name="msapplication-TileColor" content="#cc9966">
-    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Plugins CSS File -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="assets/css/plugins/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css">
-    <!-- Main CSS File -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/skins/skin-demo-5.css">
-    <link rel="stylesheet" href="assets/css/demos/demo-5.css">
-</head>
+                    <li class="megamenu-container active">
 
-<style>
-    .header-search-wrapper {
-    position: relative;
-}
-
-.search-input {
-    padding: 8px 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 200px; /* Adjust the width as needed */
-}
-
-.search-button {
-    padding: 8px 15px;
-    background-color: #e7780a;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-/* Custom styling for checkboxes */
-.custom-control {
-  position: relative;
-  padding-left: 30px; /* Adjust as needed */
-  margin-bottom: 10px; /* Adjust as needed */
-  cursor: pointer;
-}
-
-.custom-control-input {
-  position: absolute;
-  left: 0;
-  top: 0;
-  margin-top: 4px; /* Adjust as needed */
-}
-
-.custom-control-label {
-  position: relative;
-  padding-left: 35px; /* Adjust as needed */
-  line-height: 1.5;
-}
-
-/* Style the check icon */
-.custom-control-label .fa-check {
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: rgba(236, 175, 22, 0.724); /* Adjust as needed */
-  font-size: 16px; /* Adjust as needed */
-}
-
-  /* Adjust the size and style of carousel control buttons */
-  .carousel-control-prev, .carousel-control-next {
-        width: 70px; /* Adjust width as needed */
-        height: 146px; /* Adjust height as needed */
-        margin-top: 2px;
-        margin-left: 200px;
-        margin-right: 200px;
-        background-color: rgba(240, 246, 245, 0.959); /* Change background color */
-        border: none; /* Remove border */
-        border-radius: 10%; /* Make it round */
-        color: black;
-    }
-
-    /* Adjust the size and color of the icon inside the buttons */
-    .carousel-control-prev-icon, .carousel-control-next-icon {
-        width: 50px; /* Adjust width of the icon */
-        height: 20px; /* Adjust height of the icon */
-        color: rgb(11, 11, 11); /* Change icon color */
-        background-color: transparent; /* Remove icon background color */
-    }
-
-</style>
-<%
-    function formatDate(date) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return date ? new Date(date).toLocaleDateString('en-US', options) : '';
-    }
-%>
-<%
-if(typeof message !=='undefined'){
-  %>
-  <script>
-  alert('<%= message %>');
-  // if the registeration is sucees its redirect the login page
-  //  window.location.href='/login';
-</script>
-  <% } %>
-
-
-<body>
-<div class="page-wrapper">
-    <section>
-    <header class="header header-5">
-        <div class="header-middle sticky-header">
-            <div class="container">
-                <div class="header-left">
-                    <button class="mobile-menu-toggler">
-                    <span class="sr-only">Toggle mobile menu</span>
-                    <i class="icon-bars"></i>
-                    </button>
-
-                    <a href="/home" class="logo">
-                    <h2 style="color: #c66">Zouq</h2>
-                    </a>
-                    <nav class="main-nav">
-                        <ul class="menu sf-arrows">
+                        <div class="megamenu demo">
+                           
                         
-                            <li>
-                                <a href="/home" class="sf-with-ul"style="color: #c66">Home</a>
-
-                                <div class="megamenu megamenu-md">
                             
-                                </div><!-- End .megamenu megamenu-md -->
-                            </li>
-                            <li>
-                                <a href="/product-list" class="sf-with-ul"style="color: #c66">Shop</a>
+                        </div>
+                        End .megamenu -->
+                    <!-- </li> -->
+                    <li>
+                        <a href="/home" class="sf-with-ul">Home</a>
 
-                                <div class="megamenu megamenu-md">
-                            
-                                </div><!-- End .megamenu megamenu-md -->
-                            </li>
+                        <div class="megamenu megamenu-md">
+                           
+                        </div><!-- End .megamenu megamenu-md -->
+                    </li>
+                    <li>
+                        <a href="/product-list" class="sf-with-ul">Shop</a>
+
+                        <div class="megamenu megamenu-md">
+                           
+                        </div><!-- End .megamenu megamenu-md -->
+                    </li>
                    
-                        </ul><!-- End .menu -->
-                    </nav><!-- End .main-nav -->
-                </div><!-- End .header-left -->
+                </ul><!-- End .menu -->
+            </nav><!-- End .main-nav -->
+        </div><!-- End .header-left -->
 
-                <div class="header-right">
+        <div class="header-right">
            
-                    <div class="dropdown compare-dropdown">
-                        <div class="wishlist">
-                            <a href="/wishlist" title="Wishlist">
-                            <i class="icon-heart-o"style="color: #c66;"></i>
-                            
-                        </div><!-- End .compare-dropdown -->
+            <div class="dropdown compare-dropdown">
+                <div class="wishlist">
+                    <a href="/wishlist" title="Wishlist">
+                        <i class="icon-heart-o"></i>
+                       
+                </div><!-- End .compare-dropdown -->
 
+                
+            </div><!-- End .compare-dropdown -->
+
+            <div class="dropdown cart-dropdown">
+                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                    <i class="icon-shopping-cart"></i>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-cart-products">
+                           
+                    </div><!-- End .cart-product -->
+
+                    <div class="dropdown-cart-total">
                         
-                    </div><!-- End .compare-dropdown -->
+                    </div><!-- End .dropdown-cart-total -->
 
-                    <div class="dropdown cart-dropdown">
-                        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                            <i class="icon-shopping-cart" style="color: #c66;"></i>
-                        </a>
-
-
-                          
-                      
-                   
-                    </div><!-- End .cart-dropdown -->
-               
-                </div><!-- End .header-right -->
-            </div><!-- End .container -->
-        </div><!-- End .header-middle -->
-    </header><!-- End .header -->
-</section>
-
+                    <div class="dropdown-cart-action">
+                        <a href="/cartlist" class="btn btn-primary">View Cart</a>
+                    </div><!-- End .dropdown-cart-total -->
+                </div><!-- End .dropdown-menu -->
+            </div><!-- End .cart-dropdown -->
+        </div><!-- End .header-right -->
+    </div><!-- End .container -->
+</div><!-- End .header-middle -->
+</header><!-- End .header -->
 
 <main class="main">
-        
-        		<div class="container">
-        			<h1 style="color: #c66;"style="background-color:black;" class="page-title"><span></span></h1>
-        		</div><!-- End .container -->
-        	
-            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-                
-            </nav><!-- End .breadcrumb-nav -->
-</main>
-      
-    <section>        
-            <div class="page-content">
-                <main class="main">
-                    <div class="page-header text-center" style="background-color:white;">
-                        <div class="container">
-                            <h1 style="color:  #c66;" class="page-title">Product List<span></span></h1>
-                        </div><!-- End .container -->
-                    </div><!-- End .page-header -->
-                    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-                        
-                    </nav><!-- End .breadcrumb-nav -->
-        </main>
-            </div>
-    </section>
+<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+    <div class="container">
+        <h1 class="page-title">PRODUCT LIST</h1>
+    </div><!-- End .container -->
+</div><!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+          
+            <li class="breadcrumb-item active" aria-current="page">Product list</li>
+        </ol>
+    </div><!-- End .container -->
+</nav><!-- End .breadcrumb-nav -->
                 <div class="container">
                 	<div class="row">
                 		<div class="col-lg-9">
@@ -264,10 +140,6 @@ if(typeof message !=='undefined'){
                                                                
                                                                   <br>
                                                                  
-                                                             
-                                                                
-                                                              
-                                                                  
                                                                   <!-- Regular Price -->
                                                                   <p class="regular-price">Rs.<%= product.Price %>/-</p>
                                                                
@@ -311,9 +183,8 @@ if(typeof message !=='undefined'){
         </ul>
     </nav>
 </div>
-                			
-                		</div><!-- End .col-lg-9 -->
-                		<aside class="col-lg-3 order-lg-first">
+</div><!-- End .col-lg-9 -->
+<aside class="col-lg-3 order-lg-first">
                 			<div class="sidebar sidebar-shop">
                 				<div class="widget widget-clean">
                 					<label>Filters:</label>
@@ -528,4 +399,3 @@ if(typeof message !=='undefined'){
 <!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
 </html>
 
-<%include('../layouts/footer.ejs') %>

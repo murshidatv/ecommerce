@@ -1,4 +1,4 @@
-<% include('../layouts/header.ejs') %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,18 +32,18 @@
     <span id="emailError" class="error" ></span>
     <br>
 
-    <input type="number" name="mobile" placeholder="Enter mobile number" id="mobile" class="text">
+    <input type="text" name="mobile" placeholder="Enter mobile number" id="mobile" class="text">
     <span id="mobileError" class="error" ></span>
     <br>
 
     <input type="file" class ="text" name="image" id="image" >
     <span id="imageError" class="error" ></span>
     <br>
-    <input type="password" name="password" placeholder="Password" id="password" class="text">
+    <input type="password" name="password" placeholder="Password" id="password" class="text" autocomplete="new-password">
     <span id="passwordError" class="error" ></span>
     <br>
     
-    <input type="password" id="confirmPassword" placeholder="Confirm Password" class="text">
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" class="text" autocomplete="new-password">
     <span id="confirmPasswordError" class="error" ></span>
     <br>
     <br>
@@ -180,6 +180,6 @@ if(typeof message !== 'undefined'){
 
 
 </div>
-  </body>
-<%include('../layouts/footer.ejs') %>
+</body>
+</html>
 

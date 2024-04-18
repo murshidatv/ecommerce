@@ -47,7 +47,27 @@ const userSchema = new mongoose.Schema({
     is_verified:{
         type:Boolean,
         default:0
-    }
+    },
+
+    
+    token:{
+        type:String,
+        default:''
+     },
+     wishlist:[
+        { 
+           product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+  
+        }
+  
+     ],
+     
+     cart: [
+        {
+          product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+          quantity: Number,
+        }
+      ],
 });
 
 module.exports = mongoose.model('User',userSchema);

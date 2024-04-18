@@ -1,8 +1,10 @@
 const express = require("express");
 const user_route = express();
 const path = require('path');
+const addressController=require('../controllers/user/address');
 const session = require("express-session");
 const config = require("../config/config");
+
 
 user_route.use(session({
     secret: config.sessionSecret,
@@ -66,7 +68,32 @@ user_route.get('/product-list',userController.viewProductList);
 user_route.get('/product/:productId',userController.viewProduct);
 
 
+user_route.get('/profile',auth.isLogin,userController.viewProfile);
+user_route.get('/editProfileImage', userController.viewEditProfileImage);
 
+user_route.post('/updateProfileImage', upload.single('image'), userController.updateProfileImage);
+user_route.post('/updateProfile',userController.updateProfile);
+
+
+user_route.get('/address',auth.isLogin,addressController.loadAddress);
+
+user_route.get('/add-Address',auth.isLogin,addressController.loadaddAddress);
+user_route.post('/add-Address',addressController.addAddress);
+
+user_route.get('/update-address/:addressId',auth.isLogin,addressController.loadEditAddress);
+user_route.post('/update-address/:addressId',auth.isLogin,addressController.updateAddress);
+user_route.get('/delete-address/:addressId',auth.isLogin,addressController.deleteAddress);
+
+
+user_route.get ('/change-password',auth.isLogin,userController.loadchangepassword);
+user_route.post('/changepass',auth.isLogin,userController.changepassword);
+
+
+//cart router
+user_route.get('/cartList',auth.isLogin,userController.loadCartList);
+user_route.get('/add-to-cart/:productId',userController.addtoCart);
+user_route.get('/deleteCartItem/:userId/:productId',userController.deleteCart);
+//user_route.post('/updateCartItemQuantity/:productId',userController.updateQuantity)
 
 
 module.exports = user_route;
