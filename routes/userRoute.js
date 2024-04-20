@@ -94,6 +94,10 @@ user_route.get('/cartList',auth.isLogin,userController.loadCartList);
 user_route.get('/add-to-cart/:productId',userController.addtoCart);
 user_route.get('/deleteCartItem/:userId/:productId',userController.deleteCart);
 //user_route.post('/updateCartItemQuantity/:productId',userController.updateQuantity)
+//user_route.get('/search', userController.search);
 
+
+
+user_route.get('/order-history', auth.isLogin, userController.loadorderHistory);
 
 module.exports = user_route;

@@ -42,7 +42,7 @@
 	                    </div><!-- End .compare-dropdown -->
 
                         <div class="dropdown cart-dropdown">
-                            <a href="/cartlist" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <i class="icon-shopping-cart"></i>
                                 <span class="cart-count"><%= cartCount %></span>
                             </a>
@@ -125,19 +125,11 @@
                                       </a>
                                   </h3>
                               
-                                  <!-- Display product offer details -->
-                                  <% if (cartItem.product && cartItem.product.category && cartItem.product.category.offer) { %>
-                                      <p>Category Offer:  <%=  product.category.offer.amount%> %off</p>
-                                  <% } %>
-                              
-                                  <!-- Display category offer details -->
-                                  <% if (cartItem.product && cartItem.product.offer) { %>
-                                      <p> <%= cartItem.product.offer.amount %>% off</p>
-                                  <% } %>
+                                
                               </td>
                                 <td class="price-col">
-                                  <% if (cartItem.product && cartItem.product.price) { %>
-                                    $<%= cartItem.product.price %>
+                                  <% if (cartItem.product && cartItem.product.Price) { %>
+                                    Rs.<%= cartItem.product.Price %>
                                   <% } else { %>
                                     Price Not Available
                                   <% } %>
@@ -149,9 +141,9 @@
                                   </td>
                                   
                                   <td class="total-col">
-                                    <% if (cartItem.product && cartItem.product.price) { %>
-                                      $<span class="total-price" data-product-id="<%= cartItem.product._id %>" data-product-price="<%= cartItem.product.price %>">
-                                        <%= cartItem.quantity * cartItem.product.price %>
+                                    <% if (cartItem.product && cartItem.product.Price) { %>
+                                      Rs.<span class="total-price" data-product-id="<%= cartItem.product._id %>" data-product-price="<%= cartItem.product.Price %>">
+                                        <%= cartItem.quantity * cartItem.product.Price %>
                                       </span>
                                     <% } else { %>
                                       Total Not Available
@@ -177,7 +169,8 @@
                               <tr class="summary-total">
                                 <td>Total:</td>
                                 <td>
-                                  $<% const total = user.cart.reduce((acc, item) => acc + (item.product && item.product.price ? item.quantity * item.product.price : 0), 0); %>
+                                
+                                  RS.<% const total = user.cart.reduce((acc, item) => acc + (item.product && item.product.Price ? item.quantity * item.product.Price : 0), 0); %>
                                   <%= total %>
                                 </td>
                               </tr>

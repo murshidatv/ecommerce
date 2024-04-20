@@ -1,5 +1,17 @@
 <%- include('../layouts/productheader') %>
+<script>
+    $(document).ready(function() {
+      $('#searchForm').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const formData = $(this).serialize(); // Serialize form data
 
+        // Send AJAX request to server
+        $.get('/search', formData, function(data) {
+          $('#productList').html(data); // Update product list with the received HTML
+        });
+      });
+    });
+  </script>
 <div class="header-middle sticky-header">
     <div class="container">
         <div class="header-left">
@@ -124,6 +136,13 @@
                                                             <a href="/product/<%= product._id %>">
                                                                 <img src="/images/<%= product.images[0] %>" alt="<%= product.productName %>" class="product-image" style="height: 400px; width: 450px;">
                                                             </a>
+                                                            <div class="product-action-vertical">
+                                                                <a href="/wishList" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                                                <!-- <a href="/product/<%= product._id %>" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>-->
+                                                            </div><!-- End .product-action-vertical -->
+                                                            <div class="product-action">
+                                                                <a href="/cartList" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                            </div><!-- End .product-action -->
                             
                                                             
                             
@@ -135,6 +154,7 @@
                                                             </div><!-- End .product-cat -->
                                                             <h3 class="product-title">
                                                                 <a href="<%= '/products/' + product._id %>"><%= product.productName %></a>
+
                                                             </h3><!-- End .product-title -->
                                                             <div class="product-price">
                                                                
@@ -170,6 +190,7 @@
             <% for (let i = 1; i <= totalPages; i++) { %>
                 <li class="page-item <%= currentPage === i ? 'active' : '' %>">
                     <a class="page-link" href="?selectedCategory=<%= selectedCategory %>&sort=<%= sortDropdownValue %>&page=<%= i %>"><%= i %></a>
+                    
                 </li>
             <% } %>
 
@@ -180,6 +201,9 @@
                     </a>
                 </li>
             <% } %>
+          
+
+            
         </ul>
     </nav>
 </div>
@@ -222,21 +246,25 @@
                                                     <% }); %>
                                     
                                                     <br><br>
+                                                  <!-- Add this inside the toolbox-right section -->
+                                                  <div class="toolbox-layout">
+                                                    <label for="sort" style="color: #c66; font-size: large;">Sort by:</label><br>
+                                                    <select  id="sort" name="sort" style="color: #c66;" onchange="this.form.submit()">
+                                                        <option value="asc">Price Low to High</option>
+                                                        <option value="desc">Price High to Low</option>
+                                                    </select>
+                                                   
                                                     
-                                                    <!-- Add this inside the toolbox-right section -->
-                                                    <div class="toolbox-layout">
-                                                        <label for="sort" style="color: #c66; font-size: large;">Sort by:</label><br>
-                                                        <select  id="sort" name="sort" style="color: #c66;" onchange="this.form.submit()">
-                                                            <option value="asc">Price Low to High</option>
-                                                            <option value="desc">Price High to Low</option>
-                                                        </select>
-                                                    </div>
-                                                </div><!-- End .filter-items -->
-                                            </div><!-- End .widget-body -->
-                                        </div>
+                                                      </div>
+                                                      
+                                                </div>
+                                            </div><!-- End .filter-items -->
+                                        </div><!-- End .widget-body -->
                                     </div>
-                                    
-                                </form>
+                                </div>
+                                
+                            </form>
+                        
         					
                 			</div><!-- End .sidebar sidebar-shop -->
                 		</aside><!-- End .col-lg-3 -->

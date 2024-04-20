@@ -101,7 +101,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-secondary navbar-dark">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
+                <a href="/home" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Admin Panel</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -242,7 +242,7 @@
                                 <form action="/admin/loadorder" method="GET">
                                     <input type="text" name="search" placeholder="Search by User Name..." value="<%= searchQuery %>">
                                     <select name="status">
-                                        <option value="">All Statses</option>
+                                        <option value="">All Statuses</option>
                                         <% statuses.forEach(status => { %>
                                             <option value="<%= status %>" <%= status === filterStatus ? 'selected' : '' %>><%= status %></option>
                                         <% }) %>
@@ -341,14 +341,7 @@
                                                           <% console.log("No Price found in order:", order[i]); %>
                                                         <% } %>
                                                       </td>
-                                                      <td>
-                                                        <% if (order[i].discountAmount !== undefined && order[i].discountAmount > 0) { %>
-                                                          $<%= order[i].discountAmount %>
-                                                        <% } else { %>
-                                                          no discount
-                                                          <% console.log("No discountAmount found in order:", order[i]); %>
-                                                        <% } %>
-                                                      </td>
+                                                     
                                                       
                                                     <td>
                                                         <% if (order[i].payment && order[i].payment.length > 0) { %>
@@ -412,11 +405,7 @@
                         
                           
                         
-                        <script src="js/jquery-3.3.1.min.js"></script>
-                        <script src="js/popper.min.js"></script>
-                        <script src="js/bootstrap.min.js"></script>
-                        <script src="js/main.js"></script>
-                     </div> 
+                     
                  </div> 
              </div> 
             <!-- Footer End -->

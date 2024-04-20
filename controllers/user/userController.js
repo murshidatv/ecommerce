@@ -592,7 +592,7 @@ const addtoCart = async (req, res) => {
     const product = await Product.findById(productId);
     const userId = req.session.user_id;
     if (!userId) {
-      req.flash('error', 'Please log in to add products to your cart.');
+      //req.flash('error', 'Please log in to add products to your cart.');
       return res.redirect('/login');
     }
 
@@ -614,7 +614,7 @@ const addtoCart = async (req, res) => {
     return res.redirect('/product-list');
   } catch (error) {
     console.log(error.message);
-    req.flash('error', 'Failed to add the product to the cart.');
+    //req.flash('error', 'Failed to add the product to the cart.');
     return res.status(500).send('Internal Server Error');
   }
 };
@@ -656,10 +656,112 @@ const deleteCart = async (req, res) => {
   }
 };
 
+const loadcheckout = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('chosenAddress  cart.product');
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    const chosenAddress = user.chosenAddress;
+    res.render('checkout', { user, chosenAddress });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+const loadorderHistory = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const orderId = req.params.orderId; // Make sure orderId is available in the route
+
+    // Pagination options
+    const page = parseInt(req.query.page) || 1; // Parse the page number to integer
+    const limit = req.query.limit || 15; // Change as per your requirement
+
+    // Get all orders for the user
+    const allOrders = await Order.find({ userId: userId }).sort({_id: -1}).populate('products');
+
+    // Calculate pagination values
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const orders = allOrders.slice(startIndex, endIndex);
+
+    res.render('orderhistory', { orders, orderId, page, limit }); // Pass limit to the template
+  } catch (error) {
+    console.error('Error fetching order details:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
 
 
 
 
+
+
+
+
+
+/*
+module.exports = {
+  async search(req, res) {
+    try {
+      let query = {};
+
+      // Filter by name if provided in query parameters
+      if (req.query.name) {
+        query.name = { $regex: req.query.name, $options: 'i' };
+      }
+
+      // Implement sorting based on query parameters
+      let sortQuery = {};
+
+      if (req.query.sortBy) {
+        switch (req.query.sortBy) {
+          case 'popularity':
+            sortQuery = { popularity: -1 };
+            break;
+          case 'priceLowToHigh':
+            sortQuery = { price: 1 };
+            break;
+          case 'priceHighToLow':
+            sortQuery = { price: -1 };
+            break;
+          case 'averageRatings':
+            sortQuery = { averageRatings: -1 };
+            break;
+          case 'featured':
+            sortQuery = { featured: -1 };
+            break;
+          case 'newArrivals':
+            sortQuery = { createdAt: -1 };
+            break;
+          case 'alphabetical':
+            sortQuery = { name: 1 };
+            break;
+          default:
+            sortQuery = {};
+        }
+      }
+
+      const products = await Product.find(query).sort(sortQuery);
+      
+      // If the request is AJAX, return only the product list HTML
+      if (req.xhr) {
+        res.render('partials/productList', { products }); // Render a partial template with search results
+      } else {
+        res.render('productList', { products }); // Render the productList.ejs template with search results
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server Error' });
+    }
+  }
+};
+
+*/
 module.exports = {
     loadRegister,
     insertUser,
@@ -682,7 +784,12 @@ module.exports = {
     
     loadCartList,
     addtoCart,
+    updateQuantity,
     deleteCart,
+
+    loadcheckout,
+    loadorderHistory,
+   
 
 
 }
