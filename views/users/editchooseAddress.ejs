@@ -75,8 +75,7 @@
             height: 2rem;
         }
     </style>
-    <form action="/update-address/<%= userAddress._id %>" method=POST id="add_user"
-        onsubmit="return addressValidation()">
+    <form action="/edit-address/<%= userAddress._id %>" method=POST id="add_user" onsubmit="return addressValidation()">
         <div class="new_uaer">
             <h2>Add Delivery Address</h2> <br>
             <div class="form-group">
@@ -136,102 +135,100 @@
 
 
     </form>
+    <script>
+        function addressValidation() {
+            var name = document.getElementById('name').value;
+            var mobile = document.getElementById('mobile').value;
+            var city = document.getElementById('city').value; // Corrected variable name
+            var pincode = document.getElementById('pincode').value;
+            var district = document.getElementById('district').value;
+            var state = document.getElementById('state').value;
+            var address = document.getElementById('address').value;
 
-</body>
+            // Clear previous error messages
+            document.getElementById('NameError').innerText = "";
+            document.getElementById('mobileError').innerText = "";
+            document.getElementById('cityError').innerText = ""; // Corrected variable name
+            document.getElementById('pincodeError').innerText = "";
+            document.getElementById('districtError').innerText = "";
+            document.getElementById('stateError').innerText = "";
+            document.getElementById('addressError').innerText = "";
 
-
-<script>
-    function addressValidation() {
-        var name = document.getElementById('name').value;
-        var mobile = document.getElementById('mobile').value;
-        var city = document.getElementById('city').value; // Corrected variable name
-        var pincode = document.getElementById('pincode').value;
-        var district = document.getElementById('district').value;
-        var state = document.getElementById('state').value;
-        var address = document.getElementById('address').value;
-
-        // Clear previous error messages
-        document.getElementById('NameError').innerText = "";
-        document.getElementById('mobileError').innerText = "";
-        document.getElementById('cityError').innerText = ""; // Corrected variable name
-        document.getElementById('pincodeError').innerText = "";
-        document.getElementById('districtError').innerText = "";
-        document.getElementById('stateError').innerText = "";
-        document.getElementById('addressError').innerText = "";
-
-        // Validate Name
-        if (name.trim() === "") {
-            document.getElementById('NameError').innerText = "Name is required";
-            return false;
-        }
-        if (!/^[a-zA-Z]+$/.test(name)) {
-            document.getElementById('NameError').innerText = "Name must be characters";
-            return false;
-        }
-
-        // Validate mobile field
-        if (mobile.trim() === '') {
-            document.getElementById('mobileError').innerText = 'Phone number is required.';
-            return false;
-        }
-        var phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(mobile)) {
-            document.getElementById('mobileError').innerText = 'Invalid phone number format.';
-            return false;
-        }
-
-        // Validate city
-        if (city.trim() === "") {
-            document.getElementById('cityError').innerText = "City is required";
-            return false;
-        }
-        if (!/^[a-zA-Z]+$/.test(city)) {
-            document.getElementById('cityError').innerText = "City must be characters";
-            return false;
-        }
-
-        // Validate pincode field
-        if (pincode.trim() === "") {
-            document.getElementById('pincodeError').innerText = "Pincode is required";
-            return false;
-        } else {
-            var priceRegex = /^\d+$/;
-            if (!priceRegex.test(pincode) || parseInt(pincode) <= 0) {
-                document.getElementById('pincodeError').innerText = 'Pincode must be a valid positive integer';
+            // Validate Name
+            if (name.trim() === "") {
+                document.getElementById('NameError').innerText = "Name is required";
                 return false;
             }
+            if (!/^[a-zA-Z]+$/.test(name)) {
+                document.getElementById('NameError').innerText = "Name must be characters";
+                return false;
+            }
+
+            // Validate mobile field
+            if (mobile.trim() === '') {
+                document.getElementById('mobileError').innerText = 'Phone number is required.';
+                return false;
+            }
+            var phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(mobile)) {
+                document.getElementById('mobileError').innerText = 'Invalid phone number format.';
+                return false;
+            }
+
+            // Validate city
+            if (city.trim() === "") {
+                document.getElementById('cityError').innerText = "City is required";
+                return false;
+            }
+            if (!/^[a-zA-Z]+$/.test(city)) {
+                document.getElementById('cityError').innerText = "City must be characters";
+                return false;
+            }
+
+            // Validate pincode field
+            if (pincode.trim() === "") {
+                document.getElementById('pincodeError').innerText = "Pincode is required";
+                return false;
+            } else {
+                var priceRegex = /^\d+$/;
+                if (!priceRegex.test(pincode) || parseInt(pincode) <= 0) {
+                    document.getElementById('pincodeError').innerText = 'Pincode must be a valid positive integer';
+                    return false;
+                }
+            }
+
+            // Validate district field
+            if (district.trim() === "") {
+                document.getElementById('districtError').innerText = "District is required";
+                return false;
+            }
+            if (!/^[a-zA-Z]+$/.test(district)) {
+                document.getElementById('districtError').innerText = "District must be characters";
+                return false;
+            }
+
+            // Validate state
+            if (state.trim() === "") {
+                document.getElementById('stateError').innerText = "State is required";
+                return false;
+            }
+            if (!/^[a-zA-Z]+$/.test(state)) {
+                document.getElementById('stateError').innerText = "State must be characters";
+                return false;
+            }
+
+            // Validate address
+            if (address.trim() === "") {
+                document.getElementById('addressError').innerText = "Address is required";
+                return false;
+            }
+
+            // All validations passed
+            return true;
         }
 
-        // Validate district field
-        if (district.trim() === "") {
-            document.getElementById('districtError').innerText = "District is required";
-            return false;
-        }
-        if (!/^[a-zA-Z]+$/.test(district)) {
-            document.getElementById('districtError').innerText = "District must be characters";
-            return false;
-        }
 
-        // Validate state
-        if (state.trim() === "") {
-            document.getElementById('stateError').innerText = "State is required";
-            return false;
-        }
-        if (!/^[a-zA-Z]+$/.test(state)) {
-            document.getElementById('stateError').innerText = "State must be characters";
-            return false;
-        }
-
-        // Validate address
-        if (address.trim() === "") {
-            document.getElementById('addressError').innerText = "Address is required";
-            return false;
-        }
-
-        // All validations passed
-        return true;
-    }
-
-</script>
+    </script>
+</body>
 
 </html>

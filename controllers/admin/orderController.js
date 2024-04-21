@@ -1,7 +1,7 @@
-const Category =require('../../models/categoryModel');
-const Product=require('../../models/productModel');
-const Order=require('../../models/orderModel');
-const User=require('../../models/userModel')
+const Category = require('../../models/categoryModel');
+const Product = require('../../models/productModel');
+const Order = require('../../models/orderModel');
+const User = require('../../models/userModel')
 
 const order = async (req, res) => {
   try {
@@ -27,7 +27,7 @@ const order = async (req, res) => {
       .limit(limit)
       .populate({
         path: 'products.product',
-        select: 'productName price',
+        select: 'productName Price',
       })
       .populate('userId');
 
@@ -52,23 +52,23 @@ const order = async (req, res) => {
 
 
 
-  
-  const updateStatus = async (req, res) => {
-    try {
-        const { orderId } = req.params;
-        const { newStatus } = req.body;
-        console.log('Received parameters:', { orderId, newStatus });
-        const updatedOrder = await Order.findByIdAndUpdate(
-            orderId,
-            { status: newStatus },
-            { new: true }
-        );
-        const newstatus=newStatus;
-        res.redirect('/admin/loadorder');
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send('Internal Server Error');
-    }
+
+const updateStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { newStatus } = req.body;
+    console.log('Received parameters:', { orderId, newStatus });
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status: newStatus },
+      { new: true }
+    );
+    const newstatus = newStatus;
+    res.redirect('/admin/loadorder');
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 
@@ -99,19 +99,19 @@ const confirmOrderCancellation = async (req, res) => {
       if (order.payment === 'onlinePayment') {
         const canceledAmount = order.totalAmount;
         // increment wallet and add transaction to history
-        await User.findByIdAndUpdate(userId, { 
-          $inc: { wallet: canceledAmount } ,
-          $push:{
-            walletHistory:{
-              type:'credit',
-              amount:canceledAmount,
+        await User.findByIdAndUpdate(userId, {
+          $inc: { wallet: canceledAmount },
+          $push: {
+            walletHistory: {
+              type: 'credit',
+              amount: canceledAmount,
             }
           }
         });
       }
     }
 
-    res.redirect('/admin/canceled-orders'); 
+    res.redirect('/admin/canceled-orders');
   } catch (error) {
     console.error('Error confirming order cancellation:', error.message);
     res.status(500).send('Internal Server Error');
@@ -147,10 +147,10 @@ const viewReturnedOrders = async (req, res) => {
 
 module.exports = {
 
-order,
-updateStatus,
-confirmOrderCancellation,
-viewCanceledOrders,
-viewReturnedOrders,
+  order,
+  updateStatus,
+  confirmOrderCancellation,
+  viewCanceledOrders,
+  viewReturnedOrders,
 
 }

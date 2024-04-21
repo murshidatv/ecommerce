@@ -48,7 +48,10 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:0
     },
-
+    chosenAddress: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address',
+      },
     
     token:{
         type:String,

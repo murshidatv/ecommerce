@@ -75,7 +75,7 @@
             height: 2rem;
         }
     </style>
-    <form action="/add-Address" method=POST id="add_user" onsubmit="return addressValidation()">
+    <form action="/addnewaddress" method=POST id="add_user" onsubmit="return addressValidation()">
         <div class="new_uaer">
             <h2>Add Delivery Address</h2> <br>
             <div class="form-group">
@@ -135,9 +135,6 @@
 
 
     </form>
-
-
-
     <script>
         function addressValidation() {
             var name = document.getElementById('name').value;

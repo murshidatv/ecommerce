@@ -97,7 +97,23 @@ user_route.get('/deleteCartItem/:userId/:productId',userController.deleteCart);
 //user_route.get('/search', userController.search);
 
 
+//checkout-address router
+user_route.get('/chooseAddress',auth.isLogin,addressController.chooseAddress);
+user_route.post('/SelectedAddress',auth.isLogin,addressController.SelectedAddress);
+user_route.get('/choose-addAddress',auth.isLogin,addressController.chooseaddAddress);
+user_route.post('/addnewaddress',auth.isLogin,addressController.addnewAddress);
+user_route.get('/edit-address/:addressId',auth.isLogin,addressController.loadAddressEdit);
+user_route.post('/edit-address/:addressId',auth.isLogin,addressController.editAddress);
+user_route.get('/delete-chooseaddress/:addressId',auth.isLogin,addressController.deletechooseAddress);
 
+
+//checkout
+
+user_route.get('/checkout',auth.isLogin,userController.loadcheckout);
+user_route.get('/ordersucess',auth.isLogin,userController.orderSucess);
+user_route.post('/place-order',auth.isLogin,userController.placeorder);
+
+//orderManagement
 user_route.get('/order-history', auth.isLogin, userController.loadorderHistory);
 
 module.exports = user_route;

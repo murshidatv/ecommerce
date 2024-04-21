@@ -1,13 +1,15 @@
 <%- include('../layouts/productheader') %>
-<style>
-    aside > * {
-    border: 1px solid #000;
-    /* Other styles */
-}
-input[readonly] {
-        cursor: pointer; /* Change cursor to pointer (hand) when hovering over the input */
-    }
-   
+    <style>
+        aside>* {
+            border: 1px solid #000;
+            /* Other styles */
+        }
+
+        input[readonly] {
+            cursor: pointer;
+            /* Change cursor to pointer (hand) when hovering over the input */
+        }
+
         button {
             background-color: #007bff;
             color: #fff;
@@ -17,24 +19,25 @@ input[readonly] {
             font-size: 16px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #c66;
         }
-</style>
-<div class="header-middle sticky-header">
-    <div class="container">
-        <div class="header-left">
-            <button class="mobile-menu-toggler">
-                <span class="sr-only">Toggle mobile menu</span>
-                <i class="icon-bars"></i>
-            </button>
+    </style>
+    <div class="header-middle sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
 
-            <a href="/home" class="logo">
-                <h2 style="color: #c66;;">Zouq</h2>
-            </a>
-            <nav class="main-nav">
-                <ul class="menu sf-arrows">
-                    <!-- <a href="/home" class="sf-with-ul">Home</a>
+                <a href="/home" class="logo">
+                    <h2 style="color: #c66;;">Zouq</h2>
+                </a>
+                <nav class="main-nav">
+                    <ul class="menu sf-arrows">
+                        <!-- <a href="/home" class="sf-with-ul">Home</a>
 
                     <li class="megamenu-container active">
 
@@ -44,143 +47,149 @@ input[readonly] {
                             
                         </div>
                         End .megamenu -->
-                    <!-- </li> -->
-                    <li>
-                        <a href="/home" class="sf-with-ul">Home</a>
+                        <!-- </li> -->
+                        <li>
+                            <a href="/home" class="sf-with-ul">Home</a>
 
-                        <div class="megamenu megamenu-md">
-                           
-                        </div><!-- End .megamenu megamenu-md -->
-                    </li>
-                    <li>
-                        <a href="/product-list" class="sf-with-ul">Shop</a>
+                            <div class="megamenu megamenu-md">
 
-                        <div class="megamenu megamenu-md">
-                           
-                        </div><!-- End .megamenu megamenu-md -->
-                    </li>
-                   
-                </ul><!-- End .menu -->
-            </nav><!-- End .main-nav -->
-        </div><!-- End .header-left -->
+                            </div><!-- End .megamenu megamenu-md -->
+                        </li>
+                        <li>
+                            <a href="/product-list" class="sf-with-ul">Shop</a>
 
-        <div class="header-right">
-           
-            <div class="dropdown compare-dropdown">
-                <div class="wishlist">
-                    <a href="/wishlist" title="Wishlist">
-                        <i class="icon-heart-o"></i>
-                       
+                            <div class="megamenu megamenu-md">
+
+                            </div><!-- End .megamenu megamenu-md -->
+                        </li>
+
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-left -->
+
+            <div class="header-right">
+
+                <div class="dropdown compare-dropdown">
+                    <div class="wishlist">
+                        <a href="/wishlist" title="Wishlist">
+                            <i class="icon-heart-o"></i>
+
+                    </div><!-- End .compare-dropdown -->
+
+
                 </div><!-- End .compare-dropdown -->
 
-                
-            </div><!-- End .compare-dropdown -->
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static">
+                        <i class="icon-shopping-cart"></i>
+                    </a>
 
-            <div class="dropdown cart-dropdown">
-                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                    <i class="icon-shopping-cart"></i>
-                </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-cart-products">
 
-                <div class="dropdown-menu dropdown-menu-right">
-                    <div class="dropdown-cart-products">
-                           
-                    </div><!-- End .cart-product -->
+                        </div><!-- End .cart-product -->
 
-                    <div class="dropdown-cart-total">
-                        
-                    </div><!-- End .dropdown-cart-total -->
+                        <div class="dropdown-cart-total">
 
-                    <div class="dropdown-cart-action">
-                        <a href="/cartlist" class="btn btn-primary">View Cart</a>
-                    </div><!-- End .dropdown-cart-total -->
-                </div><!-- End .dropdown-menu -->
-            </div><!-- End .cart-dropdown -->
-        </div><!-- End .header-right -->
-    </div><!-- End .container -->
-</div><!-- End .header-middle -->
-</header><!-- End .header -->
+                        </div><!-- End .dropdown-cart-total -->
 
-<main class="main">
-<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-    <div class="container">
-        <h1 class="page-title">PROFILE</h1>
-    </div><!-- End .container -->
-</div><!-- End .page-header -->
-<nav aria-label="breadcrumb" class="breadcrumb-nav">
-    <div class="container">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/home">Home</a></li>
-          
-            <li class="breadcrumb-item active" aria-current="page">Profile</li>
-        </ol>
-    </div><!-- End .container -->
-</nav><!-- End .breadcrumb-nav -->
+                        <div class="dropdown-cart-action">
+                            <a href="/cartlist" class="btn btn-primary">View Cart</a>
+                        </div><!-- End .dropdown-cart-total -->
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-middle -->
+    </header><!-- End .header -->
 
-<div class="page-content">
-    <div class="checkout">
-        <aside class="col-lg-3" style=" margin-left: 30%;"> 
-            
-                      <div class="card" style="border-radius: 15px;">
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">PROFILE</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+
+                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <aside class="col-lg-3" style=" margin-left: 30%;">
+
+                    <div class="card" style="border-radius: 15px;">
                         <div class="card-body text-center">
-                          <div class="mt-3 mb-4">
+                            <div class="mt-3 mb-4">
 
-                            <% if (user && user.image) { %>
-                                <img src="/userImages/<%= user.image %>" class="rounded-circle img-fluid" id="image" style="width: 100px; position: relative; left: 170px;" />
-                                <br>
-                                <button class="btn" ><a href="/editProfileImage">Edit</a></button>
-                              <% } else { %>
-                                <p>No user or user image found</p>
-                              <% } %>
+                                <% if (user && user.image) { %>
+                                    <img src="/userImages/<%= user.image %>" class="rounded-circle img-fluid" id="image"
+                                        style="width: 100px; position: relative; left: 170px;" />
+                                    <br>
+                                    <button class="btn"><a href="/editProfileImage">Edit</a></button>
+                                    <% } else { %>
+                                        <p>No user or user image found</p>
+                                        <% } %>
                             </div>
-                        
+
                             <!-- Hidden file input for selecting a new image -->
                             <input type="file" id="editImageInput" style="display: none;" accept="image/*">
-    
+
                             <script>
-                              document.getElementById('editImageButton').addEventListener('click', function () {
-                                document.getElementById('editImageInput').click();
-                              });
-                        
-                              document.getElementById('editImageInput').addEventListener('change', function () {
-                                const fileInput = this;
-                                const file = fileInput.files[0];
-                        
-                                if (file) {
-                                  const reader = new FileReader();
-                        
-                                  reader.onload = function (e) {
-                                    const newImageUrl = e.target.result;
-                                    updateProfileImageUI(newImageUrl);
-                                  };
-                        
-                                  reader.readAsDataURL(file);
+                                document.getElementById('editImageButton').addEventListener('click', function () {
+                                    document.getElementById('editImageInput').click();
+                                });
+
+                                document.getElementById('editImageInput').addEventListener('change', function () {
+                                    const fileInput = this;
+                                    const file = fileInput.files[0];
+
+                                    if (file) {
+                                        const reader = new FileReader();
+
+                                        reader.onload = function (e) {
+                                            const newImageUrl = e.target.result;
+                                            updateProfileImageUI(newImageUrl);
+                                        };
+
+                                        reader.readAsDataURL(file);
+                                    }
+                                });
+
+                                function updateProfileImageUI(imageUrl) {
+                                    const profileImage = document.getElementById('profileImage');
+                                    if (profileImage) {
+                                        profileImage.src = imageUrl;
+                                    }
                                 }
-                              });
-                        
-                              function updateProfileImageUI(imageUrl) {
-                                const profileImage = document.getElementById('profileImage');
-                                if (profileImage) {
-                                  profileImage.src = imageUrl;
-                                }
-                              }
                             </script>
-                         <% if (user) { %>
-                            <h6>Name: <%= user.name %></h6>
-                            <h6>Email: <%= user.email %></h6>
-                        <% } else { %>
-                            <p>User data not available</p>
-                        <% } %>
-                        
-                       
-                          <a href="/order-history"><button type="button" class="btn  btn-primary btn-rounded btn-lg" style="width: 300px;">
-                          MY ORDERS 
-                          </button>
-                        </a>
-                          <br><br>
-                          <a href="/address" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
-                            ADDRESS
-                          </button></a>
-                         <!--
+                            <% if (user) { %>
+                                <h6>Name: <%= user.name %>
+                                </h6>
+                                <h6>Email: <%= user.email %>
+                                </h6>
+                                <% } else { %>
+                                    <p>User data not available</p>
+                                    <% } %>
+
+
+                                        <a href="/order-history"><button type="button"
+                                                class="btn  btn-primary btn-rounded btn-lg" style="width: 300px;">
+                                                MY ORDERS
+                                            </button>
+                                        </a>
+                                        <br><br>
+                                        <a href="/address"> <button type="button"
+                                                class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
+                                                ADDRESS
+                                            </button></a>
+                                        <!--
                           <script>
                             function copyReferralCode() {
                                 const referralCodeField = document.getElementById("referralCodeField");
@@ -189,270 +198,281 @@ input[readonly] {
                                 alert("Referral code copied!"); // Show a confirmation message
                             }
                               
-                        </script>     -->            
+                        </script>     -->
                         </div>
-                      </div>
-              
                     </div>
-                  </div>
-                </div>
-              </section>
+
+            </div>
+        </div>
+        </div>
+        </section>
         </aside>
         <div class="container ">
-            
-       
-
-           <form action="/updateProfile" method="post" onsubmit="return validateForm()">
-            <div class="form-group col-md-6">
-              <label for="editName">First Name</label>
-              <input type="text" class="form-control" id="editName" name="name" value="<%= user.name %>" required>
-              <span id="nameError" style="color: red;"></span>
-            </div>
-        
-            <div class="form-group col-md-6">
-              <label for="editEmail">Email</label>
-              <input type="email" class="form-control" id="editEmail" name="email" value="<%= user.email %>" required>
-              <span id="emailError" style="color: red;"></span>
-            </div>
-        
-            <div class="form-group col-md-6">
-              <label for="editPhone">Mobile Number</label>
-              <input type="text" class="form-control" id="editmobile" name="mobile" value="<%= user.mobile %>" required>
-              <span id="phoneError" style="color: red;"></span>
-            </div>
-            <button  class="btn btn-primary" ><a href="/change-password">Change Password</a></button><br><br>
-        
-            <input type="submit" class="btn btn-primary" value="Update Profile">
 
 
-          
-          </form>
-        
+
+            <form action="/updateProfile" method="post" onsubmit="return validateForm()">
+                <div class="form-group col-md-6">
+                    <label for="editName">First Name</label>
+                    <input type="text" class="form-control" id="editName" name="name" value="<%= user.name %>" required>
+                    <span id="nameError" style="color: red;"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="editEmail">Email</label>
+                    <input type="email" class="form-control" id="editEmail" name="email" value="<%= user.email %>"
+                        required>
+                    <span id="emailError" style="color: red;"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="editPhone">Mobile Number</label>
+                    <input type="text" class="form-control" id="editmobile" name="mobile" value="<%= user.mobile %>"
+                        required>
+                    <span id="phoneError" style="color: red;"></span>
+                </div>
+                <button class="btn btn-primary"><a href="/change-password">Change Password</a></button><br><br>
+
+                <input type="submit" class="btn btn-primary" value="Update Profile">
 
 
-          <script>
-            function validateForm() {
-              var name = document.getElementById('editName').value;
-              var email = document.getElementById('editEmail').value;
-              var phone = document.getElementById('editPhone').value;
-        
-              // Reset error messages
-              document.getElementById('nameError').innerHTML = '';
-              document.getElementById('emailError').innerHTML = '';
-              document.getElementById('phoneError').innerHTML = '';
-        
-              // Validate name
-              if (name.trim() === '') {
-                document.getElementById('nameError').innerHTML = 'First Name is required';
-                return false;
-              } else if (!isValidName(name)) {
-                document.getElementById('nameError').innerHTML = 'Invalid characters in the name';
-                return false;
-              }
-        
-              // Validate email
-              if (email.trim() === '') {
-                document.getElementById('emailError').innerHTML = 'Email is required';
-                return false;
-              } else if (!isValidEmail(email)) {
-                document.getElementById('emailError').innerHTML = 'Invalid email address';
-                return false;
-              }
-        
-              // Validate phone
-              if (phone.trim() === '') {
-                document.getElementById('mobileError').innerHTML = 'Mobile Number is required';
-                return false;
-              } else if (!isValidPhone(mobile)) {
-                document.getElementById('phoneError').innerHTML = 'Invalid mobile number';
-                return false;
-              }
-        
-              
-        
-              return true; 
-            }
-        
-            function isValidName(name) {
-              // Allow only letters, spaces, and apostrophes
-              return /^[a-zA-Z\s']*$/i.test(name);
-            }
-        
-            function isValidEmail(email) {
-                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                 return emailRegex.test(email);
-            }
-        
-            function isValidMobile(mobile) {
-                var mobileRegex = /^(?:(?!0+$)\d{10})$/;
-                return mobileRegex.test(mobile);
-            }
-          </script>
-        
-  
+
+            </form>
+
+
+
+            <script>
+                function validateForm() {
+                    var name = document.getElementById('editName').value;
+                    var email = document.getElementById('editEmail').value;
+                    var phone = document.getElementById('editPhone').value;
+
+                    // Reset error messages
+                    document.getElementById('nameError').innerHTML = '';
+                    document.getElementById('emailError').innerHTML = '';
+                    document.getElementById('phoneError').innerHTML = '';
+
+                    // Validate name
+                    if (name.trim() === '') {
+                        document.getElementById('nameError').innerHTML = 'First Name is required';
+                        return false;
+                    } else if (!isValidName(name)) {
+                        document.getElementById('nameError').innerHTML = 'Invalid characters in the name';
+                        return false;
+                    }
+
+                    // Validate email
+                    if (email.trim() === '') {
+                        document.getElementById('emailError').innerHTML = 'Email is required';
+                        return false;
+                    } else if (!isValidEmail(email)) {
+                        document.getElementById('emailError').innerHTML = 'Invalid email address';
+                        return false;
+                    }
+
+                    // Validate phone
+                    if (phone.trim() === '') {
+                        document.getElementById('mobileError').innerHTML = 'Mobile Number is required';
+                        return false;
+                    } else if (!isValidPhone(mobile)) {
+                        document.getElementById('phoneError').innerHTML = 'Invalid mobile number';
+                        return false;
+                    }
+
+
+
+                    return true;
+                }
+
+                function isValidName(name) {
+                    // Allow only letters, spaces, and apostrophes
+                    return /^[a-zA-Z\s']*$/i.test(name);
+                }
+
+                function isValidEmail(email) {
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailRegex.test(email);
+                }
+
+                function isValidMobile(mobile) {
+                    var mobileRegex = /^(?:(?!0+$)\d{10})$/;
+                    return mobileRegex.test(mobile);
+                }
+            </script>
+
+
         </div>
-    </div>
-</div>
-  <!-- End .col-lg-3 -->
-               
-</div><!-- End .row -->
-            
-</div><!-- End .container -->
-    </div><!-- End .checkout -->
-</div><!-- End .page-content -->
-</main><!-- End .main -->
-<footer class="footer footer-2">
-    <div class="footer-middle border-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-lg-6">
-                    <div class="widget widget-about">
-                       
-                        
-                        <div class="widget-about-info">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-4">
-                                    <span class="widget-about-title">Got Question? Call us 24/7</span>
-                                    <a href="tel:123456789">+0123 456 789</a>
-                                </div><!-- End .col-sm-6 -->
-                                <div class="col-sm-6 col-md-8">
-                                    <span class="widget-about-title">Payment Method</span>
-                                    <figure class="footer-payments">
-                                        <img src="assets/images/payments.png" alt="Payment methods" width="272" height="20">
-                                    </figure><!-- End .footer-payments -->
-                                </div><!-- End .col-sm-6 -->
-                            </div><!-- End .row -->
-                        </div><!-- End .widget-about-info -->
-                    </div><!-- End .widget about-widget -->
-                </div><!-- End .col-sm-12 col-lg-3 -->
+        </div>
+        </div>
+        <!-- End .col-lg-3 -->
 
-                <div class="col-sm-4 col-lg-2">
-                    <div class="widget">
-                        <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+        </div><!-- End .row -->
 
-                        <ul class="widget-list">
-                            <li><a href="about.html">About Zouq</a></li>
-                            <li><a href="#">How to shop on Zouq</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact.html">Contact us</a></li>
-                            <li><a href="login.html">Log in</a></li>
-                        </ul><!-- End .widget-list -->
-                    </div><!-- End .widget -->
-                </div><!-- End .col-sm-4 col-lg-3 -->
-
-                <div class="col-sm-4 col-lg-2">
-                    <div class="widget">
-                        <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-
-                        <ul class="widget-list">
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Money-back guarantee!</a></li>
-                            <li><a href="#">Returns</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Terms and conditions</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                        </ul><!-- End .widget-list -->
-                    </div><!-- End .widget -->
-                </div><!-- End .col-sm-4 col-lg-3 -->
-
-                <div class="col-sm-4 col-lg-2">
-                    <div class="widget">
-                        <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
-
-                        <ul class="widget-list">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="cart.html">View Cart</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul><!-- End .widget-list -->
-                    </div><!-- End .widget -->
-                </div><!-- End .col-sm-64 col-lg-3 -->
-            </div><!-- End .row -->
         </div><!-- End .container -->
-    </div><!-- End .footer-middle -->
+        </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+    <footer class="footer footer-2">
+        <div class="footer-middle border-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="widget widget-about">
 
-    <div class="footer-bottom">
-        <div class="container">
-            <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p><!-- End .footer-copyright -->
-            <ul class="footer-menu">
-                <li><a href="#">Terms Of Use</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-            </ul><!-- End .footer-menu -->
-            <div class="social-icons social-icons-color">
-                <span class="social-label"></span>
-                <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
-                <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
-                <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
-                <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i class="icon-youtube"></i></a>
-                <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
-            </div><!-- End .soial-icons -->
-        </div><!-- End .container -->
-    </div><!-- End .footer-bottom -->
-</footer><!-- End .footer -->
-</div><!-- End .page-wrapper -->
-<button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+                            <div class="widget-about-info">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                        <a href="tel:123456789">+0123 456 789</a>
+                                    </div><!-- End .col-sm-6 -->
+                                    <div class="col-sm-6 col-md-8">
+                                        <span class="widget-about-title">Payment Method</span>
+                                        <figure class="footer-payments">
+                                            <img src="assets/images/payments.png" alt="Payment methods" width="272"
+                                                height="20">
+                                        </figure><!-- End .footer-payments -->
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .widget-about-info -->
+                        </div><!-- End .widget about-widget -->
+                    </div><!-- End .col-sm-12 col-lg-3 -->
 
-<div class="mobile-menu-container mobile-menu-light">
-<div class="mobile-menu-wrapper">
-    <span class="mobile-menu-close"><i class="icon-close"></i></span>
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Information</h4><!-- End .widget-title -->
 
-    <form action="#" method="get" class="mobile-search">
-        <label for="mobile-search" class="sr-only">Search</label>
-        <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Search in..." required>
-        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-    </form>
+                            <ul class="widget-list">
+                                <li><a href="about.html">About Zouq</a></li>
+                                <li><a href="#">How to shop on Zouq</a></li>
+                                <li><a href="faq.html">FAQ</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="login.html">Log in</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Money-back guarantee!</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="cart.html">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-64 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-middle -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p>
+                <!-- End .footer-copyright -->
+                <ul class="footer-menu">
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul><!-- End .footer-menu -->
+                <div class="social-icons social-icons-color">
+                    <span class="social-label"></span>
+                    <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                            class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                            class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                            class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                            class="icon-youtube"></i></a>
+                    <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+                            class="icon-pinterest"></i></a>
+                </div><!-- End .soial-icons -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+    </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="home.ejs">Home</a>
+
+                    <li>
+                        <a href="/category">Shop</a>
+
+                    </li>
+                    <li>
+                        <a href="product.html" class="sf-with-ul">Product</a>
+
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+
+    <!-- Plugins JS File -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="assets/js/jquery.waypoints.min.js"></script>
+    <script src="assets/js/superfish.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/jquery.plugin.min.js"></script>
+    <script src="assets/js/jquery.countdown.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/demos/demo-5.js"></script>
+    </body>
+
+
+    <!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
+
+    </html>
+
     
-    <nav class="mobile-nav">
-        <ul class="mobile-menu">
-            <li class="active">
-                <a href="home.ejs">Home</a>
-
-            <li>
-                <a href="/category">Shop</a>
-                
-            </li>
-            <li>
-                <a href="product.html" class="sf-with-ul">Product</a>
-               
-            </li>
-            <li>
-                
-            </li>
-        </ul>
-    </nav><!-- End .mobile-nav -->
-
-    <div class="social-icons">
-        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-    </div><!-- End .social-icons -->
-</div><!-- End .mobile-menu-wrapper -->
-</div><!-- End .mobile-menu-container -->
-
-
-<!-- Plugins JS File -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/bootstrap.bundle.min.js"></script>
-<script src="assets/js/jquery.hoverIntent.min.js"></script>
-<script src="assets/js/jquery.waypoints.min.js"></script>
-<script src="assets/js/superfish.min.js"></script>
-<script src="assets/js/owl.carousel.min.js"></script>
-<script src="assets/js/jquery.magnific-popup.min.js"></script>
-<script src="assets/js/jquery.plugin.min.js"></script>
-<script src="assets/js/jquery.countdown.min.js"></script>
-
-<!-- Main JS File -->
-<script src="assets/js/main.js"></script>
-<script src="assets/js/demos/demo-5.js"></script>
-</body>
-
-
-<!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
-</html>
-
-<%include('../layouts/footer.ejs') %>
