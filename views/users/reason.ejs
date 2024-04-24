@@ -1,0 +1,76 @@
+<!-- cancellation-reason.ejs -->
+<html lang="en">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #c66;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color:#c66;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="margin-left:440px;">Enter Cancellation Reason</h2>
+    <form action="/cancel-order/<%= order.id %>" method="POST">
+        <label for="predefinedReason">Select a predefined reason:</label>
+        <select id="predefinedReason" name="predefinedReason">
+            <option value="item_out_of_stock">Size issues</option>
+            <option value="changed_mind">Changed my mind</option>
+            <option value="Wrong Product Recived">Wrong Product Recived</option>
+            <option value="It's a trial order">It's a trial order</option>
+            
+        </select>
+    
+        <br>
+    
+        <!-- <label for="customReason">Or enter a custom reason:</label>
+        <textarea id="customReason" name="customReason" rows="4" cols="50"></textarea>
+     -->
+        <br>
+    
+        <button type="submit">Submit Reason</button>
+    </form>
+</body>
+</html>

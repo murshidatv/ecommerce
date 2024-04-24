@@ -862,6 +862,77 @@ module.exports = {
 };
 
 */
+
+// CANCEL ORDER
+
+const orderCancel = async (req, res) => {
+  console.log('Reached orderCancel route');
+  const orderId = req.params.orderId;
+  const { predefinedReason, customReason } = req.body;
+
+  try {
+    const order = await Order.findById(orderId).populate('products.product');
+
+    // Check if the order is already cancelled
+    if (order.status === 'Cancelled') {
+      return res.redirect('/order-history');
+    }
+
+    order.status = 'Cancellation';
+    order.cancellation.isCancelled = false;
+    order.cancellation.reason = predefinedReason || customReason || 'No reason provided';
+    order.cancellation.cancelledByAdmin = false;
+
+    await order.save();
+
+    res.redirect('/order-history');
+  } catch (error) {
+    console.error('Error initiating cancellation:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+//cancelled order-reason page
+const reasonpage = async (req, res) => {
+  try {
+   
+    const orderId = req.params.orderId;
+    console.log("orderId:", orderId);
+    const order = await Order.findById(orderId).populate('products.product');
+
+    if (!order) {
+      console.error('Order not found');
+      return res.status(404).send('Order not found');
+    }
+
+    console.log("reasons", orderId);
+    res.render('reason', { orderId, order });
+  } catch (error) {
+    console.error('Error fetching order details:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+//to View Order details
+const viewOrder= async (req,res)=>{
+  try {
+    const orderId = req.params.orderId;
+    const order = await Order.findById(orderId).populate({
+      path:'products.product',
+      model:'Product'
+    })
+    if (!order) {
+      return res.status(404).send('Order not found');
+    }
+    const totalOrderPrice = order.products.reduce((total, productDetail) => {
+      return total + (productDetail.quantity * productDetail.product.Price);
+    }, 0);
+console.log(totalOrderPrice);
+    res.render('viewOrder', { order ,totalOrderPrice});
+  } catch (error) {
+    
+  }
+}
+
 module.exports = {
   loadRegister,
   insertUser,
@@ -890,7 +961,10 @@ module.exports = {
   loadcheckout,
   placeorder,
   orderSucess,
+  orderCancel,
+  reasonpage,
   loadorderHistory,
+  viewOrder,
 
 
 

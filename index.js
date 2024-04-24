@@ -23,8 +23,20 @@ app.use(
 );
 
 app.use(express.json());
-//app.use(express.static(path.join(__userImages, "public")));
+/*app.use(express.static(path.join(__userImages, "public")));
+
+app.use(express.static('public',{ extensions: ['html', 'htm', 'webp', 'jpg', 'jpeg', 'png'] }));
 app.use(express.static('public'));
+*/
+// Serve static files
+app.use(express.static('public', {
+  extensions: ['html', 'htm', 'webp', 'jpg', 'jpeg', 'png'], // Specify allowed file extensions
+  setHeaders: (res, path, stat) => {
+      if (path.endsWith('.css')) {
+          res.setHeader('Content-Type', 'text/css');
+      }
+  }
+}));
 //for user routes
 const userRoute = require('./routes/userRoute');
 app.use('/',userRoute);

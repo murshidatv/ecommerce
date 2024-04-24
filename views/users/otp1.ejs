@@ -1,6 +1,5 @@
-
+<!DOCTYPE html>
 <html lang="en">
-
 
 <head>
     <meta charset="UTF-8">
@@ -48,6 +47,8 @@
         </div>
     </section>
 
+
+
     <script>
         let timer;
         let timerValue = 60; // Set the initial timer value
@@ -92,15 +93,13 @@
                 console.error('Error:', error);
             }
         }
-
         // Start the timer initially
         startTimer();
-
+        
         document.querySelector('#otpForm').addEventListener('submit', async function (event) {
             event.preventDefault();
             const otp = this.elements['otp'].value;
             const userId = '<%= userId %>';
-            console.log('OTP saved in db:', otp);
             console.log('User ID:', userId); // Log the userId
             console.log('OTP:', otp); // Log the OTP entered by the user
             try {
@@ -109,7 +108,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ otp1 }),
+                    body: JSON.stringify({ otp }),
                 });
                 console.log('Verification Response:', response); // Log the response
                 const data = await response.json();
@@ -120,10 +119,13 @@
                     document.getElementById('message').textContent = data.message;
                 }
             } catch (error) {
-                console.error('Error:', error)
+                console.error('Error:', error);
+                //document.getElementById('message').textContent = 'An error occurred. Please try again.';
             }
         });
     </script>
+
+
 </body>
 
 </html>

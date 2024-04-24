@@ -115,5 +115,8 @@ user_route.post('/place-order',auth.isLogin,userController.placeorder);
 
 //orderManagement
 user_route.get('/order-history', auth.isLogin, userController.loadorderHistory);
+user_route.post('/cancel-order/:orderId', auth.isLogin, userController.orderCancel);
+user_route.get('/reasonpage/:orderId', auth.isLogin, userController.reasonpage);
+user_route.get('/view-order/:orderId', userController.viewOrder);
 
 module.exports = user_route;
