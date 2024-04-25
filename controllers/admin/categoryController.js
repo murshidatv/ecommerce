@@ -8,10 +8,6 @@ const { upload } = require('../../middleware/multer');
 const sharp=require('sharp');
 
 
-
-
-
-
 const category = async (req, res) => {
     try {
         const categories = await Category.find();

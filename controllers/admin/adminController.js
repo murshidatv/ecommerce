@@ -11,7 +11,7 @@ const Add_User = require("../../models/adminModel");
 
 const loadlogin = async(req,res)=>{
     try{
-
+    // Render the login page
         res.render('login');
     }catch(error){
         console.log(error.meassage);
@@ -20,15 +20,16 @@ const loadlogin = async(req,res)=>{
 }
 const verifyLogin = async(req,res)=>{
     try{
-
+        // Retrieve email and password from request body
         const email = req.body.email;
         const password = req.body.password;
-
+        // Find user by email
         const userData = await User.findOne({email:email});
         if(userData){
-
+        // Compare passwords
             const passwordMatch = await bcrypt.compare(password,userData.password);
             if(passwordMatch){
+                // If user is an admin, set session and redirect to admin home
                 if(userData.is_admin === 0){
                     res.render('login',{message:"Email or password is incorrect."});
                     
@@ -36,11 +37,7 @@ const verifyLogin = async(req,res)=>{
                 else{
                     req.session.user_id = userData._id;
                     res.redirect("/admin/home");
-
-
                 }
-
-
             }
             else{
                 res.render('login',{message:"Email or password is incorrect."});
@@ -58,9 +55,8 @@ const verifyLogin = async(req,res)=>{
 }
 
 const loadDashboard = async(req,res)=>{
-
-
 try{
+    // Load user data and render the home page
     const userData = await User.findById({_id:req.session.user_id});
     res.render('home',{admin:userData});
 
@@ -70,11 +66,9 @@ try{
 }
 
 
-
-
-
 const logout = async(req,res)=>{
     try{
+        // Destroy session and redirect to admin login page
         req.session.destroy();
         res.redirect('/admin');
 
@@ -90,14 +84,12 @@ const logout = async(req,res)=>{
 
 const adminDashboard = async(req,res)=>{
     try{
-
+        // Retrieve regular users and render the user list page
         const usersData = await User.find({is_admin:0});
         res.render('userlist',{users:usersData});
-
-       
+  
         /*const adminData = await Add_User.find();
-        res.render('dashboard',{users:adminData});
-*/
+        res.render('dashboard',{users:adminData});*/
 
     }catch(error){
         console.log(error.message);
@@ -105,97 +97,6 @@ const adminDashboard = async(req,res)=>{
    
 }
 
-/*Add New User
-
-const newUserLoad = async(req,res)=>{
-    try{
-        res.render('new-user');
-    
-    }catch(error){
-        console.log(error.message);
-    }
-}
-
-const addUser = async (req, res) => {
-    try {
-        const name = req.body.name;
-        const email = req.body.email;
-        const mobile = req.body.mobile;
-
-        //*Ensure that the required fields are present
-        if (!name || !email || !mobile) {
-            return res.status(400).render('new-user', { message: 'Name, email, and mobile are required.' });
-        }
-
-        const user = new Add_User({
-            name: name,
-            email: email,
-            mobile: mobile,
-            is_admin: 0
-        });
-
-        const userData = await user.save();
-        //console.log('User added:', userData);
-        
-        if (userData) {
-            res.redirect('/admin/dashboard');
-        } else {
-            res.render('new-user', { message: 'Something went wrong.' });
-        }
-
-    } catch (error) {
-        console.log(error.message);
-    }
-    
-}
-
-//edit user
-
-const editUserLoad = async(req,res)=>{
-    try{
-        const id = req.query.id;
-         const userData = await Add_User.findById({_id:id})
-        if(userData){
-            res.render('edit-user',{ user:userData });
-
-        }
-        else{
-            res.redirect('/admin/dashboard');
-        }
-       // res.render('edit-user');
-
-    }catch(error){
-        console.log(error.message);
-        res.redirect('/admin/dashboard');
-    }
-
-
-}
-
-const updateUsers = async(req,res)=>{
-    try{
-        const userData = await Add_User.findByIdAndUpdate({_id:req.body.id},{$set:{ name:req.body.name, email:req.body.email, mobile:req.body.mno}});
-        res.redirect('/admin/dashboard');
-    
-    }catch(error){
-
-    }
-}
-
-//delete users
-const deleteUser = async(req,res)=>{
-    try{
-       // console.log(123,req.query);
-        const id = req.query.id;
-        await Add_User.deleteOne({ _id:id});
-        res.redirect('/admin/dashboard');
-    
-
-    }catch(error){
-        console.log(error.message);
-    }
-}
-*/
 const listUser = async (req, res) => {
     try {
         // Pagination
@@ -223,7 +124,7 @@ const listUser = async (req, res) => {
 
         // Count total number of users (for pagination)
         const totalCount = await User.countDocuments(filter);
-
+        // Render user list page with pagination
         res.render('userlist', {
             user: userData,
             totalCount,
@@ -236,16 +137,18 @@ const listUser = async (req, res) => {
 };
 const blockUser = async (req, res) => {
     try {
+        // Retrieve user ID
         const id = req.params.id;
+        // Find user by ID
         const user = await User.findById({ _id: id });
-
+        // Toggle user's "isBlocked" status
         if (user.isBlocked === false) {
             await User.findByIdAndUpdate(id, { $set: { isBlocked: true } });
         } else {
             await User.findByIdAndUpdate(id, { $set: { isBlocked: false } });
         }
 
-        
+        // Redirect to user list page
         res.redirect('/admin/listUser');
     } catch (error) {
         console.log(error.message);
