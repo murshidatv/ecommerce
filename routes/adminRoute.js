@@ -60,6 +60,9 @@ admin_route.get('/add-product',auth.isLogin,categoryController.loadProduct)
 admin_route.post('/new-product',auth.isLogin, multerMiddleware.array('images', 3),categoryController.addProduct)
 admin_route.get('/edit-product/:productId',auth.isLogin,categoryController.LoadEditProduct);
 admin_route.post('/edit-product/:productId',auth.isLogin, multerMiddleware.array('images', 3),categoryController.editProduct);
+
+admin_route.get('/remove-image/:productId/:imageName', auth.isLogin, categoryController.removeImage);
+
 //admin_route.get('/product/:productId',categoryController.deleteProduct);
 admin_route.post('/product/:id/update-status', categoryController.updateProductStatus);
 

@@ -15,8 +15,18 @@ const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/zouq";
 
 const express = require("express");
 const app = express();
+/*
+const firebaseApp = require('firebase/app');
+require('firebase/auth');
+const firebaseConfig = require('./config/firebaseConfig');
 
+// Initialize Firebase
+const firebaseAppInstance = firebaseApp.initializeApp(firebaseConfig);
 
+// Rename 'auth' to 'firebaseAuth' to avoid conflicts
+const firebaseAuth = firebaseApp.auth();
+
+*/
 //to resolve validation error
 app.use(
   express.urlencoded({ extended: true })

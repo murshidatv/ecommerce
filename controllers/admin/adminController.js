@@ -6,9 +6,6 @@ const Product = require('../../models/productModel');
 const Add_User = require("../../models/adminModel");
  
 
-
-
-
 const loadlogin = async(req,res)=>{
     try{
     // Render the login page

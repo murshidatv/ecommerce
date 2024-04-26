@@ -378,21 +378,21 @@
                                                 alt="Existing Image <%= i + 1 %>"
                                                 style="max-width: 100px; max-height: 100px; margin-top: 10px; cursor: pointer;"
                                                 onclick="document.getElementById('productImage<%= i + 1 %>').click();"
-                                              
-                                            >
+                                             <a href="/removeImage/<%= product.images[i] %>/"><button>Remove1</button>
+
+                                                 
+                                            </a>
+                                            <a href="/admin/remove-image/<%= product._id %>/<%= product.images[i] %>">
+                                              <button type="button">Remove</button>
+                                          </a>
+                                          
+                                            
+                   
                                             
                                             <br>
-                                 <!--- <button type="submit" class="btn text-dark update" onclick="myFunction()">Remove</button>
-                        
-
-                                <script>
-                                function myFunction() {
-                                  const element = document.getElementById('productImage<%= i + 1 %>');
-                                  element.remove();
-                                }
-                                </script>-->
-                        
-                                            <!-- Hidden file input to handle image selection -->
+                                
+                                          
+                                          
                                             <input
                                                 type="file"
                                                 name="images"
@@ -501,10 +501,7 @@
                                             event.preventDefault();
                                         }
                                     }
-                                    if (offerType && !/^\d+$/.test(offerAmount)) {
-                                    document.getElementById('offerAmountError').innerText = "Offer Amount must be a valid number";
-                                    event.preventDefault();
-                                }
+                                  
                         
                                
                         

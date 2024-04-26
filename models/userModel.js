@@ -72,5 +72,11 @@ const userSchema = new mongoose.Schema({
         }
       ],
 });
+// UserModel.js
+const firebase = require('firebase/app');
+require('firebase/firestore');
+
+// Now you can use firebase.firestore() to access Firestore methods
+
 
 module.exports = mongoose.model('User',userSchema);

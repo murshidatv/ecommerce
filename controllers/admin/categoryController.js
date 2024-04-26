@@ -238,7 +238,7 @@ const LoadEditProduct = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
+/*
 const editProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
@@ -279,9 +279,86 @@ const editProduct = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+*/
+const editProduct = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const { productName, category, size, Price, stock, description } = req.body;
+        let images = [];
+        
+        // Check if there are files and if they are an array
+        if (req.files && Array.isArray(req.files)) {
+            // Map filenames from files array
+            images = req.files.map((file) => file.filename);
+        }
+/*
+        // Check if there's a query parameter for removing an image
+        if (req.query.removeImage) {
+            // Remove the image specified in the query parameter
+            const removeIndex = images.indexOf(req.query.removeImage);
+            if (removeIndex !== -1) {
+                images.splice(removeIndex, 1);
+            }
+        }
+        
+                 // Check if there's a query parameter for removing an image
+        if (req.query.removeImage) {
+            // Remove the image specified in the query parameter from the existing images
+            product.images = product.images.filter(image => image !== req.query.removeImage);
+        }
 
+      */
+        const updatedProductFields = {
+            productName,
+            category,
+            size,
+            Price,
+            stock,
+            description,
+            images,
+        };
 
+        const updatedProduct = await Product.findByIdAndUpdate(
+            productId,
+            { $set: updatedProductFields },
+            { new: true }
+        );
 
+        if (!updatedProduct) {
+            return res.status(404).send('Product not found');
+        }
+
+        // Update product prices based on the updated product
+        // await updateProductPrices(updatedProduct);
+
+        res.redirect('/admin/product');
+    } catch (error) {
+        console.error('Error updating product:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+const removeImage = async (req, res) => {
+    try {
+        const { productId, imageName } = req.params;
+        // Find the product by ID
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+        // Filter out the image to be removed
+        product.images = product.images.filter(image => image !== imageName);
+        console.log(`${product.images}`);
+        // Save the updated product
+        await product.save();
+        console.log(`${product.images}`);
+        // Redirect back to the edit product page or wherever appropriate
+        res.redirect('/admin/edit-product/' + productId);
+    } catch (error) {
+        console.error('Error removing image:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 
 const updateProductStatus = async (req, res) => {
@@ -457,6 +534,7 @@ module.exports = {
    loadProduct,
    LoadEditProduct,
    editProduct,
+   removeImage,
    updateProductStatus,
    order,
    updateStatus,
