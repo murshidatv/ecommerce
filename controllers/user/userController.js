@@ -417,14 +417,49 @@ const viewProductList = async (req, res) => {
       };
     }
 
-    const totalProducts = await Product.countDocuments(query);
-    const totalPages = Math.ceil(totalProducts / perPage);
+  
+    let sortCriteria = {};
+    switch (sortOption) {
+      case 'priceAsc':
+        sortCriteria = { Price: 1 };
+        break;
+      case 'priceDesc':
+        sortCriteria = { Price: -1 };
+        break;
+      case 'nameAsc':
+        sortCriteria = { productName: 1 };
+        break;
+      case 'nameDesc':
+        sortCriteria = { productName: -1 };
+        break;
+      // Add cases for other sorting options if needed
+      default:
+        // Default sorting criteria if none provided
+        sortCriteria = { productName: 1 };
+    }
+ // Fetch the total number of products that match the query
+ const totalProducts = await Product.countDocuments(query);
+ const totalPages = Math.ceil(totalProducts / perPage);
 
-    const products = await Product.find(query)
+ // Now, perform the query with the sorting criteria
+ const products = await Product.find(query)
+   .populate('category')
+   .sort(sortCriteria)
+   .skip((page - 1) * perPage)
+   .limit(perPage);
+
+
+
+
+
+
+
+   /* const products = await Product.find(query)
       .populate('category')
       .sort({ Price: sortOption === 'asc' ? 1 : -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);
+      */
 
     // Fetch offered categories
     //const offeredCategories = await Category.find({ offer: { $exists: true } });
@@ -446,6 +481,74 @@ const viewProductList = async (req, res) => {
     res.status(500).render('error', { errorMessage: 'An error occurred while processing your request. Please try again later.' });
   }
 };
+
+/*
+const viewProductList = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    const selectedCategory = req.query.category;
+    const sortOption = req.query.sort || 'productName';
+    const sortOrder = req.query.order || 'asc';
+    const searchQuery = req.query.search || '';
+
+    // Pagination variables
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 6;
+
+    let query = {};
+    let sort = {};
+
+    if (selectedCategory && selectedCategory !== 'all') {
+      query.category = selectedCategory;
+    }
+
+    if (searchQuery) {
+      query.$or = [{ productName: { $regex: new RegExp(searchQuery, 'i') } }];
+    }
+
+    // Determine the sorting option
+    switch (sortOption) {
+      case 'price':
+        sort.Price = sortOrder === 'asc' ? 1 : -1;
+        break;
+      case 'popularity':
+        sort.salesCount = sortOrder === 'asc' ? 1 : -1; // Replace 'salesCount' with your field for popularity
+        break;
+      case 'newArrival':
+        sort.createdAt = sortOrder === 'asc' ? 1 : -1; // Replace 'createdAt' with your field for new arrivals
+        break;
+      case 'productName':
+      default:
+        sort.productName = sortOrder === 'asc' ? 1 : -1;
+        break;
+    }
+
+    const totalProducts = await Product.countDocuments(query);
+    const totalPages = Math.ceil(totalProducts / perPage);
+
+    const products = await Product.find(query)
+      .populate('category')
+      .sort(sort)
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    res.render('productList', {
+      products,
+      categories,
+      selectedCategory,
+      sortDropdownValue: sortOption,
+      sortOrder,
+      searchQuery,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    console.error('Error occurred while processing request:', error);
+    res.status(500).render('error', { errorMessage: 'An error occurred while processing your request. Please try again later.' });
+  }
+};
+*/
+
 const viewProfile = async (req, res) => {
   try {
     const user = await User.findById(req.session.user_id);
@@ -715,7 +818,7 @@ const placeorder = async (req, res) => {
       return res.status(400).send('Cart is empty. Cannot place an order with an empty cart.');
     }
 
-    // Calculate the total amount without discount
+    // Calculate the total amount 
     const cartTotal = calculateTotalAmount(user.cart);
 
     // Helper function to calculate the total amount of the cart

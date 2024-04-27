@@ -280,6 +280,7 @@ const editProduct = async (req, res) => {
     }
 };
 */
+/*
 const editProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
@@ -291,6 +292,9 @@ const editProduct = async (req, res) => {
             // Map filenames from files array
             images = req.files.map((file) => file.filename);
         }
+       // images = [...product.images, ...images];
+         // Ensure product.images is an array before concatenating
+         images = [...(product.images || []), ...images];
 /*
         // Check if there's a query parameter for removing an image
         if (req.query.removeImage) {
@@ -307,7 +311,7 @@ const editProduct = async (req, res) => {
             product.images = product.images.filter(image => image !== req.query.removeImage);
         }
 
-      */
+      
         const updatedProductFields = {
             productName,
             category,
@@ -330,6 +334,60 @@ const editProduct = async (req, res) => {
 
         // Update product prices based on the updated product
         // await updateProductPrices(updatedProduct);
+
+        res.redirect('/admin/product');
+    } catch (error) {
+        console.error('Error updating product:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
+};
+*/
+const editProduct = async (req, res) => {
+    try {
+        const productId = req.params.productId;
+        const { productName, category, size, Price, stock, description } = req.body;
+        let images = [];
+        
+        // Retrieve the existing product from the database
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        console.log('Existing images before update:', product.images);
+
+        // Check if there are files and if they are an array
+        if (req.files && Array.isArray(req.files)) {
+            // Map filenames from files array
+            images = req.files.map((file) => file.filename);
+        }
+        
+        // Ensure product.images is an array before concatenating
+        images = [...(product.images || []), ...images];
+
+        console.log('New images array after concatenation:', images);
+
+        const updatedProductFields = {
+            productName,
+            category,
+            size,
+            Price,
+            stock,
+            description,
+            images,
+        };
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            productId,
+            { $set: updatedProductFields },
+            { new: true }
+        );
+
+        console.log('Updated product:', updatedProduct);
+
+        if (!updatedProduct) {
+            return res.status(404).send('Product not found');
+        }
 
         res.redirect('/admin/product');
     } catch (error) {

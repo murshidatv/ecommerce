@@ -59,7 +59,7 @@
         }
 
         .btn {
-            background-color: #4CAF50;
+            background-color:#c66;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -68,7 +68,7 @@
         }
 
         .btn:hover {
-            background-color: #45a049;
+            background-color: #c66;
         }
 
         #inputState {
@@ -378,21 +378,14 @@
                                                 alt="Existing Image <%= i + 1 %>"
                                                 style="max-width: 100px; max-height: 100px; margin-top: 10px; cursor: pointer;"
                                                 onclick="document.getElementById('productImage<%= i + 1 %>').click();"
-                                             <a href="/removeImage/<%= product.images[i] %>/"><button>Remove1</button>
-
-                                                 
-                                            </a>
-                                            <a href="/admin/remove-image/<%= product._id %>/<%= product.images[i] %>">
-                                              <button type="button">Remove</button>
+                                              
+                                            >
+                                            <a href="/admin/remove-image/<%= product._id %>/<%= product.images[i] %>"><br><br>
+                                              <button type="button" class="btn text-dark update" >Remove</button>
                                           </a>
                                           
-                                            
-                   
-                                            
                                             <br>
                                 
-                                          
-                                          
                                             <input
                                                 type="file"
                                                 name="images"

@@ -1,4 +1,4 @@
-
+/*
 const firebaseConfig ={
     apiKey: "AIzaSyDryxavKlp2_FZdwPoBbsBpiYQRmx9hYzk",
     authDomain:  "zouq-ecommerce.firebaseapp.com",
@@ -10,3 +10,4 @@ const firebaseConfig ={
   };
   
   module.exports = firebaseConfig;
+*/
