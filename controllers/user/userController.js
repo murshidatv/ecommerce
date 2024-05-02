@@ -29,47 +29,51 @@ const securePassword = async (password) => {
   }
 }
 /*
+
+*/
+
 // send mail
-const verifyMail=async(name,email,otp)=>{
+const verifyMail = async (name, email, otp) => {
   try {
-     
-    const transporter=  nodemailer.createTransport({
-          host:'smtp.gmail.com',
-          port:587,
-          secure: false,
-          requireTLS:true,
-          auth:{
-              user:'thasnikabeer2016@gmail.com',
-              pass:'zgam kliy pinj galh'
-          }
-  
-      });
-  
-  const mailOption={
-      from:'thasnikabeer2016@gmail.com',
-      to:email,
-      subject:'otp verification ',
-      html:<p>Hi ${name},your OTP is ${otp}.Please use this to verify your email.<p>
-      
-  }
-  transporter.sendMail(mailOption,(error,info)=>{
-       if(error) {
-          console.log(error);
-       }else{
-          console.log("Email has been sent:",info.response);
-       }
-  })
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: 'murshidatv@gmail.com',
+        pass: 'jvnf zmkk gkru btna'
+      }
+
+    });
+
+    const mailOption = {
+      from: 'murshidatv@gmail.com',
+      to: email,
+      subject: 'otp verification ',
+      html: `<p>Hi ${name},your OTP is ${otp}.Please use this to verify your email.<p>`
+
+    }
+    transporter.sendMail(mailOption, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email has been sent:", info.response);
+      }
+    })
   } catch (error) {
-      console.log(error.message);
+    console.log(error.message);
   }
-  }
+}
 
+//reset password sent mail
 
-
-//rest password sent mail
-  
 const resetPassword=async(name,email,token)=>{
-  try {  
+  try {
+    
+      
+        
     const transporter=  nodemailer.createTransport({
           host:'smtp.gmail.com',
           port:587,
@@ -86,7 +90,7 @@ const resetPassword=async(name,email,token)=>{
       from:config.emailUser,
       to:email,
       subject:'For reset password ',
-      html:<p>Hi ${name}, please click here to <a href="http://localhost:3000/forgot-password?token=${token}">Reset</a> your password</p>
+      html:`<p>Hi ${name}, please click here to <a href="http://localhost:3000/forgot-password?token=${token}">Reset</a> your password</p>`
       
   }
   transporter.sendMail(mailOption,(error,info)=>{
@@ -101,16 +105,19 @@ const resetPassword=async(name,email,token)=>{
   }
   }
 
-  
 
-// register
-const register = async (req, res) => {
-  try {
-    res.render("register");
-  } catch (error) {
-    res.redirect(error.message);
-  }
-};
+//register 
+const register= async(req,res)=>{
+    try{
+        res.render('register')
+    }catch(error){
+        console.log(error.message);
+    }
+
+}
+
+
+
 
 const userData = async (req, res) => {
   try {
@@ -171,6 +178,33 @@ const userData = async (req, res) => {
           // Send OTP to email
           verifyMail(req.body.name, req.body.email, otp);
           res.render('otp', { userId: user.id });
+
+          // If referral code was used, credit both the user and the referrer
+          if (data.referralCodeUsed) {
+              const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
+              if (referrer) {
+                  // Credit the user and the referrer
+                  user.wallet += 50;
+                  referrer.wallet += 50;
+
+                  // Update the wallet history for the user
+                  user.walletHistory.push({
+                      type: 'credit',
+                      amount: 50,
+                      description: 'Received 50 Rs for using referral code',
+                  });
+
+                  // Update the wallet history for the referrer
+                  referrer.walletHistory.push({
+                      type: 'credit',
+                      amount: 50,
+                      description: 'Received 50 Rs for referral',
+                  });
+
+                  await user.save();
+                  await referrer.save();
+              }
+          }
       } else {
           res.render('register', { message: "Registration failed" });
       }
@@ -180,7 +214,8 @@ const userData = async (req, res) => {
   }
 }
 
-// Verify OTP and render email or error
+
+
 const verify = async (req, res) => {
   try {
       const userId = req.params.userId;
@@ -214,12 +249,15 @@ const verify = async (req, res) => {
   }
 };
 
-//resend otp
+
+
 const resendOTP = async (req, res) => {
   try {
       console.log('Resend OTP ');
   //   const userId = req.params.userId;
   const userId = mongoose.Types.ObjectId.createFromHexString(req.params.userId);
+
+
 
     console.log('User ID',userId);
     // Retrieve user
@@ -250,7 +288,6 @@ const resendOTP = async (req, res) => {
   }
 };
 
-
 const emailVerified = (req, res) => {
     try {
         res.render('email-verified');
@@ -259,49 +296,90 @@ const emailVerified = (req, res) => {
     }
 };
 
-
-
-
-
-*/
-
-// send mail
-const verifyMail = async (name, email, otp) => {
-  try {
-
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user: 'murshidatv@gmail.com',
-        pass: 'jvnf zmkk gkru btna'
-      }
-
-    });
-
-    const mailOption = {
-      from: 'murshidatv@gmail.com',
-      to: email,
-      subject: 'otp verification ',
-      html: `<p>Hi ${name},your OTP is ${otp}.Please use this to verify your email.<p>`
-
+// render login
+const login=async(req,res)=>{
+    try{
+        res.render('login')
+    }catch(error){
+        console.log(error.message);
     }
-    transporter.sendMail(mailOption, (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email has been sent:", info.response);
+
+}
+//login user and redirect to home
+
+
+const verifylogin = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return res.render('login', { message: "Email and password are required" });
       }
-    })
+  
+      const userLogin = await User.findOne({ email });
+  
+      if (!userLogin) {
+        return res.render('login', { message: "Incorrect email or password..." });
+      }
+  
+      const passwordMatch = await bcrypt.compare(password, userLogin.password);
+      
+      if (!passwordMatch) {
+        return res.render('login', { message: "Incorrect email or password" });
+      }
+  
+      if (!userLogin.is_varified) {
+        return res.render('login', { message: "Incorrect email or password" });
+      }
+  
+      if (userLogin.isBlocked) {
+        return res.render('login', { message: "User account is blocked, choose another account" });
+      }
+  
+      req.session.user_id = userLogin._id;
+      res.redirect('/home');
+    } catch (error) {
+      console.log(error.message);
+      // Handle other error conditions or uncomment the line below to send a generic error response.
+      // res.status(500).send('Internal Server Error');
+    }
+  };
+
+
+//home page
+const homepage = async (req, res) => {
+  try {
+      const isLoggedIn = req.session.user_id ? true : false;
+       res.render('home', { isLoggedIn});     
+      
   } catch (error) {
-    console.log(error.message);
+      console.log(error.message);
+      res.status(500).send('Internal Server Error');
   }
+};
+
+
+const userLogout=async(req,res)=>{
+    try{
+        req.session.destroy();
+        res.redirect('/');
+      
+    }catch(error){
+        console.log(error.message);
+    }
+
 }
 
 
 
+
+
+
+
+
+
+
+/*
 
 const loadRegister = async (req, res) => {
   try {
@@ -551,7 +629,7 @@ const userLogout = async(req,res)=>{
        console.log(error.message);
    }
 }
-*/
+
 
 
 
@@ -603,7 +681,7 @@ const verifylogin = async (req, res) => {
     // res.status(500).send('Internal Server Error');
   }
 };
-
+*/
 
 const viewProduct = async (req, res) => {
   try {
