@@ -70,12 +70,12 @@ admin_route.get('/logout',auth.isLogin,adminController.logout);
 
 //order management 
 
-admin_route.get('/loadorder',auth.isLogin,categoryController.order);
-admin_route.post('/update-status/:orderId', auth.isLogin, categoryController.updateStatus);
-admin_route.post('/confirm-order-cancellation/:orderId',auth.isLogin, categoryController.confirmOrderCancellation);
+admin_route.get('/loadorder',auth.isLogin,orderController.order);
+admin_route.post('/update-status/:orderId', auth.isLogin, orderController.updateStatus);
+admin_route.post('/confirm-order-cancellation/:orderId',auth.isLogin, orderController.confirmOrderCancellation);
 
-admin_route.get('/canceled-orders',auth.isLogin, categoryController.viewCanceledOrders);
-admin_route.get('/order-return',auth.isLogin,categoryController.viewReturnedOrders);
+admin_route.get('/canceled-orders',auth.isLogin, orderController.viewCanceledOrders);
+admin_route.get('/order-return',auth.isLogin,orderController.viewReturnedOrders);
 
 
 

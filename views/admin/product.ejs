@@ -297,8 +297,15 @@
 
                                 <th scope="col">Size</th>
                                 <th scope="col">Price</th>
+                              
 
+                                <th scope="col">Discount price</th>
                                 <th scope="col">Stock</th>
+                                <th scope="col">Category offer</th>
+
+                                <th scope="col">Product Offer Amount</th>
+                                 <th scope="col">Offer End Date</th>
+                                
                                 <th scope="col">Action</th>
                                 <th scope="col">status</th>
 
@@ -334,13 +341,42 @@
                                     <td>
                                       <%= product.size %>
                                     </td>
-                                    <td>
-                                      <%= product.Price %>
-                                    </td>
+                                 
+                                    <td><%= product.Price %></td>
+                                    <td>  <% if (product.Price !== product.newPrice) { %>
 
-                                    <td>
-                                      <%= product.stock %>
-                                    </td>
+                                    <%= product.newPrice %>
+                                      <% } else { %>
+                                          No Discount
+                                       <% } %>
+                                      </td>
+                                      <td><%= product.stock %></td>
+
+                                     <td>
+                                      <% if (product.category && product.category.offer && product.offer && product.category.offer.amount) { %>
+                                          <p class="category-offer">
+                                              Category Offer: <%= product.category.offer.amount %>% off on this product!
+                                          </p>
+                                      <% } %>
+                                     </td>
+                                      <td>
+                                          <% if (product.offer && product.offer.amount) { %>
+                                              <%= product.offer.amount %>%
+                                          <% } else { %>
+                                             No offer
+                                          <% } %>
+                                      </td>
+                                      <td>
+                                          <% if (product.offer && product.offer.endDate) { %>
+                                              <%= product.offer.endDate.toLocaleDateString() %>
+                                          <% } else { %>
+                                              No offer
+                                          <% } %>
+                                      </td>
+
+
+
+
 
 
 

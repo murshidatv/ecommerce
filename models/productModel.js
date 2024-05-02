@@ -28,10 +28,24 @@ const mongoose=require("mongoose");
     Price: {
         type: Number,
     },
+    newPrice: {
+        type: Number,
+    },
     stock:{
         type:Number,
         required: true,
         min: 0, 
+    },
+    offer: {
+        type: {
+            type: String,
+        },
+        amount: {
+            type: Number,
+        },
+        endDate: {
+            type: Date,
+        },
     },
 
     description:{

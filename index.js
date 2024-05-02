@@ -56,6 +56,16 @@ app.use('/',userRoute);
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin',adminRoute);
 
+// Catch 404 and forward to error handler
+
+app.use(function(req, res, next) {
+  res.status(404).render('user/404', { pageTitle: 'Page Not Found' });
+});
+
+
+
+
+
 app.listen(process.env.PORT,function(){
     console.log("server is running...");
 });

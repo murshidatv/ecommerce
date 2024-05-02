@@ -28,7 +28,242 @@ const securePassword = async (password) => {
     console.log(error.message);
   }
 }
+/*
+// send mail
+const verifyMail=async(name,email,otp)=>{
+  try {
+     
+    const transporter=  nodemailer.createTransport({
+          host:'smtp.gmail.com',
+          port:587,
+          secure: false,
+          requireTLS:true,
+          auth:{
+              user:'thasnikabeer2016@gmail.com',
+              pass:'zgam kliy pinj galh'
+          }
+  
+      });
+  
+  const mailOption={
+      from:'thasnikabeer2016@gmail.com',
+      to:email,
+      subject:'otp verification ',
+      html:<p>Hi ${name},your OTP is ${otp}.Please use this to verify your email.<p>
+      
+  }
+  transporter.sendMail(mailOption,(error,info)=>{
+       if(error) {
+          console.log(error);
+       }else{
+          console.log("Email has been sent:",info.response);
+       }
+  })
+  } catch (error) {
+      console.log(error.message);
+  }
+  }
 
+
+
+//rest password sent mail
+  
+const resetPassword=async(name,email,token)=>{
+  try {  
+    const transporter=  nodemailer.createTransport({
+          host:'smtp.gmail.com',
+          port:587,
+          secure: false,
+          requireTLS:true,
+          auth:{
+              user:config.emailUser,
+              pass:config.emailPassword
+          }
+  
+      });
+  
+  const mailOption={
+      from:config.emailUser,
+      to:email,
+      subject:'For reset password ',
+      html:<p>Hi ${name}, please click here to <a href="http://localhost:3000/forgot-password?token=${token}">Reset</a> your password</p>
+      
+  }
+  transporter.sendMail(mailOption,(error,info)=>{
+       if(error) {
+          console.log(error);
+       }else{
+          console.log("Email has been sent:",info.response);
+       }
+  })
+  } catch (error) {
+      console.log(error.message);
+  }
+  }
+
+  
+
+// register
+const register = async (req, res) => {
+  try {
+    res.render("register");
+  } catch (error) {
+    res.redirect(error.message);
+  }
+};
+
+const userData = async (req, res) => {
+  try {
+      const sequirepass = await strongPassword(req.body.password);
+      const data = new User({
+          name: req.body.name,
+          email: req.body.email,
+          password: sequirepass,
+          phone: req.body.phone,
+          image: req.file.filename,
+          is_admin: 0,
+          referralCodeUsed: req.body.referralCodeUsed, 
+      });
+
+      // Check if the user exists in the database based on email
+      const existingUserEmail = await User.findOne({ email: data.email });
+      if (existingUserEmail) {
+          res.render('register', { message: "User already exists. Please choose a different email." });
+          return;
+      }
+
+      // Check if the mobile number exists in the database
+      const existingUserPhone = await User.findOne({ phone: data.phone });
+      if (existingUserPhone) {
+          res.render('register', { message: "Mobile number already exists. Please choose a different mobile number." });
+          return;
+      }
+
+      // Check if the referral code exists in the database
+      if (data.referralCodeUsed) {
+          const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
+          if (!referrer) {
+              res.render('register', { message: "Invalid referral code. Please check and try again." });
+              return;
+          }
+      }
+
+      const user = await data.save();
+
+      if (user) {
+          // Generate OTP
+          const otp = randomstring.generate({
+              length: 6,
+              charset: 'numeric',
+          });
+
+          // Store OTP in the user's otp field
+          user.otp = otp;
+           // Generate referral code
+            const referralCode = crypto.randomBytes(8).toString('hex'); 
+
+           // Set referral code in user record
+            user.referralCode = referralCode;
+
+          await user.save();
+          console.log("OTP set:", user.otp);
+
+          // Send OTP to email
+          verifyMail(req.body.name, req.body.email, otp);
+          res.render('otp', { userId: user.id });
+      } else {
+          res.render('register', { message: "Registration failed" });
+      }
+
+  } catch (error) {
+      console.log(error.message);
+  }
+}
+
+// Verify OTP and render email or error
+const verify = async (req, res) => {
+  try {
+      const userId = req.params.userId;
+      const enteredOTP = req.body.otp;
+      const user = await User.findById(userId);
+      if (user) {
+          const currentTime = Math.floor(new Date().getTime() / 1000);
+          const otpExpiryTime = user.otp_expiry_time || 0;
+
+          if (otpExpiryTime > 0 && currentTime > otpExpiryTime) {
+              user.otp = '';
+              user.otp_expiry_time = 0;
+              await user.save();
+              return res.status(400).json({ message: 'OTP has expired. Please request a new one', expired: true });
+          }
+
+          if (user.otp === enteredOTP) {
+              user.is_varified = true;
+              user.otp_expiry_time = 0;
+              await user.save();
+              return res.json({ success: true, message: 'Email verified successfully' });
+          } else {
+              return res.status(400).json({ message: 'Incorrect OTP. Please try again.' });
+          }
+      } else {
+          return res.status(404).json({ message: 'User not Found' });
+      }
+  } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+//resend otp
+const resendOTP = async (req, res) => {
+  try {
+      console.log('Resend OTP ');
+  //   const userId = req.params.userId;
+  const userId = mongoose.Types.ObjectId.createFromHexString(req.params.userId);
+
+    console.log('User ID',userId);
+    // Retrieve user
+    const user = await User.findById(userId);
+  
+   console.log('user',user);
+    if (user) {
+      // Generate and store new OTP
+      const newOTP = randomstring.generate({
+        length: 6,
+        charset: 'numeric',
+      });
+
+      user.otp = newOTP;
+      user.otp_expiry_time=Math.floor(new Date().getTime()/1000)+300;
+      await user.save();
+
+      // Send new OTP to email
+      verifyMail(user.name, user.email, newOTP);
+
+      res.render('otp', { userId: userId, message: 'New OTP sent successfully.' });
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+const emailVerified = (req, res) => {
+    try {
+        res.render('email-verified');
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+
+
+
+
+*/
 
 // send mail
 const verifyMail = async (name, email, otp) => {
@@ -417,7 +652,7 @@ const viewProductList = async (req, res) => {
       };
     }
 
-  
+
     let sortCriteria = {};
     switch (sortOption) {
       case 'priceAsc':
@@ -437,29 +672,23 @@ const viewProductList = async (req, res) => {
         // Default sorting criteria if none provided
         sortCriteria = { productName: 1 };
     }
- // Fetch the total number of products that match the query
- const totalProducts = await Product.countDocuments(query);
- const totalPages = Math.ceil(totalProducts / perPage);
+    // Fetch the total number of products that match the query
+    const totalProducts = await Product.countDocuments(query);
+    const totalPages = Math.ceil(totalProducts / perPage);
 
- // Now, perform the query with the sorting criteria
- const products = await Product.find(query)
-   .populate('category')
-   .sort(sortCriteria)
-   .skip((page - 1) * perPage)
-   .limit(perPage);
-
-
-
-
-
-
-
-   /* const products = await Product.find(query)
+    // Now, perform the query with the sorting criteria
+    const products = await Product.find(query)
       .populate('category')
-      .sort({ Price: sortOption === 'asc' ? 1 : -1 })
+      .sort(sortCriteria)
       .skip((page - 1) * perPage)
       .limit(perPage);
-      */
+
+    /* const products = await Product.find(query)
+       .populate('category')
+       .sort({ Price: sortOption === 'asc' ? 1 : -1 })
+       .skip((page - 1) * perPage)
+       .limit(perPage);
+       */
 
     // Fetch offered categories
     //const offeredCategories = await Category.find({ offer: { $exists: true } });
@@ -482,72 +711,37 @@ const viewProductList = async (req, res) => {
   }
 };
 
-/*
-const viewProductList = async (req, res) => {
+
+
+const viewOfferedCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
-    const selectedCategory = req.query.category;
-    const sortOption = req.query.sort || 'productName';
-    const sortOrder = req.query.order || 'asc';
-    const searchQuery = req.query.search || '';
+      // Find categories that have an offer
+      const offeredCategories = await Category.find({ offer: { $exists: true } });
 
-    // Pagination variables
-    const page = parseInt(req.query.page) || 1;
-    const perPage = 6;
-
-    let query = {};
-    let sort = {};
-
-    if (selectedCategory && selectedCategory !== 'all') {
-      query.category = selectedCategory;
-    }
-
-    if (searchQuery) {
-      query.$or = [{ productName: { $regex: new RegExp(searchQuery, 'i') } }];
-    }
-
-    // Determine the sorting option
-    switch (sortOption) {
-      case 'price':
-        sort.Price = sortOrder === 'asc' ? 1 : -1;
-        break;
-      case 'popularity':
-        sort.salesCount = sortOrder === 'asc' ? 1 : -1; // Replace 'salesCount' with your field for popularity
-        break;
-      case 'newArrival':
-        sort.createdAt = sortOrder === 'asc' ? 1 : -1; // Replace 'createdAt' with your field for new arrivals
-        break;
-      case 'productName':
-      default:
-        sort.productName = sortOrder === 'asc' ? 1 : -1;
-        break;
-    }
-
-    const totalProducts = await Product.countDocuments(query);
-    const totalPages = Math.ceil(totalProducts / perPage);
-
-    const products = await Product.find(query)
-      .populate('category')
-      .sort(sort)
-      .skip((page - 1) * perPage)
-      .limit(perPage);
-
-    res.render('productList', {
-      products,
-      categories,
-      selectedCategory,
-      sortDropdownValue: sortOption,
-      sortOrder,
-      searchQuery,
-      currentPage: page,
-      totalPages,
-    });
+      // Pass the offered categories to the view
+      res.render('offeredCategories', { offeredCategories });
   } catch (error) {
-    console.error('Error occurred while processing request:', error);
-    res.status(500).render('error', { errorMessage: 'An error occurred while processing your request. Please try again later.' });
+      console.error(error.message);
+      res.status(500).send('Internal Server Error');
   }
 };
-*/
+
+
+const viewOfferedCategoriesProducts=async(req,res)=>{
+  try {
+    const categoryId = req.params.categoryId;
+
+    // Fetch products under the specified category
+    const products = await Product.find({ category: categoryId }).populate({ path: 'category', select: 'categoryName' });
+    const category = await Category.findById(categoryId); 
+
+    res.render('productsUnderCategory', { category,products,categoryName: category.categoryName });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
 
 const viewProfile = async (req, res) => {
   try {
@@ -800,9 +994,9 @@ const loadorderHistory = async (req, res) => {
 };
 
 
-const orderSucess =async(req,res)=>{
+const orderSucess = async (req, res) => {
   try {
-   res.render('ordersuccess');
+    res.render('ordersuccess');
   } catch (error) {
     console.log(error.message);
   }
@@ -822,15 +1016,15 @@ const placeorder = async (req, res) => {
     const cartTotal = calculateTotalAmount(user.cart);
 
     // Helper function to calculate the total amount of the cart
-function calculateTotalAmount(cart) {
-  return cart.reduce((total, cartItem) => {
-      const itemTotal = cartItem.product.Price * cartItem.quantity;
-      return total + itemTotal;
-  }, 0);
+    function calculateTotalAmount(cart) {
+      return cart.reduce((total, cartItem) => {
+        const itemTotal = cartItem.product.Price * cartItem.quantity;
+        return total + itemTotal;
+      }, 0);
 
-  
-}
-console.log(cartTotal);
+
+    }
+    console.log(cartTotal);
     const paymentMethod = req.body.paymentMethod;
     const userName = user.name;
 
@@ -844,11 +1038,11 @@ console.log(cartTotal);
           product: cartItem.product,
           quantity: cartItem.quantity,
         })),
-        totalAmount:cartTotal,
-        
+        totalAmount: cartTotal,
+
         payment: paymentMethod,
-        razorpayOrderId: uuid.v4() 
- // Generate a unique UUID as the placeholder value
+        razorpayOrderId: uuid.v4()
+        // Generate a unique UUID as the placeholder value
       });
 
       await order.save();
@@ -878,21 +1072,21 @@ console.log(cartTotal);
       await user.save();
 
       // Render the success page
-      res.render('ordersuccess', {  order });
+      res.render('ordersuccess', { order });
 
     } else if (paymentMethod === 'onlinePayment') {
       // Create Razorpay order
       res.redirect('/checkout');
-   
-      }
-     else {
+
+    }
+    else {
       // Handle other payment methods if needed
       res.status(400).send('Invalid payment method selected.');
     }
   } catch (error) {
     console.error('Error in placeorder:', error);
 
-   
+
     if (error.name === 'ValidationError') {
       res.status(400).send(`Validation Error: ${error.message}`);
     } else {
@@ -903,68 +1097,6 @@ console.log(cartTotal);
 
 
 
-
-
-
-
-/*
-module.exports = {
-  async search(req, res) {
-    try {
-      let query = {};
-
-      // Filter by name if provided in query parameters
-      if (req.query.name) {
-        query.name = { $regex: req.query.name, $options: 'i' };
-      }
-
-      // Implement sorting based on query parameters
-      let sortQuery = {};
-
-      if (req.query.sortBy) {
-        switch (req.query.sortBy) {
-          case 'popularity':
-            sortQuery = { popularity: -1 };
-            break;
-          case 'priceLowToHigh':
-            sortQuery = { Price: 1 };
-            break;
-          case 'priceHighToLow':
-            sortQuery = { Price: -1 };
-            break;
-          case 'averageRatings':
-            sortQuery = { averageRatings: -1 };
-            break;
-          case 'featured':
-            sortQuery = { featured: -1 };
-            break;
-          case 'newArrivals':
-            sortQuery = { createdAt: -1 };
-            break;
-          case 'alphabetical':
-            sortQuery = { name: 1 };
-            break;
-          default:
-            sortQuery = {};
-        }
-      }
-
-      const products = await Product.find(query).sort(sortQuery);
-      
-      // If the request is AJAX, return only the product list HTML
-      if (req.xhr) {
-        res.render('partials/productList', { products }); // Render a partial template with search results
-      } else {
-        res.render('productList', { products }); // Render the productList.ejs template with search results
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Server Error' });
-    }
-  }
-};
-
-*/
 
 // CANCEL ORDER
 
@@ -997,7 +1129,7 @@ const orderCancel = async (req, res) => {
 //cancelled order-reason page
 const reasonpage = async (req, res) => {
   try {
-   
+
     const orderId = req.params.orderId;
     console.log("orderId:", orderId);
     const order = await Order.findById(orderId).populate('products.product');
@@ -1016,12 +1148,12 @@ const reasonpage = async (req, res) => {
 };
 
 //to View Order details
-const viewOrder= async (req,res)=>{
+const viewOrder = async (req, res) => {
   try {
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId).populate({
-      path:'products.product',
-      model:'Product'
+      path: 'products.product',
+      model: 'Product'
     })
     if (!order) {
       return res.status(404).send('Order not found');
@@ -1029,10 +1161,10 @@ const viewOrder= async (req,res)=>{
     const totalOrderPrice = order.products.reduce((total, productDetail) => {
       return total + (productDetail.quantity * productDetail.product.Price);
     }, 0);
-console.log(totalOrderPrice);
-    res.render('viewOrder', { order ,totalOrderPrice});
+    console.log(totalOrderPrice);
+    res.render('viewOrder', { order, totalOrderPrice });
   } catch (error) {
-    
+
   }
 }
 
@@ -1048,6 +1180,9 @@ module.exports = {
   resendOTP,
   viewProduct,
   viewProductList,
+  viewOfferedCategories,
+  viewOfferedCategoriesProducts,
+  errorload,
 
   viewProfile,
   viewEditProfileImage,

@@ -64,6 +64,10 @@ user_route.get('/email-verified', userController.emailVerified);
 user_route.post('/resend-otp/:userDataId',userController.resendOTP);
 user_route.get('/logout',auth.isLogin,userController.userLogout)
 
+
+user_route.get('/view-offered-categories', userController.viewOfferedCategories);
+user_route.get('/category/:categoryId/products', userController.viewOfferedCategoriesProducts);
+user_route.get('/errorload',userController.errorload)
 user_route.get('/product-list',userController.viewProductList);
 user_route.get('/product/:productId',userController.viewProduct);
 

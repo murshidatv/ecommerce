@@ -63,7 +63,7 @@
         }
 
         .btn {
-            background-color: rgb(10, 109, 170);
+            background-color:#c66;;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -338,7 +338,27 @@
                             <%= message %>
                         </div>
                     <% } %>
-            
+                            
+                    <div class="form-group">
+                      <label for="offerType" class="text-light">Offer Type</label>
+                      <select name="offerType" id="offerType">
+                          <option value="percentage">Percentage</option>
+                          <!-- Add other offer types as needed -->
+                      </select>
+                  </div>
+              
+                  <div class="form-group">
+                      <label for="offerAmount" class="text-light">Offer Amount (%)</label>
+                      <input type="text" name="offerAmount" id="offerAmount" placeholder="50">
+                      <span id="offerAmountError" class="error"></span>
+                  </div>
+              
+                  <div class="form-group">
+                      <label for="offerEndDate" class="text-light">Offer End Date</label>
+                      <input type="date" name="offerEndDate" id="offerEndDate">
+                      <span id="offerEndDateError" class="error"></span>
+                  </div>
+   
                     
                    
                     <div class="form-group">
@@ -349,22 +369,43 @@
             
             <script>
                 function categoryValidation() {
+                    
+                    // Retrieves the value of the input field with the id 'categoryName'.
                     var categoryName = document.getElementById('categoryName').value;
-                   
+                    var offerAmount = document.getElementById('offerAmount').value;
+                    var offerEndDate = document.getElementById('offerEndDate').value;
             
+                    // Clears any previous error messages for these fields.
                     document.getElementById('categoryNameError').innerText = "";
-                   
+                    document.getElementById('offerAmountError').innerText = "";
+                    document.getElementById('offerEndDateError').innerText = "";
+
                    
                      // Validate Category Name
+                     // Validates the 'categoryName' field to ensure it is not empty after trimming white spaces.
                      if (categoryName.trim() === "") {
                         document.getElementById('categoryNameError').innerText = "Category Name is required";
                         return false;
                      }
+                     // Validates the 'categoryName' field to ensure it contains only alphabetic characters.
                      if (!/^[a-zA-Z]+$/.test(categoryName)) {
                         document.getElementById('categoryNameError').innerText = "Category Must Be Characters";
                         return false;
                      }
-            
+
+                     if(isNaN(offerAmount)){
+                      document.getElementById('offerAmountError').innerText = "Amount must be a Number"
+                      return false;
+
+                     }
+                     if(offerAmount.trim()!== "" &&offerEndDate.trim() ===""){
+                      // If 'offerEndDate' is empty, sets an error message and returns false.
+                      document.getElementById('offerEndDateError').innerText = "Offer End Date is required when amount is entered";
+                      return false;
+                    }
+
+                     // If all validations pass, returns true to allow form submission
+
                     return true;
                 }
             </script>
