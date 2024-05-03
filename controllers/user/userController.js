@@ -18,16 +18,17 @@ const { product } = require('../admin/categoryController');
 const { render } = require('ejs');
 
 const randomstring = require('randomstring');
-const securePassword = async (password) => {
+
+const strongPassword = async (password) => {
   try {
-
-    const passwordHash = await bcrypt.hash(password, 10);
-    return passwordHash;
-
+      const saltRounds = 10;
+      const passwordHash = await bcrypt.hash(password, saltRounds);
+      return passwordHash;
   } catch (error) {
-    console.log(error.message);
+      throw new Error('Error hashing password: ' + error.message);
   }
 }
+
 /*
 
 */
@@ -116,9 +117,6 @@ const register= async(req,res)=>{
 
 }
 
-
-
-
 const userData = async (req, res) => {
   try {
       const sequirepass = await strongPassword(req.body.password);
@@ -126,11 +124,12 @@ const userData = async (req, res) => {
           name: req.body.name,
           email: req.body.email,
           password: sequirepass,
-          phone: req.body.phone,
+          mobile: req.body.mobile,
           image: req.file.filename,
           is_admin: 0,
           referralCodeUsed: req.body.referralCodeUsed, 
       });
+      
 
       // Check if the user exists in the database based on email
       const existingUserEmail = await User.findOne({ email: data.email });
@@ -140,7 +139,7 @@ const userData = async (req, res) => {
       }
 
       // Check if the mobile number exists in the database
-      const existingUserPhone = await User.findOne({ phone: data.phone });
+      const existingUserPhone = await User.findOne({ mobile: data.mobile });
       if (existingUserPhone) {
           res.render('register', { message: "Mobile number already exists. Please choose a different mobile number." });
           return;
@@ -212,7 +211,7 @@ const userData = async (req, res) => {
   } catch (error) {
       console.log(error.message);
   }
-}
+};
 
 
 
@@ -233,7 +232,7 @@ const verify = async (req, res) => {
           }
 
           if (user.otp === enteredOTP) {
-              user.is_varified = true;
+              user.is_verified = true;
               user.otp_expiry_time = 0;
               await user.save();
               return res.json({ success: true, message: 'Email verified successfully' });
@@ -279,6 +278,7 @@ const resendOTP = async (req, res) => {
       verifyMail(user.name, user.email, newOTP);
 
       res.render('otp', { userId: userId, message: 'New OTP sent successfully.' });
+      console.log('New OTP is',newOTP)
     } else {
       res.status(404).send('User not found');
     }
@@ -328,7 +328,7 @@ const verifylogin = async (req, res) => {
         return res.render('login', { message: "Incorrect email or password" });
       }
   
-      if (!userLogin.is_varified) {
+      if (!userLogin.is_verified) {
         return res.render('login', { message: "Incorrect email or password" });
       }
   
@@ -368,320 +368,9 @@ const userLogout=async(req,res)=>{
         console.log(error.message);
     }
 
-}
-
-
-
-
-
-
-
-
-
-
-/*
-
-const loadRegister = async (req, res) => {
-  try {
-    res.render('registration');
-
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-
-const insertUser = async (req, res) => {
-  try {
-    const secPassword = await securePassword(req.body.password);
-    const existingUser = await User.findOne({ email: req.body.email });
-
-    if (existingUser) {
-      return res.render('registration', { message: "Email already exists, try another one" });
-    }
-    // Check if the mobile number exists in the database
-    const existingUserMobile = await User.findOne({ mobile: req.body.mobile });
-    if (existingUserMobile) {
-      res.render('registration', { message: "Mobile number already exists. Please choose a different mobile number." });
-      return;
-    }
-
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      mobile: req.body.mobile,
-      image: req.file.filename,
-      password: secPassword,
-      is_admin: 0
-    });
-
-    const userData = await user.save();
-
-    //const user = await data.save();
-
-    if (userData) {
-      // Generate OTP
-      const otp = randomstring.generate({
-        length: 6,
-        charset: 'numeric',
-      });
-
-      // Store OTP in the user's otp field
-      userData.otp = otp;
-
-      await userData.save();
-      console.log("OTP set:", userData.otp);
-
-      // Send OTP to email
-      verifyMail(req.body.name, req.body.email, otp);
-      res.render('otp', { userId: userData.id });
-
-
-      await userData.save();
-      res.render('registration', { message: "Your registration has been successfull..." });
-      console.log("data save...")
-    }
-    else {
-      res.render('registration', { message: "Your registration has been failed" });
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-const verify = async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const enteredOTP = req.body.otp;
-    const userData = await User.findById(userId);
-    if (userData) {
-      const currentTime = Math.floor(new Date().getTime() / 1000);
-      const otpExpiryTime = userData.otp_expiry_time || 0;
-
-      if (otpExpiryTime > 0 && currentTime > otpExpiryTime) {
-        userData.otp = '';
-        userData.otp_expiry_time = 0;
-        await userData.save();
-        return res.status(400).json({ message: 'OTP has expired. Please request a new one', expired: true });
-      }
-
-      if (userData.otp === enteredOTP) {
-        userData.is_verified = true;
-        userData.otp_expiry_time = 0;
-        await userData.save();
-        return res.json({ success: true, message: 'Email verified successfully' });
-      } else {
-        return res.status(400).json({ message: 'Incorrect OTP. Please try again.' });
-      }
-    } else {
-      return res.status(404).json({ message: 'User not Found' });
-    }
-  } catch (error) {
-    console.log(error.message);
-    return res.status(500).json({ message: 'Internal Server Error' });
-  }
 };
 
 
-
-const resendOTP = async (req, res) => {
-  try {
-    console.log('Resend OTP ');
-    //   const userId = req.params.userId;
-    const userDataId = mongoose.Types.ObjectId.createFromHexString(req.params.userDataId);
-
-
-
-    console.log('User ID', userDataId);
-    // Retrieve user
-    const userData = await User.findById(userDataId);
-
-    console.log('userData', userData);
-    if (userData) {
-      // Generate and store new OTP
-      const newOTP = randomstring.generate({
-        length: 6,
-        charset: 'numeric',
-      });
-
-      userData.otp = newOTP;
-      console.log(newOTP);
-      userData.otp_expiry_time = Math.floor(new Date().getTime() / 1000) + 300;
-      await userData.save();
-
-      // Send new OTP to email
-      verifyMail(userData.name, userData.email, newOTP);
-      // Send JSON response indicating success
-      res.json({ success: true, message: 'New OTP sent successfully.' });
-      //res.render('otp', { userDataId: userDataId, message: 'New OTP sent successfully.' });
-    } else {
-      res.status(404).send('User not found');
-    }
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-const emailVerified = (req, res) => {
-  try {
-    res.render('email-verified');
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-
-
-
-
-
-
-
-// login user methods started
-
-const loginUser = async (req, res) => {
-  try {
-    res.render('login');
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-const verifyLogin = async (req, res) => {
-  try {
-
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const userData = await User.findOne({ email: email });
-
-    if (userData) {
-      const passwordMatch = await bcrypt.compare(password, userData.password);
-
-      if (passwordMatch && userData.is_admin === 0) {
-        // if (userData.is_verified === 0) {
-        //     console.log('Please verify your mail');
-        // } else {
-        req.session.user_id = userData._id;
-        res.redirect('/home');
-        // }
-      } else {
-        res.render('login', { message: 'Incorrect Username and Password' });
-      }
-    } else {
-      res.render('login', { message: 'Invalid Username' });
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-
-//home page
-const homePage = async (req, res) => {
-  try {
-    const isLoggedIn = req.session.user_id ? true : false;
-    res.render('home', { isLoggedIn });
-
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-
-const userLogout = async (req, res) => {
-  try {
-    req.session.destroy();
-    res.redirect('/');
-
-  } catch (error) {
-    console.log(error.message);
-  }
-
-}
-
-/* 
-
-const loadHome = async(req,res) =>{
-   try {
-       const userData = await User.findById({_id:req.session.user_id});
-
-       if(userData.is_admin === 0){
-           res.render('home',{user:userData});
-       }
-   } catch (error) {
-       console.log(error.message);
-   }
-}
-
-const userLogout = async(req,res)=>{
-   try{
-       req.session.destroy();
-       res.redirect('/');
-
-   }catch(error){
-       console.log(error.message);
-   }
-}
-
-
-
-
-// render login
-const login = async (req, res) => {
-  try {
-    res.render('login')
-  } catch (error) {
-    console.log(error.message);
-  }
-
-};
-//login user and redirect to home
-
-
-const verifylogin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.render('login', { message: "Email and password are required" });
-    }
-
-    const userLogin = await User.findOne({ email });
-
-    if (!userLogin) {
-      return res.render('login', { message: "Incorrect email or password..." });
-    }
-
-    const passwordMatch = await bcrypt.compare(password, userLogin.password);
-
-    if (!passwordMatch) {
-      return res.render('login', { message: "Incorrect email or password" });
-    }
-
-    if (!userLogin.is_verified) {
-      return res.render('login', { message: "Incorrect email or password" });
-    }
-
-    if (userLogin.isBlocked) {
-      return res.render('login', { message: "User account is blocked, choose another account" });
-    }
-
-    req.session.user_id = userLogin._id;
-    res.redirect('/home');
-  } catch (error) {
-    console.log(error.message);
-    // Handle other error conditions or uncomment the line below to send a generic error response.
-    // res.status(500).send('Internal Server Error');
-  }
-};
-*/
 
 const viewProduct = async (req, res) => {
   try {
@@ -1247,15 +936,18 @@ const viewOrder = async (req, res) => {
 }
 
 module.exports = {
-  loadRegister,
-  insertUser,
-  loginUser,
+  
+  register,
+  userData,
   verify,
-  verifyLogin,
-  homePage,
+  verifylogin,
+  login,
+  homepage,
   userLogout,
   emailVerified,
   resendOTP,
+
+
   viewProduct,
   viewProductList,
   viewOfferedCategories,
