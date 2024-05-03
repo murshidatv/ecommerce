@@ -13,7 +13,7 @@ user_route.use(session({
 }));
 
 
-//user_route.use(session({secret:config.sessionSecret}));
+user_route.use(session({secret:config.sessionSecret}));
 const auth = require("../middleware/auth");
 
 user_route.set('view engine','ejs');
@@ -53,6 +53,10 @@ user_route.get('/email-verified', userController.emailVerified);
 user_route.get('/logout',auth.isLogin,userController.userLogout);
 user_route.post('/resend-otp/:userId',userController.resendOTP);
 
+user_route.get('/forgot',userController.forgotLoad);
+user_route.post('/forgot',userController.forgotPass);
+user_route.get('/forgot-password',userController.forgotpassword);
+user_route.post('/forgot-password',userController.restPassword);
 
 
 

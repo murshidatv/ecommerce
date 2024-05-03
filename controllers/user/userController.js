@@ -2,11 +2,16 @@ const User = require('../../models/userModel');
 const Category = require('../../models/categoryModel')
 const Product = require('../../models/productModel');
 const Order = require('../../models/orderModel');
+const config=require('../../config/config');
 
 const bcrypt = require('bcrypt');
 const path = require('path');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+
+
+
+
 
 const uuid = require('uuid');
 const { v4: uuidv4 } = require('uuid');
@@ -91,7 +96,7 @@ const resetPassword=async(name,email,token)=>{
       from:config.emailUser,
       to:email,
       subject:'For reset password ',
-      html:`<p>Hi ${name}, please click here to <a href="http://localhost:3000/forgot-password?token=${token}">Reset</a> your password</p>`
+      html:`<p>Hi ${name}, please click here to <a href="http://localhost:4000/forgot-password?token=${token}">Reset</a> your password</p>`
       
   }
   transporter.sendMail(mailOption,(error,info)=>{
@@ -357,6 +362,66 @@ const homepage = async (req, res) => {
       res.status(500).send('Internal Server Error');
   }
 };
+
+
+
+
+//forgot
+const forgotLoad= async(req,res)=>{
+  try {
+    res.render('forget');
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+const forgotPass=async(req,res)=>{
+  try {
+    const email= req.body.email;
+   const dataUser= await User.findOne({email:email});
+   if (dataUser) {
+   console.log(dataUser);
+    if(dataUser.is_verified === false){
+      res.render('forget',{message:"please verify your mail"});
+
+    }
+    const randomString=randomstring.generate();
+    const updateData=await User.updateOne({email:email},{$set:{token:randomString}})
+    resetPassword(dataUser.name,dataUser.email,randomString);
+    res.render('forget',{message:"please check your mail for reset your password"})
+
+   }else{
+    res.render('forget',{message:"user email is incorrect"})
+   }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+const forgotpassword=async(req,res)=>{
+  try {
+    const token=req.query.token;
+   const tokenData= await User.findOne({token:token})
+   if(tokenData){
+    res.render('forgot-password',{userId:tokenData._id});
+
+   }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const restPassword=async(req,res)=>{
+  try {
+    const password=req.body.password;
+    const user_id=req.body.userId;
+    const securePassword=await strongPassword(password);
+    const updateuserData=await  User.findByIdAndUpdate({_id:user_id},{$set:{password:securePassword,  token:''}})
+    res.redirect('/login')
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
 
 const userLogout=async(req,res)=>{
@@ -946,6 +1011,10 @@ module.exports = {
   userLogout,
   emailVerified,
   resendOTP,
+  forgotLoad,
+  forgotPass,
+  forgotpassword,
+  restPassword,
 
 
   viewProduct,

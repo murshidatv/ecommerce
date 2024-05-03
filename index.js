@@ -15,18 +15,32 @@ const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/zouq";
 
 const express = require("express");
 const app = express();
-
+const session=require('express-session');
 //to resolve validation error
 app.use(
   express.urlencoded({ extended: true })
 );
 
 app.use(express.json());
+const config=require('./config/config');
+
+//session
+app.use(session({
+  secret:config.sessionSecret,
+  resave:false,
+  saveUninitialized:true
+}))
+
+
+
 /*app.use(express.static(path.join(__userImages, "public")));
 
 app.use(express.static('public',{ extensions: ['html', 'htm', 'webp', 'jpg', 'jpeg', 'png'] }));
 app.use(express.static('public'));
 */
+
+
+
 // Serve static files
 app.use(express.static('public', {
   extensions: ['html', 'htm', 'webp', 'jpg', 'jpeg', 'png'], // Specify allowed file extensions
@@ -36,6 +50,8 @@ app.use(express.static('public', {
       }
   }
 }));
+
+
 //for user routes
 const userRoute = require('./routes/userRoute');
 app.use('/',userRoute);
