@@ -61,10 +61,30 @@ admin_route.post('/new-product',auth.isLogin, multerMiddleware.array('images', 3
 admin_route.get('/edit-product/:productId',auth.isLogin,categoryController.LoadEditProduct);
 admin_route.post('/edit-product/:productId',auth.isLogin, multerMiddleware.array('images', 3),categoryController.editProduct);
 
+//category Management
+admin_route.get('/category',auth.isLogin,categoryController.category);
+admin_route.get('/add-category',auth.isLogin,categoryController.addCategory)
+admin_route.post('/new-category',auth.isLogin,categoryController.newCategory);
+admin_route.get('/load-edit/:categoryId',auth.isLogin,categoryController.LoadEdit);
+admin_route.post('/edit-category/:categoryId',auth.isLogin,categoryController.ediCategory)
+admin_route.post('/category/:categoryId/update-status', categoryController.updateCategoryStatus);
+
+
+// product management
+admin_route.get('/product',auth.isLogin,categoryController.product);
+admin_route.get('/add-product',auth.isLogin,categoryController.loadProduct)
+admin_route.post('/new-product',auth.isLogin, multerMiddleware.array('images', 3),categoryController.addProduct)
+admin_route.get('/edit-product/:productId',auth.isLogin,categoryController.LoadEditProduct);
+admin_route.post('/edit-product/:productId',auth.isLogin, multerMiddleware.array('images', 3),categoryController.editProduct);
+
 admin_route.get('/remove-image/:productId/:imageName', auth.isLogin, categoryController.removeImage);
 
 //admin_route.get('/product/:productId',categoryController.deleteProduct);
 admin_route.post('/product/:id/update-status', categoryController.updateProductStatus);
+admin_route.get('/remove-image/:productId/:imageName', auth.isLogin, categoryController.removeImage);
+
+//admin_route.get('/product/:productId',categoryController.deleteProduct);
+admin_route.post('/add-image/:productId', auth.isLogin,multerMiddleware.array('images',3),categoryController.addImage);
 
 admin_route.get('/logout',auth.isLogin,adminController.logout);
 

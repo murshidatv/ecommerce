@@ -33,6 +33,7 @@
 
         #add_user {
             max-width: 500px;
+            height: 1100px;
             margin: 50px auto;
             background-color: #fff;
             padding: 20px;
@@ -42,6 +43,7 @@
 
         .form-group {
             margin-bottom: 15px;
+            
         }
 
         label {
@@ -321,7 +323,7 @@
                         <div class="col-md-12 grid-margin stretch-card">
                          
                             <form action="/admin/edit-product/<%= product._id %>" method="POST" id="add_user" enctype="multipart/form-data" onsubmit="return productValidation(event)">
-                                <div class="new_uaer">
+                                <div class="new_user">
                                     <h2></h2> <br>
                                     <div class="form-group">
                                         <label for="productName" class="text-light">Product Name</label>
@@ -363,15 +365,19 @@
                                 <div class="form-group">
                                     Description <br>
                                     <textarea name="description" id="description" cols="50" rows="10"><%= product.description %></textarea>
-                                    <span id="discriptionError" style="color: red;"></span>
+                                    <span id="discriptionError" style="color: red;"></span><br>
                                 </div>
                         
-                                <label class="sign-form-label" for="form3Example4cd">Product Images</label>
-                        
+                                <label class="sign-form-label" for="form3Example4cd">Product Images</label><br>
+                                <form action="/upload-image" method="post" enctype="multipart/form-data">
+                                  <input type="file" name="images" multiple>
+                                  <!-- Other form fields (if any) -->
+                                  <button type="submit" class="btn text-dark update">Upload Images</button>
+                              
                                 <!-- Display existing images and allow editing -->
                                 <div class="d-flex flex-row align-items-center mb-3">
                                     <% for (let i = 0; i < product.images.length; i++) { %>
-                                        <div class="form-outline flex-fill mb-0">
+                                        <div class="form-outline flex-fill mb-0"><br>
                                             <label class="sign-form-label" for="form3Example4cd">Image <%= i + 1 %></label>
                                             <img
                                                 src="/images/<%= product.images[i] %>"
@@ -379,13 +385,13 @@
                                                 style="max-width: 100px; max-height: 100px; margin-top: 10px; cursor: pointer;"
                                                 onclick="document.getElementById('productImage<%= i + 1 %>').click();"
                                               
-                                            >
+                                            ><br><br>
                                             <a href="/admin/remove-image/<%= product._id %>/<%= product.images[i] %>"><br><br>
                                               <button type="button" class="btn text-dark update" >Remove</button>
                                           </a>
-                                          
+                   
                                             <br>
-                                
+                             
                                             <input
                                                 type="file"
                                                 name="images"
@@ -406,10 +412,13 @@
                         
                                 <div id="productError" class="px-2 my-2 text-center text-danger"></div>
                                 <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+                                  
+                                  
                                     <div class="form-group">
-                                        <button type="submit" class="btn text-dark update">Save Changes</button>
+                                        <button style="color: #ccc;" type="submit" class="btn text-dark update">Save Changes</button>
                                     </div>
                                 </div>
+                            </form>
                             </form>
                         
                             <script>

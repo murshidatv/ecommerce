@@ -130,7 +130,7 @@ const newCategory = async (req, res) => {
 const ediCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
-        const { categoryName, brand, status} = req.body;
+        const { categoryName, brand, status,offerType, offerAmount, offerEndDate} = req.body;
 
         const existingCategory = await Category.findOne({ categoryName: new RegExp(`^${categoryName}$`, 'i'), _id: { $ne: categoryId } });
         if (existingCategory) {
@@ -198,8 +198,8 @@ async function updateProductPricesForCategory(category) {
                 // Update prices for each product
                 for (const product of products) {
                     // Store the original price if not already stored
-                    if (!product.oldPrice) {
-                        product.oldPrice = product.price;
+                    if (!product.Price) {
+                        product.Price = product.newPrice;
                     }
                     console.log('Product Offer:', product.offer);
                     // Check if the product has its own offer
@@ -211,7 +211,7 @@ async function updateProductPricesForCategory(category) {
                     if (!hasProductOffer || isNaN(product.offer.amount)) {
                         const categoryDiscount = categoryOffer.amount / 100;
                         if (categoryDiscount > 0) {
-                            product.price = product.oldPrice - (product.oldPrice * categoryDiscount);
+                            product.newPrice = product.Price - (product.Price * categoryDiscount);
                         }
                     }
 
@@ -323,7 +323,7 @@ const addProduct = async (req, res) => {
 
                 // Crop the image to 100x100 pixels
                 await sharp(`public/images/${filename}`)
-                    .resize({ width: 100, height: 100, fit: 'inside', withoutEnlargement: true }) // Resize without enlarging smaller images
+                    .resize({ width: 458, height: 458, fit: 'inside', withoutEnlargement: true }) // Resize without enlarging smaller images
                     .jpeg({ quality: 100 }) // Adjust JPEG quality to improve image quality
                     .toFile(`public/images/cropped_${filename}`);
 
@@ -345,7 +345,7 @@ const addProduct = async (req, res) => {
         });
 
         await newProduct.save();
-        //await updateProductPrices(newProduct);
+        await updateProductPrices(newProduct);
 
         console.log('Product saved successfully:', newProduct);
         res.redirect('/admin/product');
@@ -546,6 +546,51 @@ const removeImage = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+const addImage = async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        // Handle image upload
+        if (req.files && Array.isArray(req.files)) {
+            const newImages = await Promise.all(req.files.map(async (file) => {
+                const filename = file.filename;
+
+                // Process the image (resize, optimize, etc.)
+                await sharp(`public/images/${filename}`)
+                    .resize({ width: 458, height: 458, fit: 'inside', withoutEnlargement: true })
+                    .jpeg({ quality: 100 })
+                    .toFile(`public/images/cropped_${filename}`);
+
+                // Return the new filename
+                return `cropped_${filename}`;
+            }));
+
+            // Concatenate new images with existing ones
+            const updatedImages = [...(product.images || []), ...newImages];
+
+            // Update the product's images field
+            product.images = updatedImages;
+        }
+
+        // Save the updated product
+        await product.save();
+
+        // Redirect back to the edit product page
+        res.redirect('/admin/edit-product/' + productId);
+    } catch (error) {
+        console.error('Error adding images:', error);
+        res.status(500).send('Error adding images');
+    }
+};
+
+
+
+
 
 
 const updateProductStatus = async (req, res) => {
@@ -568,6 +613,22 @@ const updateProductStatus = async (req, res) => {
 };
 
 
+
+function calculateNewPrice(Price, offerAmount) {
+    const productDiscount = offerAmount / 100;
+    return Price - (Price * productDiscount);
+}
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
    updateProductPrices,
    category,
@@ -582,6 +643,7 @@ module.exports = {
    LoadEditProduct,
    editProduct,
    removeImage,
+   addImage,
    updateProductStatus,
 
 

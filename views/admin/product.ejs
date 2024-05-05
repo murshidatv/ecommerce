@@ -291,9 +291,9 @@
                                   </label>
                                 </th>
 
-                                <th scope="col">image</th>
+                                <th scope="col">Image</th>
                                 <th scope="col">Product<br>Name</th>
-                                <th scope="col">category</th>
+                                <th scope="col">Category</th>
 
                                 <th scope="col">Size</th>
                                 <th scope="col">Price</th>
@@ -303,7 +303,7 @@
                                 <th scope="col">Stock</th>
                                 <th scope="col">Category offer</th>
 
-                                <th scope="col">Product Offer Amount</th>
+                                <th scope="col">Product Offer<br> Amount</th>
                                  <th scope="col">Offer End Date</th>
                                 
                                 <th scope="col">Action</th>
@@ -355,7 +355,7 @@
                                      <td>
                                       <% if (product.category && product.category.offer && product.offer && product.category.offer.amount) { %>
                                           <p class="category-offer">
-                                              Category Offer: <%= product.category.offer.amount %>% off on this product!
+                                              <%= product.category.offer.amount %>% <br>off on this product!
                                           </p>
                                       <% } %>
                                      </td>

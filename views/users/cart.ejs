@@ -155,8 +155,18 @@
                             <% } %>
                       </td>
                       <td class="remove-col">
-                        <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"><button
-                            class="btn-remove"><i class="icon-close"></i></button></a>
+                        <!--<a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"><button
+                            class="btn-remove"><i class="icon-close"></i>
+                          </button></a>-->
+
+                          <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"
+                            onclick="return confirm('Are you sure you want to remove this product?');">
+                           <button class="btn-remove">
+                             <i class="icon-close"></i></button></a>
+
+
+
+
                       </td>
                     </tr>
                     <% }) %>
@@ -184,7 +194,25 @@
                   </tbody>
                 </table>
 
-                <a href="/chooseAddress" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+               <!--  <a href="/chooseAddress" class="btn btn-outline-primary-2 btn-order btn-block" ">PROCEED TO CHECKOUT
+
+                
+                    <% if (cartItem.product === 0) { %>
+                          <span class="total-price" data-product-id="<%= cart is empty%>"></span>
+                          
+                         
+                          <% } else { %>
+                            Total Not Available
+                            <% } %>
+                          </a>-->
+                
+                          <!-- Your HTML button -->
+                              <a href="/chooseAddress" class="btn btn-outline-primary-2 btn-order btn-block" id="checkoutButton">PROCEED TO CHECKOUT</a>
+
+                            
+
+               
+
               </div><!-- End .summary -->
 
               <a href="/product-list" class="btn btn-outline-dark-2 btn-block mb-3">

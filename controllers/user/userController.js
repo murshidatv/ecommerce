@@ -792,6 +792,7 @@ const loadcheckout = async (req, res) => {
     if (!user) {
       return res.status(404).send('User not found');
     }
+   
     const chosenAddress = user.chosenAddress;
     res.render('checkout', { user, chosenAddress });
   } catch (error) {

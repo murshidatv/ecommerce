@@ -318,6 +318,8 @@
           </ul>
         </nav>
         <!-- partial -->
+      
+          
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
@@ -340,6 +342,25 @@
                         </div>
                           
                       
+      
+                        <div class="form-group">
+                          <label for="offerType" class="text-light">Offer Type</label>
+                          <select name="offerType" id="offerType">
+                              <option value="" <%= !category.offer || !category.offer.type ? 'selected' : '' %>>None</option>
+                              <option value="Percentage" <%= category.offer && category.offer.type === 'Percentage' ? 'selected' : '' %>>Percentage</option>
+                              <!-- Add other offer types as needed -->
+                          </select>
+                      </div>
+                      
+                      <div class="form-group">
+                          <label for="offerAmount" class="text-light">Offer Amount (%)</label>
+                          <input type="text" value="<%= category.offer ? category.offer.amount : '' %>" name="offerAmount" id="offerAmount" placeholder="OfferAmount">
+                      </div>
+                      
+                      <div class="form-group">
+                          <label for="offerEndDate" class="text-light">Offer End Date</label>
+                          <input type="date" name="offerEndDate" id="offerEndDate" value="<%= category.offer && category.offer.endDate && category.offer.endDate instanceof Date ? category.offer.endDate.toISOString().split('T')[0] : '' %>">
+                      </div>
                 
                        
                         

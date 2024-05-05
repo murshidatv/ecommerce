@@ -15,8 +15,20 @@ const mongoose=require("mongoose");
         type: Boolean,
         default: false, 
       },
-      
      
- })
+   
+    offer: {
+        type: {
+            type: String,
+        },
+        amount: {
+            type: Number,
+        },
+        endDate: {
+            type: Date,
+        },
+    },
+     
+ });
 
- module.exports=mongoose.model('Category',categorySchema)
+ module.exports=mongoose.model('Category',categorySchema);
