@@ -306,7 +306,7 @@ const loadProduct = async (req, res) => {
 
 const addProduct = async (req, res) => {
     try {
-        const { productName, category, size, Price, stock, description } = req.body;
+        const { productName, category, size, Price, stock, description,offerType, offerAmount, offerEndDate } = req.body;
 
         let images = [];
         if (req.files && Array.isArray(req.files)) {
@@ -341,6 +341,11 @@ const addProduct = async (req, res) => {
             stock,
             description,
             images,
+            offer: {
+                type: offerType,
+                amount: offerAmount,
+                endDate: offerEndDate,
+            },
             
         });
 
@@ -474,7 +479,7 @@ const editProduct = async (req, res) => {
 const editProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
-        const { productName, category, size, Price, stock, description } = req.body;
+        const { productName, category, size, Price, stock, description, offerType, offerAmount, offerEndDate  } = req.body;
         let images = [];
         
         // Retrieve the existing product from the database
@@ -504,6 +509,11 @@ const editProduct = async (req, res) => {
             stock,
             description,
             images,
+            offer: {
+                type: offerType,
+                amount: offerAmount,
+                endDate: offerEndDate,
+            },
         };
 
         const updatedProduct = await Product.findByIdAndUpdate(

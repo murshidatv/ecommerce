@@ -55,8 +55,26 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 0,
       },
-
+       razorpayOrderId: {
+    type: String,
+    unique: true,
+  },
+  discountAmount: {
+    type: Number,
+    default: 0,
+  },
+  returned: {
+    type: Boolean,
+    default: false,
+  },
+  returnReason: String,
+  coupon: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Coupon',
+  },
 });
+
+
 const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

@@ -785,6 +785,80 @@ const deleteCart = async (req, res) => {
   }
 };
 
+
+const razorpayPage = async (req, res) => {
+  try {
+    // Retrieve necessary order details from the session
+    const orderDetails = req.session.orderDetails;
+    if (!orderDetails) {
+      return res.status(400).send('Order details not found');
+    }
+
+    // Create Razorpay order
+    const razorpayOrderOptions = {
+      amount: orderDetails.totalAmount * 100, // Amount in paise
+      currency: 'INR',
+      receipt: orderDetails.razorpayOrderId, // Unique ID for the order
+      payment_capture: 1, // Automatically capture the payment
+    };
+    const razorpayOrder = await razorpayInstance.orders.create(razorpayOrderOptions);
+
+    // Render the Razorpay payment page with order details
+res.render('razorpayPage', { order: razorpayOrder, razorpayOrder: razorpayOrder,orderDetails: orderDetails });
+  } catch (error) {
+    console.error('Error in razorpayPage:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+// capturePayment function to handle capturing the payment status
+const capturePayment = async (req, res) => {
+  try {
+    // Retrieve order details from the session
+    const orderDetails = req.session.orderDetails;
+    if (!orderDetails) {
+      return res.status(400).send('Order details not found');
+    }
+
+    // Assuming you have a User model defined
+    const userId = orderDetails.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(400).send('User not found');
+    }
+
+    // Fetch payment details using the Razorpay order ID
+    const paymentDetails = await razorpayInstance.payments.fetch(req.body.razorpay_payment_id);
+
+    // Check if the payment is captured
+    if (paymentDetails && paymentDetails.status === 'captured') {
+      // Place the order
+      const order = new Order(orderDetails);
+      await order.save();
+      
+      // Clear the user's cart
+      user.cart = [];
+      await user.save();
+
+      // Render the success page
+      res.render('ordersuccess', { discountAmount: orderDetails.discountAmount, order });
+    } else {
+      // Render an error page if payment is not captured
+      res.render('paymentError', { message: 'Payment capture failed.' });
+    }
+  } catch (error) {
+    console.error('Error in capturePayment:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+
+
+
+
+
 const loadcheckout = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -851,7 +925,7 @@ const placeorder = async (req, res) => {
     // Helper function to calculate the total amount of the cart
     function calculateTotalAmount(cart) {
       return cart.reduce((total, cartItem) => {
-        const itemTotal = cartItem.product.Price * cartItem.quantity;
+        const itemTotal = cartItem.product.newPrice * cartItem.quantity;
         return total + itemTotal;
       }, 0);
 
@@ -1000,6 +1074,63 @@ const viewOrder = async (req, res) => {
 
   }
 }
+const requestReturn = async (req, res) => {
+  const orderId = req.params.orderId;
+  const returnReason = req.body.returnReason;
+
+  try {
+    // Find the order by ID and update its status to "Returned"
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Check if the order is already returned
+    if (order.returned) {
+      return res.status(400).json({ message: 'Order already returned' });
+    }
+
+    // Calculate the time elapsed since delivery
+    const deliveryDate = order.deliveryDate; // Replace with the actual delivery date property
+    const currentDate = new Date();
+    const timeElapsedInMilliseconds = currentDate - deliveryDate;
+    const timeElapsedInDays = timeElapsedInMilliseconds / (1000 * 60 * 60 * 24);
+
+    // Allow returns only after 2 weeks (14 days) of delivery
+    if (timeElapsedInDays < 14) {
+      return res.status(400).json({ message: 'Cannot return before 2 weeks of delivery' });
+    }
+
+    // Update order status to "Returned" and set return reason
+    order.status = 'Returned';
+    order.returned = true;
+    order.returnReason = returnReason;
+
+    await order.save();
+
+    // If payment method was online, add refunded amount to user's wallet
+    if (order.payment === 'onlinePayment') {
+      const refundedAmount = order.totalAmount;
+      await User.findByIdAndUpdate(order.userId, { 
+        $inc: { wallet: refundedAmount },
+        $push: {
+          walletHistory: {
+            type: 'credit',
+            amount: refundedAmount,
+            description: 'Refund for returned order',
+          }
+        }
+      });
+    }
+
+    res.redirect('/order-history');
+  } catch (error) {
+    console.error('Error processing return request:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 
 module.exports = {
   
@@ -1043,6 +1174,7 @@ module.exports = {
   reasonpage,
   loadorderHistory,
   viewOrder,
+  requestReturn,
 
 
 

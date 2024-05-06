@@ -118,6 +118,9 @@ user_route.post('/place-order',auth.isLogin,userController.placeorder);
 user_route.get('/order-history', auth.isLogin, userController.loadorderHistory);
 user_route.post('/cancel-order/:orderId', auth.isLogin, userController.orderCancel);
 user_route.get('/reasonpage/:orderId', auth.isLogin, userController.reasonpage);
+
 user_route.get('/view-order/:orderId', userController.viewOrder);
+user_route.post('/orders/:orderId/return', userController.requestReturn);
+
 
 module.exports = user_route;

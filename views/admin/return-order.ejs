@@ -257,43 +257,37 @@
             <div class="col-md-12 grid-margin stretch-card">
              
                   <table class="table table-hover">
-                        <thead>
+                 
+                        <tr>
+                            <th>User Name</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Return Reason</th>
+                            <!-- Add more columns as needed -->
+                        </tr>
+                        <% returnedOrders.forEach(order => { %>
                             <tr>
-                                    <th>User Name</th>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Return Reason</th>
-                                    <!-- Add more columns as needed -->
-                                </tr>
-                                <% returnedOrders.forEach(order => { %>
-                                    <tr>
-                                        <td><%= order.userId.name %></td> <!-- Change userName to name -->
-                                        <% if (order.products[0] && order.products[0].product) { %>
-                                            <td><%= order.products[0].product.productName %></td>
-                                            <td><%= order.products[0].product.Price %></td>
-                                        <% } else { %>
-                                            <td colspan="2">Product not found</td>
-                                        <% } %>
-                                        <td><%= order.products[0].quantity %></td>
-                                        <td><%= order.returnReason %></td>
-                                        <!-- Add more data as needed -->
-                                    </tr>
-                                <% }); %>
-                       
+                                <td><%= order.userId.name %></td> <!-- Change userName to name -->
+                                <% if (order.products[0] && order.products[0].product) { %>
+                                    <td><%= order.products[0].product.productName %></td>
+                                    <td><%= order.products[0].product.price %></td>
+                                <% } else { %>
+                                    <td colspan="2">Product not found</td>
+                                <% } %>
+                                <td><%= order.products[0].quantity %></td>
+                                <td><%= order.returnReason %></td>
+                                <!-- Add more data as needed -->
+                            </tr>
+                        <% }); %>
                     </table>
-             
+               
 
            
             
           </div>
           <a href="/admin/loadorder">Back to order details</a>
-            <script>
-              function confirmCancellation() {
-                  var isConfirmed = confirm("Are you sure you want to confirm the order cancellation?");
-                  return isConfirmed;
-              }
-            </script>
+           
 
             
         </div>

@@ -251,17 +251,21 @@
                     <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Order Management</h2><br><br>
                     <div class="container">
                     
-                        <form action="/admin/loadorder" method="GET">
+                          <form action="/admin/loadorder" method="GET">
                             <input type="text" name="search" placeholder="Search by User Name..." value="<%= searchQuery %>">
                             <select name="status">
-                              <option value="">All Statuses</option>
-                              <% statuses.forEach(status=> { %>
-                                <option value="<%= status %>" <%=status===filterStatus ? 'selected' : '' %>><%= status %>
-                                </option>
+                                <option value="">All Statuses</option>
+                                <% statuses.forEach(status => { %>
+                                    <option value="<%= status %>" <%=  status === filterStatus ? 'selected' : '' %>><%= status %></option>
                                 <% }) %>
                             </select>
                             <button type="submit">Search</button>
-                          </form>
+                        </form>
+
+                       
+
+
+
                         <br>
                     <div class="container">
                            
@@ -282,7 +286,7 @@
                                           <th scope="col">Product Count</th>
                                           <th scope="col">Product Name</th>
                                           <th scope="col">Total Amount</th>
-                                          <!--- <th scope="col">Discount Amount</th>-->
+                                           <th scope="col">Discount Amount</th>
                                           <th scope="col">Payment Method</th>
                                           <th scope="col">New Status</th>
                                           <th scope="col"> Update Status</th>
