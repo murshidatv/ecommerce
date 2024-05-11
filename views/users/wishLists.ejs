@@ -1,0 +1,167 @@
+
+
+<%- include('../layouts/productheader') %>
+
+<div class="header-middle sticky-header">
+  <div class="container">
+    <div class="header-left">
+      <button class="mobile-menu-toggler">
+        <span class="sr-only">Toggle mobile menu</span>
+        <i class="icon-bars"></i>
+      </button>
+
+      <a href="/home" class="logo">
+        <h2 style="color: #c66">Zouq</h2>
+      </a>
+      <nav class="main-nav">
+        <ul class="menu sf-arrows">
+
+          <li>
+            <a href="/home" class="sf-with-ul">Home</a>
+
+            <div class="megamenu megamenu-md">
+
+            </div><!-- End .megamenu megamenu-md -->
+          </li>
+          <li>
+            <a href="/product-list" class="sf-with-ul">Shop</a>
+
+
+          </li>
+
+
+        </ul><!-- End .menu -->
+      </nav><!-- End .main-nav -->
+    </div><!-- End .header-left -->
+
+    <div class="header-right">
+
+      <div class="wishlist">
+        <a href="/wishlist" title="Wishlist">
+          <i class="icon-heart-o"></i>
+
+      </div><!-- End .compare-dropdown -->
+
+      <div class="dropdown cart-dropdown">
+        <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false" data-display="static">
+          <i class="icon-shopping-cart"></i>
+          <span class="cart-count">
+        
+          </span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+          <div class="dropdown-cart-products">
+
+          </div><!-- End .cart-product -->
+
+          <div class="dropdown-cart-total">
+
+          </div><!-- End .dropdown-cart-total -->
+
+          <div class="dropdown-cart-action">
+            <a href="/cartList" class="btn btn-primary">View Cart</a>
+          </div><!-- End .dropdown-cart-total -->
+        </div><!-- End .dropdown-menu -->
+      </div><!-- End .cart-dropdown -->
+    </div><!-- End .header-right -->
+  </div><!-- End .container -->
+</div><!-- End .header-middle -->
+</header><!-- End .header -->
+
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Wishlist<span>Shop</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="/product-list">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="container">
+            <table class="table table-wishlist table-mobile">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Stock Status</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% user.wishlist.forEach(wishlistitem => { %>
+
+                        <tr>
+                            <td class="product-col">
+                                <div class="product">
+                                    <figure class="product-media">
+                                        <% if (wishlistitem.product && wishlistitem.product.images && wishlistitem.product.images.length > 0) { %>
+                                            <a href="/product/<%= wishlistitem.product._id %>">
+                                                <img src="/images/<%= wishlistitem.product.images[0] %>" alt="Product image">
+                                            </a>
+                                        <% } else { %>
+                                            <p>Image not available</p>
+                                        <% } %>
+                                    </figure>
+                    
+                                    <h3 class="product-title">
+                                        <a href="#">
+                                            <% if (wishlistitem.product && wishlistitem.product.productName) { %>
+                                                <%= wishlistitem.product.productName %>
+                                            <% } else { %>
+                                                Product Name Not Available
+                                            <% } %>
+                                        </a>
+                                    </h3><!-- End .product-title -->
+                                </div><!-- End .product -->
+                            </td>
+                            <td class="price-col">
+                                <a href="#">
+                                    <% if (wishlistitem.product && wishlistitem.product.newPrice) { %>
+                                        Rs <%= wishlistitem.product.newPrice %>
+                                    <% } else { %>
+                                        Product Price Not Available
+                                    <% } %>
+                                </a>
+                            </td>
+                            <td class="stock-col">
+                                <span class="in-stock">
+                                    <% if (wishlistitem.product && wishlistitem.product.stock) { %>
+                                        <%= wishlistitem.product.stock %>
+                                    <% } else { %>
+                                        out of stock
+                                    <% } %>
+                                </span>
+                            </td>
+                            <td class="action-col">
+                                <div class="dropdown">
+                                    <% if (wishlistitem.product && wishlistitem.product.stock > 0) { %>
+                                        <a href="/add-to-cart/<%= wishlistitem.product._id %>" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    <% } else { %>
+                                        <span class="btn-product btn-out-of-stock"><span>Out of Stock</span></span>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td class="remove-col">  
+                                <% if (wishlistitem.product) { %>                                
+                                    <a href="/wishlist/<%=wishlistitem.product._id %>"> <button class="btn-remove"><i class="icon-close"></i></button></a>
+                                <% } %>
+                            </td>
+                        </tr>
+                    
+                    <% }) %>
+                    
+                </tbody>
+            </table><!-- End .table table-wishlist -->

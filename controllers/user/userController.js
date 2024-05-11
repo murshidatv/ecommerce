@@ -36,8 +36,118 @@ const strongPassword = async (password) => {
 
 /*
 
-*/
+const googleAuth = async (req, res) => {
+  try {
+    const user = req.body.user;
+    
+    const email = user.email;
+    // Check if user already exists
+    let userData;
+    const existingUser = await User.findOne({ email });
 
+    if (existingUser) {
+      // User already exists, set session for existing user
+      req.session.user_id = existingUser._id;
+      userData = existingUser;
+    } else {
+      // Create a new user
+      const newuser = new User({
+        name: user.displayName,
+        email: user.email,
+        mobile: user.phoneNumber,
+      });
+
+      userData = await newuser.save();
+    }
+
+    // If user data is successfully obtained, respond with success message
+    if (userData) {
+      
+      return res.json({
+        success: true,
+        message: "User data saved successfully",
+      });
+    } else {
+      // If user data retrieval fails, render registration page with error message
+      return res.render("signUp", { errmessage: "." });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+*/
+/*
+const { google } = require('googleapis');
+const { OAuth2Client } = require('google-auth-library');
+
+require('dotenv').config();
+
+const googleClient = new OAuth2Client({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    redirectUri: process.env.GOOGLE_REDIRECT_URI
+});
+
+const generateToken = (userId) => {
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+    return token;
+};
+
+const googleAuthCallback = async (req, res) => {
+    try {
+        const { code } = req.query;
+
+        // Exchange authorization code for access token
+        const { tokens } = await googleClient.getToken(code);
+        googleClient.setCredentials(tokens);
+
+        // Retrieve user info using access token
+        const { data } = await googleClient.request({
+            url: 'https://www.googleapis.com/oauth2/v3/userinfo',
+            method: 'GET',
+        });
+
+        // Extract user's email and name from the response data
+        const email = data.email;
+        const name = data.name;
+
+        // Find or create the user based on the Google profile data
+        let user = await User.findOne({ email });
+        if (!user) {
+            user = await User.create({ email, name });
+        }
+
+        // Generate JWT token
+        const jwtToken = generateToken(user._id);
+        user.jwt_token = jwtToken;
+        await user.save();
+
+        // Redirect to home page with JWT token
+        res.cookie('jwt', jwtToken, { httpOnly: true });
+        res.redirect('/home');
+    } catch (error) {
+        console.error('Error in Google Auth Callback:', error);
+        res.redirect('/login');
+    }
+};
+
+const googleAuth = async (req, res) => {
+    try {
+        const redirectUri = 'http://localhost:4000/userVerification/google/callback'; // Replace with your actual redirect URI
+        const url = googleClient.generateAuthUrl({
+            access_type: 'offline',
+            scope: ['email', 'profile'],
+            redirect_uri: redirectUri // Specify the redirect URI here
+        });
+        res.redirect(url);
+    } catch (error) {
+        console.error('Error initiating Google Auth:', error);
+        res.redirect('/login');
+    }
+};
+*/
 // send mail
 const verifyMail = async (name, email, otp) => {
   try {
@@ -133,6 +243,7 @@ const userData = async (req, res) => {
           image: req.file.filename,
           is_admin: 0,
           referralCodeUsed: req.body.referralCodeUsed, 
+          
       });
       
 
@@ -786,76 +897,6 @@ const deleteCart = async (req, res) => {
 };
 
 
-const razorpayPage = async (req, res) => {
-  try {
-    // Retrieve necessary order details from the session
-    const orderDetails = req.session.orderDetails;
-    if (!orderDetails) {
-      return res.status(400).send('Order details not found');
-    }
-
-    // Create Razorpay order
-    const razorpayOrderOptions = {
-      amount: orderDetails.totalAmount * 100, // Amount in paise
-      currency: 'INR',
-      receipt: orderDetails.razorpayOrderId, // Unique ID for the order
-      payment_capture: 1, // Automatically capture the payment
-    };
-    const razorpayOrder = await razorpayInstance.orders.create(razorpayOrderOptions);
-
-    // Render the Razorpay payment page with order details
-res.render('razorpayPage', { order: razorpayOrder, razorpayOrder: razorpayOrder,orderDetails: orderDetails });
-  } catch (error) {
-    console.error('Error in razorpayPage:', error);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-
-// capturePayment function to handle capturing the payment status
-const capturePayment = async (req, res) => {
-  try {
-    // Retrieve order details from the session
-    const orderDetails = req.session.orderDetails;
-    if (!orderDetails) {
-      return res.status(400).send('Order details not found');
-    }
-
-    // Assuming you have a User model defined
-    const userId = orderDetails.userId;
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(400).send('User not found');
-    }
-
-    // Fetch payment details using the Razorpay order ID
-    const paymentDetails = await razorpayInstance.payments.fetch(req.body.razorpay_payment_id);
-
-    // Check if the payment is captured
-    if (paymentDetails && paymentDetails.status === 'captured') {
-      // Place the order
-      const order = new Order(orderDetails);
-      await order.save();
-      
-      // Clear the user's cart
-      user.cart = [];
-      await user.save();
-
-      // Render the success page
-      res.render('ordersuccess', { discountAmount: orderDetails.discountAmount, order });
-    } else {
-      // Render an error page if payment is not captured
-      res.render('paymentError', { message: 'Payment capture failed.' });
-    }
-  } catch (error) {
-    console.error('Error in capturePayment:', error);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-
-
-
 
 
 
@@ -931,6 +972,7 @@ const placeorder = async (req, res) => {
 
 
     }
+    console.log('${product.newPrice}')
     console.log(cartTotal);
     const paymentMethod = req.body.paymentMethod;
     const userName = user.name;
@@ -1131,9 +1173,175 @@ const requestReturn = async (req, res) => {
   }
 };
 
+const whitelist =async(req,res)=>{
+  try {
+    const productId= req.params.productId;
+    const product = await Product.findById(productId);
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('wishlist.product');
+    const wishlistCount = user.wishlist.length;
+    res.render('wishLists', { user ,wishlistCount,userId,product});
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+const addwhitelist = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
+    console.log('Product ID:', product._id);
+
+    const userId = req.session.user_id;
+    if (!userId) {
+     // req.flash('error', 'Please log in to add products to your cart.');
+      return res.redirect('/login');
+    }
+
+    const user = await User.findById(userId);
+    if (user && user.wishlist) {
+      const existingProductItem = user.wishlist.find(
+        (item) => item && item.product && item.product.equals(product._id)
+      );
+
+      if (existingProductItem) {
+        // Display a message and redirect only if the item already exists in the whitelist
+       // req.flash('info', 'Already added to the whitelist');
+        return res.redirect('/product-list');
+      } else {
+        // Add the product to the whitelist if it doesn't already exist
+        user.wishlist.push({
+          product: product._id,
+        });
+      }
+    }
+
+    
+    await user.save();
+   // req.flash('success', 'Successfully added to the whitelist');
+    res.redirect(`/product-list?productId=${product._id}`);
+  } catch (error) {
+    console.log(error.message);
+   // req.flash('error', 'Failed to add the product to the whitelist.');
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
+const deletewishlist = async (req, res) => {
+  try {
+    const productIdToDelete = req.params.productId;
+    const userId = req.session.user_id;
+
+    if (!userId) {
+    ///  req.flash('error', 'Please log in to manage your wishlist.');
+      return res.redirect('/login');
+    }
+
+    const user = await User.findById(userId);
+
+    if (user && user.wishlist) {
+      // Find the index of the product in the wishlist
+      const indexToRemove = user.wishlist.findIndex(
+        (item) => item.product && item.product.equals(productIdToDelete)
+      );
+
+      if (indexToRemove !== -1) {
+        // Remove the product from the wishlist array
+        user.wishlist.splice(indexToRemove, 1);
+
+        // Save the changes
+        await user.save();
+      //  req.flash('success', 'Product removed from wishlist successfully.');
+      } else {
+        //req.flash('info', 'Product not found in the wishlist.');
+      }
+    }
+
+    res.redirect('/wishlist'); // Redirect back to the wishlist page
+  } catch (error) {
+    console.error(error.message);
+    req.flash('error', 'Failed to remove the product from the wishlist.');
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+
+
+/*
+const wishlist =async(req,res)=>{
+  try {
+    const productId= req.params.productId;
+    const product = await Product.findById(productId);
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('wishlist.product');
+    const wishlistCount = user.wishlist.length;
+    res.render('wishLists', { user ,wishlistCount,userId,product});
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+const googleAuth = async (req, res) => {
+  try {
+    const user = req.body.user;
+    
+    const email = user.email;
+    // Check if user already exists
+    let userData;
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      // User already exists, set session for existing user
+      req.session.user_id = existingUser._id;
+      userData = existingUser;
+    } else {
+      // Create a new user
+      const newuser = new User({
+        name: user.name,
+        email: user.email,
+        mobile: user.mobile,
+      });
+
+      userData = await newuser.save();
+    }
+
+    // If user data is successfully obtained, respond with success message
+    if (userData) {
+      
+      return res.json({
+        success: true,
+        message: "User data saved successfully",
+      });
+    } else {
+      // If user data retrieval fails, render registration page with error message
+      return res.render("register", { errmessage: "." });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+*/
+const wallet= async(req,res)=>{
+  try {
+    const userId = req.session.user_id;
+    const user = await User.findById(userId);
+
+    res.render('wallet', { walletAmount: user.wallet ,walletHistory: user.walletHistory });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+
+
 
 module.exports = {
-  
+  //googleAuthCallback,
+  //googleAuth,
   register,
   userData,
   verify,
@@ -1166,6 +1374,10 @@ module.exports = {
   addtoCart,
   updateQuantity,
   deleteCart,
+  whitelist,
+  addwhitelist,
+  deletewishlist,
+
 
   loadcheckout,
   placeorder,
@@ -1175,7 +1387,7 @@ module.exports = {
   loadorderHistory,
   viewOrder,
   requestReturn,
-
+  wallet,
 
 
 }

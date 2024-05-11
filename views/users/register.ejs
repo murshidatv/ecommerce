@@ -47,7 +47,25 @@
         autocomplete="new-password">
       <span id="confirmPasswordError" class="error"></span>
       <br>
+      <label for="enableInput">Referral code:(optional)</label>
+      <input type="text" id="optionalField" name="referralCodeUsed"  class="text" placeholder="Enter optional text">
       <br>
+      <script>
+          function toggleInput() {
+              const optionalField = document.getElementById("optionalField");
+              const enableInput = document.getElementById("enableInput");
+  
+              if (enableInput.checked) {
+                  optionalField.removeAttribute("disabled");
+              } else {
+                  optionalField.setAttribute("disabled", true);
+              }
+          }
+      </script>
+
+
+
+
       <div>
         <button class="btn-register">SIGNUP</button>
 

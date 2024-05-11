@@ -23,6 +23,29 @@ const userSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+
+    referralCode: {
+        type: String,
+        default: function() {
+            return crypto.randomBytes(8).toString('hex');
+        },
+        unique: true
+    },
+    referralCount: {
+        type: Number,
+        default: 0
+    },
+    referralCodeUsed:{
+     type:String,
+     default:false
+    },
+    wallet: 
+    { 
+     type: Number,
+      default: 0
+   },
+
+
     createdAt: {
         type: Date,
         default: Date.now

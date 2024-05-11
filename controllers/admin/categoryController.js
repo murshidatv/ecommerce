@@ -488,6 +488,7 @@ const editProduct = async (req, res) => {
             return res.status(404).send('Product not found');
         }
 
+
         console.log('Existing images before update:', product.images);
 
         // Check if there are files and if they are an array
@@ -500,6 +501,14 @@ const editProduct = async (req, res) => {
         images = [...(product.images || []), ...images];
 
         console.log('New images array after concatenation:', images);
+
+        // Check if the offer is being deleted
+        const offerDeleted = !offerType && !offerAmount && !offerEndDate;
+
+        // Calculate the new price based on the offer
+        const newPrice = offerDeleted ? Price : calculateNewPrice(Price, offerAmount);
+
+
 
         const updatedProductFields = {
             productName,

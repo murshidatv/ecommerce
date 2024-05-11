@@ -1,4 +1,6 @@
-<%- include('../layouts/productheader') %>
+
+
+  <%- include('../layouts/productheader') %>
 
   <div class="header-middle sticky-header">
     <div class="container">
@@ -126,12 +128,21 @@
                                   <% } %>
                           </a>
                         </h3>
+                          <!-- Display product offer details -->
+                          <% if (cartItem.product && cartItem.product.category && cartItem.product.category.offer) { %>
+                            <p>Category Offer:  <%=  cartItem.product.category.offer.amount%> %off</p>
+                        <% } %>
 
+                        <!-- Display category offer details -->
+                        <% if (cartItem.product && cartItem.product.offer) { %>
+                            <p> <%= cartItem.product.offer.amount %> % off</p>
+                        <% } %>
 
                       </td>
+
                       <td class="price-col">
-                        <% if (cartItem.product && cartItem.product.Price) { %>
-                          Rs.<%= cartItem.product.Price %>
+                        <% if (cartItem.product && cartItem.product.newPrice) { %>
+                          Rs.<%= cartItem.product.newPrice %>
                             <% } else { %>
                               Price Not Available
                               <% } %>
@@ -145,15 +156,29 @@
                       </td>
 
                       <td class="total-col">
+                        <% if (cartItem.product && cartItem.product.newPrice) { %>
+                          Rs<span class="total-price" data-product-id="<%= cartItem.product._id %>" data-product-price="<%= cartItem.product.newPrice %>">
+                            <%= cartItem.quantity * cartItem.product.newPrice %>
+                          </span>
+                        <% } else { %>
+                          Total Not Available
+                        <% } %>
+                      </td>
+
+
+<!--
+
+                      <td class="total-col">
                         <% if (cartItem.product && cartItem.product.Price) { %>
                           Rs.<span class="total-price" data-product-id="<%= cartItem.product._id %>"
-                            data-product-price="<%= cartItem.product.Price %>">
-                            <%= cartItem.quantity * cartItem.product.Price %>
+                            data-product-price="<%= cartItem.product.newPrice %>">
+                            <%= cartItem.quantity * cartItem.product.newPrice %>
                           </span>
                           <% } else { %>
                             Total Not Available
                             <% } %>
-                      </td>
+                      </td>-->
+                      
                       <td class="remove-col">
                       
                               <!--
@@ -189,8 +214,8 @@
                       <td>Total:</td>
                       <td>
 
-                        RS.<% const total=user.cart.reduce((acc, item)=> acc + (item.product && item.product.Price ?
-                          item.quantity * item.product.Price : 0), 0); %>
+                        RS.<% const total=user.cart.reduce((acc, item)=> acc + (item.product && item.product.newPrice ?
+                          item.quantity * item.product.newPrice : 0), 0); %>
                           <%= total %>
                       </td>
                     </tr>
@@ -382,7 +407,7 @@
         const totalSpan = document.querySelector(`tr[data-row-index="${rowIndex}"] .total-price`);
 
         // Update the total price
-        const totalPrice = parseInt(input.value) * parseFloat(user.cart[rowIndex].product.price);
+        const totalPrice = parseInt(input.value) * parseFloat(user.cart[rowIndex].product.newPrice);
         totalSpan.textContent = `${totalPrice.toFixed(2)}`;
       }
     });
@@ -404,7 +429,7 @@
           const productPrice = parseFloat(productPriceString) || 0;
 
           const currentQuantity = parseInt(this.value, 10);
-          const newTotalPrice = currentQuantity * productPrice;
+          const newTotalPrice = currentQuantity * productnewPrice;
 
           // Check if the calculated total price is NaN and handle it
           if (!isNaN(newTotalPrice)) {

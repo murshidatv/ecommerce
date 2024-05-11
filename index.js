@@ -16,6 +16,7 @@ const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/zouq";
 const express = require("express");
 const app = express();
 const session=require('express-session');
+
 //to resolve validation error
 app.use(
   express.urlencoded({ extended: true })
@@ -30,6 +31,7 @@ app.use(session({
   resave:false,
   saveUninitialized:true
 }))
+
 
 
 
