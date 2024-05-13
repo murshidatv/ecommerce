@@ -10,9 +10,6 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 
-
-
-
 const uuid = require('uuid');
 const { v4: uuidv4 } = require('uuid');
 
@@ -242,7 +239,7 @@ const userData = async (req, res) => {
           mobile: req.body.mobile,
           image: req.file.filename,
           is_admin: 0,
-          referralCodeUsed: req.body.referralCodeUsed, 
+         // referralCodeUsed: req.body.referralCodeUsed, 
           
       });
       
@@ -260,15 +257,15 @@ const userData = async (req, res) => {
           res.render('register', { message: "Mobile number already exists. Please choose a different mobile number." });
           return;
       }
-
+/*
       // Check if the referral code exists in the database
-      if (data.referralCodeUsed) {
+      //if (data.referralCodeUsed) {
           const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
           if (!referrer) {
               res.render('register', { message: "Invalid referral code. Please check and try again." });
               return;
           }
-      }
+      }*/
 
       const user = await data.save();
 
@@ -281,11 +278,11 @@ const userData = async (req, res) => {
 
           // Store OTP in the user's otp field
           user.otp = otp;
-           // Generate referral code
+          /* // Generate referral code
             const referralCode = crypto.randomBytes(8).toString('hex'); 
 
            // Set referral code in user record
-            user.referralCode = referralCode;
+            user.referralCode = referralCode;*/
 
           await user.save();
           console.log("OTP set:", user.otp);
@@ -294,7 +291,7 @@ const userData = async (req, res) => {
           verifyMail(req.body.name, req.body.email, otp);
           res.render('otp', { userId: user.id });
 
-          // If referral code was used, credit both the user and the referrer
+          /*// If referral code was used, credit both the user and the referrer
           if (data.referralCodeUsed) {
               const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
               if (referrer) {
@@ -319,7 +316,7 @@ const userData = async (req, res) => {
                   await user.save();
                   await referrer.save();
               }
-          }
+          }*/
       } else {
           res.render('register', { message: "Registration failed" });
       }

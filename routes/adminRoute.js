@@ -2,6 +2,7 @@ const express = require("express");
 const admin_route =express();
 const  nocache = require("nocache")
 const multerMiddleware =require('../middleware/multer').upload
+//const dashboardController=require('../controllers/admin/dashboardController')
 
 const session = require("express-session");
 const config = require("../config/config");
@@ -27,18 +28,22 @@ const auth = require("../middleware/adminAuth");
 
 
 const adminController = require("../controllers/admin/adminController");
+const dashboardController = require("../controllers/admin/dashboardController");
 const categoryController=require('../controllers/admin/categoryController');
 const orderController=require('../controllers/admin/orderController');
+
 
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
 
 admin_route.post('/',adminController.verifyLogin);
 
-//admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
+
 admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
+//admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 admin_route.get('/listuser',auth.isLogin,adminController.adminDashboard);
-
-
+admin_route.get('/report',auth.isLogin, dashboardController.getDashboardData);
+//admin_route.get('/dashboard-data',auth.isLogin,orderController.dashboardData);
+//admin_route.get('/downloadSalesReport', orderController.downloadSalesReports);
 
 //user mangement
 admin_route.get('/listUser',auth.isLogin,adminController.listUser);

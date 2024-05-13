@@ -2,6 +2,28 @@ const Category =require('../../models/categoryModel');
 const Product=require('../../models/productModel');
 const Order=require('../../models/orderModel');
 
+const User = require('../../models/userModel');
+
+const PDFDocument = require('pdfkit');
+const table = require('pdfkit-table');
+const ejs = require('ejs');
+const fs = require('fs');
+const util = require('util');
+const pdf = require('html-pdf');
+const ExcelJS = require('exceljs');
+
+const puppeteer = require('puppeteer');
+
+const { getUserDetailsAndOrders } =require('../../controllers/admin/adminController')
+
+
+const renderFileAsync = util.promisify(ejs.renderFile);
+
+
+
+
+
+
 
 
 //orderManagement
@@ -147,11 +169,19 @@ const viewReturnedOrders = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+
 module.exports = {
 order,
 updateStatus,
 confirmOrderCancellation,
 viewCanceledOrders,
 viewReturnedOrders,
+
 
 }
