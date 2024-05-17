@@ -1,13 +1,11 @@
 const Category =require('../../models/categoryModel');
 const Product=require('../../models/productModel');
-const Order=require('../../models/orderModel');
-//const upload = require('../../middleware/multer')
+// const upload = require('../../middleware/multer')
 //category management
 const { upload } = require('../../middleware/multer');
 
 const sharp=require('sharp');
-
-const updateProductPrices = async(req,res)=>{
+async function updateProductPrices(product) {
     try {
         const productId = product._id;
         const productOffer = product.offer;
@@ -23,8 +21,8 @@ const updateProductPrices = async(req,res)=>{
             // Check if the product offer is still valid
             if (currentDate <= offerEndDate) {
                 // Store the original price if not already stored
-                if (!updatedProduct.Price) {
-                    updatedProduct.Price = updatedProduct.newPrice;
+                if (!updatedProduct.oldPrice) {
+                    updatedProduct.oldPrice = updatedProduct.price;
                 }
 
                 // Apply the product offer
@@ -32,11 +30,11 @@ const updateProductPrices = async(req,res)=>{
 
                 // Check if the product offer amount is greater than zero before updating the price
                 if (productDiscount > 0) {
-                    updatedProduct.newPrice = updatedProduct.Price - (updatedProduct.Price * productDiscount);
+                    updatedProduct.price = updatedProduct.oldPrice - (updatedProduct.oldPrice * productDiscount);
                 }
             } else {
                 // If the product offer is expired, revert to the original price
-                updatedProduct.newPrice = updatedProduct.Price;
+                updatedProduct.price = updatedProduct.oldPrice;
             }
         } else {
             // If the product offer is deleted or not present, apply the category offer
@@ -50,7 +48,7 @@ const updateProductPrices = async(req,res)=>{
                     // Apply the category offer
                     const categoryDiscount = category.offer.amount / 100;
                     if (categoryDiscount > 0) {
-                        updatedProduct.newPrice = updatedProduct.Price - (updatedProduct.Price * categoryDiscount);
+                        updatedProduct.price = updatedProduct.oldPrice - (updatedProduct.oldPrice * categoryDiscount);
                     }
                 }
             }
@@ -61,7 +59,7 @@ const updateProductPrices = async(req,res)=>{
     } catch (error) {
         console.error('Error updating product prices:', error);
     }
-};
+}
 
 
 
@@ -75,7 +73,8 @@ const category = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-const addCategory = async (req, res) => {
+
+ const addCategory = async (req, res) => {
     try {
         res.render('add-category');
     } catch (error) {
@@ -83,6 +82,7 @@ const addCategory = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
 const LoadEdit = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
@@ -97,16 +97,14 @@ const newCategory = async (req, res) => {
     try {
         const { categoryName, brand, status, offerType, offerAmount, offerEndDate } = req.body;
 
-        //const existingCategory = await Category.findOne({ categoryName });
-        const existingCategory = await Category.findOne({ categoryName: new RegExp(`^${categoryName}$`, 'i') });
-
+        const existingCategory = await Category.findOne({ categoryName });
 
         if (existingCategory) {
             return res.render('add-category', {
                 message: 'Category already exists. Please choose a different category name.',
             });
         }
-        
+
         const newCategory = new Category({
             categoryName,
             brand,
@@ -127,10 +125,11 @@ const newCategory = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
 const ediCategory = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
-        const { categoryName, brand, status,offerType, offerAmount, offerEndDate} = req.body;
+        const { categoryName, brand, status, offerType, offerAmount, offerEndDate } = req.body;
 
         const existingCategory = await Category.findOne({ categoryName: new RegExp(`^${categoryName}$`, 'i'), _id: { $ne: categoryId } });
         if (existingCategory) {
@@ -141,12 +140,7 @@ const ediCategory = async (req, res) => {
                     categoryName,
                     brand,
                     status,
-                    offer: { 
-                        type: offerType, 
-                        amount: offerAmount, 
-                        endDate: offerEndDate 
-                    },
-                    
+                    offer: { type: offerType, amount: offerAmount, endDate: offerEndDate },
                 },
             });
         }
@@ -162,22 +156,19 @@ const ediCategory = async (req, res) => {
                     amount: offerAmount,
                     endDate: offerEndDate,
                 },
-               
             },
             { new: true }
-          );
-// Update product prices based on the updated category
-await updateProductPricesForCategory(updatedCategory);
+        );
 
-res.redirect('/admin/category');
-} catch (error) {
-console.error('Error updating category:', error.message);
-res.status(500).send('Internal Server Error');
-}
+        // Update product prices based on the updated category
+        await updateProductPricesForCategory(updatedCategory);
+
+        res.redirect('/admin/category');
+    } catch (error) {
+        console.error('Error updating category:', error.message);
+        res.status(500).send('Internal Server Error');
+    }
 };
-
-
-
 
 // Function to update product prices based on the category offer
 async function updateProductPricesForCategory(category) {
@@ -198,8 +189,8 @@ async function updateProductPricesForCategory(category) {
                 // Update prices for each product
                 for (const product of products) {
                     // Store the original price if not already stored
-                    if (!product.Price) {
-                        product.Price = product.newPrice;
+                    if (!product.oldPrice) {
+                        product.oldPrice = product.price;
                     }
                     console.log('Product Offer:', product.offer);
                     // Check if the product has its own offer
@@ -211,7 +202,7 @@ async function updateProductPricesForCategory(category) {
                     if (!hasProductOffer || isNaN(product.offer.amount)) {
                         const categoryDiscount = categoryOffer.amount / 100;
                         if (categoryDiscount > 0) {
-                            product.newPrice = product.Price - (product.Price * categoryDiscount);
+                            product.price = product.oldPrice - (product.oldPrice * categoryDiscount);
                         }
                     }
 
@@ -228,6 +219,13 @@ async function updateProductPricesForCategory(category) {
         console.error('Error updating product prices for category:', error);
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -253,7 +251,6 @@ const updateCategoryStatus = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
 const product = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -304,9 +301,11 @@ const loadProduct = async (req, res) => {
     }
 };
 
+
+
 const addProduct = async (req, res) => {
     try {
-        const { productName, category, size, Price, stock, description,offerType, offerAmount, offerEndDate } = req.body;
+        const { productName, category, size, oldPrice, stock, description, offerType, offerAmount, offerEndDate } = req.body;
 
         let images = [];
         if (req.files && Array.isArray(req.files)) {
@@ -333,11 +332,12 @@ const addProduct = async (req, res) => {
             }));
         }
 
+
         const newProduct = new Product({
             productName,
             category,
             size,
-            Price,
+            oldPrice,
             stock,
             description,
             images,
@@ -346,20 +346,18 @@ const addProduct = async (req, res) => {
                 amount: offerAmount,
                 endDate: offerEndDate,
             },
-            
         });
 
         await newProduct.save();
         await updateProductPrices(newProduct);
 
-        console.log('Product saved successfully:', newProduct);
+        console.log('Images:', images);
         res.redirect('/admin/product');
     } catch (error) {
         console.error('Error adding new product:', error.message);
         res.status(500).send('Error adding new product: ' + error.message);
     }
 };
-
 
 const LoadEditProduct = async (req, res) => {
     try {
@@ -372,25 +370,39 @@ const LoadEditProduct = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-/*
+
 const editProduct = async (req, res) => {
     try {
         const productId = req.params.productId;
-        const { productName, category, size, Price, stock, description } = req.body;
+        const { productName, category, size, oldPrice, stock, description, offerType, offerAmount, offerEndDate } = req.body;
+
         let images = [];
         if (req.files && Array.isArray(req.files)) {
             images = req.files.map((file) => file.filename);
         }
 
-        
+        // Check if the offer is being deleted
+        const offerDeleted = !offerType && !offerAmount && !offerEndDate;
+
+        // Calculate the new price based on the offer
+        const newPrice = offerDeleted ? oldPrice : calculateNewPrice(oldPrice, offerAmount);
+
         const updatedProductFields = {
             productName,
             category,
             size,
-            Price,
+            oldPrice,
             stock,
             description,
-           
+            // Set offer fields if not deleted, otherwise remove offer
+            ...(offerDeleted ? { offer: {} } : {
+                offer: {
+                    type: offerType,
+                    amount: offerAmount,
+                    endDate: offerEndDate,
+                },
+            }),
+            price: newPrice, // Set the new price
             ...(images.length > 0 && { images }),
         };
 
@@ -405,7 +417,7 @@ const editProduct = async (req, res) => {
         }
 
         // Update product prices based on the updated product
-       // await updateProductPrices(updatedProduct);
+        await updateProductPrices(updatedProduct);
 
         res.redirect('/admin/product');
     } catch (error) {
@@ -413,136 +425,11 @@ const editProduct = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-*/
-/*
-const editProduct = async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        const { productName, category, size, Price, stock, description } = req.body;
-        let images = [];
-        
-        // Check if there are files and if they are an array
-        if (req.files && Array.isArray(req.files)) {
-            // Map filenames from files array
-            images = req.files.map((file) => file.filename);
-        }
-       // images = [...product.images, ...images];
-         // Ensure product.images is an array before concatenating
-         images = [...(product.images || []), ...images];
-/*
-        // Check if there's a query parameter for removing an image
-        if (req.query.removeImage) {
-            // Remove the image specified in the query parameter
-            const removeIndex = images.indexOf(req.query.removeImage);
-            if (removeIndex !== -1) {
-                images.splice(removeIndex, 1);
-            }
-        }
-        
-                 // Check if there's a query parameter for removing an image
-        if (req.query.removeImage) {
-            // Remove the image specified in the query parameter from the existing images
-            product.images = product.images.filter(image => image !== req.query.removeImage);
-        }
 
-      
-        const updatedProductFields = {
-            productName,
-            category,
-            size,
-            Price,
-            stock,
-            description,
-            images,
-        };
-
-        const updatedProduct = await Product.findByIdAndUpdate(
-            productId,
-            { $set: updatedProductFields },
-            { new: true }
-        );
-
-        if (!updatedProduct) {
-            return res.status(404).send('Product not found');
-        }
-
-        // Update product prices based on the updated product
-        // await updateProductPrices(updatedProduct);
-
-        res.redirect('/admin/product');
-    } catch (error) {
-        console.error('Error updating product:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
-};
-*/
-const editProduct = async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        const { productName, category, size, Price, stock, description, offerType, offerAmount, offerEndDate  } = req.body;
-        let images = [];
-        
-        // Retrieve the existing product from the database
-        const product = await Product.findById(productId);
-        if (!product) {
-            return res.status(404).send('Product not found');
-        }
-
-
-        console.log('Existing images before update:', product.images);
-
-        // Check if there are files and if they are an array
-        if (req.files && Array.isArray(req.files)) {
-            // Map filenames from files array
-            images = req.files.map((file) => file.filename);
-        }
-        
-        // Ensure product.images is an array before concatenating
-        images = [...(product.images || []), ...images];
-
-        console.log('New images array after concatenation:', images);
-
-        // Check if the offer is being deleted
-        const offerDeleted = !offerType && !offerAmount && !offerEndDate;
-
-        // Calculate the new price based on the offer
-        const newPrice = offerDeleted ? Price : calculateNewPrice(Price, offerAmount);
-
-
-
-        const updatedProductFields = {
-            productName,
-            category,
-            size,
-            Price,
-            stock,
-            description,
-            images,
-            offer: {
-                type: offerType,
-                amount: offerAmount,
-                endDate: offerEndDate,
-            },
-        };
-
-        const updatedProduct = await Product.findByIdAndUpdate(
-            productId,
-            { $set: updatedProductFields },
-            { new: true }
-        );
-
-        console.log('Updated product:', updatedProduct);
-
-        if (!updatedProduct) {
-            return res.status(404).send('Product not found');
-        }
-
-        res.redirect('/admin/product');
-    } catch (error) {
-        console.error('Error updating product:', error.message);
-        res.status(500).send('Internal Server Error');
-    }
-};
+function calculateNewPrice(oldPrice, offerAmount) {
+    const productDiscount = offerAmount / 100;
+    return oldPrice - (oldPrice * productDiscount);
+}
 
 const removeImage = async (req, res) => {
     try {
@@ -612,6 +499,9 @@ const addImage = async (req, res) => {
 
 
 
+
+
+
 const updateProductStatus = async (req, res) => {
     try {
         const productId = req.params.id;
@@ -632,38 +522,22 @@ const updateProductStatus = async (req, res) => {
 };
 
 
-
-function calculateNewPrice(Price, offerAmount) {
-    const productDiscount = offerAmount / 100;
-    return Price - (Price * productDiscount);
-}
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
-   updateProductPrices,
-   category,
-   addCategory,
-   LoadEdit,
-   newCategory,
-   ediCategory,
-   updateCategoryStatus,
-   product,
-    addProduct,
-   loadProduct,
-   LoadEditProduct,
-   editProduct,
-   removeImage,
-   addImage,
-   updateProductStatus,
-
-
-}
+    updateProductPrices,
+    category,
+    addCategory,
+    LoadEdit,
+    newCategory,
+    ediCategory,
+    updateCategoryStatus,
+    product,
+     addProduct,
+    loadProduct,
+    LoadEditProduct,
+    editProduct,
+    removeImage,
+    addImage,
+    updateProductStatus,
+ 
+ 
+ }

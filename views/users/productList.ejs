@@ -1,17 +1,23 @@
 <%- include('../layouts/productheader') %>
-    <script>
-        $(document).ready(function () {
-            $('#searchForm').submit(function (event) {
-                event.preventDefault(); // Prevent default form submission
-                const formData = $(this).serialize(); // Serialize form data
+<script>
+    $(document).ready(function () {
+        $('#searchForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+            const formData = $(this).serialize(); // Serialize form data
 
-                // Send AJAX request to server
-                $.get('/search', formData, function (data) {
-                    $('#productList').html(data); // Update product list with the received HTML
-                });
+            // Send AJAX request to server
+            $.get('/search', formData, function (data) {
+                $('#productList').html(data); // Update product list with the received HTML
             });
         });
-    </script>
+    });
+</script>
+<%
+function formatDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date ? new Date(date).toLocaleDateString('en-US', options) : '';
+}
+%>
     <div class="header-middle sticky-header">
         <div class="container">
             <div class="header-left">
@@ -174,18 +180,50 @@
                                                             </a>
 
                                                         </h3><!-- End .product-title -->
-                                                        <div class="product-price">
 
-                                                            <br>
+                                                    </h3><!-- End .product-title -->
+                                                    <div class="product-price">
+                                                        <% if (product.offer && product.offer.amount) { %>
+                                                          <!-- Product Offer -->
+                                                          <b>
+                                                            <p class="offer-details" style= "font-weight: 500; color: rgb(175, 5, 5);" >
+                                                              Save <%= product.offer.amount %>% off until <%= formatDate(product.offer.endDate) %>
+                                                            </p>
+                                                          </b>
+                                                          <br>
+                                                          <!-- Display old price with strike-through -->
+                                                          <p class="old-price">Rs<%= product.oldPrice %></p>
+                                                          <!-- Display discounted price -->
+                                                          <p class="new-price">Rs<%= product.price %></p>
+                                                        <% } else if (product.category && product.category.offer && product.category.offer.amount) { %>
+                                                          <!-- Category Offer -->
+                                                          <p class="offer-details" style= "font-weight: 500; color: rgb(175, 5, 5); ">
+                                                            Save <%= product.category.offer.amount %>% off under <%= product.category.categoryName %> category <br> until<%= formatDate(product.category.offer.endDate) %>
+                                                          </p>
+                                                      
+                                                          <!-- Display old price with strike-through -->
+                                                          <p class="old-price" style= "font-weight: 500;" >Rs <%= product.oldPrice %></p><br>
+                                                          <!-- Display discounted price -->
+                                                        <b>  <p class="new-price">Rs <%= product.price %></p></b>
+                                                        <% } else { %>
+                                                          <!-- Regular Price -->
+                                                          <p class="regular-price">Rs <%= product.price %></p>
+                                                        <% } %>
+                                                      </div><!-- End .product-price -->
+                                                      
+                                                </div><!-- End .product-body -->
+                                            </div><!-- End .product -->
+                                        </div><!-- End .col-sm-6 -->
 
-                                                            <!-- Regular Price -->
-                                                            <p class="regular-price">Rs.<%= product.Price %>/-</p>
 
-                                                        </div><!-- End .product-price -->
 
-                                                    </div><!-- End .product-body -->
-                                                </div><!-- End .product -->
-                                            </div><!-- End .col-sm-6 -->
+
+
+
+
+
+
+
                                             <% } %>
                                                 <% } %>
                                                     <% }); %>

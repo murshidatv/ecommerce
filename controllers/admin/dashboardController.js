@@ -13,7 +13,7 @@ const puppeteer = require('puppeteer');
 const { order } = require('./orderController');
 const { getUserDetailsAndOrders } =require('../../controllers/admin/adminController')
 
-const { getTotalRevenue } =require('../../controllers/admin/adminController')
+const { getTotalRevenue } =require('./adminController')
 
 const getDashboardData = async (req, res) => {
   try {

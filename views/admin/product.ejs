@@ -299,12 +299,12 @@
                                 <th scope="col">Price</th>
                               
 
-                                <th scope="col">Discount price</th>
+                                <th scope="col">Discount<br> price</th>
                                 <th scope="col">Stock</th>
-                                <th scope="col">Category offer</th>
+                                <th scope="col">Category<br> offer</th>
 
                                 <th scope="col">Product Offer<br> Amount</th>
-                                 <th scope="col">Offer End Date</th>
+                                 <th scope="col">Offer <br>End Date</th>
                                 
                                 <th scope="col">Action</th>
                                 <th scope="col">status</th>
@@ -312,43 +312,32 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <% products.forEach(product=> { %>
-                                <% if (product.category ) { %>
+                              <% products.forEach(product => { %>
+                                  <% if (product.category ) { %>
                                   <tr>
-                                    <td>
-
-                                    </td>
-                                    <td>
-                                      <% if (product.images.length> 0) { %>
-                                        <img src="/images/<%= product.images[0] %>"
-                                          style="max-width: 50px; max-height: 50px;">
-                                        <% } else { %>
-                                          <!-- Display a placeholder image or text -->
-                                          No Image
-                                          <% } %>
-                                    </td>
-
-                                    <td>
-                                      <%= product.productName %>
-                                    </td>
-                                    <td>
-                                      <% if (product.category) { %>
-                                        <%= product.category.categoryName %>
+                                      <td>
+                                        
+                                      </td>
+                                      <td>
+                                          <% if (product.images.length > 0) { %>
+                                              <img src="/images/<%= product.images[0] %>"  style="max-width: 50px; max-height: 50px;">
                                           <% } else { %>
-                                            No Category
-                                            <% } %>
-                                    </td>
-                                    <td>
-                                      <%= product.size %>
-                                    </td>
-                                    
-                                 
-                                    <td><%= product.Price %></td>
-                                   
+                                              <!-- Display a placeholder image or text -->
+                                              No Image
+                                          <% } %>
+                                      </td>
 
-                                    <td>  <% if (product.Price !== product.newPrice) { %>
+                                      <td><%= product.productName %></td>
+                                      <td><% if (product.category) { %>
+                                          <%= product.category.categoryName %>
+                                      <% } else { %>
+                                          No Category
+                                      <% } %></td>                                                    
+                                      <td><%= product.size %></td>
+                                      <td><%= product.oldPrice %></td>
+                                    <td>  <% if (product.oldPrice !== product.price) { %>
 
-                                    <%= product.newPrice %>
+                                    <%= product.price %>
                                       <% } else { %>
                                           No Discount
                                        <% } %>
@@ -358,7 +347,7 @@
                                      <td>
                                       <% if (product.category && product.category.offer && product.offer && product.category.offer.amount) { %>
                                           <p class="category-offer">
-                                              <%= product.category.offer.amount %>% <br>off on this product!
+                                            <%= product.category.offer.amount %>% off on this product!
                                           </p>
                                       <% } %>
                                      </td>
@@ -376,37 +365,29 @@
                                               No offer
                                           <% } %>
                                       </td>
+                                      
 
-
-
-
-
-
-
-
-
-                                    <td>
-                                      <button class="btn"> <a
-                                          href="/admin/edit-product/<%= product._id %>">Edit</a></button>
-                                      <!-- <button class="btn"> <a href="/admin/product/<%= product._id %>">Delete</a></button> -->
-                                    <td>
-
-
-                                      <form action="/admin/product/<%= product._id %>/update-status" method="post">
-                                        <button type="submit" style="border: 2px solid black; background-color: none;">
-                                          <% if (product.blocked || (product.category && product.category.blocked)) { %>
-                                            <span style="color: red;">Blocked</span>
-                                            <% } else { %>
-                                              <span style="color: green;">Active</span>
-                                              <% } %>
-                                        </button>
-                                      </form>
-                                    </td>
-                                    </td>
+                                      <td>
+                                          <button class="btn"> <a href="/admin/edit-product/<%= product._id %>">Edit</a></button> 
+                                          <!-- <button class="btn"> <a href="/admin/product/<%= product._id %>">Delete</a></button> -->
+                                          <td>
+                                             
+                                         
+                                              <form action="/admin/product/<%= product._id %>/update-status" method="post">
+                                                  <button type="submit" style="border: 2px solid black; background-color: none;">
+                                                      <% if (product.blocked || (product.category && product.category.blocked)) { %>
+                                                          <span style="color: red;">Blocked</span>
+                                                  <% } else { %>
+                                                      <span style="color: green;">Active</span>
+                                                  <% } %></button>
+                                              </form>
+                                             </td>
+                                      </td>
                                   </tr>
                                   <% } %>
-                                    <% }); %>
-                            </tbody>
+                              <% }); %>
+                          </tbody>
+
 
                           </table>
                           <br><br>

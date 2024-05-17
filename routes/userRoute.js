@@ -3,6 +3,7 @@ const user_route = express();
 const path = require('path');
 const addressController = require('../controllers/user/address');
 const userController = require('../controllers/user/userController');
+const couponController=require('../controllers/user/couponController')
 //user_route.use(session({secret:config.sessionSecret}));
 const auth = require("../middleware/auth");
 
@@ -118,7 +119,7 @@ user_route.post('/changepass', auth.isLogin, userController.changepassword);
 user_route.get('/cartList', auth.isLogin, userController.loadCartList);
 user_route.get('/add-to-cart/:productId', userController.addtoCart);
 user_route.get('/deleteCartItem/:userId/:productId', userController.deleteCart);
-//user_route.post('/updateCartItemQuantity/:productId',userController.updateQuantity)
+user_route.post('/updateCartItemQuantity/:productId',userController.updateQuantity)
 //user_route.get('/search', userController.search);
 
 
@@ -147,12 +148,14 @@ user_route.get('/view-order/:orderId', userController.viewOrder);
 user_route.post('/orders/:orderId/return', userController.requestReturn);
 
 
-// whitelist
+// wishlist
 user_route.get('/wishlist', auth.isLogin, userController.whitelist);
 user_route.get('/addwhitelist/:productId', auth.isLogin, userController.addwhitelist);
 user_route.get('/wishlist/:productId', userController.deletewishlist);
 
 user_route.get('/wallet',auth.isLogin,userController.wallet);
+//coupon management
+user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
 
 
 

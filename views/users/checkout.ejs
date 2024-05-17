@@ -183,44 +183,34 @@
                                                 <th>Total</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                            <% if (user.cart && user.cart.length> 0) { %>
-                                                <% let totalCartPrice=0; %>
-                                                    <% user.cart.forEach(cartItem=> { %>
-                                                        <tr>
-                                                            <td>
-                                                                <%= cartItem.product && cartItem.product.productName ?
-                                                                    cartItem.product.productName
-                                                                    : 'Product Name Not Available' %>
-                                                            </td>
-                                                            <!-- <td><%= cartItem.product && cartItem.product.price ? `$${cartItem.product.price.toFixed(2)}` : 'Price Not Available' %></td> -->
-                                                            <td>
-                                                                <%= cartItem.quantity %>
-                                                            </td>
-                                                            <% let itemTotal=cartItem.product && cartItem.product.Price
-                                                                ? cartItem.quantity * cartItem.product.Price : 0 %>
-                                                                <td>
-                                                                    <%= `RS.${itemTotal.toFixed(2)}` %>
-                                                                </td>
-                                                                <% totalCartPrice +=itemTotal; %>
-                                                        </tr>
-                                                        <% }) %>
-
-                                                            <tr class="summary-total">
-                                                                <td>Total:</td>
-                                                                <td colspan="3">
-                                                                    <%= `Rs.${totalCartPrice.toFixed(2)}` %>
-                                                                </td>
-                                                            </tr><!-- End .summary-total -->
-                                                            <% } else { %>
-                                                                <tr>
-                                                                    <td colspan="4">No items in the cart.</td>
-                                                                </tr>
-                                                                <% } %>
-
-
+                                            <% if (user.cart && user.cart.length > 0) { %>
+                                                <% let totalCartPrice = 0; %>
+                                                <% user.cart.forEach(cartItem => { %>
+                                                    <tr>
+                                                        <td><%= cartItem.product && cartItem.product.productName ? cartItem.product.productName : 'Product Name Not Available' %></td>
+                                                        <!-- <td><%= cartItem.product && cartItem.product.price ? `$${cartItem.product.price.toFixed(2)}` : 'Price Not Available' %></td> -->
+                                                         <td><%= cartItem.quantity %></td> 
+                                                        <% let itemTotal = cartItem.product && cartItem.product.price ? cartItem.quantity * cartItem.product.price : 0 %>
+                                                        <td><%= `Rs${itemTotal.toFixed(2)}` %></td>
+                                                        <% totalCartPrice += itemTotal; %>
+                                                    </tr>
+                                                <% }) %>
+                                              
+                                                <tr class="summary-total">
+                                                    <td>Total:</td>
+                                                    <td colspan="3"><%= `Rs${totalCartPrice.toFixed(2)}` %></td>
+                                                </tr><!-- End .summary-total -->
+                                            <% } else { %>
+                                                <tr>
+                                                    <td colspan="4">No items in the cart.</td>
+                                                </tr>
+                                            <% } %>
+                                            
                                         </tbody>
+                                      
+
+                                          
                                     </table><!-- End .table table-summary -->
 
                                     <div class="accordion-summary" id="accordion-payment">

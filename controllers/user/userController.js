@@ -947,7 +947,202 @@ const orderSucess = async (req, res) => {
   }
 }
 
+const placeorder = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('cart.product chosenAddress');
 
+    if (user.cart.length === 0) {
+      return res.status(400).send('Cart is empty. Cannot place an order with an empty cart.');
+    }
+
+    // Calculate the total amount without discount
+    const cartTotal = calculateTotalAmount(user.cart);
+
+    // Helper function to calculate the total amount of the cart
+function calculateTotalAmount(cart) {
+  return cart.reduce((total, cartItem) => {
+      const itemTotal = cartItem.product.price * cartItem.quantity;
+      return total + itemTotal;
+  }, 0);
+}
+
+    // Check for a coupon code
+    const couponCode = req.body.couponCode;
+
+    let discountAmount = 0;
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+
+      if (coupon) {
+        // Apply discount
+        discountAmount = calculateDiscount(cartTotal, coupon);
+
+        // Update coupon usage limits
+        coupon.usageLimits.totalUses -= 1;
+        await coupon.save();
+      } else {
+        return res.status(400).send('Invalid coupon code.');
+      }
+    }
+
+    // Calculate the total amount after applying discount
+    const totalAmountAfterDiscount = cartTotal - discountAmount;
+
+    const paymentMethod = req.body.paymentMethod;
+    const userName = user.name;
+
+    if (paymentMethod === 'cashOnDelivery') {
+      // Continue with order creation logic
+      const order = new Order({
+        userId,
+        userName,
+        chosenAddress: user.chosenAddress,
+        products: user.cart.map(cartItem => ({
+          product: cartItem.product,
+          quantity: cartItem.quantity,
+        })),
+        totalAmount: totalAmountAfterDiscount,
+        discountAmount,
+        payment: paymentMethod,
+        razorpayOrderId: uuid.v4() 
+ // Generate a unique UUID as the placeholder value
+      });
+
+      await order.save();
+
+      // Update stock for each product in the order
+      for (const orderProduct of order.products) {
+        const productId = orderProduct.product._id;
+        const orderedQuantity = orderProduct.quantity;
+
+        const product = await Product.findById(productId);
+
+        if (product) {
+          if (!isNaN(product.stock) && !isNaN(orderedQuantity)) {
+            const remainingStock = Math.max(product.stock - orderedQuantity, 0);
+            // Update the product stock
+            await Product.findByIdAndUpdate(productId, { stock: remainingStock });
+          } else {
+            console.error('Invalid stock or ordered quantity:', product.stock, orderedQuantity);
+          }
+        } else {
+          console.error('Product not found:', productId);
+        }
+      }
+
+      // Clear the user's cart
+      user.cart = [];
+      await user.save();
+
+      // Render the success page
+      res.render('ordersuccess', { discountAmount, order });
+
+    } else if (paymentMethod === 'onlinePayment') {
+      // Create Razorpay order
+      const razorpayOrderOptions = {
+        amount: totalAmountAfterDiscount * 100,
+        currency: 'INR',
+        receipt:"", // This line will throw an error, we'll fix it
+        payment_capture: 1,
+      };
+      let razorpayOrder;
+
+      try {
+        razorpayOrder = await razorpayInstance.orders.create(razorpayOrderOptions);
+
+        // Store necessary order details in the session to retrieve later
+        req.session.orderDetails = {
+          userId,
+          userName,
+          chosenAddress: user.chosenAddress,
+          products: user.cart.map(cartItem => ({
+            product: cartItem.product,
+            quantity: cartItem.quantity,
+          })),
+          totalAmount: totalAmountAfterDiscount,
+          discountAmount,
+          payment: paymentMethod,
+          razorpayOrderId: razorpayOrder.id,
+        };
+
+        // Redirect user to Razorpay page
+        res.redirect('/razorpayPage');
+      } catch (razorpayError) {
+        console.error('Error creating Razorpay order:', razorpayError);
+        res.status(500).send('Error creating Razorpay order');
+      }
+    } else {
+      // Handle other payment methods if needed
+      res.status(400).send('Invalid payment method selected.');
+    }
+  } catch (error) {
+    console.error('Error in placeorder:', error);
+
+    if (error.message === 'Coupon has expired.') {
+      return res.status(400).send('Coupon has expired. Please use a valid coupon.');
+    }
+    if (error.message === 'Total amount does not meet the minimum order amount condition.') {
+      return res.status(400).send('The total amount does not meet the minimum order amount');
+    }
+    if (error.message === 'Coupon has reached the overall usage limit.') {
+      return res.status(400).send('The usage limit is over');
+    }
+
+    if (error.name === 'ValidationError') {
+      res.status(400).send(`Validation Error: ${error.message}`);
+    } else {
+      res.status(500).send('Internal Server Error');
+    }
+  }
+};
+
+
+// Helper function to calculate the discount amount based on coupon type
+function calculateDiscount(totalAmount, coupon, userTotalUsage) {
+  // Check if the coupon is expired
+  const currentDate = new Date();
+  const currentDateWithoutTime = new Date(currentDate.toISOString().split('T')[0]);
+  const expirationDateWithoutTime = new Date(coupon.expirationDate.toISOString().split('T')[0]);
+
+  console.log('CURRENT DATE ',currentDateWithoutTime);
+  console.log('EXPIRED DATE ',expirationDateWithoutTime);
+  if (currentDateWithoutTime > expirationDateWithoutTime) {
+    throw new Error('Coupon has expired.');
+  }
+  if (totalAmount < coupon.conditions.minOrderAmount) {
+    throw new Error('Total amount does not meet the minimum order amount condition.');
+  }
+
+  // Check if the user has reached the maximum usage limit for the coupon
+  if (userTotalUsage >= coupon.usageLimits.perUser) {
+    throw new Error('Coupon usage limit per user exceeded.');
+  }
+
+  // Check if the overall usage limit for the coupon has been reached
+  if (coupon.usageLimits.totalUses <= 0) {
+    throw new Error('Coupon has reached the overall usage limit.');
+  }
+
+
+
+  // If all validations pass, calculate and return the discount
+  if (coupon.type === 'percentage') {
+    // If the discount type is percentage, apply the percentage discount
+    return (coupon.value / 100) * totalAmount;
+  } else if (coupon.type === 'fixed') {
+    // If the discount type is fixed, apply the fixed discount
+    return coupon.value;
+  } else {
+    return 0; // Default to no discount
+  }
+}
+
+
+
+
+/*
 const placeorder = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -1042,7 +1237,7 @@ const placeorder = async (req, res) => {
 };
 
 
-
+*/
 
 // CANCEL ORDER
 
@@ -1094,25 +1289,32 @@ const reasonpage = async (req, res) => {
 };
 
 //to View Order details
-const viewOrder = async (req, res) => {
+
+const viewOrder= async (req,res)=>{
   try {
     const orderId = req.params.orderId;
     const order = await Order.findById(orderId).populate({
-      path: 'products.product',
-      model: 'Product'
+      path:'products.product',
+      model:'Product'
     })
     if (!order) {
       return res.status(404).send('Order not found');
     }
     const totalOrderPrice = order.products.reduce((total, productDetail) => {
-      return total + (productDetail.quantity * productDetail.product.Price);
+      return total + (productDetail.quantity * productDetail.product.price);
     }, 0);
-    console.log(totalOrderPrice);
-    res.render('viewOrder', { order, totalOrderPrice });
+console.log(totalOrderPrice);
+    res.render('viewOrder', { order ,totalOrderPrice});
   } catch (error) {
-
+    
   }
 }
+
+
+
+
+
+
 const requestReturn = async (req, res) => {
   const orderId = req.params.orderId;
   const returnReason = req.body.returnReason;

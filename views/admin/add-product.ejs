@@ -378,9 +378,8 @@
                 <div class="form-group">
                   <label for="name" class="text-light">Price</label>
 
-                  <input type="text" name="Price" value="" id="price" placeholder="Price">
+                  <input type="text" name="oldPrice" value="" id="price" placeholder="Price">
                   <span id="priceError" style="color: red;"></span>
-
                 </div>
                 <div class="form-group">
                   <label for="name" class="text-light">Stock</label>
@@ -399,55 +398,65 @@
                   <option value="">Percentage</option>
                 </select>
               </div>
-              <div class="form-group">
+              <!--<div class="form-group">
                 Offer Amount (%)
                 <label for="offerAmount" class="text-light">Offer Amount (%)</label>
                 <input type="text" name="offerAmount" id="offerAmount" placeholder="">
                 <span id="offerAmountError" style="color: red;"></span>
+              </div>-->
+              <div class="form-group">Offer Amount(%)
+                <label class="sign-form-label" for="form3Example4cd"></label>
+                <input type="number" name="offerAmount" id="offerAmount" onchange="validateOfferAmount()">
+                <span id="offerAmountError" style="color: red;"></span>
               </div>
-
               <div class="form-group">
-                Offer End Date<label for="offerEndDate" class="text-light">/label><br>
-                  <input type="date" name="offerEndDate" id="offerEndDate" placeholder="Offer End Date(%)">
-                  <span id="offerEndDateError" style="color: red;"></span>
-              </div>
+
+                <div class="form-group">
+                  Offer End Date<label for="offerEndDate" class="text-light">/label><br>
+                    <input type="date" name="offerEndDate" id="offerEndDate" placeholder="Offer End Date(%)">
+                    <span id="offerEndDateError" style="color: red;"></span>
+                </div>
 
 
 
-              <div class="form-group">
-                Description <br>
-                <textarea name="description" id="description" cols="50" rows="10"></textarea>
-                <span id="discriptionError" style="color: red;"></span>
-
-              </div>
-              <label class="sign-form-label" for="form3Example4cd">Product Images</label>
-              <div class="d-flex flex-row align-items-center mb-3">
-                <div class="form-outline flex-fill mb-0">
-                  <label class="sign-form-label" for="form3Example4cd">Image 1</label>
-                  <input type="file" name="images" id="productImage1" onchange="displayImagePreview(this)" multiple>
-                  <img id="imagePreview1" alt="" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+                <div class="form-group">
+                  Description <br>
+                  <textarea name="description" id="description" cols="50" rows="10"></textarea>
+                  <span id="discriptionError" style="color: red;"></span>
 
                 </div>
-              </div>
-              <div class="form-outline flex-fill mb-0">
+                <label class="sign-form-label" for="form3Example4cd">Product Images</label>
+                <div class="d-flex flex-row align-items-center mb-3">
+                  <div class="form-outline flex-fill mb-0">
+                    <label class="sign-form-label" for="form3Example4cd">Image 1</label>
+                    <input type="file" name="images" id="productImage1" onchange="displayImagePreview(this)" multiple
+                      accept="image/*">
+                    <img id="imagePreview1" alt="" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
 
-                <label class="sign-form-label" for="form3Example4cd">Image 2</label>
-                <input type="file" name="images" id="productImage2" onchange="displayImagePreview(this)" multiple><br>
-                <img id="imagePreview2" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+                  </div>
+                </div>
+                <div class="form-outline flex-fill mb-0">
 
-              </div>
+                  <label class="sign-form-label" for="form3Example4cd">Image 2</label>
+                  <input type="file" name="images" id="productImage2" onchange="displayImagePreview(this)" multiple
+                    accept="image/*"><br>
+                  <img id="imagePreview2" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+
+                </div>
 
 
-              <div class="form-outline flex-fill mb-0">
-                <label class="sign-form-label" for="form3Example4cd">Image 3</label>
-                <input type="file" name="images" id="productImage3" onchange="displayImagePreview(this)" multiple>
-                <img id="imagePreview3" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+                <div class="form-outline flex-fill mb-0">
+                  <label class="sign-form-label" for="form3Example4cd">Image 3</label>
+                  <input type="file" name="images" id="productImage3" onchange="displayImagePreview(this)" multiple
+                    accept="image/*">
+                  <img id="imagePreview3" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
 
-              </div>
-              <span id="imageError" style="color: red;"></span>
-              <div id="productError" class="px-2 my-2 text-center text-danger"></div>
-              <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
-                <div class="form-group">
+                </div>
+                <span id="imageError" style="color: red;"></span>
+                <div id="productError" class="px-2 my-2 text-center text-danger"></div>
+                <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+                  <!-- Your input field -->
+
                   <button type="submit" class="btn text-dark update">Save</button>
                 </div>
               </div>
@@ -613,6 +622,24 @@
               return false;
             }
           </script>
+          <script>
+            function validateOfferAmount() {
+              const offerAmountInput = document.getElementById('offerAmount');
+              const offerAmountValue = offerAmountInput.value.trim();
+
+              if (!/^\d+$/.test(offerAmountValue) || parseInt(offerAmountValue) <= 0) {
+                // Display an error message (you can adapt this to your UI)
+                document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer";
+                return false;
+              }
+
+              // Clear any previous error message
+              document.getElementById('offerAmountError').innerText = "";
+              return true;
+            }
+          </script>
+
+
 
 
         </div>

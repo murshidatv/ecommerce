@@ -24,13 +24,14 @@ const mongoose=require("mongoose");
         type: Boolean,
         default: false,
     },
-   
-    Price: {
+    oldPrice: {
         type: Number,
     },
-    newPrice: {
+    price: {
         type: Number,
+
     },
+
     stock:{
         type:Number,
         required: true,
@@ -58,7 +59,7 @@ const mongoose=require("mongoose");
     deleted:{
         type:Boolean,
         default:false
-    }
+    },
  })
 
  module.exports=mongoose.model('Product',productSchema)

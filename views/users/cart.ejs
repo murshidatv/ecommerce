@@ -1,6 +1,4 @@
-
-
-  <%- include('../layouts/productheader') %>
+<%- include('../layouts/productheader') %>
 
   <div class="header-middle sticky-header">
     <div class="container">
@@ -43,7 +41,7 @@
         </div><!-- End .compare-dropdown -->
 
         <div class="dropdown cart-dropdown">
-          <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+          <a href="/cartlist" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false" data-display="static">
             <i class="icon-shopping-cart"></i>
             <span class="cart-count">
@@ -98,139 +96,119 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
-
+                    <th>Remove</th>
                   </tr>
                 </thead>
-
                 <tbody>
-                  <% user.cart.forEach(cartItem=> { %>
-                    <tr>
-                      <td class="product-col">
-                        <div class="product">
-                          <figure class="product-media">
-                            <% if (cartItem.product.images && cartItem.product.images.length> 0) { %>
-                              <a href="/product/<%= cartItem.product._id %>">
-                                <img src="/images/<%= cartItem.product.images[0] %>" alt="Product image">
-                              </a>
-                              <% } else { %>
-                                <p>Image not available</p>
-                                <% } %>
-                          </figure>
-                        </div>
-                      </td>
-                      <td>
-                        <h3 class="product-title">
-                          <a href="#">
-                            <% if (cartItem.product && cartItem.product.productName) { %>
-                              <%= cartItem.product.productName %>
+                  <% if (user.cart && user.cart.length> 0) { %>
+                    <% user.cart.forEach(cartItem=> { %>
+                      <tr>
+                        <td class="product-col">
+                          <div class="product">
+                            <figure class="product-media">
+                              <% if (cartItem.product.images && cartItem.product.images.length> 0) { %>
+                                <a href="/product/<%= cartItem.product._id %>">
+                                  <img src="/images/<%= cartItem.product.images[0] %>" alt="Product image">
+                                </a>
                                 <% } else { %>
-                                  Product Name Not Available
+                                  <p>Image not available</p>
                                   <% } %>
-                          </a>
-                        </h3>
+                            </figure>
+                          </div>
+                        </td>
+                        <td>
+                          <h3 class="product-title">
+                            <a href="#">
+                              <% if (cartItem.product && cartItem.product.productName) { %>
+                                <%= cartItem.product.productName %>
+                                  <% } else { %>
+                                    Product Name Not Available
+                                    <% } %>
+                            </a>
+                          </h3>
+
                           <!-- Display product offer details -->
                           <% if (cartItem.product && cartItem.product.category && cartItem.product.category.offer) { %>
-                            <p>Category Offer:  <%=  cartItem.product.category.offer.amount%> %off</p>
-                        <% } %>
-
-                        <!-- Display category offer details -->
-                        <% if (cartItem.product && cartItem.product.offer) { %>
-                            <p> <%= cartItem.product.offer.amount %> % off</p>
-                        <% } %>
-
-                      </td>
-
-                      <td class="price-col">
-                        <% if (cartItem.product && cartItem.product.newPrice) { %>
-                          Rs.<%= cartItem.product.newPrice %>
-                            <% } else { %>
-                              Price Not Available
-                              <% } %>
-                      </td>
-                      <td class="quantity-col">
-                        <div class="cart-product-quantity">
-                          <input type="number" class="form-control quantity-input" value="<%= cartItem.quantity %>"
-                            min="1" max="<%= cartItem.product.stock %>" step="1" data-decimals="0" required
-                            data-product-id="<%= cartItem.product._id %>">
-                        </div>
-                      </td>
-
-                      <td class="total-col">
-                        <% if (cartItem.product && cartItem.product.newPrice) { %>
-                          Rs<span class="total-price" data-product-id="<%= cartItem.product._id %>" data-product-price="<%= cartItem.product.newPrice %>">
-                            <%= cartItem.quantity * cartItem.product.newPrice %>
-                          </span>
-                        <% } else { %>
-                          Total Not Available
-                        <% } %>
-                      </td>
-
-
-<!--
-
-                      <td class="total-col">
-                        <% if (cartItem.product && cartItem.product.Price) { %>
-                          Rs.<span class="total-price" data-product-id="<%= cartItem.product._id %>"
-                            data-product-price="<%= cartItem.product.newPrice %>">
-                            <%= cartItem.quantity * cartItem.product.newPrice %>
-                          </span>
-                          <% } else { %>
-                            Total Not Available
+                            <p>Category Offer: <%= cartItem.product.category.offer.amount %>% off</p>
                             <% } %>
-                      </td>-->
-                      
-                      <td class="remove-col">
-                      
-                              <!--
-                                <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"><button
-                              class="btn-remove"><i class="icon-close"></i></button></a>
-                                <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"><button
-                                  class="btn-remove"><i class="icon-close"></i>
-                                </button></a>-->
-      
-                                <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"
-                                  onclick="return confirm('Are you sure you want to remove this product?');">
-                                 <button class="btn-remove">
-                                   <i class="icon-close"></i></button></a>
-      
+
+                              <!-- Display product offer details -->
+                              <% if (cartItem.product && cartItem.product.offer) { %>
+                                <p>
+                                  <%= cartItem.product.offer.amount %>% off
+                                </p>
+                                <% } %>
+                        </td>
+                        <td class="price-col">
+                          <% if (cartItem.product && cartItem.product.price) { %>
+                            Rs<%= cartItem.product.price %>
+                              <% } else { %>
+                                Price Not Available
+                                <% } %>
+                        </td>
+                        <td class="quantity-col">
+                          <div class="cart-product-quantity">
+                            <input type="number" class="form-control quantity-input" value="<%= cartItem.quantity %>"
+                              min="1" max="<%= cartItem.product.stock %>" step="1" data-decimals="0" required
+                              data-product-id="<%= cartItem.product._id %>">
+                          </div>
+                        </td>
+                        <td class="total-col">
+                          <% if (cartItem.product && cartItem.product.price) { %>
+                            Rs<span class="total-price" data-product-id="<%= cartItem.product._id %>"
+                              data-product-price="<%= cartItem.product.price %>">
+                              <%= cartItem.quantity * cartItem.product.price %>
+                            </span>
+                            <% } else { %>
+                              Total Not Available
+                              <% } %>
+                        </td>
+                        <td class="remove-col">
+                          <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"
+                            onclick="return confirm('Are you sure you want to remove this product?');">
+                            <button class="btn-remove"><i class="icon-close"></i></button>
+                          </a>
+                        </td>
+                      </tr>
+                      <% }) %>
+                        <% } else { %>
+                         
+                            <td colspan="6" style="text-align: center;">
+                              <img src="/images/th.jpeg" alt="No items in the cart" style="width: 150px;margin-left: 330px;" ><br>
+                              <p style="text-align: center;">No items in the cart.</p>
                             </td>
-
-                      </td>
-                    </tr>
-                    <% }) %>
+                          </tr>
+                          <% } %>
                 </tbody>
-
               </table>
             </div><!-- End .col-lg-9 -->
 
             <aside class="col-lg-3">
               <div class="summary summary-cart">
                 <h3 class="summary-title">Cart Total</h3>
-
                 <table class="table table-summary">
                   <tbody>
-                    <!-- Add other summary rows as needed -->
                     <tr class="summary-total">
                       <td>Total:</td>
                       <td>
-
-                        RS.<% const total=user.cart.reduce((acc, item)=> acc + (item.product && item.product.newPrice ?
-                          item.quantity * item.product.newPrice : 0), 0); %>
+                        Rs<% const total=user.cart.reduce((acc, item)=> acc + (item.product && item.product.price ?
+                          item.quantity * item.product.price : 0), 0); %>
                           <%= total %>
                       </td>
                     </tr>
                   </tbody>
                 </table>
-
                 <a href="/chooseAddress" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
               </div><!-- End .summary -->
-
               <a href="/product-list" class="btn btn-outline-dark-2 btn-block mb-3">
                 <span>CONTINUE SHOPPING</span>
                 <i class="icon-refresh"></i>
               </a>
             </aside><!-- End .col-lg-3 -->
           </div><!-- End .row -->
+
+
+
         </div><!-- End .container -->
       </div><!-- End .cart -->
 
@@ -390,8 +368,6 @@
   <script src="assets/js/demos/demo-5.js"></script>
 
 
-
-
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       // Add an event listener to all quantity inputs
@@ -407,7 +383,7 @@
         const totalSpan = document.querySelector(`tr[data-row-index="${rowIndex}"] .total-price`);
 
         // Update the total price
-        const totalPrice = parseInt(input.value) * parseFloat(user.cart[rowIndex].product.newPrice);
+        const totalPrice = parseInt(input.value) * parseFloat(user.cart[rowIndex].product.price);
         totalSpan.textContent = `${totalPrice.toFixed(2)}`;
       }
     });
@@ -429,7 +405,7 @@
           const productPrice = parseFloat(productPriceString) || 0;
 
           const currentQuantity = parseInt(this.value, 10);
-          const newTotalPrice = currentQuantity * productnewPrice;
+          const newTotalPrice = currentQuantity * productPrice;
 
           // Check if the calculated total price is NaN and handle it
           if (!isNaN(newTotalPrice)) {
@@ -465,7 +441,6 @@
       quantityInputs.forEach(input => {
         input.addEventListener('change', updateTotalPrice);
       });
-
       function updateTotalPrice(event) {
         const input = event.target;
         const productId = input.getAttribute('data-product-id');
@@ -504,11 +479,6 @@
     });
   </script>
 
-  </body>
 
-
-  <!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
-
-  </html>
 
   <%- include('../layouts/productfooter.ejs') %>

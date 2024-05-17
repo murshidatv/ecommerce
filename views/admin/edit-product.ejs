@@ -1,582 +1,705 @@
-
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Edit Product</title>
-    <!-- plugins:css -->
-    <link rel="stylesheet" href="/asset-temp/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/asset-temp/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="/asset-temp/css/style.css">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="/asset-temp/images/favicon.ico" />
-  </head>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Edit Product</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="/asset-temp/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/asset-temp/vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- Plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <!-- endinject -->
+  <!-- Layout styles -->
+  <link rel="stylesheet" href="/asset-temp/css/style.css">
+  <!-- End layout styles -->
+  <link rel="shortcut icon" href="/asset-temp/images/favicon.ico" />
+</head>
+
 <body>
-    <style>
-        /* Reset some default styles */
-        body, h1, h2, p, ul, form {
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    /* Reset some default styles */
+    body,
+    h1,
+    h2,
+    p,
+    ul,
+    form {
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      height: 100%;
+      width: 100%;
+    }
 
-        #add_user {
-            max-width: 500px;
-            height: 95%;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    #add_user {
+      max-width: 500px;
+      height: 95%;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .form-group {
-            margin-bottom: 15px;
-            
-        }
+    .form-group {
+      margin-bottom: 15px;
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
+    }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
 
-        .btn {
-            background-color:rgb(85, 145, 213);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-        .btn:hover {
-            background-color: #c66;
-        }
+    .btn {
+      background-color: rgb(85, 145, 213);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-        #inputState {
-            width: 25rem;
-            border-radius: 5px;
-            height: 2rem;
-        }
-        nav {
-            background-color: #333;
-            padding: 10px 0;
-            text-align: center;
-        }
+    .btn:hover {
+      background-color: #c66;
+    }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-        }
+    #inputState {
+      width: 25rem;
+      border-radius: 5px;
+      height: 2rem;
+    }
 
-        nav a:hover {
-            text-decoration: underline;
-        }
+    nav {
+      background-color: #333;
+      padding: 10px 0;
+      text-align: center;
+    }
 
-       </style>   
-        <body>
-            <div class="container-scroller">
-              <!-- partial:../../partials/_navbar.html -->
-              <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-                <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                  <a class="navbar-brand brand-logo" href="home"><h1 style="color: rgb(10, 109, 170);font-size: 60px;">Zouq</h1></style></h1></a>
-                  <a class="navbar-brand brand-logo-mini "href="home"></a>
-                </div>
-                <div class="navbar-menu-wrapper d-flex align-items-stretch">
-                  <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                    <span class="mdi mdi-menu"></span>
-                  </button>
-                  <div class="search-field d-none d-md-block">
-                    <form class="d-flex align-items-center h-100" action="#">
-                      <div class="input-group">
-                        <div class="input-group-prepend bg-transparent">
-                          <i class="input-group-text border-0 mdi mdi-magnify"></i>
-                        </div>
-                        <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
-                      </div>
-                    </form>
-                  </div>
-                  <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item nav-profile dropdown">
-                      <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="nav-profile-img">
-                          <img src="/asset-temp/images/faces/face1.jpg" alt="image">
-                          <span class="availability-status online"></span>
-                        </div>
-                        <div class="nav-profile-text">
-                          <p class="mb-1 text-black">David Greymaax</p>
-                        </div>
-                      </a>
-                      <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" href="#">
-                          <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">
-                          <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
-                      </div>
-                    </li>
-                    <li class="nav-item d-none d-lg-block full-screen-link">
-                      <a class="nav-link">
-                        <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="mdi mdi-email-outline"></i>
-                        <span class="count-symbol bg-warning"></span>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
-                        <h6 class="p-3 mb-0">Messages</h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                          <div class="preview-thumbnail">
-                            <img src="/asset-temp/images/faces/face4.jpg" alt="image" class="profile-pic">
-                          </div>
-                          <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Mark send you a message</h6>
-                            <p class="text-gray mb-0"> 1 Minutes ago </p>
-                          </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                          <div class="preview-thumbnail">
-                            <img src="/asset-temp/images/faces/face2.jpg" alt="image" class="profile-pic">
-                          </div>
-                          <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Cregh send you a message</h6>
-                            <p class="text-gray mb-0"> 15 Minutes ago </p>
-                          </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                          <div class="preview-thumbnail">
-                            <img src="/asset-temp/images/faces/face3.jpg" alt="image" class="profile-pic">
-                          </div>
-                          <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Profile picture updated</h6>
-                            <p class="text-gray mb-0"> 18 Minutes ago </p>
-                          </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="p-3 mb-0 text-center">4 new messages</h6>
-                      </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-bs-toggle="dropdown">
-                        <i class="mdi mdi-bell-outline"></i>
-                        <span class="count-symbol bg-danger"></span>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                        <h6 class="p-3 mb-0">Notifications</h6>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                          <div class="preview-thumbnail">
-                            <div class="preview-icon bg-success">
-                              <i class="mdi mdi-calendar"></i>
-                            </div>
-                          </div>
-                          <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
-                            <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today </p>
-                          </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                          <div class="preview-thumbnail">
-                            <div class="preview-icon bg-warning">
-                              <i class="mdi mdi-settings"></i>
-                            </div>
-                          </div>
-                          <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
-                            <p class="text-gray ellipsis mb-0"> Update dashboard </p>
-                          </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                          <div class="preview-thumbnail">
-                            <div class="preview-icon bg-info">
-                              <i class="mdi mdi-link-variant"></i>
-                            </div>
-                          </div>
-                          <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                            <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
-                            <p class="text-gray ellipsis mb-0"> New admin wow! </p>
-                          </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <h6 class="p-3 mb-0 text-center">See all notifications</h6>
-                      </div>
-                    </li>
-                    <li class="nav-item nav-logout d-none d-lg-block">
-                      <a class="nav-link" href="#">
-                        <i class="mdi mdi-power"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item nav-settings d-none d-lg-block">
-                      <a class="nav-link" href="#">
-                        <i class="mdi mdi-format-line-spacing"></i>
-                      </a>
-                    </li>
-                  </ul>
-                  <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                    <span class="mdi mdi-menu"></span>
-                  </button>
-                </div>
-              </nav>
-              <!-- partial -->
-              <div class="container-fluid page-body-wrapper">
-                <!-- partial:../../partials/_sidebar.html -->
-                <nav class="sidebar sidebar-offcanvas" id="sidebar">
-                  <ul class="nav">
-                    <li class="nav-item nav-profile">
-                      <a href="#" class="nav-link">
-                        <div class="nav-profile-image">
-                          <img src="/asset-temp/images/faces/face1.jpg" alt="profile">
-                          <span class="login-status online"></span>
-                          <!--change to offline or busy as needed-->
-                        </div>
-                        <div class="nav-profile-text d-flex flex-column">
-                          <span class="font-weight-bold mb-2">Murshida TV</span>
-                          <span class="text-secondary text-small">Project Manager</span>
-                        </div>
-                        <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/admin/dashboard">
-                        <span class="menu-title">Dashboard</span>
-                        <i class="mdi mdi-home menu-icon"></i>
-                      </a>
-                    </li>
-                    
-                      </li>
-                   
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin/listUser">
-                          <span class="menu-title">User Management</span>
-                          <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                        </a>
-                      </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/admin/category">
-                        <span class="menu-title">Category Management</span>
-                        <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/admin/product">
-                        <span class="menu-title">Product Management</span>
-                        <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/admin/loadorder">
-                        <span class="menu-title">Order Management</span>
-                        <i class="mdi mdi-chart-bar menu-icon"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href=#>
-                        <span class="menu-title">Coupon Management</span>
-                        <i class="mdi mdi-table-large menu-icon"></i>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" data-bs-toggle="collapse" href="#">
-                        <span class="menu-title">Banner Management</span>
-                       
-                        <i class="mdi mdi-medical-bag menu-icon"></i>
-                      </a>
-                     
-                    </li>
-                    
-                  </ul>
-                </nav>
-                <!-- partial -->
-                <div class="main-panel">
-                    <div class="content-wrapper">
-                      
-                      <h2  style="color: rgb(10, 109, 170);text-align: center;">Edit Product</h2>
-                        
-                        <div class="col-md-12 grid-margin stretch-card">
-                         
-                            <form action="/admin/edit-product/<%= product._id %>" method="POST" id="add_user" enctype="multipart/form-data" onsubmit="return productValidation(event)">
-                                <div class="new_user">
-                                    <h2></h2> <br>
-                                    <div class="form-group">
-                                      Product Name<label for="productName" class="text-light"></label>
-                                        <input type="hidden" name="id" value="<%= product._id %>">
-                                        <input type="text" name="productName" id="productName" value="<%= product.productName %>" placeholder="Product Name">
-                                        <span id="productNameError" style="color: red;"></span>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="inputState">Category</label>
-                                        <select id="inputState" name="category" class="form-control">
-                                            <% categories.forEach(category => { %>
-                                                <% if (!category.blocked) { %>
-                                                <option value="<%= category._id %>" <%= product.category.equals(category._id) ? 'selected' : '' %>><%= category.categoryName %></option>
-                                                <% } %>
-                                                <% }); %>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                      Size<label for="size" class="text-light"></label>
-                                        <input type="text" name="size" id="size" value="<%= product.size %>" placeholder="Size">
-                                        <span id="sizeError" style="color: red;"></span>
-                                    </div>
-                                    <div class="form-group">
-                                      Price<label for="price" class="text-light"></label>
-                                        <input type="text" name="Price" id="price" value="<%= product.Price %>" placeholder="Price">
-                                        <span id="priceError" style="color: red;"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        Stock<label for="stock" class="text-light">Stock</label>
-                                        <input type="text" name="stock" id="stock" value="<%= product.stock %>" placeholder="Stock">
-                                        <span id="stockError" style="color: red;"></span>
-                                    </div>
-                                </div>
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
 
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
 
-
-                                <div class="form-group">
-                                  <label for="offerType" class="text-light">Offer Type</label>
-                                  <select name="offerType" value="<%=product.offer.type%>" id="offerType">
-                                      <option value="">Percentage</option>
-                                      <!-- Add other offer types as needed -->
-                                  </select>
-                              </div>
-                          
-                              <div class="form-group">
-                                  <label for="offerAmount" class="text-light">Offer Amount (%)</label>
-                                  <input type="text" name="offerAmount" id="offerAmount" value="<%=product.offer.amount%>">
-                                  <span id="offerAmountError" style="color: red;"></span>
-                              </div>
-                              
-                              <div class="form-group">
-                                  <label for="offerEndDate" class="text-light">Offer End Date</label>
-                                  <input type="date" name="offerEndDate" value="<%= product.offer && product.offer.endDate ? product.offer.endDate.toISOString().split('T')[0] : '' %>" id="offerEndDate">
-                                  <span id="offerEndDateError" style="color: red;"></span>
-                              </div>
-
-
-                                <div class="form-group">
-                                    Description <br>
-                                    <textarea name="description" id="description" cols="50" rows="10"><%= product.description %></textarea>
-                                    <span id="discriptionError" style="color: red;"></span><br>
-                                </div>
-                                <br>
-                                <hr>
-                                <br>
-                                <label class="sign-form-label" for="form3Example4cd">Product Images</label><br>
-                              
-                                
-                                <form action="/upload-image" method="post" enctype="multipart/form-data">
-                                  <input type="file" name="images" multiple>
-                                  <!-- Other form fields (if any) -->
-                                  <button type="submit" class="btn text-dark update">Upload Images</button>
-                                  <hr>
-                                  <br>
-                                <!-- Display existing images and allow editing -->
-                                <div class="d-flex flex-row align-items-center mb-3">
-                                    <% for (let i = 0; i < product.images.length; i++) { %>
-                                        <div class="form-outline flex-fill mb-0"><br>
-                                            <label class="sign-form-label" for="form3Example4cd">Image <%= i + 1 %></label>
-                                            <img
-                                                src="/images/<%= product.images[i] %>"
-                                                alt="Existing Image <%= i + 1 %>"
-                                                style="max-width: 100px; max-height: 100px; margin-top: 10px; cursor: pointer;"
-                                                onclick="document.getElementById('productImage<%= i + 1 %>').click();"
-                                              
-                                            ><br><br>
-                                            <a href="/admin/remove-image/<%= product._id %>/<%= product.images[i] %>"><br><br>
-                                              <button type="button" class="btn text-dark update" >Remove</button>
-                                          </a>
-                   
-                                            <br>
-                             
-                                            <input
-                                                type="file"
-                                                name="images"
-                                                id="productImage<%= i + 1 %>"
-                                                onchange="displayImagePreview(this)"
-                                                style="display: none;"
-                                            >
-                        
-                                            <!-- Preview for the selected image -->
-                                            <img
-                                                id="imagePreview<%= i + 1 %>"
-                                                alt=""
-                                                style="max-width: 100px; max-height: 100px; margin-top: 10px; display: none;"
-                                            >
-                                        </div>
-                                    <% } %>
-                                </div>
-                        
-                                <div id="productError" class="px-2 my-2 text-center text-danger"></div>
-                                <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
-                                  
-                                  
-                                    <div class="form-group">
-                                        <button style="color: #ccc;" type="submit" class="btn text-dark update">Save Changes</button>
-                                    </div>
-                                </div>
-                            </form>
-                            </form>
-                        
-                            <script>
-                                function displayImagePreview(input) {
-                                    const imagePreview = document.getElementById('imagePreview' + input.id.charAt(input.id.length - 1));
-                        
-                                    if (input.files && input.files[0]) {
-                                        const reader = new FileReader();
-                        
-                                        reader.onload = function (e) {
-                                            imagePreview.src = e.target.result;
-                                            imagePreview.style.display = "block"; // Show the image preview
-                                        };
-                        
-                                        reader.readAsDataURL(input.files[0]);
-                                    } else {
-                                        imagePreview.src = "";
-                                        imagePreview.style.display = "none"; // Hide the image preview
-                                    }
-                                }
-                            </script>
-                            
-
-                            <script>
-                                function productValidation(event) {
-                                    var productName = document.getElementById('productName').value;
-                                    var size = document.getElementById('size').value;
-                                    var price = document.getElementById('price').value;
-                                    var stock = document.getElementById('stock').value;
-                                    var description = document.getElementById('description').value;
-                                  
-                        
-                                    document.getElementById('productNameError').innerText = "";
-                                    document.getElementById('sizeError').innerText = "";
-                                    document.getElementById('priceError').innerText = "";
-                                    document.getElementById('stockError').innerText = "";
-                                    document.getElementById('discriptionError').innerText = "";
-                                  
-                        
-                                    // Validate product Name
-                                    if (productName.trim() === "") {
-                                        document.getElementById('productNameError').innerText = "Product  Name is required";
-                                        event.preventDefault();
-                                    }
-                                    if (!/^[a-zA-Z]+$/.test(productName)) {
-                                        document.getElementById('productNameError').innerText = "Product Must Be Characters";
-                                        event.preventDefault();
-                                    }
-                                    // validate size field
-                                    if (size.trim() === "") {
-                                        document.getElementById('sizeError').innerText = "Size is required";
-                                        event.preventDefault();
-                                    }
-                                    if (!/^[a-zA-Z]+$/.test(size)) {
-                                        document.getElementById('sizeError').innerText = " Size Must Be Characters";
-                                        event.preventDefault();
-                                    }
-                        
-                                    // validate price field
-                                    if (price.trim() === "") {
-                                        document.getElementById('priceError').innerText = "Price is required";
-                                        event.preventDefault();
-                                    } else {
-                                        var priceRegex = /^\d+$/;
-                        
-                                        if (!priceRegex.test(price) || parseInt(price) <= 0) {
-                                            document.getElementById('priceError').innerText = 'Price must be a valid positive integer';
-                                            event.preventDefault();
-                                        }
-                                    }
-                        
-                                    // validate Stock field
-                                    if (stock.trim() === "") {
-                                        document.getElementById('stockError').innerText = "Stock is required";
-                                        event.preventDefault();
-                                    } else {
-                        
-                                        var stockRegex = /^\d+$/;
-                        
-                                        if (!stockRegex.test(stock) || parseInt(stock) < 0) {
-                                            document.getElementById('stockError').innerText = 'Stock must be a valid positive integer';
-                                            event.preventDefault();
-                                        }
-                                    }
-                                  
-                        
-                               
-                        
-                                    // description validation
-                                    if (description.trim() === "") {
-                                        document.getElementById('discriptionError').innerText = "Description is required";
-                                        event.preventDefault();
-                                    }
-                                }
-                            </script>
-                       
-                       
-                        </div>
-                        
-                        
-                                   
-                        
-                     
-                    </div>
-                    <!-- content-wrapper ends -->
-                    <!-- partial:../../partials/_footer.html -->
-                   
-
-    
-     <footer class="footer">
-        <div class="container-fluid d-flex justify-content-between">
-          <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
-          <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:../../partials/_navbar.html -->
+      <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo" href="home">
+            <h1 style="color: rgb(10, 109, 170);font-size: 60px;">Zouq</h1>
+            </style>
+            </h1>
+          </a>
+          <a class="navbar-brand brand-logo-mini " href="home"></a>
         </div>
-      </footer>
+        <div class="navbar-menu-wrapper d-flex align-items-stretch">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-menu"></span>
+          </button>
+          <div class="search-field d-none d-md-block">
+            <form class="d-flex align-items-center h-100" action="#">
+              <div class="input-group">
+                <div class="input-group-prepend bg-transparent">
+                  <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                </div>
+                <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+              </div>
+            </form>
+          </div>
+          <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item nav-profile dropdown">
+              <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <div class="nav-profile-img">
+                  <img src="/asset-temp/images/faces/face1.jpg" alt="image">
+                  <span class="availability-status online"></span>
+                </div>
+                <div class="nav-profile-text">
+                  <p class="mb-1 text-black">David Greymaax</p>
+                </div>
+              </a>
+              <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">
+                  <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
+              </div>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+              <a class="nav-link">
+                <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-email-outline"></i>
+                <span class="count-symbol bg-warning"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                aria-labelledby="messageDropdown">
+                <h6 class="p-3 mb-0">Messages</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="/asset-temp/images/faces/face4.jpg" alt="image" class="profile-pic">
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Mark send you a message</h6>
+                    <p class="text-gray mb-0"> 1 Minutes ago </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="/asset-temp/images/faces/face2.jpg" alt="image" class="profile-pic">
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Cregh send you a message</h6>
+                    <p class="text-gray mb-0"> 15 Minutes ago </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <img src="/asset-temp/images/faces/face3.jpg" alt="image" class="profile-pic">
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Profile picture updated</h6>
+                    <p class="text-gray mb-0"> 18 Minutes ago </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <h6 class="p-3 mb-0 text-center">4 new messages</h6>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+                data-bs-toggle="dropdown">
+                <i class="mdi mdi-bell-outline"></i>
+                <span class="count-symbol bg-danger"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                aria-labelledby="notificationDropdown">
+                <h6 class="p-3 mb-0">Notifications</h6>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-success">
+                      <i class="mdi mdi-calendar"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
+                    <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-warning">
+                      <i class="mdi mdi-settings"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
+                    <p class="text-gray ellipsis mb-0"> Update dashboard </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-info">
+                      <i class="mdi mdi-link-variant"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                    <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
+                    <p class="text-gray ellipsis mb-0"> New admin wow! </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <h6 class="p-3 mb-0 text-center">See all notifications</h6>
+              </div>
+            </li>
+            <li class="nav-item nav-logout d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-power"></i>
+              </a>
+            </li>
+            <li class="nav-item nav-settings d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-format-line-spacing"></i>
+              </a>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+            data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
       <!-- partial -->
-    </div>
-    <!-- main-panel ends -->
-  </div>
-  <!-- page-body-wrapper ends -->
-</div>
-<!-- container-scroller -->
-<!-- plugins:js -->
-<script src="/asset-temp/vendors/js/vendor.bundle.base.js"></script>
-<!-- endinject -->
-<!-- Plugin js for this page -->
-<!-- End plugin js for this page -->
-<!-- inject:js -->
-<script src="/asset-temp/js/off-canvas.js"></script>
-<script src="/asset-temp/js/hoverable-collapse.js"></script>
-<script src="/asset-temp/js/misc.js"></script>
-<!-- endinject -->
-<!-- Custom js for this page -->
-<!-- End custom js for this page -->
-</body>
-</html>
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item nav-profile">
+              <a href="#" class="nav-link">
+                <div class="nav-profile-image">
+                  <img src="/asset-temp/images/faces/face1.jpg" alt="profile">
+                  <span class="login-status online"></span>
+                  <!--change to offline or busy as needed-->
+                </div>
+                <div class="nav-profile-text d-flex flex-column">
+                  <span class="font-weight-bold mb-2">Murshida TV</span>
+                  <span class="text-secondary text-small">Project Manager</span>
+                </div>
+                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/dashboard">
+                <span class="menu-title">Dashboard</span>
+                <i class="mdi mdi-home menu-icon"></i>
+              </a>
+            </li>
 
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/listUser">
+                <span class="menu-title">User Management</span>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/category">
+                <span class="menu-title">Category Management</span>
+                <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/product">
+                <span class="menu-title">Product Management</span>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/loadorder">
+                <span class="menu-title">Order Management</span>
+                <i class="mdi mdi-chart-bar menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href=#>
+                <span class="menu-title">Coupon Management</span>
+                <i class="mdi mdi-table-large menu-icon"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="collapse" href="#">
+                <span class="menu-title">Banner Management</span>
+
+                <i class="mdi mdi-medical-bag menu-icon"></i>
+              </a>
+
+            </li>
+
+          </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+
+            <h2 style="color: rgb(10, 109, 170);text-align: center;">Edit Product</h2>
+
+            <div class="col-md-12 grid-margin stretch-card">
+
+              <form action="/admin/edit-product/<%= product._id %>" method="POST" id="add_user"
+                enctype="multipart/form-data" onsubmit="return productValidation(event)">
+                <div class="new_user">
+                  <h2></h2> <br>
+                  <div class="form-group">
+                    Product Name<label for="productName" class="text-light"></label>
+                    <input type="hidden" name="id" value="<%= product._id %>">
+                    <input type="text" name="productName" id="productName" value="<%= product.productName %>"
+                      placeholder="Product Name">
+                    <span id="productNameError" style="color: red;"></span>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputState">Category</label>
+                    <select id="inputState" name="category" class="form-control">
+                      <% categories.forEach(category=> { %>
+                        <% if (!category.blocked) { %>
+                          <option value="<%= category._id %>" <%=product.category.equals(category._id) ? 'selected' : ''
+                            %>><%= category.categoryName %>
+                          </option>
+                          <% } %>
+                            <% }); %>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    Size<label for="size" class="text-light"></label>
+                    <input type="text" name="size" id="size" value="<%= product.size %>" placeholder="Size">
+                    <span id="sizeError" style="color: red;"></span>
+                  </div>
+                  <div class="form-group">
+                    <label for="price" class="text-light">Price</label>
+                    <input type="text" name="oldPrice" id="price" value="<%= product.oldPrice %>" placeholder="Price">
+                    <span id="priceError" style="color: red;"></span>
+                </div>
+                  <div class="form-group">
+                    Stock<label for="stock" class="text-light">Stock</label>
+                    <input type="text" name="stock" id="stock" value="<%= product.stock %>" placeholder="Stock">
+                    <span id="stockError" style="color: red;"></span>
+                  </div>
+                </div>
+
+
+
+                <div class="form-group">
+                  <label for="offerType" class="text-light">Offer Type</label>
+                  <select name="offerType" value="<%=product.offer.type%>" id="offerType">
+                    <option value="">Percentage</option>
+                    <!-- Add other offer types as needed -->
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="offerAmount" class="text-light">Offer Amount (%)</label>
+                  <input type="number" name="offerAmount" id="offerAmount" value="<%=product.offer.amount%>"
+                    onchange="validateOfferAmount()">
+                  <span id="offerAmountError" style="color: red;"></span>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="offerEndDate" class="text-light">Offer End Date</label>
+                  <input type="date" name="offerEndDate"
+                    value="<%= product.offer && product.offer.endDate ? product.offer.endDate.toISOString().split('T')[0] : '' %>"
+                    id="offerEndDate">
+                  <span id="offerEndDateError" style="color: red;"></span>
+                </div>
+
+
+                <div class="form-group">
+                  Description <br>
+                  <textarea name="description" id="description" cols="50"
+                    rows="10"><%= product.description %></textarea>
+                  <span id="discriptionError" style="color: red;"></span><br>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <label class="sign-form-label" for="form3Example4cd">Product Images</label><br>
+                <!-- HTML form 
+              <form method="post" action="upload" enctype="multipart/form-data" onsubmit="return validateImageUpload()">
+                <input type="file" name="images" id="userImage" >
+                <input type="submit" value="Upload">
+              </form>
+              <span id="imageError" style="color: red;"></span>-->
+
+
+                <form action="/upload-image" method="post" enctype="multipart/form-data"
+                  onsubmit="return validateImageUpload()">
+                  <input type="file" name="images" multiple id="images" accept="image/*">
+                  <span id="imageError" style="color: red;"></span>
+                  <div id="productError" class="px-2 my-2 text-center text-danger"></div>
+
+
+
+                  <!-- Other form fields (if any) -->
+                  <button type="submit" class="btn text-dark update">Upload Images</button>
+                  <hr>
+                  <br>
+
+
+
+
+
+
+
+
+
+                  
+                  <!-- Display existing images and allow editing -->
+
+                  <div class="d-flex flex-row align-items-center mb-3">
+                   
+                      
+
+                          <% for (let i=0; i < product.images.length; i++) { %>
+                            <div class="form-outline flex-fill mb-0"><br>
+                              <label class="sign-form-label" for="form3Example4cd">Image <%= i + 1 %></label>
+                              <img src="/images/<%= product.images[i] %>" alt="Existing Image <%= i + 1 %>"
+                                style="max-width: 100px; max-height: 100px; margin-top: 10px; cursor: pointer;"
+                                onclick="document.getElementById('productImage<%= i + 1 %>').click();"><br><br>
+                              <a href="/admin/remove-image/<%= product._id %>/<%= product.images[i] %>"><br><br>
+                                <button type="button" class="btn text-dark update">Remove</button>
+                              </a>
+                        
+                        <br>
+                        <input type="file" name="images" id="productImage<%= i + 1 %>"
+                          onchange="displayImagePreview(this)" style="display: none;">
+
+                        <!-- Preview for the selected image -->
+                        <img id="imagePreview<%= i + 1 %>" alt=""
+                          style="max-width: 100px; max-height: 100px; margin-top: 10px; display: none;">
+
+                  </div>
+                  
+                  <% } %>
+            </div>
+
+            <div id="productError" class="px-2 my-2 text-center text-danger"></div>
+            <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+
+
+
+
+              <div class="form-group">
+                <button style="color: #ccc;" type="submit" class="btn text-dark update">Save Changes</button>
+              </div>
+            </div>
+
+            </form>
+            </form>
+
+
+            <script>
+              function displayImagePreview(input) {
+                const imagePreview = document.getElementById('imagePreview' + input.id.charAt(input.id.length - 1));
+
+                if (input.files && input.files[0]) {
+                  const reader = new FileReader();
+
+                  reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = "block"; // Show the image preview
+                  };
+
+                  reader.readAsDataURL(input.files[0]);
+                } else {
+                  imagePreview.src = "";
+                  imagePreview.style.display = "none"; // Hide the image preview
+                }
+              }
+            </script>
+
+
+            <script>
+              function productValidation(event) {
+                var productName = document.getElementById('productName').value;
+                var size = document.getElementById('size').value;
+                var price = document.getElementById('price').value;
+                var stock = document.getElementById('stock').value;
+                var description = document.getElementById('description').value;
+                var images = document.getElementById('images').value;
+                document.getElementById('offerTypeError').innerText = "";
+                document.getElementById('offerAmountError').innerText = "";
+                document.getElementById('offerEndDateError').innerText = "";
+                // var productImage4 = document.getElementById('productImage4').value;
+
+                document.getElementById('productNameError').innerText = "";
+                document.getElementById('sizeError').innerText = "";
+                document.getElementById('priceError').innerText = "";
+                document.getElementById('stockError').innerText = "";
+                document.getElementById('discriptionError').innerText = "";
+                document.getElementById('imageError').innerText = "";
+                var offerType = document.getElementById('offerType').value;
+                var offerAmount = document.getElementById('offerAmount').value;
+                var offerEndDate = document.getElementById('offerEndDate').value;
+                // document.getElementById('imageError').innerText = "";
+
+                // Validate product Name
+                if (productName.trim() === "") {
+                  document.getElementById('productNameError').innerText = "Product  Name is required";
+                  event.preventDefault();
+                }
+                if (!/^[a-zA-Z]+$/.test(productName)) {
+                  document.getElementById('productNameError').innerText = "Product Must Be Characters";
+                  event.preventDefault();
+                }
+                // validate size field
+                if (size.trim() === "") {
+                  document.getElementById('sizeError').innerText = "Size is required";
+                  event.preventDefault();
+                }
+                if (!/^[a-zA-Z]+$/.test(size)) {
+                  document.getElementById('sizeError').innerText = " Size Must Be Characters";
+                  event.preventDefault();
+                }
+
+                // validate price field
+                if (price.trim() === "") {
+                  document.getElementById('priceError').innerText = "Price is required";
+                  event.preventDefault();
+                } else {
+                  var priceRegex = /^\d+$/;
+
+                  if (!priceRegex.test(price) || parseInt(price) <= 0) {
+                    document.getElementById('priceError').innerText = 'Price must be a valid positive integer';
+                    event.preventDefault();
+                  }
+                }
+
+                // validate Stock field
+                if (stock.trim() === "") {
+                  document.getElementById('stockError').innerText = "Stock is required";
+                  event.preventDefault();
+                } else {
+
+                  var stockRegex = /^\d+$/;
+
+                  if (!stockRegex.test(stock) || parseInt(stock) < 0) {
+                    document.getElementById('stockError').innerText = 'Stock must be a valid positive integer';
+                    event.preventDefault();
+                  }
+                }
+                // Product offer validation
+                if (offerType && (!/^\d+$/.test(offerAmount) || parseInt(offerAmount) <= 0)) {
+                  document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer";
+                  return false;
+                }
+                // Validate Offer End Date if Offer Amount is provided
+                if (offerAmount && offerEndDate.trim() === "") {
+                  document.getElementById('offerEndDateError').innerText = "Offer End Date is required";
+                  return false;
+                } else if (offerAmount && new Date(offerEndDate) <= new Date()) {
+                  document.getElementById('offerEndDateError').innerText = "Offer End Date must be in the future";
+                  return false;
+                }
+
+                // description validation
+                if (description.trim() === "") {
+                  document.getElementById('discriptionError').innerText = "Description is required";
+                  event.preventDefault();
+                }
+
+              };
+
+
+            </script>
+            <!-- HTML form 
+              <form method="post" action="upload" enctype="multipart/form-data" onsubmit="return validateImageUpload()">
+                <input type="file" name="images" id="userImage" accept="image/*">
+                <input type="submit" value="Upload">
+              </form>
+              <span id="imageError" style="color: red;"></span>-->
+
+            <script>
+              function validateImageUpload() {
+                const imageInput = document.getElementById('images');
+                const file = imageInput.files[0];
+
+                // Check if a file is selected
+                if (!file) {
+                  document.getElementById('imageError').innerText = "Please select an image.";
+                  return false;
+                }
+
+                // Check file extension (allowed extensions: jpg, jpeg, png, gif, bmp)
+                const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                if (!allowedExtensions.includes(fileExtension)) {
+                  document.getElementById('imageError').innerText = "Allowed image formats: JPG, JPEG, PNG, GIF,WEBP, BMP.";
+                  return false;
+                }
+
+                // Check file size (e.g., limit to 2MB)
+                const maxSizeInBytes = 10 * 1024 * 1024; // 2MB
+                if (file.size > maxSizeInBytes) {
+                  document.getElementById('imageError').innerText = "Image size exceeds the allowed limit (2MB).";
+                  return false;
+                }
+
+                // Clear any previous error message
+                document.getElementById('imageError').innerText = "";
+                return true;
+              }
+            </script>
+
+
+            <script>
+              function validateOfferAmount() {
+                const offerAmountInput = document.getElementById('offerAmount');
+                const offerAmountValue = offerAmountInput.value.trim();
+
+                if (!/^\d+$/.test(offerAmountValue) || parseInt(offerAmountValue) <= 0) {
+                  // Display an error message (you can adapt this to your UI)
+                  document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer";
+                  return false;
+                }
+
+                // Clear any previous error message
+                document.getElementById('offerAmountError').innerText = "";
+                return true;
+              }
+            </script>
+
+          </div>
+
+
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+
+
+
+        <footer class="footer">
+          <div class="container-fluid d-flex justify-content-between">
+            <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com
+              2021</span>
+            <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a
+                href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin
+                template</a> from Bootstrapdash.com</span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- plugins:js -->
+    <script src="/asset-temp/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="/asset-temp/js/off-canvas.js"></script>
+    <script src="/asset-temp/js/hoverable-collapse.js"></script>
+    <script src="/asset-temp/js/misc.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <!-- End custom js for this page -->
+  </body>
+
+</html>

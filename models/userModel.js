@@ -44,7 +44,28 @@ const userSchema = new mongoose.Schema({
      type: Number,
       default: 0
    },
-
+   wallet: 
+   { 
+    type: Number,
+     default: 0
+  },
+  walletHistory: [
+    {
+      type: {
+        type: String, // or whichever type you are using for 'credit' or 'debit'
+      },
+      amount: {
+        type: Number,
+      },
+      description: {
+       type: String, // Add a description field
+     },
+      timestamp: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 
     createdAt: {
         type: Date,

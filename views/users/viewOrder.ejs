@@ -72,9 +72,9 @@
                           </td>
 
                           <td><%= productDetail.product.productName %></td>
-                          <td><%=productDetail.product.Price%></td>
+                          <td><%=productDetail.product.price%></td>
                           <td><%= productDetail.quantity %></td>
-                          <td><%=  productDetail.quantity * productDetail.product.Price %></td>
+                          <td><%=  productDetail.quantity * productDetail.product.price %></td>
                         
                     </tr>
                 <% }); %>
@@ -82,7 +82,7 @@
         </table>
         <div style="margin-left: 700px;">
             <p>Total Product Amount:<%=totalOrderPrice%></p>
-            <!--<p>Discount amount:<%=order.discountAmount%></p>-->
+            <p>Discount amount:<%=order.discountAmount%></p>
             <p>Paid Amount: <%= order.totalAmount %></p>
         </div>
     </div>

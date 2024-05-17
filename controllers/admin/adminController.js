@@ -1,4 +1,5 @@
 const User = require("../../models/userModel");
+const Order = require('../../models/orderModel');
 const bcrypt = require('bcrypt');
 const randomstring = require('randomstring');
 const securePassword = require('secure-password');
@@ -151,14 +152,14 @@ exports.getUserDetailsAndOrders  = async () => {
         throw error; // Rethrow the error to be caught by the calling function
     }
 };
-
+/*
 const getTotalRevenue = async () => {
     try {
       const orders = await Order.find({
         $or: [
-          { payment: 'onlinePayment' }, // Only consider orders with online payment
+          { payment: 'COD' }, // Only consider orders with online payment
           { $and: [ 
-            { payment: 'COD' },
+            { payment: 'onlinePayment' },
             { status: 'Delivered' },
             { returned: { $ne: true } },
             { 'cancellation.isCancelled': { $ne: true } }
@@ -178,8 +179,40 @@ const getTotalRevenue = async () => {
       return null;
     }
   };
+*/
 
+  async function getTotalRevenue(fromDate, toDate) {
+    let totalRevenue = 0;
 
+    if (fromDate && toDate) {
+        totalRevenue= await Order.aggregate([
+            {
+                $match: {
+                    deliveredAt: {
+                        $gte: new Date(fromDate),
+                        $lte: new Date(toDate)
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalPrice: { $sum: "$totalAmount" }
+                }
+            }
+        ]);
+    } else {
+        totalRevenue = await Order.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalPrice: { $sum: "$totalAmount" }
+                }
+            }
+        ]);
+    }
+    return  totalRevenue.length > 0 ?  totalRevenue[0].totalAmount : 0;
+}
 
 
 const logout = async(req,res)=>{
