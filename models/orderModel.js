@@ -1,61 +1,61 @@
 const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true,
-    },
-    userName: String,
-    payment:{
-        type: String,
-        default: 'COD',
-    },
-    address: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-    },
-    status: {
-        type: String,
-        enum:['Pending','PendingPayment','Submitted','Shipped','Delivered','Cancelled',
-    'Cancellation','CustomReason','Returned'],
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  userName: String,
+  payment: {
+    type: String,
+    default: 'COD',
+  },
+  address: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'PendingPayment', 'Submitted', 'Shipped', 'Delivered', 'Cancelled',
+      'Cancellation', 'CustomReason', 'Returned'],
     default: 'Pending',
+  },
+  cancellation: {
+    isCancelled: {
+      type: Boolean,
+      default: false,
     },
-    cancellation: {
-        isCancelled: {
-          type: Boolean,
-          default: false,
-        },
-        reason: {
-          type: String,
-          default: '',
-        },
-        cancelledByAdmin: {
-          type: Boolean,
-          default: false,
-        },
-      },
+    reason: {
+      type: String,
+      default: '',
+    },
+    cancelledByAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-      products: [
-        {
-          product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-          },
-          quantity: {
-            type: Number,
-            default: 1,
-          },
-          stockAtOrder: {
-            type: Number,
-            default: 0,
-          },
-        },
-      ],
-      totalAmount: {
+  products: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+      quantity: {
+        type: Number,
+        default: 1,
+      },
+      stockAtOrder: {
         type: Number,
         default: 0,
       },
-       razorpayOrderId: {
+    },
+  ],
+  totalAmount: {
+    type: Number,
+    default: 0,
+  },
+  razorpayOrderId: {
     type: String,
     unique: true,
   },

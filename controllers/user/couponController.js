@@ -11,7 +11,20 @@ const loadCoupon = async(req,res)=>{
         console.log(error.message);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 module.exports ={
 
     loadCoupon,
 }
+
+

@@ -367,10 +367,12 @@
                                         <h2 class="mb-5">
                                             <%= totalproduct %>
                                         </h2>
+                                        
                                         <h6 class="card-text"></h6>
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
 
                         Sales Report<br><br>
@@ -383,15 +385,46 @@
                             id="yearly">Yearly</button>
 
 
+                            <div>
+                                <canvas id="userChart" width="400" height="100"></canvas>
+                            </div>
                         <!-- Sales Report  -->
                         <div class="container-fluid pt-4 px-4">
                             <div class="row">
                                 <div class="col-md-8 mx-auto">
+                                    <table class="table table-hover">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">
+                                              <label class="control control--checkbox">
+            
+                                              </label>
+                                            </th>
+            
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Product<br>Name</th>
+                                            <th scope="col">Category</th>
+            
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Price</th>
+                                          
+            
+            
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
                                     <div class="card" style="margin: 5px;">
                                         <div class="card-header">
                                             <h4 class="card-title" style="color: #0c0101;">Sales Report </h4>
+
+
+
+
                                         </div>
                                         <div class="card-body">
+                                            
                                             <!-- Display sales report data here -->
                                             <h3 style="color: #0c0101c8;"><u>Users Details</u></h3>
                                             <h5 style="color: #0c010187;">Total Users: <%= totalUsers %>
@@ -430,7 +463,193 @@
 
 
 
+<!-- SALES STATUS
+<div>
+    <canvas id="salesChart"></canvas>
+</div> -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Get the canvas element
+    const ctx = document.getElementById('userChart').getContext('2d');
+
+    // Initialize the chart
+    let userChart;
+
+    // Function to update the chart
+    function updateChart(userData) {
+        if (userChart) {
+            userChart.destroy(); 
+        }
+
+        console.log('Updating chart with data:', userData); 
+
+        userChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: userData.labels,
+        datasets: [{
+            label: 'Weekly',
+            data: userData.weeklyData,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)', 
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Monthly',
+            data: userData.monthlyData,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Yearly',
+            data: userData.yearlyData,
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Time Period' 
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+    }
+    const weeklyButton = document.getElementById('weekly');
+const monthlyButton = document.getElementById('monthly');
+const yearlyButton = document.getElementById('yearly');
+
+// Add event listeners
+weeklyButton.addEventListener('click', () => {
+    fetchData('weekly');
+});
+monthlyButton.addEventListener('click', () => {
+    fetchData('monthly');
+});
+yearlyButton.addEventListener('click', () => {
+    fetchData('yearly');
+});
+
+// Modify the fetchData function to take a period parameter
+function fetchData(period) {
+    fetch(`/admin/dashboard-data?period=${period}`)
+        .then(response => response.json())
+        .then(userData => updateChart(userData))
+        .catch(error => console.error('Error:', error));
+}
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+<script>
+    // Fetch yearly revenue data from the server
+    fetch('/admin/getYearlyRevenue')
+        .then(response => response.json())
+        .then(data => {
+            const years = data.years;
+            const revenueData = data.revenueData;
+
+            // Create a Chart.js chart
+            const ctx = document.getElementById('yearlyRevenueChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years, 
+                    datasets: [{
+                        label: 'Yearly Revenue',
+                        data: revenueData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching yearly revenue data:', error);
+        });
+</script>
+
+
+        <script>
+            // Get the current path of the URL
+            var path = window.location.pathname;
+        
+            // Remove trailing slash if it exists
+            path = path.replace(/\/$/, "");
+        
+            // Get all navigation links
+            var navLinks = document.querySelectorAll('.navbar-nav a');
+        
+            // Iterate through each link and check if its href matches the current path
+            navLinks.forEach(function(link) {
+                // Remove the "active" class from all links
+                link.classList.remove('active');
+        
+                // Check if the link's href matches the current path
+                if (link.getAttribute('href') === path) {
+                    // Add the "active" class to the matching link
+                    link.classList.add('active');
+                }
+            });
+        </script>
+
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      
+
+
                     </div>
+
                     <!-- content-wrapper ends -->
                     <!-- partial:../../partials/_footer.html -->
                     <footer class="footer">

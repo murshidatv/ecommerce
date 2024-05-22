@@ -303,7 +303,7 @@
                                 <th scope="col">Stock</th>
                                 <th scope="col">Category<br> offer</th>
 
-                                <th scope="col">Product Offer<br> Amount</th>
+                                <th scope="col">Product<br>Offer<br>Amount</th>
                                  <th scope="col">Offer <br>End Date</th>
                                 
                                 <th scope="col">Action</th>
@@ -394,7 +394,7 @@
 
 
                       </div>
-                      <div class="pagination">
+                      <div class="pagination" style="text-align: center;">
                         <% for (let i=1; i <=totalPages; i++) { %>
                           <a href="/admin/product?page=<%= i %>&limit=<%= limit %>&search=<%= searchQuery %>&category=<%= filterCategory %>"
                             class="<%= currentPage === i ? 'active' : '' %>"

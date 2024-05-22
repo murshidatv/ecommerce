@@ -4,6 +4,8 @@ const path = require('path');
 const addressController = require('../controllers/user/address');
 const userController = require('../controllers/user/userController');
 const couponController=require('../controllers/user/couponController')
+const razorpayInstance=require('../config/razorpayConfig')
+
 //user_route.use(session({secret:config.sessionSecret}));
 const auth = require("../middleware/auth");
 
@@ -154,6 +156,14 @@ user_route.get('/addwhitelist/:productId', auth.isLogin, userController.addwhite
 user_route.get('/wishlist/:productId', userController.deletewishlist);
 
 user_route.get('/wallet',auth.isLogin,userController.wallet);
+
+user_route.get('/razorpayPage',userController.razorpayPage)
+user_route.post('/capture-payment',userController.capturePayment)
+
+user_route.post('/razorpay-callback', userController.handleRazorpayCallback);
+
+
+
 //coupon management
 user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
 

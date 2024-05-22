@@ -36,6 +36,7 @@
     "secure-password": "^4.0.0",
     "sharp": "^0.33.3",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.11.0",
     "uuid": "^9.0.1"
   },
   "description": ""

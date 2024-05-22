@@ -67,7 +67,7 @@ try{
 
 
 
-exports.getUserDetailsAndOrders  = async () => {
+const getUserDetailsAndOrders  = async () => {
     try {
         // Aggregate user logins by month with month names
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -130,7 +130,7 @@ exports.getUserDetailsAndOrders  = async () => {
         const totalOrders = await Order.countDocuments();
         const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
         const totalProduct = await Product.countDocuments();
-        
+        const totalRevenue = await getTotalRevenue();
 
         // Return the fetched data
         return {
@@ -146,20 +146,18 @@ exports.getUserDetailsAndOrders  = async () => {
             onlinePayment,
             pendingOrdersCount,
         };
-        console.log("totalUsers, totalOrders, cancelledOrders, blockUser, pendingOrdersCount",totalUsers, totalOrders, cancelledOrders, blockUser, pendingOrdersCount);
     } catch (error) {
         console.error('Error fetching user details and orders:', error.message);
         throw error; // Rethrow the error to be caught by the calling function
     }
 };
-/*
 const getTotalRevenue = async () => {
     try {
       const orders = await Order.find({
         $or: [
-          { payment: 'COD' }, // Only consider orders with online payment
+          { payment: 'onlinePayment' }, // Only consider orders with online payment
           { $and: [ 
-            { payment: 'onlinePayment' },
+            { payment: 'COD' },
             { status: 'Delivered' },
             { returned: { $ne: true } },
             { 'cancellation.isCancelled': { $ne: true } }
@@ -179,40 +177,13 @@ const getTotalRevenue = async () => {
       return null;
     }
   };
-*/
+  
 
-  async function getTotalRevenue(fromDate, toDate) {
-    let totalRevenue = 0;
 
-    if (fromDate && toDate) {
-        totalRevenue= await Order.aggregate([
-            {
-                $match: {
-                    deliveredAt: {
-                        $gte: new Date(fromDate),
-                        $lte: new Date(toDate)
-                    }
-                }
-            },
-            {
-                $group: {
-                    _id: null,
-                    totalPrice: { $sum: "$totalAmount" }
-                }
-            }
-        ]);
-    } else {
-        totalRevenue = await Order.aggregate([
-            {
-                $group: {
-                    _id: null,
-                    totalPrice: { $sum: "$totalAmount" }
-                }
-            }
-        ]);
-    }
-    return  totalRevenue.length > 0 ?  totalRevenue[0].totalAmount : 0;
-}
+
+
+
+
 
 
 const logout = async(req,res)=>{
@@ -310,6 +281,7 @@ module.exports = {
     loadlogin,
     verifyLogin,
     logout,
+    getUserDetailsAndOrders,
     getTotalRevenue,
     adminDashboard,
     loadDashboard,

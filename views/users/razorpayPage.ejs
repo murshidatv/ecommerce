@@ -80,14 +80,14 @@
     <div>
       <h3>Payment Details</h3>
       <p>Payment Method: <%= orderDetails.payment %></p>
-      <p>Discount Amount: $<%= orderDetails.discountAmount %> </p>
-      <p><b>Total Amount: $<%= orderDetails.totalAmount %> </b></p>
+      <p>Discount Amount: Rs<%= orderDetails.discountAmount %> </p>
+      <p><b>Total Amount: Rs<%= orderDetails.totalAmount %> </b></p>
     </div>
 
     <form action="/capture-payment" method="post">
       <script
         src="https://checkout.razorpay.com/v1/checkout.js"
-        data-key=""
+        data-key="rzp_test_9e69PexaUI6QFv"
         data-amount="<%= orderDetails.totalAmount * 100 %>"
         data-currency="INR"
         data-order_id="<%= orderDetails.razorpayOrderId %>"

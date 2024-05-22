@@ -2,7 +2,6 @@ const express = require("express");
 const admin_route =express();
 const  nocache = require("nocache")
 const multerMiddleware =require('../middleware/multer').upload
-//const dashboardController=require('../controllers/admin/dashboardController')
 
 const session = require("express-session");
 const config = require("../config/config");
@@ -31,17 +30,23 @@ const adminController = require("../controllers/admin/adminController");
 const dashboardController = require("../controllers/admin/dashboardController");
 const categoryController=require('../controllers/admin/categoryController');
 const orderController=require('../controllers/admin/orderController');
-
+const couponController=require('../controllers/admin/couponController');
 
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
 
 admin_route.post('/',adminController.verifyLogin);
 
-
+admin_route.get('/deliveredOrders', dashboardController.salesReport); 
+admin_route.get('/downloadSalesReport', dashboardController.downloadSalesReport); 
+admin_route.get('/dowloadsalesReports',dashboardController.downloadSalesReports);
+admin_route.get('/dowloadsalesExcel',dashboardController.downloadSalesReportsExcel);
+admin_route.get('/getUserDetailsAndOrders', dashboardController.getUserDetailsAndOrders); 
+admin_route.get('/getYearlyRevenue', dashboardController.getYearlyRevenue); 
 admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 //admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 admin_route.get('/listuser',auth.isLogin,adminController.adminDashboard);
 admin_route.get('/report',auth.isLogin, dashboardController.getDashboardData);
+admin_route.get('/dashboard-data',auth.isLogin,dashboardController.dashboardData);
 //admin_route.get('/dashboard-data',auth.isLogin,orderController.dashboardData);
 //admin_route.get('/downloadSalesReport', orderController.downloadSalesReports);
 
@@ -102,6 +107,16 @@ admin_route.post('/confirm-order-cancellation/:orderId',auth.isLogin, orderContr
 
 admin_route.get('/canceled-orders',auth.isLogin, orderController.viewCanceledOrders);
 admin_route.get('/order-return',auth.isLogin,orderController.viewReturnedOrders);
+
+// coupon management
+admin_route.get('/loadcoupon',auth.isLogin,couponController.coupon);
+admin_route.get('/add-coupon',auth.isLogin,couponController.LoadaddCoupon);
+admin_route.post('/add-coupon',auth.isLogin,couponController.addcoupon);
+admin_route.get('/edit-coupon/:couponId', couponController.loadeditCoupon);
+admin_route.post('/edit-coupon/:couponId', couponController.editCoupon);
+admin_route.get('/loadcoupon/:couponId',couponController.deleteCoupon);
+
+
 
 
 

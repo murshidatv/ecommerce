@@ -163,22 +163,27 @@
                               Total Not Available
                               <% } %>
                         </td>
-                        <td class="remove-col">
+                         <td class="remove-col">
                           <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"
                             onclick="return confirm('Are you sure you want to remove this product?');">
                             <button class="btn-remove"><i class="icon-close"></i></button>
                           </a>
+
+
                         </td>
+        
                       </tr>
                       <% }) %>
                         <% } else { %>
-                         
-                            <td colspan="6" style="text-align: center;">
-                              <img src="/images/th.jpeg" alt="No items in the cart" style="width: 150px;margin-left: 330px;" ><br>
-                              <p style="text-align: center;">No items in the cart.</p>
-                            </td>
+
+                          <td colspan="6" style="text-align: center;">
+                            <img src="/images/th.jpeg" alt="No items in the cart"
+                              style="width: 150px;margin-left: 330px;"><br>
+                            <p style="text-align: center;">No items in the cart.</p>
+                          </td>
                           </tr>
                           <% } %>
+
                 </tbody>
               </table>
             </div><!-- End .col-lg-9 -->
@@ -204,6 +209,7 @@
                 <span>CONTINUE SHOPPING</span>
                 <i class="icon-refresh"></i>
               </a>
+
             </aside><!-- End .col-lg-3 -->
           </div><!-- End .row -->
 
@@ -366,6 +372,7 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
   <script src="assets/js/demos/demo-5.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
 
 
   <script>
@@ -478,7 +485,40 @@
       }
     });
   </script>
+  <!---<script>
 
 
-
+function areYouSureEdit() {
+  swal({
+      title: "Are you sure you wish to edit this record?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes!',
+      closeOnConfirm: false,
+  }.then((value) => {
+    if(value){
+             //bring edit page
+       }else{
+         //write what you want to do
+        }
+   }) };
+  
+  function areYouSureDelete() {
+    swal({
+      title: "Are you sure you wish to delete this record?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes, delete it!',
+      closeOnConfirm: false,
+  }.then((value) => {
+    if(value){
+             //ajax call or other action to delete the blog
+          swal("Deleted!", "Your imaginary file has been deleted!", "success");
+       }else{
+         //write what you want to do
+        }
+   })); };
+  </script>-->
   <%- include('../layouts/productfooter.ejs') %>

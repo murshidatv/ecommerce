@@ -112,8 +112,8 @@
                 <div class="address-details" style="border: 2px solid rgba(222, 203, 203, 0.367); padding: 3%;">
                     <% for (var i = 0; i < coupon.length; i++) { %>
                         <h5 style="color: green;"><%= coupon[i].couponname %> Off</h5>
-                        <h6 style="color: red;">Get $<%= coupon[i].value %> Off</h6>
-                        <h6 style="color: rgba(12, 1, 1, 0.356);">Get extra $<%= coupon[i].value %> off minimum Purchase of $<%= coupon[i].conditions.minOrderAmount %></h6>
+                        <h6 style="color: red;">Get Rs<%= coupon[i].value %> Off</h6>
+                        <h6 style="color: rgba(12, 1, 1, 0.356);">Get extra Rs<%= coupon[i].value %> off minimum Purchase of Rs<%= coupon[i].conditions.minOrderAmount %></h6>
                         <h5 style="color: rgba(12, 1, 1, 0.92);">code:  <%= coupon[i].code %> </h5> 
                         <% if (coupon[i].expirationDate) { %>
                           <h6>valid till <%= coupon[i].expirationDate.toLocaleDateString() %></h6>
