@@ -111,11 +111,11 @@
           <h4 style="color: #c66"> Wallet Balance Amount: <%= walletAmount %></h6>
       <br><br>
           <div>
-              <h4>Wallet History:</h4>
+              <h4 style="text-align: center;">Wallet History</h4><br>
       
               <table>
-                  <thead>
-                      <tr>
+                  <thead >
+                      <tr style="text-align: center;">
                           <th>Date </th>
                           <th>Type </th>
                           <th>Amount </th>
@@ -127,7 +127,7 @@
                           <tr>
                               <td><%= transaction.timestamp.toLocaleString() %></td>
                               <td><%= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1) %></td>
-                              <td>$<%= transaction.amount.toFixed(2) %></td>
+                              <td>Rs <%= transaction.amount.toFixed(2) %></td>
                               <td><%= transaction.description %></td>
                           </tr>
                       <% }) %>

@@ -171,6 +171,15 @@
 
 
                         </td>
+
+                        <td class="remove-col">
+                          <a href="/deleteCartItem/<%= user._id %>/<%= cartItem.product._id %>"
+                             onclick="return showConfirmation();">
+                            <button class="btn-remove"><i class="icon-close"></i></button>
+                          </a>
+                        </td>
+
+
         
                       </tr>
                       <% }) %>
@@ -373,7 +382,35 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/demos/demo-5.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.all.min.js"></script>
-
+  
+  
+  <!-- Add this script block at the end of your HTML file -->
+  <script>
+    function showConfirmation() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to remove this product.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, remove it !!!',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // User confirmed removal
+          // Handle the removal logic here (e.g., make an AJAX request)
+          // Redirect to the appropriate page if needed
+       
+        } else {
+          // User canceled removal
+          // No action needed
+        }
+      });
+  
+      // Prevent the default link behavior
+      return false;
+    }
+  </script>
+  
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
