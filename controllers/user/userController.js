@@ -859,6 +859,7 @@ const addtoCart = async (req, res) => {
       }
     }
     await user.save();
+    //res.status(200).json({ message: 'Item added to cart successfully!' });
     //req.flash('success', `${product.productName} added to the cart!`);
     return res.redirect('/product-list');
   } catch (error) {

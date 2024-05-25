@@ -49,8 +49,8 @@
                                           <th scope="col">Name</th>
                                           <th scope="col">Product Count</th>
                                           <th scope="col">Product Name</th>
-                                          <th scope="col">Total Amount</th>
-                                           <th scope="col">Discount Amount</th>
+                                          <th scope="col">Discount Amount</th>
+                                           <th scope="col">Total Amount</th>
                                           <th scope="col">Payment Method</th>
                                           <th scope="col">New Status</th>
                                           <th scope="col"> Update Status</th>
@@ -98,7 +98,14 @@
                                                                         No products
                                                                         <% } %>
                                             </td>
-                      
+                                            <td>
+                                              <% if (order[i].discountAmount !== undefined && order[i].discountAmount > 0) { %>
+                                                Rs<%= order[i].discountAmount %>
+                                              <% } else { %>
+                                                no discount
+                                                <% console.log("No discountAmount found in order:", order[i]); %>
+                                              <% } %>
+                                            </td>
                                             <td>
                                               <% if (order[i].totalAmount !==undefined && order[i].totalAmount> 0) { %>
                                                 Rs.<%= order[i].totalAmount %>
@@ -116,7 +123,7 @@
                                                     <% console.log("No payment found in order:", order[i]); %>
                                                       <% } %>
                                             </td>
-                      
+                                          
                                             <td>
                                               <%= newStatus ? newStatus : order[i].status %>
                                             </td>

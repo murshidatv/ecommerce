@@ -1,4 +1,25 @@
 <%- include('../layouts/productheader') %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+
+
+    <style>
+        /* Example styling for the "Add to Cart" link */
+        .addToCartLink {
+            display: inline-block;
+            padding: 10px 167px;
+            background-color: #c66;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+
+            transition: background-color 0.3s ease;
+        }
+
+        .addToCartLink:hover {
+            background-color: #c66;
+        }
+    </style>
     <script>
         $(document).ready(function () {
             $('#searchForm').submit(function (event) {
@@ -153,8 +174,29 @@
 
                                                                 <% if (product.stock> 0) { %>
                                                                     <a href="/add-to-cart/<%= product._id %>"
-                                                                        class="btn-product btn-cart"><span>add to
-                                                                            cart</span></a>
+                                                                        class="addToCartLink"
+                                                                        id="addToCartLink"><span>Add to
+                                                                            Cart</span></a>
+
+
+
+                                                                    <!-- Add to Cart link -->
+                                                                    <!--- <a href="#" class="addToCartLink">Add to Cart</a>         class="btn-product btn-cart"-->
+
+                                                                    <!-- Modal (hidden by default) -->
+                                                                    <div id="successModal" style="display: none;">
+                                                                        Item added to cart successfully!
+                                                                    </div>
+                                                                    <!--- <div id="toast">Item added to cart!</div>
+
+                                                                            <form class="add-to-cart" action="/add-to-cart/<%= product._id %>" method="POST">
+                                                                              <input type="hidden" name="itemId" value="item-id-here">
+                                                                              <button type="submit">Add to Cart</button>
+                                                                            </form>-->
+                                                                    <!-- Success message (initially hidden) 
+                                                                    <p id="successMessage" style="display: none;">Item
+                                                                        added to cart successfully!</p>-->
+
                                                                     <% } else { %>
                                                                         <span
                                                                             class="btn-product btn-out-of-stock"><span>Out
@@ -508,7 +550,32 @@
         </div><!-- End .mobile-menu-container -->
 
 
+        <script>
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const addToCartLinks = document.querySelectorAll('.addToCartLink');
+
+                addToCartLinks.forEach((link) => {
+                    link.addEventListener('click', (e) => {
+                      //  e.preventDefault(); // Prevent the default link behavior (navigation)
+
+                        // Show the success message using SweetAlert2
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Item added to cart successfully!',
+                            icon: 'success',
+                            timer: 3000, // Hide after 3 seconds (adjust as needed)
+                            showConfirmButton: false,
+                        });
+                    });
+                });
+            });
+
+
+        </script>
+
         <!-- Plugins JS File -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.bundle.min.js"></script>
         <script src="assets/js/jquery.hoverIntent.min.js"></script>
