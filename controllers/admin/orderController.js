@@ -48,6 +48,8 @@ const order = async (req, res) => {
     }
 
     const order = await Order.find(query)
+    .sort({ orderDate: -1 }) 
+    
       .skip((page - 1) * limit)
       .limit(limit)
       .populate({
@@ -75,6 +77,70 @@ const order = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+
+/*
+const order = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const searchQuery = req.query.search || '';
+    const filterStatus = req.query.status || '';
+    const sortField = req.query.sortField || 'createdAt'; // Default sort field is createdAt
+    const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; // Default sort order is descending
+
+    const statuses = ['Pending', 'processing', 'Shipped', 'Delivered', 'Cancelled'];
+
+    let query = {};
+    if (searchQuery) {
+      // Search for users by name
+      const users = await User.find({ name: { $regex: new RegExp(searchQuery, 'i') } });
+      const userIds = users.map(user => user._id);
+      query.userId = { $in: userIds };
+    }
+    if (filterStatus) {
+      query.status = filterStatus;
+    }
+
+    const orders = await Order.find(query)
+      .sort({ [sortField]: sortOrder }) // Add sorting here
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .populate({
+        path: 'products.product',
+        select: 'productName price',
+      })
+      .populate('userId');
+
+    const totalOrders = await Order.countDocuments(query);
+
+    // Pass newStatus as null to prevent ReferenceError
+    res.render('ordermanagement', {
+      orders,
+      currentPage: page,
+      totalPages: Math.ceil(totalOrders / limit),
+      searchQuery,
+      filterStatus,
+      newStatus: null,
+      limit,
+      statuses,
+      sortField, // Pass sortField to template
+      sortOrder  // Pass sortOrder to template
+    });
+    console.log(orders);
+  } catch (error) {
+    console.error('Error fetching orders:', error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+
+
+*/
+
+
+
+
 const updateStatus = async (req, res) => {
   try {
       const { orderId } = req.params;

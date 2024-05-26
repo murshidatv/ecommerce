@@ -46,12 +46,14 @@
                                 <thead>
                                         <tr>
                                           <th scope="col">SL.NO</th>
+                                          <th>Order Date</th>
                                           <th scope="col">Name</th>
                                           <th scope="col">Product Count</th>
                                           <th scope="col">Product Name</th>
-                                          <th scope="col">Discount Amount</th>
+                                          <th scope="col">Discount<br>Amount</th>
                                            <th scope="col">Total Amount</th>
-                                          <th scope="col">Payment Method</th>
+                                          <th scope="col">Payment<br>b Method</th>
+                                          
                                           <th scope="col">New Status</th>
                                           <th scope="col"> Update Status</th>
                                         </tr>
@@ -61,6 +63,8 @@
                                           <tr>
                                             <td>
                                               <%= i+1 %>
+                                            </td>
+                                            <td><%= new Date(order[i].orderDate).toLocaleDateString()  %></td>
                                             <td>
                       
                                               <%= order[i].userName %>
@@ -85,10 +89,10 @@
                                                           <strong><br>Quantity:</strong>
                                                           <%= product.quantity %><br>
                       
-                                                            <% if (product.product && product.product.Price) { %>
-                                                              <strong><br>Price:</strong> Rs.<%= product.product.Price %><br>
+                                                            <% if (product.product && product.product.price) { %>
+                                                              <strong><br>Price:</strong> Rs.<%= product.product.price %><br>
                                                                 <% } else { %>
-                                                                  <strong><br>Price:</strong> N/A<br>
+                                                                <!---  <strong><br>Price:</strong>Rs. N/A<br>-->
                                                                   <% } %>
                       
                                                                     <!-- Add other product details as needed -->
@@ -123,7 +127,8 @@
                                                     <% console.log("No payment found in order:", order[i]); %>
                                                       <% } %>
                                             </td>
-                                          
+                                            
+                                            
                                             <td>
                                               <%= newStatus ? newStatus : order[i].status %>
                                             </td>

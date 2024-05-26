@@ -180,25 +180,30 @@
                                 <div class="summary">
                                     <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
 
-                                    <table class="table table-summary">
+                                    <table class="table table-summary" style="text-align: center;">
                                         <thead>
                                             <tr>
                                                 <th>Product</th>
                                                 <th>Quantity</th>
-                                                <th>Total</th>
+                                               
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody style="text-align: center;">
                                             <% if (user.cart && user.cart.length > 0) { %>
                                                 <% let totalCartPrice = 0; %>
                                                 <% user.cart.forEach(cartItem => { %>
                                                     <tr>
                                                         <td><%= cartItem.product && cartItem.product.productName ? cartItem.product.productName : 'Product Name Not Available' %></td>
-                                                        <!-- <td><%= cartItem.product && cartItem.product.price ? `$${cartItem.product.price.toFixed(2)}` : 'Price Not Available' %></td> -->
+                                                       <!-- <td><%= cartItem.product && cartItem.product.price ? `$${cartItem.product.price.toFixed(2)}` : 'Price Not Available' %></td> -->
                                                          <td><%= cartItem.quantity %></td> 
+                                                         <tr>
+                                                            <td>Price</td><td><%= cartItem.product.oldPrice %></td> </tr>
+                                                            <tr>
+                                                                <td>Discount Price</td><td><%= cartItem.product.oldPrice - cartItem.product.price %></td> </tr>
                                                         <% let itemTotal = cartItem.product && cartItem.product.price ? cartItem.quantity * cartItem.product.price : 0 %>
-                                                        <td><%= `Rs${itemTotal.toFixed(2)}` %></td>
-                                                        <% totalCartPrice += itemTotal; %>
+                                                       <tr> <td><strong>Sub Total:</strong></td><td><%= `Rs ${itemTotal.toFixed(2)}` %></td></tr>
+                                                      <!---<tr> <td> <% totalCartPrice += itemTotal; %></td></tr>-->
+                                                        
                                                     </tr>
                                                 <% }) %>
                                               
