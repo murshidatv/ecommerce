@@ -166,9 +166,18 @@
                                                             </a>
                                                             <div class="product-action-vertical">
                                                                 <a href="/addwhitelist/<%= product._id %>"
-                                                                    class="btn-product-icon btn-wishlist btn-expandable"><span>add
-                                                                        to wishlist</span></a>
-                                                                <!-- <a href="/product/<%= product._id %>" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>-->
+                                                                    class="btn-product-icon btn-wishlist btn-expandable"><span>Add
+                                                                        to Wishlist</span></a>
+                                                                       
+
+                                                                        <a href="/cartList" class="btn-product-icon btn-shopping-cart btn-expandable" role="button"
+                                                                        aria-expanded="false" data-display="static">
+                                                                        <i class="icon-shopping-cart" style="size: 300px; color: rgb(27, 25, 25);"></i>
+                                                                        <span>
+                                                                      View Cart
+                                                                        </span>
+                                                                      </a> 
+                                                                <!--<a href="/cartlist>" class="btn-product-icon btn-quickview" title="Quick view"><span>View Cart</span></a>-->
                                                             </div><!-- End .product-action-vertical -->
                                                             <div class="product-action">
 
@@ -288,7 +297,7 @@
 
                         <!-- Pagination -->
                         <div class="toolbox-layout" style="text-align: center;">
-                            <nav class="pagination" aria-label="Pagination" style="text-align: center;">
+                            <nav class="pagination" aria-label="Pagination" style="text-align: center; padding-left: 40%;">
                                 <ul class="pagination">
                                     <% if (currentPage> 1) { %>
                                         <li class="page-item">

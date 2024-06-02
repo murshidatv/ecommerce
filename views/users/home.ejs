@@ -105,8 +105,8 @@
                     </a>
 
                     <div class="dropdown cart-dropdown">
-                        <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false" data-display="static">
+                        <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" data-display="static">
                             <i class="icon-shopping-cart"></i>
 
                         </a>
@@ -130,31 +130,91 @@
 
         <main class="main">
             <div class="intro-slider-container mb-0">
+
                 <div class="intro-slider owl-carousel owl-theme owl-nav-inside owl-light" data-toggle="owl"
                     data-owl-options='{"nav": false, "dots": false}'>
+                   
                     <div class="intro-slide" style="background-image: url(assets/images/slider/login.webp);">
-                        <div class="container intro-content text-center">
-                            <h3 class="intro-subtitle text-white">Don’t Miss</h3><!-- End .h3 intro-subtitle -->
-                            <h1 class="intro-title text-white">Mystery Deals</h1><!-- End .intro-title -->
-                            <div class="intro-text text-white">Online Only</div><!-- End .intro-text -->
-                            <a href="/product-list" class="btn btn-primary">Discover NOW</a>
-                        </div><!-- End .intro-content -->
+                        
+                       
+                        <h1 class="intro-title text-white"style="margin-left: 500px;">Mystery Deals</h1><br><!-- End .intro-title -->
+               
+                          
+                       
+                    
+                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators (optional) -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="3"></li>
+                                <!-- Add more indicators as needed -->
+                            </ol>
+            
+                            <!-- Slides -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="assets/images/demos/demo-5/banners/bag9.webp" class="d-block w-100" alt="Image 1">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/images/demos/demo-5/banners/baghm1.webp" class="d-block w-100" alt="Image 2">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/images/demos/demo-5/banners/bag3.webp" class="d-block w-100" alt="Image 2">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="assets/images/demos/demo-5/banners/bag2.webp" class="d-block w-100" alt="Image 2">
+                                  
+                                </div>
+                                
+                            </div>
+                            <a href="/product-list" class="btn btn-primary" style="margin-top: 20px; margin-left: 200px;">Shop NOW</a>
+                            <!-- Add more slides as needed -->
+                            <!-- Controls (optional) -->
+                            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                            
+                        </div>
+                        <style>
+                            .carousel-item img {
+                                margin-left: 50px;
+                                
+                                object-fit: cover;
+                                height: 500px;
+                                /* Set your desired height */
+            
+            
+                            }
+            
+                            .carousel {
+                         
+                                width: 500px;
+                                /* Set your desired width */
+                                height: 500px;
+                                /* Set your desired height */
+                            }
+                        </style>
+            
                     </div><!-- End .intro-slide -->
 
-                    <div class="intro-slide"
-                        style="background-image: url(assets/images/demos/demo-5/slider/slide-2.jpg);">
-                        <div class="container intro-content text-center">
-                            <h3 class="intro-subtitle text-white">Limited time only</h3>
-                            <!-- End .h3 intro-subtitle -->
-                            <h1 class="intro-title text-white">Treat your self</h1><!-- End .intro-title -->
-                            <div class="intro-text text-white">Up to 50% off</div><!-- End .intro-text -->
-                            <!---  <a href="views/users/product" class="btn btn-primary">Shop NOW</a>-->
-                        </div><!-- End .intro-content -->
-                    </div><!-- End .intro-slide -->
+
+                    <h3 class="intro-subtitle text-white">Don’t Miss</h3><!-- End .h3 intro-subtitle -->
+                    <h1 class="intro-title text-white">Mystery Deals</h1><!-- End .intro-title -->
+                    <div class="intro-text text-white">Online Only</div><!-- End .intro-text -->
+                    <a href="/product-list" class="btn btn-primary">Discover NOW</a>
+
                 </div><!-- End .intro-slider owl-carousel owl-theme -->
 
                 <span class="slider-loader text-white"></span><!-- End .slider-loader -->
             </div><!-- End .intro-slider-container -->
+          
 
             <div class="brands-border owl-carousel owl-simple mb-5" data-toggle="owl" data-owl-options='{
                     "nav": false, 
@@ -216,28 +276,43 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="banner banner-border">
+                                <div class="banner-content">
+                                    <h4 class="banner-subtitle"><a href="#">This week we love...</a></h4>
+                                    <!-- End .banner-subtitle -->
+                                    <h3 class="banner-title"><a href="#"><span>Womens <br>Office Bags</span></a></h3>
+                                    <!-- End .banner-title -->
+                                    <a href="product-list" class="btn btn-outline-primary-2 banner-link">Discover Now<i
+                                            class="icon-long-arrow-right"></i></a>
+                                </div><!-- End .banner-content-->
                                 <a href="#">
                                     <img src="assets/images/demos/demo-5/banners/bag2.webp" alt="Banner">
                                 </a>
 
                             </div><!-- End .banner -->
-                        </div><!-- End .col-md-6-->
+                        </div><!-- End .col-md--->
+
+
 
                         <div class="col-md-6">
+                            <div class="banner banner-border">
 
-                            <div class="banner-content">
-                                <h4 class="banner-subtitle"><a href="#">This week we love...</a></h4>
-                                <!-- End .banner-subtitle -->
-                                <h3 class="banner-title"><a href="#"><span>Womens <br>Office Bags</span></a></h3>
-                                <!-- End .banner-title -->
-                                <a href="product-list" class="btn btn-outline-primary-2 banner-link">Discover Now<i
-                                        class="icon-long-arrow-right"></i></a>
-                            </div><!-- End .banner-content-->
-                        </div><!-- End .banner -->
+                                <div class="col-md-4">
 
+                                    <div class="banner-content">
+                                        <br>
+                                        <br>
+                                        <!-- End .banner-title -->
+                                        <a href="product-list" class="btn btn-outline-primary-2 banner-link">Discover
+                                            Now<i class="icon-long-arrow-right"></i></a>
+                                    </div><!-- End .banner-content-->
+                                </div><!-- End .banner -->
+                                <a href="#">
+                                    <img src="assets/images/demos/demo-5/banners/baghm1.webp" alt="Banner">
 
+                                </a>
 
-
+                            </div><!-- End .banner -->
+                        </div><!-- End .col-md-6-->
 
 
 

@@ -1,0 +1,20 @@
+<!-- views/order.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Invoice</title>
+</head>
+<body>
+  <h1>Order Invoice</h1>
+  <p>Order Number: <%= order.orderNumber %></p>
+  <ul>
+    <% order.items.forEach(item => { %>
+      <li><%= item.name %> - $<%= item.price %></li>
+    <% }); %>
+  </ul>
+  <p>Total Amount: $<%= order.totalAmount %></p>
+  <!-- Add more details as needed -->
+</body>
+</html>

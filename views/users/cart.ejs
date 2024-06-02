@@ -1,5 +1,17 @@
 <%- include('../layouts/productheader') %>
-
+<style>
+  .toast-message {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #eb6767;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: none;
+  }
+</style>
   <div class="header-middle sticky-header">
     <div class="container">
       <div class="header-left">
@@ -67,7 +79,7 @@
     </div><!-- End .container -->
   </div><!-- End .header-middle -->
   </header><!-- End .header -->
-
+  <div id="toast-message" class="toast-message"></div>
   <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
       <div class="container">
@@ -201,15 +213,38 @@
                 <table class="table table-summary">
                   <tbody>
                     <tr class="summary-total">
-                      <td>Total:</td>
+                      <tr>
+                        
+                      <td>Price:</td>
                       <td>
-                        Rs<% const total=user.cart.reduce((acc, item)=> acc + (item.product && item.product.price ?
+                       <% const total=user.cart.reduce((acc, item)=> acc + (item.product && item.product.price ?
                           item.quantity * item.product.price : 0), 0); %>
-                          <%= total %>
+                       <%= total %>
                       </td>
+                      <tr class="summary-shipping">
+                        
+                        
+                      </tr>
                       
-                    </tr>
-
+                      <tr class="summary-shipping-row">
+                        <td>
+               
+                    
+                    <input checked aria-selected="" type="radio" id="free-shipping" name="shipping" class="custom-control-input">
+                    <label class="custom-control-label" for="free-shipping">Shipping Charge<br></label>
+                  </td>
+                    <td>50</td>
+                      </tr>
+                    <tr><td>
+                    <input checked aria-selected="" type="radio" id="free-shipping" name="cod" class="custom-control-input">
+                    <label class="custom-control-label" for="free-shipping">Cash On Delivery<br></label>
+                  </td></tr>
+                  <tr><td>
+                   Order above Rs.1000 Not eligible for Cash On Delivery
+                  </td></tr>
+                  
+                       
+                   
                   </tbody>
                 </table>
                 <a href="/chooseAddress" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
@@ -578,6 +613,31 @@
       }
     });
   </script>
+ <script>
+  // Wait for the DOM to be ready
+  $(document).ready(function() {
+      // Add event listener to quantity inputs
+      $('.quantity-input').change(function() {
+          var quantity = parseInt($(this).val()); // Get the entered quantity
+  
+          // Check if quantity exceeds 10
+          if (quantity > 5) {
+              showToast('You can purchase maximum 5 pcs of a single product.');
+          }
+      });
+  
+      // Function to show toast message
+      function showToast(message) {
+          var toastElement = $('#toast-message');
+          toastElement.text(message);
+          toastElement.fadeIn(400).delay(3000).fadeOut(400);
+      }
+  });
+  </script>
+
+
+
+
   <!---<script>
 
 

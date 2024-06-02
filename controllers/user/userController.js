@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+const PDFDocument = require('pdfkit');
 
 
 const uuid = require('uuid');
@@ -830,6 +831,7 @@ const loadCartList = async (req, res) => {
     const userId = req.session.user_id;
     const user = await User.findById(userId).populate('cart.product');
     const cartCount = user.cart.length;
+    
     res.render('cart', { user, cartCount, userId });
   } catch (error) {
     console.log(error.message);
@@ -908,7 +910,7 @@ const deleteCart = async (req, res) => {
 
 
 
-
+/*
 
 const loadcheckout = async (req, res) => {
   try {
@@ -917,16 +919,54 @@ const loadcheckout = async (req, res) => {
     if (!user) {
       return res.status(404).send('User not found');
     }
+   const coupon = await Coupon.find();
    
     const chosenAddress = user.chosenAddress;
-    res.render('checkout', { user, chosenAddress });
+    
+    
+   
+
+    const cartTotal = calculateTotalAmount(user.cart);
+
+    // Helper function to calculate the total amount of the cart
+function calculateTotalAmount(cart) {
+  return cart.reduce((total, cartItem) => {
+      const itemTotal = cartItem.product.price * cartItem.quantity;
+      return total + itemTotal;
+  }, 0);
+}
+    // Check for a coupon code
+    const couponCode = req.body.couponCode;
+
+    let discountAmount = 0;
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+
+      if (coupon) {
+        // Apply discount
+        discountAmount = calculateDiscount(cartTotal, coupon);
+        console.log(`${discountAmount}`);
+        // Update coupon usage limits
+        coupon.usageLimits.totalUses -= 1;
+        await coupon.save();
+        
+      } else {
+        return res.status(400).send('Invalid coupon code.');
+      }
+    }
+   
+    // Calculate the total amount after applying discount
+    const totalAmountAfterDiscount = cartTotal - discountAmount;
+    res.render('checkout', { user, chosenAddress, coupon, cartTotal, discountAmount });
+   // res.render('checkout', { user, chosenAddress, coupon });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Internal Server Error');
   }
 };
 
-
+*/
 const loadorderHistory = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -970,7 +1010,7 @@ const placeorder = async (req, res) => {
     }
 
     // Calculate the total amount without discount
-    const cartTotal = calculateTotalAmount(user.cart);
+   const cartTotal = calculateTotalAmount(user.cart);
 
     // Helper function to calculate the total amount of the cart
 function calculateTotalAmount(cart) {
@@ -979,6 +1019,7 @@ function calculateTotalAmount(cart) {
       return total + itemTotal;
   }, 0);
 }
+
 
     // Check for a coupon code
     const couponCode = req.body.couponCode;
@@ -990,11 +1031,29 @@ function calculateTotalAmount(cart) {
 
       if (coupon) {
         // Apply discount
-        discountAmount = calculateDiscount(cartTotal, coupon);
+     //discountAmount = calculateDiscount(cartTotal, coupon);
+        // Inside loadcheckout function
 
+
+        // Inside your placeorder route
+
+        // Store discountAmount in locals
+       // res.locals.discountAmount = discountAmount;
+// Inside your placeorder route (or order saving logic)
+ discountAmount = calculateDiscount(cartTotal, coupon); // Assuming you've already calculated this
+
+// Store discountAmount in locals
+// res.locals.discountAmount = discountAmount;
+
+        console.log(`Discount Amount (before rendering): ${discountAmount}`);
+       // req.session.discountAmount = discountAmount;
+
+        // Redirect to the checkout page after selecting the address
+       
         // Update coupon usage limits
         coupon.usageLimits.totalUses -= 1;
         await coupon.save();
+        
       } else {
         return res.status(400).send('Invalid coupon code.');
       }
@@ -1044,6 +1103,7 @@ function calculateTotalAmount(cart) {
           console.error('Product not found:', productId);
         }
       }
+    
 
       // Clear the user's cart
       user.cart = [];
@@ -1121,6 +1181,7 @@ function calculateDiscount(totalAmount, coupon, userTotalUsage) {
 
   console.log('CURRENT DATE ',currentDateWithoutTime);
   console.log('EXPIRED DATE ',expirationDateWithoutTime);
+
   if (currentDateWithoutTime > expirationDateWithoutTime) {
     throw new Error('Coupon has expired.');
   }
@@ -1150,9 +1211,73 @@ function calculateDiscount(totalAmount, coupon, userTotalUsage) {
   } else {
     return 0; // Default to no discount
   }
+
 }
 
 
+
+const loadcheckout = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('chosenAddress  cart.product');
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+   const coupon = await Coupon.find();
+   
+    const chosenAddress = user.chosenAddress;
+    
+   
+   
+
+    const cartTotal = calculateTotalAmount(user.cart);
+
+    // Helper function to calculate the total amount of the cart
+function calculateTotalAmount(cart) {
+  return cart.reduce((total, cartItem) => {
+      const itemTotal = cartItem.product.price * cartItem.quantity;
+      return total + itemTotal;
+  }, 0);
+}
+    // Check for a coupon code
+    const couponCode = req.body.couponCode;
+
+    let discountAmount = 0;
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+     
+      if (coupon) {
+        // Apply discount
+        discountAmount = calculateDiscount(cartTotal, coupon);
+        console.log(`${discountAmount}`);
+        // Update coupon usage limits
+        coupon.usageLimits.totalUses -= 1;
+        await coupon.save();
+        
+      } else {
+        return res.status(400).send('Invalid coupon code.');
+      }
+    }
+   // console.log(`Discount Amount (before rendering): ${discountAmount}`);
+    // Calculate the total amount after applying discount
+    
+
+
+
+
+
+
+
+
+   
+    res.render('checkout', { user, chosenAddress, coupon, cartTotal, discountAmount });
+   // res.render('checkout', { user, chosenAddress, coupon });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
 
 
 const razorpayPage = async (req, res) => {
@@ -1568,9 +1693,6 @@ const wallet= async(req,res)=>{
 
 
 
-
-
-
 module.exports = {
   //googleAuthCallback,
   //googleAuth,
@@ -1622,6 +1744,7 @@ module.exports = {
   viewOrder,
   requestReturn,
   wallet,
+
 
 
 }
