@@ -10,6 +10,9 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const PDFDocument = require('pdfkit');
 
+const Invoice = require('../../models/invoice');
+
+const fs = require('fs');
 
 const uuid = require('uuid');
 const { v4: uuidv4 } = require('uuid');
@@ -475,8 +478,12 @@ const verifylogin = async (req, res) => {
 //home page
 const homepage = async (req, res) => {
   try {
-      const isLoggedIn = req.session.user_id ? true : false;
-       res.render('home', { isLoggedIn});     
+
+    const products = await Product.find(); // Adjust this query based on your schema
+    const isLoggedIn = req.session.user_id ? true : false;
+    res.render('home', { isLoggedIn, products });
+    
+      
       
   } catch (error) {
       console.log(error.message);
@@ -1690,7 +1697,6 @@ const wallet= async(req,res)=>{
     console.log(error.message);
   }
 }
-
 
 
 module.exports = {

@@ -3,7 +3,8 @@ const user_route = express();
 const path = require('path');
 const addressController = require('../controllers/user/address');
 const userController = require('../controllers/user/userController');
-const couponController=require('../controllers/user/couponController')
+const couponController=require('../controllers/user/couponController');
+const invoiceController = require('../controllers/user/invoiceController');
 const razorpayInstance=require('../config/razorpayConfig')
 
 //user_route.use(session({secret:config.sessionSecret}));
@@ -168,6 +169,12 @@ user_route.post('/razorpay-callback', userController.handleRazorpayCallback);
 user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
 
 //user_route.get('/order/invoice/:orderId', userController.genInvoice );
+
+
+
+user_route.post('/invoices/from-order/:orderId', invoiceController.createInvoiceFromOrder);
+user_route.get('/invoices/:id/pdf', invoiceController.generateInvoicePdf);
+
 
 
 

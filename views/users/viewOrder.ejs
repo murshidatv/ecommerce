@@ -1,7 +1,7 @@
-
-<%- include('../layouts/productheader') %>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <%- include('../layouts/productheader') %>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
@@ -51,71 +51,59 @@
                     <th scope="col">Image</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Product Price</th>
-
-                    
                     <th scope="col">Product Quantity</th>
-
                     <th scope="col">Total Price</th>
                 </tr>
             </thead>
             
             <tbody style="text-align: center;">
-                
                 <% order.products.forEach((productDetail, index) => { %>
-                  
                     <tr>
                         <td><%= index + 1 %></td>
                         <td class="product-col">
                             <div class="product">
-                              <figure class="product-media">
-                                
-                                <a href="/product/<%= productDetail.product._id %>">
-                                  <img src="/images/<%= productDetail.product.images[0] %>" style="width: 250px;" alt="Product image">
-                                </a>
-                              </figure>
+                                <figure class="product-media">
+                                    <a href="/product/<%= productDetail.product._id %>">
+                                        <img src="/images/<%= productDetail.product.images[0] %>" style="width: 250px;" alt="Product image">
+                                    </a>
+                                </figure>
                             </div>
-                          </td>
-
-                          <td><%= productDetail.product.productName %></td>
-                          <td><%=productDetail.product.price%></td>
-                          <td><%= productDetail.quantity %></td>
-                          <td><%=  productDetail.quantity * productDetail.product.price %></td>
-                        
+                        </td>
+                        <td><%= productDetail.product.productName %></td>
+                        <td><%= productDetail.product.price %></td>
+                        <td><%= productDetail.quantity %></td>
+                        <td><%= productDetail.quantity * productDetail.product.price %></td>
                     </tr>
                 <% }); %>
-           
             </tbody>
-      
         </table>
         <div style="margin-left: 700px;">
-            <p>Total Product Amount:<%=totalOrderPrice%></p>
-            <p>Discount amount:<%=order.discountAmount%></p>
+            <p>Total Product Amount: <%= totalOrderPrice %></p>
+            <p>Discount Amount: <%= order.discountAmount %></p>
             <p>Paid Amount: <%= order.totalAmount %></p><br><br>
-
-            <div><button id="btn-invoice" type="button" class="btn btn-primary" data-order-id="<%= order._id %>">Download Invoice</button></div>
-       
-            
+            <div>
+                <button id="btn-invoice" type="button" class="btn btn-primary" data-order-id="<%= order._id %>">Download Invoice</button>
+            </div>
         </div>
     </div>
-    
-       
-    <a href="/order-history" style="margin-left: 200px;">Back to Order History</a>
+    <a href="/order-history" class="btn btn-secondary" style="margin-top: 20px;">Back to Order History</a>
+
+    <script>
+        document.getElementById('btn-invoice').addEventListener('click', function() {
+            const orderId = this.getAttribute('data-order-id');
+            fetch(`/invoices/from-order/${orderId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(invoice => {
+                if (invoice._id) {
+                    window.location.href = `/invoices/${invoice._id}/pdf`;
+                } else {
+                    alert('Failed to generate invoice.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
-    <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/jquery.plugin.min.js"></script>
-    <script src="assets/js/jquery.countdown.min.js"></script>
-
-    <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/demos/demo-5.js"></script>
-
-
-    <!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
 </html>
