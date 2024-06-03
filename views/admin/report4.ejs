@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>
+    <h1>Sales Reports</h1>
+    <canvas id="dailyReport" width="400" height="200"></canvas>
+    <canvas id="weeklyReport" width="400" height="200"></canvas>
+    <canvas id="monthlyReport" width="400" height="200"></canvas>
+    <canvas id="customReport" width="400" height="200"></canvas>
+
+    <canvas id="salesChart"></canvas>
+
+    <script>
+      async function fetchSalesData(period, startDate = '', endDate = '') {
+        const response = await fetch(`/sales-data?period=${period}&startDate=${startDate}&endDate=${endDate}`);
+        const data = await response.json();
+    
+        const labels = data.map(entry => entry._id);
+        const sales = data.map(entry => entry.totalSales);
+    
+        renderChart(labels, sales);
+      }
+    
+      function renderChart(labels, sales) {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Total Sales',
+              data: sales,
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                beginAtZero: true
+              },
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    
+      // Call this function with the desired period ('daily', 'weekly', 'monthly', 'yearly') and optional start and end dates
+      fetchSalesData('monthly');
+    </script>
+    

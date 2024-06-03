@@ -144,7 +144,7 @@
                             </div>
                             
                         </div>
-
+                        
                         Sales Report<br><br>
                         <!-- Add buttons for the filters -->
                         <button class="add btn btn-gradient-primary font-weight-bold todo-list-add-btn"
@@ -158,14 +158,151 @@
                             <div>
                                 <canvas id="userChart" width="400" height="100"></canvas>
                             </div>
-                        <!-- Sales Report  -->
+                        <!-- Sales Report  
+
+                        <canvas id="orderChart" width="400" height="400"></canvas>-->
+                        
+
                         <div class="container-fluid pt-4 px-4">
                             <div class="row">
                                 <div class="col-md-8 mx-auto">
                                     
+
+
                                     <div class="card" style="margin: 5px;">
                                         <div class="card-header">
-                                            <h4 class="card-title" style="color: #0c0101;">Sales Report </h4>
+                                            <h4 class="card-title" style="color: #0c0101; text-align: center;">Sales Report</h4>
+                                        </div>
+                                        <div class="card-body" style="text-align: center;">
+                                            
+                                            <!-- Users Details Card -->
+                                            <div class="card" style="margin: 10px;">
+                                                <div class="card-header">
+                                                    <h3 class="card-title" style="color: #0c0101c8;"><u>Users Details</u></h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Detail</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Total Users</td>
+                                                                <td><%= totalUsers %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Total Blocked Users</td>
+                                                                <td><%= blockUser %></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                    
+                                            <!-- Orders Details Card -->
+                                            <div class="card" style="margin: 10px;">
+                                                <div class="card-header">
+                                                    <h3 class="card-title" style="color: #0c0101ce;"><u>Orders Details</u></h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Detail</th>
+                                                                <th>Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Total Products</td>
+                                                                <td><%= totalproduct %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Most Selling Product</td>
+                                                                <td><%= mostSellingProduct ? mostSellingProduct.productName : 'Flo Motif' %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Most Selling Category</td>
+                                                                <td>HandBags</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Total Orders</td>
+                                                                <td><%= totalOrders %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Cancelled Orders</td>
+                                                                <td><%= cancelledOrders %></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Total Revenue</td>
+                                                                <td><%= totalRevenue %></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <style>
+                                        .card {
+                                            border: 1px solid #ddd;
+                                            border-radius: 4px;
+                                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                        }
+                                        
+                                        .card-header {
+                                            background-color: #f8f9fa;
+                                            padding: 10px;
+                                            border-bottom: 1px solid #ddd;
+                                        }
+                                        
+                                        .card-title {
+                                            margin: 0;
+                                            font-size: 1.25rem;
+                                        }
+                                        
+                                        .card-body {
+                                            padding: 10px;
+                                        }
+                                        
+                                        .table {
+                                            width: 100%;
+                                            margin-bottom: 1rem;
+                                            color: #212529;
+                                        }
+                                        
+                                        .table th,
+                                        .table td {
+                                            padding: 8px;
+                                            vertical-align: top;
+                                            border-top: 1px solid #dee2e6;
+                                        }
+                                        
+                                        .table thead th {
+                                            vertical-align: bottom;
+                                            border-bottom: 2px solid #dee2e6;
+                                        }
+                                        </style>
+                                        
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <div class="card" style="margin: 5px;">
+                                        <div class="card-header">
+                                            <h4 class="card-title" style="color: #0c0101; text-align: center;" >Sales Report </h4>
 
 
 
@@ -173,25 +310,6 @@
                                         </div>
                                         <div style="text-align: center;" class="card-body" >
                                             
-                                            <!-- Display sales report data here -->
-                                            <h3 style="color: #0c0101c8;"><u>Users Details</u></h3>
-                                            <h5 style="color: #0c010187;">Total Users: <%= totalUsers %>
-                                            </h5>
-                                            <h5 style="color: #0c010173;">Total blockUser: <%= blockUser %>
-                                            </h5><br>
-
-                                            <h3 style="color: #0c0101ce;"><u>Orders Details</u></h3>
-
-                                            <h5 style="color: #0c0101a3;">Total product: <%= totalproduct %>
-                                            </h5>
-
-                                            <h5 style="color: #0c0101a7;">Total Orders: <%= totalOrders %>
-                                            </h5>
-                                            <h5 style="color: #0c0101c9;">Cancelled Orders: <%= cancelledOrders %>
-                                            </h5><br>
-                                            <h5 style="color: #0c0101bd;">TotalRevenue: <%= totalRevenue %>
-                                            </h5><br>
-                                           
                                            
 
 
@@ -216,7 +334,6 @@
 <div>
     <canvas id="salesChart"></canvas>
 </div> -->
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Get the canvas element
@@ -234,73 +351,74 @@
         console.log('Updating chart with data:', userData); 
 
         userChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: userData.labels,
-        datasets: [{
-            label: 'Weekly',
-            data: userData.weeklyData,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)', 
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Monthly',
-            data: userData.monthlyData,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Yearly',
-            data: userData.yearlyData,
-            backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            borderColor: 'rgba(153, 102, 255, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Time Period' 
+            type: 'bar',
+            data: {
+                labels: userData.labels,
+                datasets: [{
+                    label: 'Weekly',
+                    data: userData.weeklyData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)', 
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Monthly',
+                    data: userData.monthlyData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Yearly',
+                    data: userData.yearlyData,
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time Period' 
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
                 }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
+            }
+        });
     }
-});
-    }
+
     const weeklyButton = document.getElementById('weekly');
-const monthlyButton = document.getElementById('monthly');
-const yearlyButton = document.getElementById('yearly');
+    const monthlyButton = document.getElementById('monthly');
+    const yearlyButton = document.getElementById('yearly');
 
-// Add event listeners
-weeklyButton.addEventListener('click', () => {
+    // Add event listeners
+    weeklyButton.addEventListener('click', () => {
+        fetchData('weekly');
+    });
+    monthlyButton.addEventListener('click', () => {
+        fetchData('monthly');
+    });
+    yearlyButton.addEventListener('click', () => {
+        fetchData('yearly');
+    });
+
+    // Call fetchData function with default period 'weekly' upon page load
     fetchData('weekly');
-});
-monthlyButton.addEventListener('click', () => {
-    fetchData('monthly');
-});
-yearlyButton.addEventListener('click', () => {
-    fetchData('yearly');
-});
 
-// Modify the fetchData function to take a period parameter
-function fetchData(period) {
-    fetch(`/admin/dashboard-data?period=${period}`)
-        .then(response => response.json())
-        .then(userData => updateChart(userData))
-        .catch(error => console.error('Error:', error));
-}
-
-
-
-
+    // Modify the fetchData function to take a period parameter
+    function fetchData(period) {
+        fetch(`/admin/dashboard-data?period=${period}`)
+            .then(response => response.json())
+            .then(userData => updateChart(userData))
+            .catch(error => console.error('Error:', error));
+    }
 </script>
+
 
 
 
@@ -348,6 +466,55 @@ function fetchData(period) {
         });
 </script>
 
+<script>
+    // Get the canvas element
+    const orderChartCtx = document.getElementById('orderChart').getContext('2d');
+    let orderChart;
+
+    // Function to update the chart
+    function updateOrderChart(orderData) {
+        if (orderChart) {
+            orderChart.destroy(); 
+        }
+
+        orderChart = new Chart(orderChartCtx, {
+            type: 'pie',
+            data: {
+                labels: orderData.labels,
+                datasets: [{
+                    data: orderData.data,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.2)', 
+                        'rgba(255, 206, 86, 0.2)',  
+                        'rgba(255, 99, 132, 0.2)',  
+                        'rgba(255, 159, 64, 0.2)'   
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255,99,132,1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,  
+                    text: 'Order Status'
+                }
+            }
+        });
+    }
+
+    // Fetch the data when the page loads
+    fetch(`/admin/order-data`)
+        .then(response => response.json())
+        .then(orderData => updateOrderChart(orderData))
+        .catch(error => console.error('Error:', error));
+</script>
+
 
         <script>
             // Get the current path of the URL
@@ -373,6 +540,7 @@ function fetchData(period) {
         </script>
 
        
+
 
 
 

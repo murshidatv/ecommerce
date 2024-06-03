@@ -82,11 +82,11 @@
             <p>Discount Amount: <%= order.discountAmount %></p>
             <p>Paid Amount: <%= order.totalAmount %></p><br><br>
             <div>
-                <button id="btn-invoice" type="button" class="btn btn-primary" data-order-id="<%= order._id %>">Download Invoice</button>
+                <button id="btn-invoice" type="button" class="btn btn-dark" data-order-id="<%= order._id %>">Download Invoice</button><br><br>
             </div>
         </div>
     </div>
-    <a href="/order-history" class="btn btn-secondary" style="margin-top: 20px;">Back to Order History</a>
+    <a href="/order-history" class="btn btn-dark" style="margin-left: 1000px;">Back to Order History</a>
 
     <script>
         document.getElementById('btn-invoice').addEventListener('click', function() {

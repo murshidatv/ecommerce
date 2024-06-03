@@ -31,7 +31,7 @@ const dashboardController = require("../controllers/admin/dashboardController");
 const categoryController=require('../controllers/admin/categoryController');
 const orderController=require('../controllers/admin/orderController');
 const couponController=require('../controllers/admin/couponController');
-
+const salesReportController = require('../controllers/admin/salesreportController');
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
 
 admin_route.post('/',adminController.verifyLogin);
@@ -41,7 +41,11 @@ admin_route.get('/downloadSalesReport', dashboardController.downloadSalesReport)
 admin_route.get('/dowloadsalesReports',dashboardController.downloadSalesReports);
 admin_route.get('/dowloadsalesExcel',dashboardController.downloadSalesReportsExcel);
 admin_route.get('/getUserDetailsAndOrders', dashboardController.getUserDetailsAndOrders); 
-admin_route.get('/getYearlyRevenue', dashboardController.getYearlyRevenue); 
+admin_route.get('/getYearlyRevenue', dashboardController.getYearlyRevenue);
+
+admin_route.get('/sales-data', dashboardController.getSalesData);
+
+
 admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 //admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 admin_route.get('/listuser',auth.isLogin,adminController.adminDashboard);
@@ -117,6 +121,11 @@ admin_route.post('/edit-coupon/:couponId', couponController.editCoupon);
 admin_route.get('/loadcoupon/:couponId',couponController.deleteCoupon);
 
 
+
+admin_route.get('/sales-report/daily', salesReportController.getDailyReport);
+admin_route.get('/sales-report/weekly', salesReportController.getWeeklyReport);
+admin_route.get('/sales-report/monthly', salesReportController.getMonthlyReport);
+admin_route.post('/sales-report/custom', salesReportController.getCustomReport);
 
 
 
