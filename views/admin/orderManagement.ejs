@@ -48,14 +48,14 @@
                                           <!--<th scope="col">SL.NO</th>-->
                                           <th>Order Date</th>
                                           <th scope="col">Name</th>
-                                          <th scope="col">Product Count</th>
+                                          <th scope="col">Product<br>Count</th>
                                           <th scope="col">Product Name</th>
                                           <th scope="col">Discount<br>Amount</th>
-                                           <th scope="col">Total Amount</th>
+                                           <th scope="col">Total<br>Amount</th>
                                           <th scope="col">Payment<br>Method</th>
                                           
-                                          <th scope="col">New Status</th>
-                                          <th scope="col"> Update Status</th>
+                                          <th scope="col">New<br>Status</th>
+                                          <th scope="col"> Update<br>Status</th>
                                         </tr>
                                       </thead>
                                       <tbody>
@@ -132,7 +132,7 @@
                                             <td>
                                               <%= newStatus ? newStatus : order[i].status %>
                                             </td>
-                      
+                      <!--
                                             <td>
                                               <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
                                                 <select name="newStatus">
@@ -144,8 +144,27 @@
                                                 </select>
                                                 <button type="submit">Update Status</button>
                                               </form>
+                                            </td>-->
+                                            <td>
+                                              <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
+                                                <select name="newStatus">
+                                                  <% if (order[i].status !== 'processing') { %>
+                                                    <option value="processing">Processing</option>
+                                                  <% } %>
+                                                  <% if (order[i].status !== 'pending') { %>
+                                                    <option value="pending">Pending</option>
+                                                  <% } %>
+                                                  <% if (order[i].status !== 'shipped') { %>
+                                                    <option value="shipped">Shipped</option>
+                                                  <% } %>
+                                                  <% if (order[i].status !== 'delivered') { %>
+                                                    <option value="delivered">Delivered</option>
+                                                  <% } %>
+                                                </select>
+                                                <button type="submit">Update Status</button>
+                                              </form>
                                             </td>
-                      
+                                            
                                           </tr>
                                           <% } %>
                                       </tbody>

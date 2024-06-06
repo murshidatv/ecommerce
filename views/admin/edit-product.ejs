@@ -124,7 +124,7 @@
                     <span id="sizeError" style="color: red;"></span>
                   </div>
                   <div class="form-group">
-                    <label for="price" class="text-light">Price</label>
+                   Price <label for="price" class="text-light">Price</label>
                     <input type="text" name="oldPrice" id="price" value="<%= product.oldPrice %>" placeholder="Price">
                     <span id="priceError" style="color: red;"></span>
                 </div>
@@ -185,11 +185,11 @@
                   <input type="file" name="images" multiple id="images" accept="image/*">
                   <span id="imageError" style="color: red;"></span>
                   <div id="productError" class="px-2 my-2 text-center text-danger"></div>
-
-
+                  <br>
+                  <button type="submit" class="btn text-dark update">Upload Images</button>
 
                   <!-- Other form fields (if any) -->
-                  <button type="submit" class="btn text-dark update">Upload Images</button>
+                
                   <hr>
                   <br>
 
@@ -296,6 +296,8 @@
                   document.getElementById('productNameError').innerText = "Product  Name is required";
                   event.preventDefault();
                 }
+               
+
                 if (!/^[a-zA-Z]+$/.test(productName)) {
                   document.getElementById('productNameError').innerText = "Product Must Be Characters";
                   event.preventDefault();

@@ -87,6 +87,9 @@ const editCoupon = async (req, res) => {
         const { couponname,code, discountType, discountValue, expirationDate, totalUses, perUser, minOrderAmount, description } = req.body;
 
         const existingCoupon = await Coupon.findOne({ code, _id: { $ne: couponId } });
+        /*if(minOrderAmount>discountValue){
+            return res.render('edit-coupon',)
+        }*/
         if (existingCoupon) {
             return res.render('edit-coupon', {
                 message: 'Coupon code already exists. Please choose a different code.',
@@ -113,8 +116,10 @@ const editCoupon = async (req, res) => {
             {
                 couponname,
                 code,
-                discountType,
-                discountValue,
+                type: discountType, // Ensure the field name matches the schema
+                value: discountValue, // Correct field name to match the schema
+                //discountType,
+                //discountValue,
                 expirationDate,
                 usageLimits: {
                     totalUses,

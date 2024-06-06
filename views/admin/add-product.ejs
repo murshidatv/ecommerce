@@ -1,5 +1,6 @@
 <%- include('../layouts/adminHeaders') %>
-
+  <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
   <style>
     /* Reset some default styles */
     body,
@@ -89,14 +90,20 @@
     <!-- partial:../../partials/_navbar.html -->
 
 
-      <%- include('../layouts/adminHeadersmid') %>
+    <%- include('../layouts/adminHeadersmid') %>
       <!-- partial -->
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
 
           <h2 style="color: rgb(10, 109, 170);text-align: center;">Add Product</h2>
-
+          <input type="file" id="inputImage" accept="image/*">
+          <img id="image" style="width: 10%;">
+          <button id="cropButton">Crop Image</button>
+          <div>
+            <h3>Cropped Image:</h3>
+            <img id="croppedImage" style="width: 10%;">
+          </div>
           <div class="col-md-12 grid-margin stretch-card">
             <form action="/admin/new-product" method=POST id="add_user" onsubmit="return productValidation()"
               enctype="multipart/form-data">
@@ -217,6 +224,10 @@
 
 
           </form>
+          
+
+          <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+
           <script>
             function displayImagePreview(input) {
               const imagePreview = document.getElementById(`imagePreview${input.id.charAt(input.id.length - 1)}`);
@@ -390,18 +401,51 @@
               return true;
             }
           </script>
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              const inputImage = document.getElementById('inputImage');
+              const image = document.getElementById('image');
+              const cropButton = document.getElementById('cropButton');
+              const croppedImage = document.getElementById('croppedImage');
+              let cropper;
 
+              inputImage.addEventListener('change', function (e) {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                  const file = files[0];
+                  const reader = new FileReader();
+                  reader.onload = function (e) {
+                    image.src = e.target.result;
+                    if (cropper) {
+                      cropper.destroy();
+                    }
+                    cropper = new Cropper(image, {
+                      aspectRatio: 1, // Set the aspect ratio for cropping
+                      viewMode: 1,
+                    });
+                  };
+                  reader.readAsDataURL(file);
+                }
+              });
 
+              cropButton.addEventListener('click', function () {
+                if (cropper) {
+                  const canvas = cropper.getCroppedCanvas();
+                  croppedImage.src = canvas.toDataURL();
+                }
+              });
+            });
+
+          </script>
 
 
         </div>
 
       </div>
       <!-- content-wrapper ends -->
-    </div>
+  </div>
 
 
 
-    <!-- partial:../../partials/_footer.html -->
-    <%- include('../layouts/adminFooters') %>
-    
+  <!-- partial:../../partials/_footer.html -->
+  <%- include('../layouts/adminFooters') %>

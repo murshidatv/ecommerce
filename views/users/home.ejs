@@ -135,7 +135,8 @@
                     data-owl-options='{"nav": false, "dots": false}'>
 
                     <div class="intro-slide" style="background-image: url(assets/images/slider/login.webp);">
-                        <h1 class="intro-title text-white" style="margin-left: 500px;">Zouq<br><br>Mystery Deals </h1>
+                        <h1 class="intro-title text-white" style="margin-left: 500px;">Zouq<br><br>Mystery Deals
+                        </h1>
                         <br><!-- End .intro-title -->
 
                         <div id="productCarousel" class="carousel slide" data-ride="carousel">
@@ -149,24 +150,33 @@
 
                             <!-- Slides -->
                             <div class="carousel-inner">
+
+
                                 <% products.slice(0, 4).forEach((product, index)=> { %>
+
                                     <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                                        <span class="badge badge-recent-purchase">Recent Purchase</span>
                                         <a href="/product/<%= product._id %>">
                                             <img src="/images/<%= product.images[0] %>" alt="<%= product.productName %>"
                                                 class="d-block w-100"
-                                                style="height: 550px; object-fit: cover;   margin-left: 50px; ">
+                                                style="height: 550px; object-fit: cover;   margin-left: 50px; border-radius: 12px; border-style: ridge;border-color: #c66;">
                                         </a>
                                         <div class="carousel-caption">
-                                            <h5 style="font-weight: 500;margin-right: 800px ;">
+                                            <h5
+                                                style="font-weight: 500;margin-right: 800px ;font-style: italic;color: black;">
                                                 <%= product.productName %>
                                             </h5>
-                                            <p style="font-weight: 500;margin-right: 800px ;">Rs.<%= product.price %>
+                                            <p
+                                                style="font-weight: 500;margin-right: 800px ;font-style: italic;color: rgb(103, 16, 16);">
+                                                Rs.<%= product.price %>
                                             </p>
 
                                         </div>
 
                                     </div>
+
                                     <% }); %>
+
                                         <a href="/product-list" class="btn btn-primary"
                                             style="margin-top: 590px; margin-left: 200px;">Shop NOW</a>
                             </div>
@@ -193,6 +203,24 @@
                                 /* Set your desired width */
                                 height: 550px;
                                 /* Set your desired height */
+                            }
+
+                            .badge {
+                                position: absolute;
+                                margin-left: 50px;
+                                top: 10px;
+                                left: 10px;
+                                background-color: rgba(255, 0, 0, 0.8);
+                                color: white;
+                                padding: 5px 10px;
+                                border-radius: 5px;
+                                font-size: 12px;
+                                z-index: 1;
+                            }
+
+                            .badge-recent-purchase {
+                                background-color:#c66;
+                                /* Different color for Recent Purchase */
                             }
                         </style>
 
@@ -272,10 +300,11 @@
                                 <div class="banner-content">
                                     <h4 class="banner-subtitle"><a href="#">This week we love...</a></h4>
                                     <!-- End .banner-subtitle -->
-                                    <h3 class="banner-title"><a href="#"><span>Womens <br>Office Bags</span></a></h3>
+                                    <h3 class="banner-title"><a href="#"><span>Womens <br>Office Bags</span></a>
+                                    </h3>
                                     <!-- End .banner-title -->
-                                    <a href="product-list" class="btn btn-outline-primary-2 banner-link">Discover Now<i
-                                            class="icon-long-arrow-right"></i></a>
+                                    <a href="product-list" class="btn btn-outline-primary-2 banner-link">Discover
+                                        Now<i class="icon-long-arrow-right"></i></a>
                                 </div><!-- End .banner-content-->
                                 <a href="#">
                                     <img src="assets/images/demos/demo-5/banners/bag2.webp" alt="Banner">
@@ -295,7 +324,8 @@
                                         <br>
                                         <br>
                                         <!-- End .banner-title -->
-                                        <a href="product-list" class="btn btn-outline-primary-2 banner-link"style="margin-top:1000px;">Discover
+                                        <a href="product-list" class="btn btn-outline-primary-2 banner-link"
+                                            style="margin-top:1000px;">Discover
                                             Now<i class="icon-long-arrow-right"></i></a>
                                     </div><!-- End .banner-content-->
                                 </div><!-- End .banner -->
