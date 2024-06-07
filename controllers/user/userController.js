@@ -258,7 +258,7 @@ const userData = async (req, res) => {
       //image: req.file.filename,
       image: image,
       is_admin: 0,
-      // referralCodeUsed: req.body.referralCodeUsed, 
+       referralCodeUsed: req.body.referralCodeUsed, 
 
     });
 
