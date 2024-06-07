@@ -34,10 +34,10 @@
       <input type="text" name="mobile" placeholder="Enter mobile number" id="mobile" class="text">
       <span id="mobileError" class="error"></span>
       <br>
-
       <input type="file" class="text" name="image" id="image">
       <span id="imageError" class="error"></span>
       <br>
+      
       <input type="password" name="password" placeholder="Password" id="password" class="text"
         autocomplete="new-password">
       <span id="passwordError" class="error"></span>
@@ -169,7 +169,7 @@
         document.getElementById('mobileError').innerText = 'Invalid mobile number format.';
         return false;
       }
-      if (image.files.length === 0) {
+     /* if (image.files.length === 0) {
         document.getElementById('imageError').innerText = 'Image is required.';
         return false;
       }
@@ -177,7 +177,7 @@
       if (!allowedTypes.includes(image.files[0].type)) {
         document.getElementById('imageError').innerText = 'Please select a valid image file (JPEG, PNG, GIF).';
         return false;
-      }
+      }*/
       // If validation passes, the form is submitted
       return true;
     }

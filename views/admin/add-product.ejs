@@ -1,451 +1,380 @@
 <%- include('../layouts/adminHeaders') %>
-  <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
-  <style>
-    /* Reset some default styles */
-    body,
-    h1,
-    h2,
-    p,
-    ul,
-    form {
-      margin: 0;
-      padding: 0;
-    }
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet">
+<style>
+  /* Reset some default styles */
+  body, h1, h2, p, ul, form {
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
 
-    #add_user {
-      max-width: 450px;
-      margin: 50px auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+  #add_user {
+    max-width: 450px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
 
-    .form-group {
-      margin-bottom: 15px;
-    }
+  .form-group {
+    margin-bottom: 15px;
+  }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      color: #333;
-    }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+  input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
-    .radio {
-      margin-right: 10px;
-    }
+  .radio {
+    margin-right: 10px;
+  }
 
-    .btn {
-      background-color: rgb(85, 145, 213);
-      ;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+  .btn {
+    background-color: rgb(85, 145, 213);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-    .btn:hover {
-      background-color: #c66;
-    }
+  .btn:hover {
+    background-color: #c66;
+  }
 
-    #inputState {
-      width: 25rem;
-      border-radius: 5px;
-      height: 2rem;
-    }
+  #inputState {
+    width: 25rem;
+    border-radius: 5px;
+    height: 2rem;
+  }
 
-    nav {
-      background-color: #333;
-      padding: 10px 0;
-      text-align: center;
-    }
+  nav {
+    background-color: #333;
+    padding: 10px 0;
+    text-align: center;
+  }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-    }
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
 
-    nav a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  nav a:hover {
+    text-decoration: underline;
+  }
+</style>
 
-  <div class="container-scroller">
-    <!-- partial:../../partials/_navbar.html -->
-
-
-    <%- include('../layouts/adminHeadersmid') %>
-      <!-- partial -->
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-
-          <h2 style="color: rgb(10, 109, 170);text-align: center;">Add Product</h2>
-          <input type="file" id="inputImage" accept="image/*">
-          <img id="image" style="width: 10%;">
-          <button id="cropButton">Crop Image</button>
-          <div>
-            <h3>Cropped Image:</h3>
-            <img id="croppedImage" style="width: 10%;">
+<div class="container-scroller">
+  <%- include('../layouts/adminHeadersmid') %>
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <h2 style="color: rgb(10, 109, 170); text-align: center;">Add Product</h2>
+      <div class="col-md-12 grid-margin stretch-card">
+        <form action="/admin/new-product" method="POST" id="add_user" onsubmit="return productValidation()" enctype="multipart/form-data">
+          <div class="new_user">
+            <h2></h2><br>
+            <div class="form-group">
+              <label for="name" class="text-light">Product Name</label>
+              <input type="hidden" name="id" value="">
+              <input type="text" name="productName" id="productName" value="" placeholder="Product Name">
+              <span id="productNameError" style="color: red;"></span>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">Category</label>
+              <select id="inputState" name="category" class="form-control">
+                <option value="" selected>Select a category</option>
+                <% categories.forEach(category => { %>
+                  <% if (!category.blocked) { %>
+                    <option value="<%= category._id %>"><%= category.categoryName %></option>
+                  <% } %>
+                <% }); %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="size" class="text-light">Size</label>
+              <input type="text" name="size" value="" id="size" placeholder="Size">
+              <span id="sizeError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+              <label for="name" class="text-light">Price</label>
+              <input type="text" name="oldPrice" value="" id="price" placeholder="Price">
+              <span id="priceError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+              <label for="name" class="text-light">Stock</label>
+              <input type="text" name="stock" value="" id="stock" placeholder="Stock">
+              <span id="stockError" style="color: red;"></span>
+            </div>
           </div>
-          <div class="col-md-12 grid-margin stretch-card">
-            <form action="/admin/new-product" method=POST id="add_user" onsubmit="return productValidation()"
-              enctype="multipart/form-data">
-              <div class="new_uaer">
-                <h2></h2> <br>
-                <div class="form-group">
-                  <label for="name" class="text-light">Product Name</label>
-                  <input type="hidden" name="id" value="">
-                  <input type="text" name="productName" id="productName" value="" placeholder="Product Name">
-                  <span id="productNameError" style="color: red;"></span>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="inputState">Category</label>
-                  <select id="inputState" name="category" class="form-control">
-                    <option value="" selected>Select a category</option>
-                    <% categories.forEach(category=> { %>
-                      <% if (!category.blocked) { %>
-                        <option value="<%= category._id %>">
-                          <%= category.categoryName %>
-                        </option>
-                        <% } %>
-                          <% }); %>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label for="size" class="text-light">Size</label>
-                  <input type="text" name="size" value="" id="size" placeholder="Size">
-                  <span id="sizeError" style="color: red;"></span>
-                </div>
-                <div class="form-group">
-                  <label for="name" class="text-light">Price</label>
-
-                  <input type="text" name="oldPrice" value="" id="price" placeholder="Price">
-                  <span id="priceError" style="color: red;"></span>
-                </div>
-                <div class="form-group">
-                  <label for="name" class="text-light">Stock</label>
-
-                  <input type="text" name="stock" value="" id="stock" placeholder="Stock">
-                  <span id="stockError" style="color: red;"></span>
-
-                </div>
-
-              </div>
-              <!--</div>-->
-
-              <div class="form-group">
-                Offer Type<label for="offerType" class="text-light"></label>
-                <select name="offerType" value="" id="offerType">
-                  <option value="">Percentage</option>
-                </select>
-              </div>
-              <!--<div class="form-group">
-                Offer Amount (%)
-                <label for="offerAmount" class="text-light">Offer Amount (%)</label>
-                <input type="text" name="offerAmount" id="offerAmount" placeholder="">
-                <span id="offerAmountError" style="color: red;"></span>
-              </div>-->
-              <div class="form-group">Offer Amount(%)
-                <label class="sign-form-label" for="form3Example4cd"></label>
-                <input type="number" name="offerAmount" id="offerAmount" onchange="validateOfferAmount()">
-                <span id="offerAmountError" style="color: red;"></span>
-              </div>
-              <div class="form-group">
-
-                <div class="form-group">
-                  Offer End Date<label for="offerEndDate" class="text-light">/label><br>
-                    <input type="date" name="offerEndDate" id="offerEndDate" placeholder="Offer End Date(%)">
-                    <span id="offerEndDateError" style="color: red;"></span>
-                </div>
-
-
-
-                <div class="form-group">
-                  Description <br>
-                  <textarea name="description" id="description" cols="50" rows="10"></textarea>
-                  <span id="discriptionError" style="color: red;"></span>
-
-                </div>
-                <label class="sign-form-label" for="form3Example4cd">Product Images</label>
-                <div class="d-flex flex-row align-items-center mb-3">
-                  <div class="form-outline flex-fill mb-0">
-                    <label class="sign-form-label" for="form3Example4cd">Image 1</label>
-                    <input type="file" name="images" id="productImage1" onchange="displayImagePreview(this)" multiple
-                      accept="image/*">
-                    <img id="imagePreview1" alt="" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
-
-                  </div>
-                </div>
-                <div class="form-outline flex-fill mb-0">
-
-                  <label class="sign-form-label" for="form3Example4cd">Image 2</label>
-                  <input type="file" name="images" id="productImage2" onchange="displayImagePreview(this)" multiple
-                    accept="image/*"><br>
-                  <img id="imagePreview2" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
-
-                </div>
-
-
-                <div class="form-outline flex-fill mb-0">
-                  <label class="sign-form-label" for="form3Example4cd">Image 3</label>
-                  <input type="file" name="images" id="productImage3" onchange="displayImagePreview(this)" multiple
-                    accept="image/*">
-                  <img id="imagePreview3" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
-
-                </div>
-                <span id="imageError" style="color: red;"></span>
-                <div id="productError" class="px-2 my-2 text-center text-danger"></div>
-                <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
-                  <!-- Your input field -->
-
-                  <button type="submit" class="btn text-dark update">Save</button>
-                </div>
-              </div>
+          <div class="form-group">
+            Offer Type<label for="offerType" class="text-light"></label>
+            <select name="offerType" value="" id="offerType">
+              <option value="">Percentage</option>
+            </select>
           </div>
-
-
-
-          </form>
-          
-
-          <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
-
-          <script>
-            function displayImagePreview(input) {
-              const imagePreview = document.getElementById(`imagePreview${input.id.charAt(input.id.length - 1)}`);
-
-              // Check if any file is selected
-              if (input.files && input.files[0]) {
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                  // Set the source of the image to the base64 data
-                  imagePreview.src = e.target.result;
-                };
-
-                // Read the image as a data URL
-                reader.readAsDataURL(input.files[0]);
-              } else {
-                // Clear the image preview if no file is selected
-                imagePreview.src = "";
-                imagePreview.style.display = "none";
-              }
-            }
-
-
-          </script>
-          <script>
-            function productValidation() {
-              var productName = document.getElementById('productName').value;
-              var size = document.getElementById('size').value;
-              var price = document.getElementById('price').value;
-              var stock = document.getElementById('stock').value;
-              var offerType = document.getElementById('offerType').value;
-              var offerAmount = document.getElementById('offerAmount').value;
-              var offerEndDate = document.getElementById('offerEndDate').value;
-              var description = document.getElementById('description').value;
-              var productImage1 = document.getElementById('productImage1').value;
-              var productImage2 = document.getElementById('productImage2').value;
-              var productImage3 = document.getElementById('productImage3').value;
-
-              document.getElementById('productNameError').innerText = "";
-              document.getElementById('sizeError').innerText = "";
-              document.getElementById('priceError').innerText = "";
-              document.getElementById('stockError').innerText = "";
-              document.getElementById('offerTypeError').innerText = "";
-              document.getElementById('offerAmountError').innerText = "";
-              document.getElementById('offerEndDateError').innerText = "";
-              document.getElementById('discriptionError').innerText = "";
-              document.getElementById('imageError').innerText = "";
-
-
-
-
-
-              // Validate product Name
-              if (productName.trim() === "") {
-                document.getElementById('productNameError').innerText = "Product  Name is required";
-                return false;
-              }
-              if (!/^[a-zA-Z]+$/.test(productName)) {
-                document.getElementById('productNameError').innerText = "Product Must Be Charecters";
-                return false;
-              }
-              // validate size field
-              if (size.trim() === "") {
-                document.getElementById('sizeError').innerText = "Size is required";
-                return false;
-              }
-              if (!/^[a-zA-Z]+$/.test(size)) {
-                document.getElementById('sizeError').innerText = " Size Be Charecters";
-                return false;
-              }
-
-              // validate price field
-              if (price.trim() === "") {
-                document.getElementById('priceError').innerText = "price is required";
-                return false;
-              } else {
-                var priceRegex = /^\d+$/;
-
-                if (!priceRegex.test(price) || parseInt(price) <= 0) {
-                  document.getElementById('priceError').innerText = 'Price must be a valid positive integer';
-                  event.preventDefault();
-                }
-              }
-
-              // validate Stock field
-              if (stock.trim() === "") {
-                document.getElementById('stockError').innerText = "Stock is required";
-                return false;
-              } else {
-
-                var stockRegex = /^\d+$/;
-
-                if (!stockRegex.test(stock) || parseInt(stock) < 0) {
-                  document.getElementById('stockError').innerText = 'Stock must be a valid positive integer';
-                  event.preventDefault();
-                }
-              }
-
-
-
-
-
-
-              //discription validation
-
-              if (description.trim() === "") {
-                document.getElementById('discriptionError').innerText = "Description is required";
-                return false;
-              }
-
-              if (!productImage1 || !productImage2 || !productImage3) {
-                document.getElementById('imageError').innerText = "image is required";
-                return false;
-              }
-              // var selectedImageCount = [productImage1, productImage2, productImage3].filter(Boolean).length;
-
-              // if (selectedImageCount < 1) {
-              //     document.getElementById('imageError').innerText = 'Please select exactly one image';
-              //     event.preventDefault();
-              // } 
-
-              if (!isValidImage(productImage1) || !isValidImage(productImage2) || !isValidImage(productImage3)) {
-                document.getElementById('imageError').innerText = 'Please select valid image files for each field';
-                event.preventDefault();
-              } else {
-                document.getElementById('imageError').innerText = ''; // Clear any previous error messages
-                // Continue with form submission or other logic
-              }
-            };
-
-            function isValidImage(input) {
-              if (input.files.length > 0) {
-                var allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg']; // Add more if needed
-
-                if (allowedTypes.includes(input.files[0].type)) {
-                  return true;
-                }
-              }
-              return true;
-            }
-
-
-
-            // Product offer validation
-            if (offerType && (!/^\d+$/.test(offerAmount) || parseInt(offerAmount) <= 0)) {
-              document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer";
-              return false;
-            }
-            // Validate Offer End Date if Offer Amount is provided
-            if (offerAmount && offerEndDate.trim() === "") {
-              document.getElementById('offerEndDateError').innerText = "Offer End Date is required";
-              return false;
-            } else if (offerAmount && new Date(offerEndDate) <= new Date()) {
-              document.getElementById('offerEndDateError').innerText = "Offer End Date must be in the future";
-              return false;
-            }
-          </script>
-          <script>
-            function validateOfferAmount() {
-              const offerAmountInput = document.getElementById('offerAmount');
-              const offerAmountValue = offerAmountInput.value.trim();
-
-              if (!/^\d+$/.test(offerAmountValue) || parseInt(offerAmountValue) <= 0) {
-                // Display an error message (you can adapt this to your UI)
-                document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer";
-                return false;
-              }
-
-              // Clear any previous error message
-              document.getElementById('offerAmountError').innerText = "";
-              return true;
-            }
-          </script>
-          <script>
-            document.addEventListener('DOMContentLoaded', function () {
-              const inputImage = document.getElementById('inputImage');
-              const image = document.getElementById('image');
-              const cropButton = document.getElementById('cropButton');
-              const croppedImage = document.getElementById('croppedImage');
-              let cropper;
-
-              inputImage.addEventListener('change', function (e) {
-                const files = e.target.files;
-                if (files && files.length > 0) {
-                  const file = files[0];
-                  const reader = new FileReader();
-                  reader.onload = function (e) {
-                    image.src = e.target.result;
-                    if (cropper) {
-                      cropper.destroy();
-                    }
-                    cropper = new Cropper(image, {
-                      aspectRatio: 1, // Set the aspect ratio for cropping
-                      viewMode: 1,
-                    });
-                  };
-                  reader.readAsDataURL(file);
-                }
-              });
-
-              cropButton.addEventListener('click', function () {
-                if (cropper) {
-                  const canvas = cropper.getCroppedCanvas();
-                  croppedImage.src = canvas.toDataURL();
-                }
-              });
-            });
-
-          </script>
-
-
-        </div>
-
+          <div class="form-group">
+            Offer Amount(%)
+            <label class="sign-form-label" for="form3Example4cd"></label>
+            <input type="number" name="offerAmount" id="offerAmount" onchange="validateOfferAmount()">
+            <span id="offerAmountError" style="color: red;"></span>
+          </div>
+          <div class="form-group">
+            Offer End Date<label for="offerEndDate" class="text-light"></label><br>
+            <input type="date" name="offerEndDate" id="offerEndDate" placeholder="Offer End Date(%)">
+            <span id="offerEndDateError" style="color: red;"></span>
+          </div>
+          <div class="form-group">
+            Description <br>
+            <textarea name="description" id="description" cols="50" rows="10"></textarea>
+            <span id="discriptionError" style="color: red;"></span>
+          </div>
+          <label class="sign-form-label" for="form3Example4cd">Product Images</label>
+          <div class="d-flex flex-row align-items-center mb-3">
+            <div class="form-outline flex-fill mb-0">
+              <label class="sign-form-label" for="form3Example4cd">Image 1</label>
+              <input type="file" name="images" id="productImage1" onchange="displayImagePreview(this, 1)" accept="image/*"><br><br>
+              <img id="imagePreview1" alt="" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+              <button type="button" id="cropButton1"class="btn text-dark update">Crop Image 1</button>
+              <img id="croppedImage1" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+            </div>
+          </div>
+          <div class="form-outline flex-fill mb-0">
+            <label class="sign-form-label" for="form3Example4cd">Image 2</label>
+            <input type="file" name="images" id="productImage2" onchange="displayImagePreview(this, 2)" accept="image/*"><br><br>
+            <img id="imagePreview2" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+            <button type="button" id="cropButton2" class="btn text-dark update">Crop Image 2</button>
+            <img id="croppedImage2" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+          </div>
+          <div class="form-outline flex-fill mb-0">
+            <label class="sign-form-label" for="form3Example4cd">Image 3</label>
+            <input type="file" name="images" id="productImage3" onchange="displayImagePreview(this, 3)" accept="image/*"><br><br>
+            <img id="imagePreview3" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+            <button type="button" id="cropButton3"class="btn text-dark update">Crop Image 3</button>
+            <img id="croppedImage3" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+          </div>
+          <span id="imageError" style="color: red;"></span>
+          <div id="productError" class="px-2 my-2 text-center text-danger"></div>
+          <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+            <button type="submit" class="btn text-dark update"style="width:140px;">Save</button>
+          </div>
+        </form>
       </div>
-      <!-- content-wrapper ends -->
+    </div>
   </div>
+ 
+
+  <script src="https://unpkg.com/cropperjs/dist/cropper.js"></script>
+  <script>
+    let croppers = [];
+
+    function displayImagePreview(input, index) {
+      const imagePreview = document.getElementById(`imagePreview${index}`);
+      const croppedImage = document.getElementById(`croppedImage${index}`);
+
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+          croppedImage.src = "";
+          if (croppers[index]) {
+            croppers[index].destroy();
+          }
+          croppers[index] = new Cropper(imagePreview, {
+            aspectRatio: 1,
+            viewMode: 1,
+            autoCropArea: 0.5,
+          });
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    document.getElementById('cropButton1').addEventListener('click', function() {
+      cropImage(1);
+    });
+
+    document.getElementById('cropButton2').addEventListener('click', function() {
+      cropImage(2);
+    });
+
+    document.getElementById('cropButton3').addEventListener('click', function() {
+      cropImage(3);
+    });
+
+    function cropImage(index) {
+      const croppedImage = document.getElementById(`croppedImage${index}`);
+      const cropper = croppers[index];
+      if (cropper) {
+        const canvas = cropper.getCroppedCanvas();
+        croppedImage.src = canvas.toDataURL('image/png');
+      }
+    }
+  </script>
+   <script>
+    function productValidation() {
+      var productName = document.getElementById('productName').value;
+      var size = document.getElementById('size').value;
+      var price = document.getElementById('price').value;
+      var stock = document.getElementById('stock').value;
+      var offerType = document.getElementById('offerType').value;
+      var offerAmount = document.getElementById('offerAmount').value;
+      var offerEndDate = document.getElementById('offerEndDate').value;
+      var description = document.getElementById('description').value;
+      var productImage1 = document.getElementById('productImage1').value;
+      var productImage2 = document.getElementById('productImage2').value;
+      var productImage3 = document.getElementById('productImage3').value;
+
+      document.getElementById('productNameError').innerText = "";
+      document.getElementById('sizeError').innerText = "";
+      document.getElementById('priceError').innerText = "";
+      document.getElementById('stockError').innerText = "";
+      document.getElementById('offerTypeError').innerText = "";
+      document.getElementById('offerAmountError').innerText = "";
+      document.getElementById('offerEndDateError').innerText = "";
+      document.getElementById('discriptionError').innerText = "";
+      document.getElementById('imageError').innerText = "";
 
 
 
-  <!-- partial:../../partials/_footer.html -->
-  <%- include('../layouts/adminFooters') %>
+
+
+      // Validate product Name
+      if (productName.trim() === "") {
+        document.getElementById('productNameError').innerText = "Product  Name is required";
+        return false;
+      }
+      if (!/^[a-zA-Z]+$/.test(productName)) {
+        document.getElementById('productNameError').innerText = "Product Must Be Charecters";
+        return false;
+      }
+      // validate size field
+      if (size.trim() === "") {
+        document.getElementById('sizeError').innerText = "Size is required";
+        return false;
+      }
+      if (!/^[a-zA-Z]+$/.test(size)) {
+        document.getElementById('sizeError').innerText = " Size Be Charecters";
+        return false;
+      }
+
+      // validate price field
+      if (price.trim() === "") {
+        document.getElementById('priceError').innerText = "price is required";
+        return false;
+      } else {
+        var priceRegex = /^\d+$/;
+
+        if (!priceRegex.test(price) || parseInt(price) <= 0) {
+          document.getElementById('priceError').innerText = 'Price must be a valid positive integer';
+          event.preventDefault();
+        }
+      }
+
+      // validate Stock field
+      if (stock.trim() === "") {
+        document.getElementById('stockError').innerText = "Stock is required";
+        return false;
+      } else {
+
+        var stockRegex = /^\d+$/;
+
+        if (!stockRegex.test(stock) || parseInt(stock) < 0) {
+          document.getElementById('stockError').innerText = 'Stock must be a valid positive integer';
+          event.preventDefault();
+        }
+      }
+
+
+
+
+
+
+      //discription validation
+
+      if (description.trim() === "") {
+        document.getElementById('discriptionError').innerText = "Description is required";
+        return false;
+      }
+
+      if (!productImage1 || !productImage2 || !productImage3) {
+        document.getElementById('imageError').innerText = "image is required";
+        return false;
+      }
+      // var selectedImageCount = [productImage1, productImage2, productImage3].filter(Boolean).length;
+
+      // if (selectedImageCount < 1) {
+      //     document.getElementById('imageError').innerText = 'Please select exactly one image';
+      //     event.preventDefault();
+      // } 
+
+      if (!isValidImage(productImage1) || !isValidImage(productImage2) || !isValidImage(productImage3)) {
+        document.getElementById('imageError').innerText = 'Please select valid image files for each field';
+        event.preventDefault();
+      } else {
+        document.getElementById('imageError').innerText = ''; // Clear any previous error messages
+        // Continue with form submission or other logic
+      }
+    };
+
+    function isValidImage(input) {
+      if (input.files.length > 0) {
+        var allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg']; // Add more if needed
+
+        if (allowedTypes.includes(input.files[0].type)) {
+          return true;
+        }
+      }
+      return true;
+    }
+
+
+
+    // Product offer validation
+    if (offerType && (!/^\d+$/.test(offerAmount)|| parseInt(offerAmount) <= 0 || parseInt(offerAmount) >= 100)) {
+      document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer below 100";
+      return false;
+    }
+    // Validate Offer End Date if Offer Amount is provided
+    if (offerAmount && offerEndDate.trim() === "") {
+      document.getElementById('offerEndDateError').innerText = "Offer End Date is required";
+      return false;
+    } else if (offerAmount && new Date(offerEndDate) <= new Date()) {
+      document.getElementById('offerEndDateError').innerText = "Offer End Date must be in the future";
+      return false;
+    }
+  </script>
+  <script>
+    function validateOfferAmount() {
+      const offerAmountInput = document.getElementById('offerAmount');
+      const offerAmountValue = offerAmountInput.value.trim();
+
+      if (!/^\d+$/.test(offerAmountValue) || parseInt(offerAmountValue) <= 0) {
+        // Display an error message (you can adapt this to your UI)
+        document.getElementById('offerAmountError').innerText = "Offer Amount must be a positive integer";
+        return false;
+      }
+
+      // Clear any previous error message
+      document.getElementById('offerAmountError').innerText = "";
+      return true;
+    }
+  </script>
+</div>
+<%- include('../layouts/adminFooters') %>

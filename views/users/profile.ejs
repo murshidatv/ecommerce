@@ -148,12 +148,13 @@
                                     <img src="/userImages/<%= user.image %>" class="rounded-circle img-fluid" id="image"
                                         style="width: 100px; position: relative; left: 170px;" />
                                     <br>
-                                    <button class="btn"><a href="/editProfileImage">Edit</a></button>
+                                    <!--<button class="btn"><a href="/editProfileImage">Edit</a></button>-->
                                     <% } else { %>
-                                        <p>No user or user image found</p>
+                                        <img src="/images/default.jpeg" class="rounded-circle img-fluid" id="image"
+                                        style="width: 100px; position: relative; left: 170px;" />
                                         <% } %>
                             </div>
-
+                            <button class="btn"><a href="/editProfileImage">Edit</a></button>
                             <!-- Hidden file input for selecting a new image -->
                             <input type="file" id="editImageInput" style="display: none;" accept="image/*">
 
