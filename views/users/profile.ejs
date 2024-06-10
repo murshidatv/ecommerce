@@ -144,7 +144,7 @@
                         <div class="card-body text-center">
                             <div class="mt-3 mb-4">
 
-                                <% if (user && user.image) { %>
+                                <% if (user && user.image!== 'default.jpeg') { %>
                                     <img src="/userImages/<%= user.image %>" class="rounded-circle img-fluid" id="image"
                                         style="width: 100px; position: relative; left: 170px;" />
                                     <br>
@@ -156,7 +156,7 @@
                             </div>
                             <button class="btn"><a href="/editProfileImage">Edit</a></button>
                             <!-- Hidden file input for selecting a new image -->
-                            <input type="file" id="editImageInput" style="display: none;" accept="image/*">
+                            <input type="file" id="editImageInput" style="display: none;" accept="image/*"><br><br>
 
                             <script>
                                 document.getElementById('editImageButton').addEventListener('click', function () {
@@ -218,10 +218,10 @@
                                                <a href="/checkout" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
                                                 CHECK OUT
                                                </button></a>
-                                        
-                                        <!--<h4>Your Referral Code:</h4>
+                                        <br><br>
+                                        <h4>Your Referral Code:</h4>
                                         <input type="text" id="referralCodeField" value="<%=user.referralCode%>" readonly>
-                                        <button onclick="copyReferralCode()">Copy</button>
+                                        <button class= "btn btn-primary btn-rounded btn-lg" onclick="copyReferralCode()">Copy</button>
                                         <script>
                                           function copyReferralCode() {
                                               const referralCodeField = document.getElementById("referralCodeField");
@@ -229,20 +229,16 @@
                                               document.execCommand("copy"); // Copy the selected text to clipboard
                                               alert("Referral code copied!"); // Show a confirmation message
                                           }
-                                      </script> -->
+                                      </script> 
                          
-                        </div>
-                    </div>
 
-            </div>
-        </div>
         </div>
         </section>
         </aside>
         <div class="container ">
 
 
-
+<p><strong>Update Your Profile</strong> </p><br>
             <form action="/updateProfile" method="post" onsubmit="return validateForm()">
                 <div class="form-group col-md-6">
                     <label for="editName">First Name</label>

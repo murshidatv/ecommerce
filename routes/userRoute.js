@@ -168,18 +168,11 @@ user_route.post('/razorpay-callback', userController.handleRazorpayCallback);
 //coupon management
 user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
 
-//user_route.get('/order/invoice/:orderId', userController.genInvoice );
 
 
-
+//invoice
 user_route.post('/invoices/from-order/:orderId', invoiceController.createInvoiceFromOrder);
 user_route.get('/invoices/:id/pdf', invoiceController.generateInvoicePdf);
-
-
-
-
-
-
 
 
 

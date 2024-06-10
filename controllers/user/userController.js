@@ -258,7 +258,7 @@ const userData = async (req, res) => {
       //image: req.file.filename,
       image: image,
       is_admin: 0,
-      // referralCodeUsed: req.body.referralCodeUsed, 
+      referralCodeUsed: req.body.referralCodeUsed,
 
     });
 
@@ -276,15 +276,15 @@ const userData = async (req, res) => {
       res.render('register', { message: "Mobile number already exists. Please choose a different mobile number." });
       return;
     }
-    /*
-          // Check if the referral code exists in the database
-          //if (data.referralCodeUsed) {
-              const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
-              if (!referrer) {
-                  res.render('register', { message: "Invalid referral code. Please check and try again." });
-                  return;
-              }
-          }*/
+
+    // Check if the referral code exists in the database
+    if (data.referralCodeUsed) {
+      const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
+      if (!referrer) {
+        res.render('register', { message: "Invalid referral code. Please check and try again." });
+        return;
+      }
+    }
 
     const user = await data.save();
 
@@ -297,11 +297,11 @@ const userData = async (req, res) => {
 
       // Store OTP in the user's otp field
       user.otp = otp;
-      /* // Generate referral code
-        const referralCode = crypto.randomBytes(8).toString('hex'); 
+      // Generate referral code
+      // const referralCode = crypto.randomBytes(8).toString('hex'); 
 
-       // Set referral code in user record
-        user.referralCode = referralCode;*/
+      // Set referral code in user record
+      //  user.referralCode = referralCode;
 
       await user.save();
       console.log("OTP set:", user.otp);
@@ -310,32 +310,32 @@ const userData = async (req, res) => {
       verifyMail(req.body.name, req.body.email, otp);
       res.render('otp', { userId: user.id });
 
-      /*// If referral code was used, credit both the user and the referrer
+      // If referral code was used, credit both the user and the referrer
       if (data.referralCodeUsed) {
-          const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
-          if (referrer) {
-              // Credit the user and the referrer
-              user.wallet += 50;
-              referrer.wallet += 50;
+        const referrer = await User.findOne({ referralCode: data.referralCodeUsed });
+        if (referrer) {
+          // Credit the user and the referrer
+          user.wallet += 50;
+          referrer.wallet += 50;
 
-              // Update the wallet history for the user
-              user.walletHistory.push({
-                  type: 'credit',
-                  amount: 50,
-                  description: 'Received 50 Rs for using referral code',
-              });
+          // Update the wallet history for the user
+          user.walletHistory.push({
+            type: 'credit',
+            amount: 50,
+            description: 'Received 50 Rs for using referral code',
+          });
 
-              // Update the wallet history for the referrer
-              referrer.walletHistory.push({
-                  type: 'credit',
-                  amount: 50,
-                  description: 'Received 50 Rs for referral',
-              });
+          // Update the wallet history for the referrer
+          referrer.walletHistory.push({
+            type: 'credit',
+            amount: 50,
+            description: 'Received 50 Rs for referral',
+          });
 
-              await user.save();
-              await referrer.save();
-          }
-      }*/
+          await user.save();
+          await referrer.save();
+        }
+      }
     } else {
       res.render('register', { message: "Registration failed" });
     }
@@ -1404,6 +1404,29 @@ const handleRazorpayCallback = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+const retryPayment = async (req, res) => {
+  try {
+    const orderDetails = req.session.orderDetails;
+    if (!orderDetails) {
+      return res.status(400).send('Order details not found');
+    }
+
+    const razorpayOrderOptions = {
+      amount: orderDetails.totalAmount * 100, // Amount in paise
+      currency: 'INR',
+      receipt: `retry_${orderDetails.razorpayOrderId}_${Date.now()}`, // Unique ID for the order retry
+      payment_capture: 1,
+    };
+    const razorpayOrder = await razorpayInstance.orders.create(razorpayOrderOptions);
+
+    req.session.orderDetails.razorpayOrderId = razorpayOrder.id;
+
+    res.render('razorpayPage', { order: razorpayOrder, orderDetails: orderDetails });
+  } catch (error) {
+    console.error('Error in retryPayment:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
 
 
 
@@ -1690,7 +1713,7 @@ const googleAuth = async (req, res) => {
   }
 };
 */
-const wallet = async (req, res) => {
+  const wallet = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const user = await User.findById(userId);

@@ -36,6 +36,7 @@
         img {
             max-width: 100%;
             height: 100px;
+            width: 100px;
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
@@ -71,10 +72,11 @@
             <% if (user && user.image) { %>
                 <img src="/userimage/<%= user.image %>" alt="Profile Image" />
                 <% } else { %>
-                    <p>No user or user image found</p>
+                    <img src="/images/default.jpeg" class="rounded-circle img-fluid" id="image"
+                    style="width: 100px; position: relative; left: 170px;" />
                     <% } %>
         </div>
-
+       
         <div class="upload-new-image">
             <h3>Upload New Image:</h3>
             <input type="file" name="image" accept="image/*">
