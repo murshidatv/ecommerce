@@ -20,7 +20,7 @@
            
 
                 <% if (canceledOrders.length === 0) { %>
-                    <p>No canceled orders found.</p>
+                    <p>No cancelled orders found.</p>
                 <% } else { %>
                   <table class="table table-hover">
                         <thead>
@@ -30,7 +30,7 @@
                                 <th>Product Details</th>
                                 <th>Total amount</th>
                                 <th>Cancellation Reason</th>
-                                <th> Action</th>
+                              <!--- <th> Action</th>-->
                             </tr>
                         </thead>
                         <tbody>
@@ -50,8 +50,8 @@
                                                         Product Name: N/A,<br>
                                                     <% } %>
                                     
-                                                    <% if (product.product && product.product.Price) { %>
-                                                        Product Price: <%= product.product.Price %><br>
+                                                    <% if (product.product && product.product.price) { %>
+                                                        Product Price: <%= product.product.price %><br>
                                                     <% } else { %>
                                                         Product Price: N/A<br>
                                                     <% } %>
@@ -67,12 +67,12 @@
                                     <td><%= order.cancellation.reason %></td>
                                     <td>
                                         <div class="button-container">
-                                            <form action="/admin/confirm-order-cancellation/<%= order.id %>" method="POST">
-                                                <!-- Include any form input fields if needed -->
+                                           <!---<form action="/admin/confirm-order-cancellation/<%= order.id %>" method="POST">
+                                                <!-- Include any form input fields if needed -
                                                 <button type="submit" class="confirm-button" onclick="return confirmCancellation()">
                                                     Confirm Cancellation
                                                 </button>
-                                            </form>
+                                            </form>-->
                                         </div>
                                     </td>
                                     

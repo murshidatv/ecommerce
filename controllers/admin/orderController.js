@@ -161,7 +161,6 @@ const viewCanceledOrders = async (req, res) => {
   }
 };
 
-
 const viewReturnedOrders = async (req, res) => {
   try {
     // Fetch all returned orders
@@ -249,6 +248,7 @@ order,
 updateStatus,
 confirmOrderCancellation,
 viewCanceledOrders,
+//confirmOrderReturn,
 viewReturnedOrders,
 
 

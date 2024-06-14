@@ -32,6 +32,7 @@ const categoryController=require('../controllers/admin/categoryController');
 const orderController=require('../controllers/admin/orderController');
 const couponController=require('../controllers/admin/couponController');
 const salesReportController = require('../controllers/admin/salesreportController');
+//const { confirmOrderReturn, viewReturnedOrders } = require('../controllers/admin/orderController');
 
 
 
@@ -117,6 +118,7 @@ admin_route.get('/logout',auth.isLogin,adminController.logout);
 admin_route.get('/loadorder',auth.isLogin,orderController.order);
 admin_route.post('/update-status/:orderId', auth.isLogin, orderController.updateStatus);
 admin_route.post('/confirm-order-cancellation/:orderId',auth.isLogin, orderController.confirmOrderCancellation);
+//admin_route.post('/order/:orderId/confirm-return', auth.isLogin, orderController.confirmOrderReturn);
 
 admin_route.get('/canceled-orders',auth.isLogin, orderController.viewCanceledOrders);
 admin_route.get('/order-return',auth.isLogin,orderController.viewReturnedOrders);

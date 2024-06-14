@@ -134,7 +134,7 @@
                                                         <% } else if (order.status === 'Cancelled') { %>
                                                             <p>Order Cancelled</p>
                                                         <% } else if (order.status === 'Cancellation') { %>
-                                                            <p>Cancellation in Progress</p>
+                                                            <p>Order Cancelled</p>
                                                         <% } else { %>
                                                             <form action="/reasonpage/<%= order.id %>" method="GET">
                                                                 <button class="btn btn-danger">Cancel Order</button>

@@ -31,6 +31,7 @@
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Return Reason</th>
+                              <!--- <th> Action</th>-->
                             <!-- Add more columns as needed -->
                         </tr>
                         <% returnedOrders.forEach(order => { %>
@@ -45,18 +46,61 @@
                                 <td><%= order.products[0].quantity %></td>
                                 <td><%= order.returnReason %></td>
                                 <!-- Add more data as needed -->
+
+                                <td>
+                                  <div class="button-container">
+                                    <!-- <form action="/confirm-return/<%= order.id %>" method="POST">
+                                          <!-- Include any form input fields if needed 
+                                          <button type="submit" class="confirm-button" onclick="return confirmReturn()">
+                                              Confirm Return Order
+                                          </button>
+                                      </form>-->
+                                      
+                                  </div>
+                              </td>
                             </tr>
                         <% }); %>
                     </table>
                
 
-           
+                
             
           </div>
           <a href="/admin/loadorder">Back to order details</a>
-           
+          <script>
+            function confirmReturn() {
+                var isConfirmed = confirm("Are you sure you want to confirm retun order?");
+                return isConfirmed;
+            }
+          </script>
 
-            
+
+<script>
+  async function confirmReturn(orderId) {
+    try {
+      const response = await fetch(`/admin/order/${orderId}/confirm-return`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Order return confirmed');
+        document.getElementById(`order-status-${orderId}`).textContent = 'Returned';
+        // Optionally, update the UI to reflect the change
+      } else {
+        alert('Failed to confirm order return');
+      }
+    } catch (error) {
+      console.error('Error confirming order return:', error);
+      alert('An error occurred while confirming the return.');
+    }
+  }
+</script>
+
         </div>
         <!-- content-wrapper ends -->
   
