@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Zouq</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Zouq - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/images/icons/site.html">
+    <link rel="mask-icon" href="/assets/images/icons/safari-pinned-tab.svg" color="#666666">
+    <link rel="shortcut icon" href="/assets/images/icons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Zouq">
+    <meta name="application-name" content="Zouq">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="assets/images/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/plugins/jquery.countdown.css">
+
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/owl-carousel/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/css/plugins/magnific-popup/magnific-popup.css">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/skins/skin-demo-5.css">
+    <!--<link rel="stylesheet" href="/assets/css/demos/demo-5.css">
+     <link rel="stylesheet" href="/assets/css/style.css">-->
+    <link rel="stylesheet" href="/assets/css/plugins/nouislider/nouislider.css">
+</head>
+
+<body>
+ <!-- Your e-commerce product image -->
+ <img src="product-image.jpg" id="product-image">
+
+ <script>
+     // Initialize jQuery Image Zoom
+     $("#product-image").imagezoom();
+ </script>
+    <% function formatDate(date) { const options={ year: 'numeric' , month: 'long' , day: 'numeric' }; return new
+        Date(date).toLocaleDateString(undefined, options); } %>
+
+        <div class="page-wrapper">
+            <section>
+                <header class="header header-5">
+                    <div class="header-middle sticky-header">
+                        <div class="container">
+                            <div class="header-left">
+                                <button class="mobile-menu-toggler">
+                                    <span class="sr-only">Toggle mobile menu</span>
+                                    <i class="icon-bars"></i>
+                                </button>
+
+                                <a href="/home" class="logo">
+                                    <h2 style="color: #c66">Zouq</h2>
+                                </a>
+                                <nav class="main-nav">
+                                    <ul class="menu sf-arrows">
+
+                                        <li>
+                                            <a href="/home" class="sf-with-ul" style="color: black">Home</a>
+
+                                            <div class="megamenu megamenu-md">
+
+                                            </div><!-- End .megamenu megamenu-md -->
+                                        </li>
+                                        <li>
+                                            <a href="/product-list" class="sf-with-ul" style="color: black">Shop</a>
+
+                                            <div class="megamenu megamenu-md">
+
+                                            </div><!-- End .megamenu megamenu-md -->
+                                        </li>
+
+                                    </ul><!-- End .menu -->
+                                </nav><!-- End .main-nav -->
+                            </div><!-- End .header-left -->
+
+                            <div class="header-right">
+
+                                <div class="dropdown compare-dropdown">
+                                    <!-- <div class="wishlist">
+                                        <a href="/wishlist" title="Wishlist">
+                                            <i class="icon-heart-o" style="color: #c66;"></i>
+
+                                    </div>End .compare-dropdown -->
+
+
+                                </div><!-- End .compare-dropdown -->
+
+                                <!-- <div class="dropdown cart-dropdown">
+                                    <a href="/cartlist" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false" data-display="static">
+                                        <i class="icon-shopping-cart" style="color: #c66;"></i>
+                                    </a>
+                                </div>End .cart-dropdown -->
+
+                            </div><!-- End .header-right -->
+                        </div><!-- End .container -->
+                    </div><!-- End .header-middle -->
+                </header><!-- End .header -->
+            </section>
+            <main class="main">
+
+                <div class="container">
+                    <h1 style="color: #c66;" style="background-color:black;" class="page-title"><span></span></h1>
+                </div><!-- End .container -->
+
+                <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+
+                </nav><!-- End .breadcrumb-nav -->
+            </main>
+            <main class="main" style="margin-top: 100px;">
+                <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                    <div class="container d-flex align-items-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/product-list">Shop</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= product.productName %>
+                            </li>
+                        </ol>
+                    </div><!-- End .container -->
+                </nav><!-- End .breadcrumb-nav -->
+
+
+                    
+            <div class="page-content">
+                <div class="container">
+                    <div class="product-details-top mb-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product-gallery product-gallery-vertical">
+                                    <div class="row">
+                                      <!--   <figure class="product-main-image">
+                                            <img id="product-zoom" src="/images/<%=product.images[0]%>" data-zoom-image="/images/<%=product.images[0]%>" alt="product image">
+
+                                            <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                                <i class="icon-arrows"></i>
+                                            </a>
+                                        </figure>End .product-main-image -->
+                                        
+                                        <div class="img-zoom-container">
+                                            <div class="card">
+                                            <img id="myimage" src="/images/<%=product.images[0]%>" width="458"
+                                                height="458" alt="Girl">
+                                            <div id="myresult" class="img-zoom-result"></div>
+                                            </div>
+                                        </div>
+
+                                        <style>
+                                            .card {
+                                                border: 1px solid #ccc;
+                                                border-radius: 8px;
+                                                padding: 20px;
+                                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                                background-color: #f9f9f9;
+                                                max-width: 458px;
+                                               
+                                                margin: 0 auto;
+                                            }
+                                        </style>
+                                
+                                            
+                                     
+                                        <style>
+                                            * {
+                                                box-sizing: border-box;
+                                            }
+
+                                            .img-zoom-container {
+                                                position: relative;
+                                            }
+
+                                            .img-zoom-lens {
+                                                position: absolute;
+                                                border: 1px solid #d4d4d4;
+                                                /*set the size of the lens:*/
+                                                width: 40px;
+                                                height: 40px;
+                                            }
+
+                                            .img-zoom-result {
+                                                border: 1px solid #d4d4d4;
+                                                /*set the size of the result div:*/
+                                                width: 412px;
+                                                height: 412px;
+                                                padding-top: 210px;
+                                             margin-block-start: 5rem;
+                                            }
+                                        </style>
+                                         <style>
+                                            #container {
+                                              display: inline-block;
+                                              margin: 20px;
+                                              border: 1px solid black;
+                                              overflow: hidden; /* Clip the excess when child gets bigger than parent */
+                                            }
+                                            
+                                            #container img {
+                                              display: block;
+                                              transition: transform 0.4s; /* Smoother zoom effect */
+                                            }
+                                            
+                                            #container:hover img {
+                                              transform: scale(1.3); /* Zoom factor (adjust as needed) */
+                                              transform-origin: 50% 50%; /* Center the zoom around the image */
+                                            }
+                                            </style>
+                                            
+                                          <!--- <div id="container">
+                                                <img src="/images/<%=product.images[1]%>" alt="product cross" id="image">
+                                              
+                                            </div>-->
+                                            
+                                            
+
+                                        <script>
+                                            function imageZoom(imgID, resultID) {
+                                                var img, lens, result, cx, cy;
+                                                img = document.getElementById(imgID);
+                                                result = document.getElementById(resultID);
+                                                /* Create lens: */
+                                                lens = document.createElement("DIV");
+                                                lens.setAttribute("class", "img-zoom-lens");
+                                                /* Insert lens: */
+                                                img.parentElement.insertBefore(lens, img);
+                                                /* Calculate the ratio between result DIV and lens: */
+                                                cx = result.offsetWidth / lens.offsetWidth;
+                                                cy = result.offsetHeight / lens.offsetHeight;
+                                                /* Set background properties for the result DIV */
+                                                result.style.backgroundImage = "url('" + img.src + "')";
+                                                result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+                                                /* Execute a function when someone moves the cursor over the image, or the lens: */
+                                                lens.addEventListener("mousemove", moveLens);
+                                                img.addEventListener("mousemove", moveLens);
+                                                /* And also for touch screens: */
+                                                lens.addEventListener("touchmove", moveLens);
+                                                img.addEventListener("touchmove", moveLens);
+                                                function moveLens(e) {
+                                                    var pos, x, y;
+                                                    /* Prevent any other actions that may occur when moving over the image */
+                                                    e.preventDefault();
+                                                    /* Get the cursor's x and y positions: */
+                                                    pos = getCursorPos(e);
+                                                    /* Calculate the position of the lens: */
+                                                    x = pos.x - (lens.offsetWidth / 2);
+                                                    y = pos.y - (lens.offsetHeight / 2);
+                                                    /* Prevent the lens from being positioned outside the image: */
+                                                    if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; }
+                                                    if (x < 0) { x = 0; }
+                                                    if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; }
+                                                    if (y < 0) { y = 0; }
+                                                    /* Set the position of the lens: */
+                                                    lens.style.left = x + "px";
+                                                    lens.style.top = y + "px";
+                                                    /* Display what the lens "sees": */
+                                                    result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+                                                }
+                                                function getCursorPos(e) {
+                                                    var a, x = 0, y = 0;
+                                                    e = e || window.event;
+                                                    /* Get the x and y positions of the image: */
+                                                    a = img.getBoundingClientRect();
+                                                    /* Calculate the cursor's x and y coordinates, relative to the image: */
+                                                    x = e.pageX - a.left;
+                                                    y = e.pageY - a.top;
+                                                    /* Consider any page scrolling: */
+                                                    x = x - window.pageXOffset;
+                                                    y = y - window.pageYOffset;
+                                                    return { x: x, y: y };
+                                                }
+                                            }
+                                        </script>
+                                        <script>
+                                            imageZoom("myimage", "myresult");
+                                        </script>
+
+
+
+                                        <style>
+                                            .zoom {
+                                                padding: 78px;
+
+                                                transition: transform .2s;
+                                                width: 400px;
+                                                height: 400px;
+                                                margin: 0 auto;
+                                            }
+
+                                            .zoom:hover {
+                                                -ms-transform: scale(1.5);
+                                                /* IE 9 */
+                                                -webkit-transform: scale(1.5);
+                                                /* Safari 3-8 */
+                                                transform: scale(1.5);
+                                            }
+ 
+
+
+
+
+                                        </style>
+
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                            <a class="product-gallery-item active" href="#" data-image="/images/<%=product.images[0]%>" data-zoom-image="/images/<%=product.images[0]%>">
+                                                <img src="/images/<%=product.images[0]%>" alt="product side">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="/images/<%=product.images[1]%>" data-zoom-image="/images/<%=product.images[1]%>">
+                                                <img src="/images/<%=product.images[1]%>" alt="product cross">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="/images/<%=product.images[2]%>" data-zoom-image="/images/<%=product.images[1]%>">
+                                                <img src="/images/<%=product.images[2]%>" alt="product with model">
+                                            </a>
+
+                                            <!-- <a class="product-gallery-item" href="#" data-image="assetsmolla/images/products/single/4.jpg" data-zoom-image="assetsmolla/images/products/single/4-big.jpg">
+                                                <img src="/images/<%=product.images[2]%>" alt="product back">
+                                            </a> -->
+                                        </div><!-- End .product-image-gallery -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .product-gallery -->
+                            </div><!-- End .col-md-6 -->
+
+                            <div class="col-md-6">
+                                <div class="product-details">
+                                    <h1 class="product-title"><%= product.productName %></h1><!-- End .product-title -->
+
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                                    </div><!-- End .rating-container -->
+
+                                    <div class="product-price">
+                                        Rs.<%= product.price %>
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-content">
+                                        <p><%= product.description %></p>
+                                
+                                    </div><!-- End .product-content -->
+
+
+                                        <!-- <a href="#" class="size-guide"><i class="icon-th-list"></i>size guide</a> -->
+                                    </div><!-- End .details-filter-row -->
+
+                                    <!-- <div class="details-filter-row details-row-size">
+                                        <label for="qty">Qty:</label>
+                                        <div class="product-details-quantity">
+                                            <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                        </div><!-- End .product-details-quantity -->
+                                    <!-- </div>End .details-filter-row --> 
+
+                                    <div class="product-details-action">
+                                        <div class="product-details-action">
+                                            <div class="details-action-col">
+                                                <% if (product.stock> 0) { %>
+                                                    <a href="/add-to-cart/<%= product._id %>"
+                                                        class="btn-product btn-cart"><span>add to cart</span></a>
+                                                    <% } else { %>
+                                                        <span class="btn-product btn-out-of-stock"><span>Out of
+                                                                Stock</span></span>
+                                                        <% } %>
+                                            </div><!-- End .details-action-col -->
+                                            <div class="details-action-wrapper">
+                                                <a href="/addwishlist/<%= product._id %>"
+                                                    class="btn-product btn-wishlist" title="Wishlist"><span>Add to
+                                                        Wishlist</span></a>
+                                            </div><!-- End .details-action-wrapper -->
+                                        </div><!-- End .product-details-action -->
+                                    <div class="product-details-footer">
+                                        
+
+                                        
+                                    </div><!-- End .product-details-footer -->
+                                </div><!-- End .product-details -->
+                            </div><!-- End .col-md-6 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .product-details-top -->
+                    <div class="product-details-tab">
+                        <ul class="nav nav-pills justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-info-link" data-toggle="tab" href="#product-info-tab" role="tab" aria-controls="product-info-tab" aria-selected="false">Additional information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                                <div class="product-desc-content">
+                                    <h3>Product Information</h3>
+
+                                   
+                                    <title>Product Gallery</title>
+                                 
+                                    <style>
+                                      .product-main-image {
+                                        text-align: center;
+                                        margin-bottom: 20px;
+                                      }
+                                    
+                                      .product-main-image img {
+                                        max-width: 100%;
+                                        height: auto;
+                                      }
+                                    
+                                      .product-image-gallery {
+                                        display: flex;
+                                        justify-content: center;
+                                      }
+                                    
+                                      .product-gallery-item {
+                                        margin: 0 10px;
+                                        cursor: pointer;
+                                      }
+                                    
+                                      .product-gallery-item img {
+                                        max-width: 100px;
+                                        height: auto;
+                                        border: 2px solid transparent;
+                                      }
+                                    
+                                      .product-gallery-item img.active {
+                                        border-color: #007bff;
+                                      }
+                                    </style>
+                                    
+                                    <!--
+                                    <div class="container mt-5">
+                                      <div class="row">
+                                        <div class="col-12 product-main-image">
+                                          <img id="main-image" src="/images/<%= product.images[0] %>" alt="Main product image">
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                          <div class="product-gallery-item">
+                                            <img src="/images/<%= product.images[0] %>" data-image="/images/<%= product.images[0] %>" alt="Product side" class="active">
+                                          </div>
+                                          <div class="product-gallery-item">
+                                            <img src="/images/<%= product.images[1] %>" data-image="/images/<%= product.images[1] %>" alt="Product cross">
+                                          </div>
+                                          <div class="product-gallery-item">
+                                            <img src="/images/<%= product.images[2] %>" data-image="/images/<%= product.images[2] %>" alt="Product with model">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                   
+                                    
+                                -->
+
+
+                                    <p><%= product.description %></p>
+                                    <!-- <ul>
+                                        <li>Nunc nec porttitor turpis. In eu risus enim. In vitae mollis elit. </li>
+                                        <li>Vivamus finibus vel mauris ut vehicula.</li>
+                                        <li>Nullam a magna porttitor, dictum risus nec, faucibus sapien.</li>
+                                    </ul> -->
+
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis. Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus. </p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                                <div class="product-desc-content">
+                                    <h3>Information</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
+
+                                    <h3>Fabric & care</h3>
+                                    <ul>
+                                        <li>Faux suede fabric</li>
+                                        <li>Gold tone metal hoop handles.</li>
+                                        <li>RI branding</li>
+                                        <li>Snake print trim interior </li>
+                                        <li>Adjustable cross body strap</li>
+                                        <li> Height: 31cm; Width: 32cm; Depth: 12cm; Handle Drop: 61cm</li>
+                                    </ul>
+
+                                    <h3>Size</h3>
+                                    <p>one size</p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+                                <div class="product-desc-content">
+                                    <h3>Delivery & returns</h3>
+                                    <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
+                                    We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                                <div class="reviews">
+                                    <h3>Reviews (2)</h3>
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">Samanta J.</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">6 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Good, perfect size</h4>
+
+                                                <div class="review-content">
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">John Doe</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">5 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Very good</h4>
+
+                                                <div class="review-content">
+                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+                                </div><!-- End .reviews -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .product-details-tab -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+            </main><!-- End .main -->
+            <footer class="footer footer-2">
+                <div class="footer-middle border-0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6">
+                                <div class="widget widget-about">
+    
+    
+                                    <div class="widget-about-info">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-md-4">
+                                                <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                                <a href="tel:123456789">+0123 456 789</a>
+                                            </div><!-- End .col-sm-6 -->
+                                            <div class="col-sm-6 col-md-8">
+                                                <span class="widget-about-title">Payment Method</span>
+                                                <figure class="footer-payments">
+                                                    <img src="/assets/images/payments.png" alt="Payment methods" width="272"
+                                                        height="20">
+                                                </figure><!-- End .footer-payments -->
+                                            </div><!-- End .col-sm-6 -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .widget-about-info -->
+                                </div><!-- End .widget about-widget -->
+                            </div><!-- End .col-sm-12 col-lg-3 -->
+    
+                            <div class="col-sm-4 col-lg-2">
+                                <div class="widget">
+                                    <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+    
+                                    <ul class="widget-list">
+                                        <li><a href="about.html">About Zouq</a></li>
+                                        <li><a href="#">How to shop on Zouq</a></li>
+                                        <li><a href="faq.html">FAQ</a></li>
+                                        <li><a href="contact.html">Contact us</a></li>
+                                        <li><a href="login.html">Log in</a></li>
+                                    </ul><!-- End .widget-list -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .col-sm-4 col-lg-3 -->
+    
+                            <div class="col-sm-4 col-lg-2">
+                                <div class="widget">
+                                    <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+    
+                                    <ul class="widget-list">
+                                        <li><a href="#">Payment Methods</a></li>
+                                        <li><a href="#">Money-back guarantee!</a></li>
+                                        <li><a href="#">Returns</a></li>
+                                        <li><a href="#">Shipping</a></li>
+                                        <li><a href="#">Terms and conditions</a></li>
+                                        <li><a href="#">Privacy Policy</a></li>
+                                    </ul><!-- End .widget-list -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .col-sm-4 col-lg-3 -->
+    
+                            <div class="col-sm-4 col-lg-2">
+                                <div class="widget">
+                                    <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+    
+                                    <ul class="widget-list">
+                                        <li><a href="#">Sign In</a></li>
+                                        <li><a href="cartlist">View Cart</a></li>
+                                        <li><a href="#">My Wishlist</a></li>
+                                        <li><a href="#">Track My Order</a></li>
+                                        <li><a href="#">Help</a></li>
+                                    </ul><!-- End .widget-list -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .col-sm-64 col-lg-3 -->
+                        </div><!-- End .row -->
+                    </div><!-- End .container -->
+                </div><!-- End .footer-middle -->
+    
+                <div class="footer-bottom">
+                    <div class="container">
+                        <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p>
+                        <!-- End .footer-copyright -->
+                        <ul class="footer-menu">
+                            <li><a href="#">Terms Of Use</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul><!-- End .footer-menu -->
+                        <div class="social-icons social-icons-color">
+                            <span class="social-label"></span>
+                            <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                                    class="icon-facebook-f"></i></a>
+                            <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                                    class="icon-twitter"></i></a>
+                            <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                                    class="icon-instagram"></i></a>
+                            <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                                    class="icon-youtube"></i></a>
+                            <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+                                    class="icon-pinterest"></i></a>
+                        </div><!-- End .soial-icons -->
+                    </div><!-- End .container -->
+                </div><!-- End .footer-bottom -->
+            </footer><!-- End .footer -->
+            </div><!-- End .page-wrapper -->
+            <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+    
+            <!-- Mobile Menu -->
+            <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+    
+            <div class="mobile-menu-container mobile-menu-light">
+                <div class="mobile-menu-wrapper">
+                    <span class="mobile-menu-close"><i class="icon-close"></i></span>
+    
+                    <form action="#" method="get" class="mobile-search">
+                        <label for="mobile-search" class="sr-only">Search</label>
+                        <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                            placeholder="Search in..." required>
+                        <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                    </form>
+    
+                    <nav class="mobile-nav">
+                        <ul class="mobile-menu">
+                            <li class="active">
+                                <a href="home.ejs">Home</a>
+    
+                            <li>
+                                <a href="/product-list">Shop</a>
+    
+                            </li>
+    
+                            <li>
+    
+                            </li>
+                        </ul>
+                    </nav><!-- End .mobile-nav -->
+    
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                        <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+                    </div><!-- End .social-icons -->
+                </div><!-- End .mobile-menu-wrapper -->
+            </div><!-- End .mobile-menu-container -->
+    
+    
+            <!-- Plugins JS File -->
+            <script src="assetsmolla/js/jquery.min.js"></script>
+    <script src="assetsmolla/js/bootstrap.bundle.min.js"></script>
+    <script src="assetsmolla/js/jquery.hoverIntent.min.js"></script>
+    <script src="assetsmolla/js/jquery.waypoints.min.js"></script>
+    <script src="assetsmolla/js/superfish.min.js"></script>
+    <script src="assetsmolla/js/owl.carousel.min.js"></script>
+    <script src="assetsmolla/js/bootstrap-input-spinner.js"></script>
+    <script src="assetsmolla/js/jquery.elevateZoom.min.js"></script>
+    <script src="assetsmolla/js/bootstrap-input-spinner.js"></script>
+    <script src="assetsmolla/js/jquery.magnific-popup.min.js"></script>
+    <!-- Main JS File -->
+    <script src="assetsmolla/js/main.js"></script>
+    
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('.product-gallery-item img').click(function(e){
+      e.preventDefault();
+      var mainImage = $(this).attr('data-image');
+      $('#main-image').attr('src', mainImage);
+      $('.product-gallery-item img').removeClass('active');
+      $(this).addClass('active');
+    });
+  });
+</script>
+
+    </body>
+    
+    
+    <!-- Zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
+    
+    </html>

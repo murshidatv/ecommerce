@@ -1,47 +1,4 @@
 <%- include('../layouts/productheader') %>
-    <style>
-        .toast-message {
-            position: fixed;
-            bottom: 20px;
-            right: 120px;
-
-            transform: translateX(-50%);
-            background-color: #eb6767;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: none;
-        }
-    </style>
-
-    <style>
-        .accordion {
-            align-items: 50%;
-            background-color: #c66;
-            color: #444;
-            cursor: pointer;
-            padding: 5px;
-            width: 75%;
-            border: none;
-            text-align: left;
-            outline: none;
-            font-size: 15px;
-            transition: 0.4s;
-        }
-
-        .active,
-        .accordion:hover {
-            background-color: #ccc;
-        }
-
-        .panel {
-
-            display: none;
-            width: 55%;
-            background-color: rgb(253, 253, 253);
-            overflow: hidden;
-        }
-    </style>
 
     <div class="header-middle sticky-header">
         <div class="container">
@@ -52,7 +9,7 @@
                 </button>
 
                 <a href="/home" class="logo">
-                    <h2 style="color: #c66;">Zouq</h2>
+                    <h2 style="color: #c66;;">Zouq</h2>
                 </a>
 
                 <nav class="main-nav">
@@ -116,7 +73,7 @@
         </div><!-- End .container -->
     </div><!-- End .header-middle -->
     </header><!-- End .header -->
-    <div id="toast-message" class="toast-message"></div>
+
     <main class="main">
         <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
             <div class="container">
@@ -136,18 +93,18 @@
         <div class="page-content">
             <div class="checkout">
                 <div class="container">
-                    <!--<div class="checkout-discount">
+                    <!-- <div class="checkout-discount">
                 <form action="#">
                     <input type="text" class="form-control" required id="checkout-discount-input">
                     <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
-                </form> 
-                     </div>End .checkout-discount -->
+                </form> -->
+                    <!-- </div>End .checkout-discount -->
                     <form action="/place-order" method="post">
                         <div class="row">
                             <div class="col-lg-9">
-
-
-
+                                <!--- <a href="/loadcoupon">
+                                    <p style="border: 3px solid #c66; width: 150px;"><b>Available Coupons</b></p>
+                                </a>-->
                                 <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
                                 <div class="row">
                                     <% console.log(chosenAddress); %>
@@ -209,8 +166,8 @@
                                             required>
                                     </div><!-- End .col-sm-6 -->
                                 </div><!-- End .row -->
+                                <p style="border: 3px solid #c66; width: 150px;"><b>Available Coupons</b></p>
 
-                                <h2 class="checkout-title">Available Coupons</h2><!-- End .checkout-title -->
                                 <br>
 
                                 <div class="accordion" id="couponAccordion">
@@ -257,23 +214,154 @@
                                 </div>
 
 
+
+
+
+
+
+
+
                             </div><!-- End .col-lg-9 -->
-
-
-
                             <aside class="col-lg-3">
                                 <div class="summary">
-                                    <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+                                    <h3 class="summary-title text-center">Your Order</h3><!-- End .summary-title -->
 
-                                    <table class="table table-summary">
-                                        <thead>
+                                    <div class="table-responsive">
+                                        <table class="table table-summary text-center">
+                                            <table class="table">
+                                                <thead style="background-color: #f6c2c2;">
+                                                    <tr>
+                                                        <th style="font-weight: bold; color: black;">Product</th>
+                                                        <th style="font-weight: bold; color: black;">Quantity</th>
+                                                        <th style="font-weight: bold; color: black;">Total</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <% if (user.cart && user.cart.length> 0) { %>
+                                                        <% let totalCartPrice=0; %>
+                                                            <% user.cart.forEach(cartItem=> { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= cartItem.product &&
+                                                                            cartItem.product.productName ?
+                                                                            cartItem.product.productName
+                                                                            : 'Product Name Not Available' %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= cartItem.quantity %>
+                                                                    </td>
+                                                                    <% let itemTotal=cartItem.product &&
+                                                                        cartItem.product.price ? cartItem.quantity *
+                                                                        cartItem.product.price : 0 %>
+                                                                        <td>
+                                                                            <%= `Rs.${itemTotal.toFixed(2)}` %>
+                                                                        </td>
+                                                                        <% totalCartPrice +=itemTotal; %>
+                                                                </tr>
+                                                                <% }) %>
+                                                                    <tr class="summary-total"
+                                                                        style="background-color: #f6c2c2; font-weight: bold;">
+                                                                        <td colspan="2"
+                                                                            style="text-align: right; padding-right: 10px;">
+                                                                            Total:</td>
+                                                                        <td style="text-align: center;">
+                                                                            <%= `Rs.${totalCartPrice.toFixed(2)}` %>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <% if (totalCartPrice < 2000) { %>
+                                                                        <tr class="summary-shipping"
+                                                                            style="background-color: #f6c2c2; font-weight: bold;">
+                                                                            <td colspan="2"
+                                                                                style="text-align: right; padding-right: 10px;">
+                                                                                Shipping Charge:</td>
+                                                                            <td style="text-align: center;">
+                                                                                <%= `Rs.${40}` %>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% } else { %>
+                                                                            <div id="shipping-free-message"
+                                                                                class="shipping-free-message">
+                                                                                Shipping is free for orders above Rs.
+                                                                                2000!
+                                                                            </div>
+                                                                            <% } %>
+
+                                                                                <tr class="summary-final-total"
+                                                                                    style="background-color: #f6c2c2; font-weight: bold;">
+                                                                                    <td colspan="2"
+                                                                                        style="text-align: right; padding-right: 10px;">
+                                                                                        Final Total:</td>
+                                                                                    <td style="text-align: center;">
+                                                                                        <%= `Rs.${(totalCartPrice +
+                                                                                            (totalCartPrice < 2000 ? 40
+                                                                                            : 0)).toFixed(2)}` %>
+                                                                                    </td>
+                                                                                </tr>
+
+                                                                                <% } else { %>
+                                                                                    <tr>
+                                                                                        <td colspan="3">No items in the
+                                                                                            cart.</td>
+                                                                                    </tr>
+                                                                                    <% } %>
+                                                </tbody>
+                                            </table>
+
+                                    </div><!-- End .table-responsive -->
+
+                                    <div class="accordion-summary" id="accordion-payment">
+                                        <!-- Your accordion content goes here -->
+                                    </div><!-- End .accordion-summary -->
+                                    <tr>
+                                        <td colspan="3">
+                                            <!--- <div class="checkout-discount">-->
+                                            <label for="couponCode"></label>
+                                            <input type="text" class="form-control" name="couponCode"
+                                                placeholder="Have a coupon code?" id="couponCode">
+                                            <!---  </div>-->
+                                        </td>
+                                        <div id="discount-amount">
+                                            <form id="coupon-form">
+
+
+                                                <button type="submit">Apply Coupon</button>
+                                            </form>
+                                        </div>
+
+                                    </tr>
+
+                                    <!--
+                                    <div class="checkout-discount" style="background-color: #f7e7e7; padding: 10px;">
+                                        <label for="couponCode" style="color: #333;">Have a coupon code?</label>
+                                        <input type="text" class="form-control" name="couponCode" placeholder=""
+                                            id="couponCode" style="border-color: #f1c9c9;">
+                                    </div>-->
+                                    <br>
+                                    <div class="card">
+                                        <div class="card-header" id="heading-3">
+                                            <h2 class="card-title">
+                                                <input type="radio" name="paymentMethod" value="cashOnDelivery"
+                                                    id="cashOnDelivery" required>
+                                                <label for="cashOnDelivery"
+                                                    style="font-size: 16px; font-weight: bold;">COD </label>
+
+                                                <input type="radio" name="paymentMethod" value="onlinePayment"
+                                                    id="onlinePayment" required>
+                                                <label for="onlinePayment"
+                                                    style="font-size: 16px; font-weight: bold;">Online Payment</label>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                    </div>
+                                    <table class="table">
+                                        <thead style="background-color: #f6c2c2;">
                                             <tr>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th>Total</th>
+                                                <th style="font-weight: bold; color: black;">Product</th>
+                                                <th style="font-weight: bold; color: black;">Quantity</th>
+                                                <th style="font-weight: bold; color: black;">Total</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
                                             <% if (user.cart && user.cart.length> 0) { %>
                                                 <% let totalCartPrice=0; %>
@@ -284,137 +372,93 @@
                                                                     cartItem.product.productName
                                                                     : 'Product Name Not Available' %>
                                                             </td>
-                                                            <!-- <td><%= cartItem.product && cartItem.product.price ? `$${cartItem.product.price.toFixed(2)}` : 'Price Not Available' %></td> -->
-                                                            <td >
+                                                            <td>
                                                                 <%= cartItem.quantity %>
                                                             </td>
                                                             <% let itemTotal=cartItem.product && cartItem.product.price
                                                                 ? cartItem.quantity * cartItem.product.price : 0 %>
-                                                                <td>
-                                                                    <%= `Rs.${itemTotal.toFixed(2)}` %>
+                                                                <td>Rs.<%= itemTotal.toFixed(2) %>
                                                                 </td>
-                                                                <% totalCartPrice +=itemTotal ; %>
+                                                                <% totalCartPrice +=itemTotal; %>
                                                         </tr>
                                                         <% }) %>
-                                                            <tr>
-                                                                <td>Shipping:</td>
-                                                                <td colspan="3">Rs.50.00</td>
-                                                            </tr>
-                                                            <tr class="summary-total">
-                                                                <td>Sub Total:</td>
-                                                                <td colspan="3">
-                                                                    <%= `Rs.${totalCartPrice.toFixed(2)}` %>
+                                                            <tr class="summary-total"
+                                                                style="background-color: #f6c2c2; font-weight: bold;">
+                                                                <td colspan="2"
+                                                                    style="text-align: right; padding-right: 10px;">
+                                                                    Total:</td>
+                                                                <td id="total-cart-price">Rs.<%=
+                                                                        totalCartPrice.toFixed(2) %>
                                                                 </td>
-                                                            </tr><!-- End .summary-total -->
+                                                            </tr>
+                                                            <tr id="discount-row" class="summary-discount"
+                                                                style="background-color: #f6c2c2; font-weight: bold;">
+                                                                <td colspan="2"
+                                                                    style="text-align: right; padding-right: 10px;">
+                                                                    Discount:</td>
+
+                                                                <td id="discount-amount">Rs.<%=
+                                                                        discountAmount.toFixed(2) %>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="summary-final-total"
+                                                                style="background-color: #f6c2c2; font-weight: bold;">
+                                                                <td colspan="2"
+                                                                    style="text-align: right; padding-right: 10px;">
+                                                                    Final Total:</td>
+                                                                <td id="final-total">Rs.<%= (totalCartPrice).toFixed(2)
+                                                                        %>
+                                                                </td>
+                                                            </tr>
                                                             <% } else { %>
                                                                 <tr>
-                                                                    <td colspan="27">No items in the cart.</td>
+                                                                    <td colspan="3">No items in the cart.</td>
                                                                 </tr>
                                                                 <% } %>
-
-
-
-
-                                                                    <tr>
-                                                                        <td colspan="3">
-                                                                            <!--- <div class="checkout-discount">-->
-                                                                            <label for="couponCode"></label>
-                                                                            <input type="text" class="form-control"
-                                                                                name="couponCode"
-                                                                                placeholder="Have a coupon code?"
-                                                                                id="couponCode">
-                                                                            <!---  </div>-->
-                                                                        </td>
-
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td colspan="2"></td>
-                                                                        <!-- checkout.ejs -->
-
-                                                                        <span id="discountAmountElement"></span>
-                                                                        
-                                                                       <!--- <p>Discount Amount: <%=
-                                                                                discountAmount.toFixed(2) %>
-                                                                        </p>
-                                                                        <!-- checkout.ejs 
-                                                                        <p>Initial Discount Amount: <%=
-                                                                                discountAmount.toFixed(2) %>
-                                                                        </p>-->
-
-                                                                        <td colspan="3">
-                                                                            
-                                                                            <div id="discount-amount"> 
-                                                                                <form id="coupon-form">
-                                                                                
-                                                                                
-                                                                                    <button type="submit">Apply Coupon</button>
-                                                                                </form>
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                   
-                                      
+                                        </tbody>
+                                    </table>
 
                                     <div class="accordion-summary" id="accordion-payment">
-                                        <div class="card">
-                                            <div class="card-header" id="heading-1">
+                                        <!-- Your accordion content goes here -->
+                                    </div>
 
-                                            </div><!-- End .card-header -->
+                                    <tr>
+                                        <td colspan="3">
+                                            <!-- HTML for applying a coupon -->
+                                          
 
-                                        </div><!-- End .card -->
+                                            <form id="coupon-form">
+                                                <input type="text" class="form-control" name="couponCode"
+                                                    placeholder="Have a coupon code?" id="coupon-code">
 
-                                        <div class="card">
-                                           
-                                        </div><!-- End .card -->
-                                        
-                                        
-                                        <tr class="summary-total">
-                                            <td>Total:</td>
-                                            <td colspan="3"> </td>
-                                            </td>
-                                        </tr><!-- End .summary-total -->
-                                    </tbody>
-                                </table><!-- End .table table-summary -->
-                                        <div class="card">
-                                            <div class="card-header" id="heading-3">
-                                                <h2 class="card-title">
-                                                    <input type="radio" name="paymentMethod" value="cashOnDelivery"
-                                                        id="cashOnDelivery" required>
-                                                    <label for="cashOnDelivery">COD</label>
+                                                       <!-- HTML for applying a coupon -->
+                                            <input type="text" id="coupon-code-input" placeholder="Enter coupon code" class="form-control">
+                                            <button onclick="applyCoupon()">Apply Coupon</button>
 
-                                                    <input type="radio" name="paymentMethod" value="onlinePayment"
-                                                        id="onlinePayment" required>
-                                                    <label for="onlinePayment">Online Payment</label>
-                                                </h2>
-                                            </div><!-- End .card-header -->
-                                        </div><!-- End .card -->
-                                    <!---
-                                        <form id="coupon-form">
-                                            <label for="coupon-code">Enter Coupon Code:</label>
-                                            <input type="text" id="coupon-code" name="couponCode">
-                                            <button type="submit">Apply Coupon</button>
-                                        </form>
-                                        <div id="discount-amount">  </div>
-                                    -->
+                                            <!-- HTML for removing a coupon -->
+                                            <button onclick="removeCoupon()">Remove Coupon</button>
 
-                                    </div><!-- End .accordion -->
+                                            </form>
+                                        </td>
+                                    </tr>
 
-                                    <a href=""> <button type="submit"
-                                            class="btn btn-outline-primary-2 btn-order btn-block">
+                                    <!-- Toast message container -->
+                                    <div id="toast"
+                                        style="visibility: hidden; display: none; min-width: 250px; margin-left: -125px; background-color: #333; color: red; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1; left: 50%; bottom: 30px; font-size: 17px;">
+                                        You can't choose COD for the amount that exceeds Rs. 1000
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-outline-primary-2 btn-order mt-3">
                                             <span class="btn-text">Place Order</span>
                                             <span class="btn-hover-text">Proceed to Checkout</span>
-                                        </button></a>
+                                        </button>
+                                    </div>
                                 </div><!-- End .summary -->
-                            </aside><!-- End .col-lg-3 -->
-
-
-
-
-
-
+                            </aside>
+                            <!-- End .col-lg-3 -->
                         </div><!-- End .row -->
                     </form>
-
                 </div><!-- End .container -->
             </div><!-- End .checkout -->
         </div><!-- End .page-content -->
@@ -559,12 +603,43 @@
             </div><!-- End .social-icons -->
         </div><!-- End .mobile-menu-wrapper -->
     </div><!-- End .mobile-menu-container -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponForm = document.getElementById('coupon-form');
+            const discountAmountElement = document.getElementById('discount-amount');
+            const finalTotalElement = document.getElementById('final-total');
 
- 
-    
+            couponForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const couponCode = document.getElementById('couponCode').value;
+
+                const response = await fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `couponCode=${encodeURIComponent(couponCode)}`,
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const updatedDiscountAmount = responseData.discountAmount;
+                    const updatedFinalTotal = responseData.totalAmountAfterDiscount;
+
+                    discountAmountElement.innerHTML = `Discount: Rs.${updatedDiscountAmount.toFixed(2)}`;
+                    finalTotalElement.innerHTML = `Final Total: Rs.${updatedFinalTotal.toFixed(2)}`;
+                } else {
+                    const errorData = await response.json();
+                    alert(`Failed to apply coupon: ${errorData.error}`);
+                }
+            });
+        });
+    </script>
 
 
     <!-- Add this script section at the end of your EJS file -->
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -588,34 +663,80 @@
 
 
                 // Check if the response is successful
-               /* if (response.ok) {
-                    // Parse the response text as HTML
-                    const responseData = await response.text();
+                /* if (response.ok) {
+                     // Parse the response text as HTML
+                     const responseData = await response.text();
+ 
+                     // Replace the content of the discountAmountElement with the updated discount amount
+                     discountAmountElement.innerHTML = responseData;
+ 
+                     // Optionally, you can display a success message or update other parts of the UI
+ 
+                     // Inside your fetch response handler:*/
 
-                    // Replace the content of the discountAmountElement with the updated discount amount
-                    discountAmountElement.innerHTML = responseData;
+                if (response.ok) {
+                    const responseData = await response.json(); // Parse as JSON
 
-                    // Optionally, you can display a success message or update other parts of the UI
+                    // Assuming the server response includes a property called 'discountAmount'
+                    const updatedDiscountAmount = responseData.discountAmount;
 
-                    // Inside your fetch response handler:*/
-
-                    if (response.ok) {
-                        const responseData = await response.json(); // Parse as JSON
-
-                        // Assuming the server response includes a property called 'discountAmount'
-                        const updatedDiscountAmount = responseData.discountAmount;
-
-                        // Update the UI with the new discount amount
-                        discountAmountElement.innerHTML = `Discount: $${updatedDiscountAmount}`;
+                    // Update the UI with the new discount amount
+                    discountAmountElement.innerHTML = `Discount: $${updatedDiscountAmount}`;
 
 
-                    } else {
-                        // Handle error response, display an error message, etc.
-                        console.error('Failed to apply coupon:', response.statusText);
-                    }
-                });
+                } else {
+                    // Handle error response, display an error message, etc.
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
         });
     </script>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponForm = document.getElementById('coupon-form');
+            const discountAmountElement = document.getElementById('discount-amount');
+
+            couponForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                // Get the coupon code from the input field
+                const couponCode = document.getElementById('coupon-code').value;
+
+                // Make a fetch request to apply the coupon
+                const response = await fetch('/apply-coupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `couponCode=${encodeURIComponent(couponCode)}`,
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json(); // Parse as JSON
+
+                    // Assuming the server response includes a property called 'discountAmount'
+                    const updatedDiscountAmount = responseData.discountAmount;
+
+                    // Update the UI with the new discount amount
+                    discountAmountElement.innerHTML = `Discount: Rs.${updatedDiscountAmount.toFixed(2)}`;
+
+                    // Update the final total amount in the UI
+                    const finalTotalElement = document.getElementById('final-total');
+                    const totalCartPrice = parseFloat(document.getElementById('total-cart-price').innerText.replace('Rs.', ''));
+                    const finalTotal = totalCartPrice - updatedDiscountAmount;
+                    finalTotalElement.innerHTML = `Rs.${finalTotal.toFixed(2)}`;
+
+                } else {
+                    // Handle error response, display an error message, etc.
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
+        });
+    </script>
+
     <!-- Add this script section at the end of your EJS file 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -709,4 +830,37 @@
             }, 3000);
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const totalCartPrice = parseFloat("<%= totalCartPrice.toFixed(2) %>");
+            const shippingCharge = totalCartPrice < 2000 ? 40 : 0;
+            const finalTotal = totalCartPrice + shippingCharge;
+            const codRadioButton = document.getElementById('cashOnDelivery');
+            const onlinePaymentRadioButton = document.getElementById('onlinePayment');
+            const toast = document.getElementById('toast');
+
+            codRadioButton.addEventListener('click', function () {
+                if (finalTotal > 1000) {
+                    showToast();
+                    // Prevent COD selection
+                    codRadioButton.checked = false;
+                }
+            });
+
+            function showToast() {
+                toast.style.visibility = 'visible';
+                toast.style.display = 'block'; // Make the toast visible
+                setTimeout(() => {
+                    toast.style.visibility = 'hidden';
+                    toast.style.display = 'none'; // Hide the toast after 3 seconds
+                }, 3000);
+            }
+        });
+    </script>
+
+
+
+
+
+
     <%- include('../layouts/productfooter.ejs') %>

@@ -1,0 +1,119 @@
+<!-- sales-report.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Render monthly logins -->
+        <h2>Monthly Logins</h2>
+<table>
+    <tr>
+        <th>Month</th>
+        <th>Number of Logins</th>
+    </tr>
+    <% mergedData.forEach(monthlyLogin => { %>
+    <tr>
+        <td><%= monthlyLogin.monthName %></td>
+        <td><%= monthlyLogin.count %></td>
+    </tr>
+    <% }); %>
+</table>
+<br>
+        <!-- Render total users -->
+       <h3><u>Users Details</u></h3>
+        Total Users:<p><%= totalUsers %></p>
+       Block User Count:<p><%= blockUser%></p>
+        <!-- Render total orders -->
+    <h3> <u> Orders Details</u></h3>
+       Total Order: <p><%= totalOrders %></p>
+
+    Total Pending order:<p> <%= pendingOrdersCount %></p>
+    Total Returned orders:<p> <%= returnOrderCount %></p>
+        <!-- Render cancelled orders -->
+    Total Cancelled Orders<p><%= cancelledOrders %></p>
+
+    Online payment count: <p><%= onlinePayment%></p>
+        <!-- Render total products -->
+    <h3><u>Total Products</u></h3>
+        <p><%= totalProduct %></p>
+      <!-- Most Selling Product -->
+<h2>Most Selling Product</h2>
+<% if (mostSellingProduct && mostSellingProduct.productName) { %>
+  <p>Name: <%= mostSellingProduct.productName %></p>
+  <p>Description: <%= mostSellingProduct.description %></p>
+  <p>Price: <%= mostSellingProduct.price %></p>
+<% } else { %>
+  <p>No most selling product found</p>
+<% } %>
+
+
+        <!-- Render delivered orders -->
+<h3><u>Delivered Orders Details</u></h3>
+<table>
+    <tr>
+      <th>Order ID</th>
+      <th>Customer Name</th>
+      <th>Products</th>
+    </tr>
+    <% deliveredOrders.forEach(order => { %>
+    <tr>
+      <td><%= order._id %></td>
+      <td><%= order.userId.name %></td> <!-- Accessing the customer's name -->
+      <td>
+        <ul>
+          <% order.products.forEach(product => { %>
+          <li><%= product.product.productName %> - Quantity: <%= product.quantity %> - Price: <%= product.product.price %></li>
+          <% }); %>
+        </ul>
+      </td>
+    </tr>
+    <% }); %>
+  </table>
+  
+   
+        <!-- Render total revenue -->
+    <h3><u>Total Revenue</u></h3>
+        <p><%= totalRevenue %></p>
+    </div>
+</body>
+</html>

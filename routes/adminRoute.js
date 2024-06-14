@@ -32,6 +32,9 @@ const categoryController=require('../controllers/admin/categoryController');
 const orderController=require('../controllers/admin/orderController');
 const couponController=require('../controllers/admin/couponController');
 const salesReportController = require('../controllers/admin/salesreportController');
+
+
+
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
 
 admin_route.post('/',adminController.verifyLogin);
@@ -43,13 +46,19 @@ admin_route.get('/dowloadsalesExcel',dashboardController.downloadSalesReportsExc
 admin_route.get('/getUserDetailsAndOrders', dashboardController.getUserDetailsAndOrders); 
 admin_route.get('/getYearlyRevenue', dashboardController.getYearlyRevenue);
 
-admin_route.get('/sales-data', dashboardController.getSalesData);
+//admin_route.get('/sales-data', dashboardController.getSalesData);
+admin_route.get('/top-product-sale',adminController.getTopProductsSale);
+admin_route.get('/top-categories',adminController.getTopCategoryies);
+admin_route.get('/dashboard/data/custom', auth.isLogin, adminController.customDetails );
+admin_route.get('/dashboard/data', auth.isLogin, adminController.dashBoardDetails );
+
+
 
 
 admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 //admin_route.get('/home',auth.isLogin,adminController.loadDashboard);
 admin_route.get('/listuser',auth.isLogin,adminController.adminDashboard);
-admin_route.get('/report',auth.isLogin, dashboardController.getDashboardData);
+admin_route.get('/dashboard',auth.isLogin, dashboardController.getDashboardData);
 admin_route.get('/dashboard-data',auth.isLogin,dashboardController.dashboardData);
 //admin_route.get('/dashboard-data',auth.isLogin,orderController.dashboardData);
 //admin_route.get('/downloadSalesReport', orderController.downloadSalesReports);
@@ -126,7 +135,6 @@ admin_route.get('/sales-report/daily', salesReportController.getDailyReport);
 admin_route.get('/sales-report/weekly', salesReportController.getWeeklyReport);
 admin_route.get('/sales-report/monthly', salesReportController.getMonthlyReport);
 admin_route.post('/sales-report/custom', salesReportController.getCustomReport);
-
 
 
 admin_route.get('*',function(req,res){

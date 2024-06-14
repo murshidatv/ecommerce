@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Gallery</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .col-md-6 {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .product-main-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product-main-image .img-zoom-container {
+            position: relative;
+            margin: auto;
+        }
+
+        .product-main-image .card {
+            border: none;
+            padding: 0;
+            box-shadow: none;
+            background-color: transparent;
+            max-width: 100%;
+        }
+
+        .product-main-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-image-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .product-gallery-item {
+            cursor: pointer;
+        }
+
+        .product-gallery-item img {
+            max-width: 100px;
+            height: auto;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .product-gallery-item img.active {
+            border-color: #007bff;
+        }
+
+        .img-zoom-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .img-zoom-lens {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            width: 40px;
+            height: 40px;
+        }
+
+        .img-zoom-result {
+            border: 1px solid #d4d4d4;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="product-main-image">
+                    <div class="img-zoom-container">
+                        <div class="card">
+                            <img id="main-image" src="/images/<%= product.images[0] %>" alt="Product Image">
+                            <div id="myresult" class="img-zoom-result"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-zoom-gallery" class="product-image-gallery">
+                    <div class="product-gallery-item">
+                        <img src="/images/<%= product.images[0] %>" data-image="/images/<%= product.images[0] %>" alt="Product side" class="active">
+                    </div>
+                    <div class="product-gallery-item">
+                        <img src="/images/<%= product.images[1] %>" data-image="/images/<%= product.images[1] %>" alt="Product cross">
+                    </div>
+                    <div class="product-gallery-item">
+                        <img src="/images/<%= product.images[2] %>" data-image="/images/<%= product.images[2] %>" alt="Product with model">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="product-details">
+                    <h1 class="product-title"><%= product.productName %></h1>
+                    <div class="ratings-container">
+                        <div class="ratings">
+                            <div class="ratings-val" style="width: 80%;"></div>
+                        </div>
+                        <a class="ratings-text" href="#product-review-link" id="review-link">(2 Reviews)</a>
+                    </div>
+                    <div class="product-price">
+                        Rs.<%= product.price %>
+                    </div>
+                    <div class="product-content">
+                        <p><%= product.description %></p>
+                    </div>
+                    <div class="product-details-action">
+                        <% if (product.stock > 0) { %>
+                        <a href="/add-to-cart/<%= product._id %>" class="btn-product btn-cart"><span>add to cart</span></a>
+                        <% } else { %>
+                        <span class="btn-product btn-out-of-stock"><span>Out of Stock</span></span>
+                        <% } %>
+                        <a href="/addwishlist/<%= product._id %>" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        function imageZoom(imgID, resultID) {
+            var img, lens, result, cx, cy;
+            img = document.getElementById(imgID);
+            result = document.getElementById(resultID);
+            lens = document.createElement("DIV");
+            lens.setAttribute("class", "img-zoom-lens");
+            img.parentElement.insertBefore(lens, img);
+            cx = result.offsetWidth / lens.offsetWidth;
+            cy = result.offsetHeight / lens.offsetHeight;
+            result.style.backgroundImage = "url('" + img.src + "')";
+            result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+            lens.addEventListener("mousemove", moveLens);
+            img.addEventListener("mousemove", moveLens);
+            lens.addEventListener("touchmove", moveLens);
+            img.addEventListener("touchmove", moveLens);
+            function moveLens(e) {
+                var pos, x, y;
+                e.preventDefault();
+                pos = getCursorPos(e);
+                x = pos.x - (lens.offsetWidth / 2);
+                y = pos.y - (lens.offsetHeight / 2);
+                if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; }
+                if (x < 0) { x = 0; }
+                if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; }
+                if (y < 0) { y = 0; }
+                lens.style.left = x + "px";
+                lens.style.top = y + "px";
+                result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+            }
+            function getCursorPos(e) {
+                var a, x = 0, y = 0;
+                e = e || window.event;
+                a = img.getBoundingClientRect();
+                x = e.pageX - a.left;
+                y = e.pageY - a.top;
+                x = x - window.pageXOffset;
+                y = y - window.pageYOffset;
+                return { x: x, y: y };
+            }
+        }
+
+        $(document).ready(function(){
+            $('.product-gallery-item img').click(function(e){
+                e.preventDefault();
+                var mainImage = $(this).attr('data-image');
+                $('#main-image').attr('src', mainImage);
+                $('.product-gallery-item img').removeClass('active');
+                $(this).addClass('active');
+                imageZoom("main-image", "myresult");
+            });
+        });
+
+        imageZoom("main-image", "myresult");
+    </script>
+</body>
+</html>

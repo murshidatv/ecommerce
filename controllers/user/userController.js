@@ -1225,7 +1225,6 @@ function calculateDiscount(totalAmount, coupon, userTotalUsage) {
 }
 
 
-
 const loadcheckout = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -1237,6 +1236,20 @@ const loadcheckout = async (req, res) => {
 
     const chosenAddress = user.chosenAddress;
 
+
+
+    // Calculate total cart price
+    let totalCartPrice = 0;
+    if (user.cart && user.cart.length > 0) {
+      user.cart.forEach(cartItem => {
+        if (cartItem.product && cartItem.product.price) {
+          totalCartPrice += cartItem.quantity * cartItem.product.price;
+        }
+      });
+    }
+
+    // Determine shipping charge
+    let shippingCharge = totalCartPrice < 2000 ? 40 : 0;
 
 
 
@@ -1276,12 +1289,7 @@ const loadcheckout = async (req, res) => {
 
 
 
-
-
-
-
-
-    res.render('checkout', { user, chosenAddress, coupon, cartTotal, discountAmount });
+    res.render('checkout', { user, chosenAddress,discountAmount,cartTotal, coupon ,totalCartPrice, shippingCharge });
     // res.render('checkout', { user, chosenAddress, coupon });
   } catch (error) {
     console.error(error.message);
@@ -1289,6 +1297,68 @@ const loadcheckout = async (req, res) => {
   }
 };
 
+
+
+
+const applyCoupon = async (req, res) => {
+  try {
+    const userId = req.session.user_id;
+    const user = await User.findById(userId).populate('cart.product');
+    
+    if (!user || user.cart.length === 0) {
+      return res.status(400).send('Cart is empty. Cannot apply a coupon to an empty cart.');
+    }
+
+    // Calculate the total amount without discount
+    const cartTotal = user.cart.reduce((total, cartItem) => {
+      return total + (cartItem.product.price * cartItem.quantity);
+    }, 0);
+
+    // Check for a coupon code
+    const couponCode = req.body.couponCode;
+    let discountAmount = 0;
+
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+
+      if (coupon) {
+        // Apply discount
+        discountAmount = calculateDiscount(cartTotal, coupon);
+      } else {
+        return res.status(400).send('Invalid coupon code.');
+      }
+    }
+
+    res.json({ discountAmount });
+  } catch (error) {
+    console.error('Error in applyCoupon:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// Helper function to calculate the discount amount based on coupon type
+function calculateDiscount(totalAmount, coupon) {
+  const currentDate = new Date();
+  const expirationDate = new Date(coupon.expirationDate);
+
+  if (currentDate > expirationDate) {
+    throw new Error('Coupon has expired.');
+  }
+  if (totalAmount < coupon.conditions.minOrderAmount) {
+    throw new Error('Total amount does not meet the minimum order amount condition.');
+  }
+  if (coupon.usageLimits.totalUses <= 0) {
+    throw new Error('Coupon has reached the overall usage limit.');
+  }
+
+  if (coupon.type === 'percentage') {
+    return (coupon.value / 100) * totalAmount;
+  } else if (coupon.type === 'fixed') {
+    return coupon.value;
+  } else {
+    return 0;
+  }
+}
 
 const razorpayPage = async (req, res) => {
   try {
@@ -1713,7 +1783,7 @@ const googleAuth = async (req, res) => {
   }
 };
 */
-  const wallet = async (req, res) => {
+const wallet = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const user = await User.findById(userId);
@@ -1723,6 +1793,7 @@ const googleAuth = async (req, res) => {
     console.log(error.message);
   }
 }
+
 
 
 module.exports = {
@@ -1776,7 +1847,7 @@ module.exports = {
   viewOrder,
   requestReturn,
   wallet,
-
+  applyCoupon,
 
 
 }

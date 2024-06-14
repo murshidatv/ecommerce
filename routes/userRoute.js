@@ -176,5 +176,6 @@ user_route.get('/invoices/:id/pdf', invoiceController.generateInvoicePdf);
 
 
 
+user_route.post('/apply-coupon', userController.applyCoupon);
 
 module.exports = user_route;

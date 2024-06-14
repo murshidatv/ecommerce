@@ -1,0 +1,779 @@
+<%- include('../layouts/productheader') %>
+    <style>
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 120px;
+
+            transform: translateX(-50%);
+            background-color: #eb6767;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+
+    <style>
+        .accordion {
+            align-items: 50%;
+            background-color: #c66;
+            color: #444;
+            cursor: pointer;
+            padding: 5px;
+            width: 75%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+        }
+
+        .active,
+        .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .panel {
+
+            display: none;
+            width: 55%;
+            background-color: rgb(253, 253, 253);
+            overflow: hidden;
+        }
+    </style>
+
+    <div class="header-middle sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
+
+                <a href="/home" class="logo">
+                    <h2 style="color: #c66;">Zouq</h2>
+                </a>
+
+                <nav class="main-nav">
+                    <ul class="menu sf-arrows">
+                        <li class="megamenu-container active">
+                            <a href="/home" class="sf-with-ul">Home</a>
+
+
+                        </li>
+                        <li>
+                            <a href="/product-list" class="sf-with-ul">Shop</a>
+
+                            <div class="megamenu megamenu-md">
+                                <div class="row no-gutters">
+                                    <div class="col-md-8">
+
+                                    </div><!-- End .col-md-8 -->
+
+
+                                </div><!-- End .row -->
+                            </div><!-- End .megamenu megamenu-md -->
+                        </li>
+
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-left -->
+
+            <div class="header-right">
+
+                <div class="dropdown compare-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static" title="Compare Products"
+                        aria-label="Compare Products">
+                        <i class="icon-random"></i>
+                    </a>
+
+
+                </div><!-- End .compare-dropdown -->
+
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static">
+                        <i class="icon-shopping-cart"></i>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-cart-products">
+
+
+                        </div><!-- End .cart-product -->
+
+                        <div class="dropdown-cart-total">
+
+                        </div>
+                        <div class="dropdown-cart-action">
+                            <a href="/cartList" class="btn btn-primary">View Cart</a>
+                        </div><!-- End .dropdown-cart-total -->
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-middle -->
+    </header><!-- End .header -->
+    <div id="toast-message" class="toast-message"></div>
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">Checkout<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="product-list">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+                    <!--<div class="checkout-discount">
+                <form action="#">
+                    <input type="text" class="form-control" required id="checkout-discount-input">
+                    <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+                </form> 
+                     </div>End .checkout-discount -->
+                    <form action="/place-order" method="post">
+                        <div class="row">
+                            <div class="col-lg-9">
+
+
+
+                                <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <% console.log(chosenAddress); %>
+
+                                        <div class="col-sm-6">
+                                            <label>First Name *</label>
+                                            <input type="text" class="form-control"
+                                                value="<%= chosenAddress ? chosenAddress.address[0].name : 'Not specified' %>"
+                                                required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Mobile Number</label>
+                                            <input type="text" class="form-control"
+                                                value="<%= chosenAddress ? chosenAddress.address[0].mobile : 'Not specified' %>"
+                                                required>
+                                        </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+
+
+                                <label>Address</label>
+                                <input type="text" class="form-control"
+                                    value="<%= chosenAddress ? chosenAddress.address[0].address : 'Not specified' %>"
+                                    required>
+
+                                <!-- <label>Street address *</label>
+                            <input type="text" class="form-control" placeholder="House number and Street name" required>
+                            <input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..." required> -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Town / City *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].city : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>District *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].district : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>State *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].state : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Pincode *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].pincode : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <h2 class="checkout-title">Available Coupons</h2><!-- End .checkout-title -->
+                                <br>
+
+                                <div class="accordion" id="couponAccordion">
+                                    <% for (var i=0; i < coupon.length; i++) { %>
+                                        <div class="card">
+                                            <div class="card-head" id="couponHeading<%= i %>">
+                                                <h2 class="mb-0">
+                                                    <button class="btn btn-link" type="button" data-toggle="collapse"
+                                                        data-target="#couponCollapse<%= i %>" aria-expanded="true"
+                                                        aria-controls="couponCollapse<%= i %>">
+                                                        <%= coupon[i].couponname %> Off
+                                                    </button>
+                                                </h2>
+                                            </div>
+                                            <div id="couponCollapse<%= i %>" class="collapse"
+                                                aria-labelledby="couponHeading<%= i %>" data-parent="#couponAccordion">
+                                                <div class="card-body">
+                                                    <h6 style="color: red;">Get Rs<%= coupon[i].value %> Off</h6>
+                                                    <h6 style="color: rgba(12, 1, 1, 0.356);">Get extra <%=
+                                                            coupon[i].value %> off minimum Purchase of Rs<%=
+                                                                coupon[i].conditions.minOrderAmount %>
+                                                    </h6>
+                                                    <div style="display: flex; align-items: center;">
+                                                        <h5 style="color: rgba(10, 215, 82, 0.92);">Code: <%=
+                                                                coupon[i].code %><br>
+                                                        </h5>
+
+                                                        <button class="btn btn-primary"
+                                                            onclick="copyCouponCode('<%= coupon[i].code %>')"
+                                                            style="margin-left: 30px;">Copy Code</button><br><br>
+                                                    </div>
+
+                                                    <% if (coupon[i].expirationDate) { %>
+                                                        <h6>Valid till <%= coupon[i].expirationDate.toLocaleDateString()
+                                                                %>
+                                                        </h6>
+                                                        <% } else { %>
+                                                            <h6>No expiration date specified</h6>
+                                                            <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                </div>
+
+
+                            </div><!-- End .col-lg-9 -->
+
+
+
+                            <aside class="col-lg-3">
+                                <div class="summary">
+                                    <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                    <table class="table table-summary">
+                                        <table class="table">
+                                            <thead style="background-color: #f6c2c2;">
+                                                <tr>
+                                                    <th style="font-weight: bold; color: black;">Product</th>
+                                                    <th style="font-weight: bold; color: black;">Quantity</th>
+                                                    <th style="font-weight: bold; color: black;">Total</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <% if (user.cart && user.cart.length> 0) { %>
+                                                    <% let totalCartPrice=0; %>
+                                                        <% user.cart.forEach(cartItem=> { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <%= cartItem.product && cartItem.product.productName
+                                                                        ? cartItem.product.productName
+                                                                        : 'Product Name Not Available' %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= cartItem.quantity %>
+                                                                </td>
+                                                                <% let itemTotal=cartItem.product &&
+                                                                    cartItem.product.price ? cartItem.quantity *
+                                                                    cartItem.product.price : 0 %>
+                                                                    <td>
+                                                                        <%= `Rs${itemTotal.toFixed(2)}` %>
+                                                                    </td>
+                                                                    <% totalCartPrice +=itemTotal; %>
+                                                            </tr>
+                                                            <% }) %>
+                                                                <tr class="summary-total"
+                                                                    style="background-color: #f6c2c2; font-weight: bold;">
+                                                                    <td colspan="2"
+                                                                        style="text-align: right; padding-right: 10px;">
+                                                                        Total:</td>
+                                                                    <td style="text-align: center;">
+                                                                        <%= `Rs${totalCartPrice.toFixed(2)}` %>
+                                                                    </td>
+                                                                </tr>
+
+                                                                <% if (totalCartPrice < 2000) { %>
+                                                                    <tr class="summary-shipping"
+                                                                        style="background-color: #f6c2c2; font-weight: bold;">
+                                                                        <td colspan="2"
+                                                                            style="text-align: right; padding-right: 10px;">
+                                                                            Shipping Charge:</td>
+                                                                        <td style="text-align: center;">
+                                                                            <%= `Rs${40}` %>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% } else { %>
+                                                                        <div id="shipping-free-message"
+                                                                            class="shipping-free-message">
+                                                                            Shipping is free for orders above Rs. 2000!
+                                                                        </div>
+                                                                        <% } %>
+
+                                                                            <tr class="summary-final-total"
+                                                                                style="background-color: #f6c2c2; font-weight: bold;">
+                                                                                <td colspan="2"
+                                                                                    style="text-align: right; padding-right: 10px;">
+                                                                                    Final Total:</td>
+                                                                                <td style="text-align: center;">
+                                                                                    <%= `Rs${(totalCartPrice +
+                                                                                        (totalCartPrice < 2000 ? 40 :
+                                                                                        0)).toFixed(2)}` %>
+                                                                                </td>
+                                                                            </tr>
+
+                                                                            <% } else { %>
+                                                                                <tr>
+                                                                                    <td colspan="3">No items in the
+                                                                                        cart.</td>
+                                                                                </tr>
+                                                                                <% } %>
+                                            </tbody>
+                                        </table>
+
+
+
+
+                                        <table class="table table-summary">
+                                            <table class="table">
+
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <!--- <div class="checkout-discount">-->
+                                                        <label for="couponCode"></label>
+                                                        <input type="text" class="form-control" name="couponCode"
+                                                            placeholder="Have a coupon code?" id="couponCode">
+                                                        <!---  </div>-->
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2"></td>
+                                                    <!-- checkout.ejs -->
+
+                                                    <span id="discountAmountElement"></span>
+
+                                                    <!--- <p>Discount Amount: <%=
+                                                                                discountAmount.toFixed(2) %>
+                                                                        </p>
+                                                                        <!-- checkout.ejs 
+                                                                        <p>Initial Discount Amount: <%=
+                                                                                discountAmount.toFixed(2) %>
+                                                                        </p>-->
+
+                                                    <td colspan="3">
+
+                                                        <div id="discount-amount">
+                                                            <form id="coupon-form">
+
+
+                                                                <button type="submit">Apply Coupon</button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+
+
+                                                <div class="accordion-summary" id="accordion-payment">
+                                                    <div class="card">
+                                                        <div class="card-header" id="heading-1">
+
+                                                        </div><!-- End .card-header -->
+
+                                                    </div><!-- End .card -->
+
+                                                    <div class="card">
+
+                                                    </div><!-- End .card -->
+
+
+                                                    <tr class="summary-total">
+                                                        <td>Total:</td>
+                                                        <td colspan="3"> </td>
+                                                        </td>
+                                                    </tr><!-- End .summary-total -->
+                                                    </tbody>
+                                                    
+                                            </table><!-- End .table table-summary -->
+                                            <div class="card">
+                                                <div class="card-header" id="heading-3">
+                                                    <h2 class="card-title">
+                                                        <input type="radio" name="paymentMethod" value="cashOnDelivery"
+                                                            id="cashOnDelivery" required>
+                                                        <label for="cashOnDelivery">COD</label>
+
+                                                        <input type="radio" name="paymentMethod" value="onlinePayment"
+                                                            id="onlinePayment" required>
+                                                        <label for="onlinePayment">Online Payment</label>
+                                                    </h2>
+                                                </div><!-- End .card-header -->
+                                            </div><!-- End .card -->
+                                            <!---
+                                        <form id="coupon-form">
+                                            <label for="coupon-code">Enter Coupon Code:</label>
+                                            <input type="text" id="coupon-code" name="couponCode">
+                                            <button type="submit">Apply Coupon</button>
+                                        </form>
+                                        <div id="discount-amount">  </div>
+                                    -->
+
+                                </div><!-- End .accordion -->
+
+                                <a href=""> <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                        <span class="btn-text">Place Order</span>
+                                        <span class="btn-hover-text">Proceed to Checkout</span>
+                                    </button></a>
+                        </div><!-- End .summary -->
+                        </aside><!-- End .col-lg-3 -->
+
+
+
+
+
+
+                </div><!-- End .row -->
+                </form>
+
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+    <footer class="footer footer-2">
+        <div class="footer-middle border-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="widget widget-about">
+
+
+                            <div class="widget-about-info">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                        <a href="tel:123456789">+0123 456 789</a>
+                                    </div><!-- End .col-sm-6 -->
+                                    <div class="col-sm-6 col-md-8">
+                                        <span class="widget-about-title">Payment Method</span>
+                                        <figure class="footer-payments">
+                                            <img src="assets/images/payments.png" alt="Payment methods" width="272"
+                                                height="20">
+                                        </figure><!-- End .footer-payments -->
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .widget-about-info -->
+                        </div><!-- End .widget about-widget -->
+                    </div><!-- End .col-sm-12 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="about.html">About Zouq</a></li>
+                                <li><a href="#">How to shop on Zouq</a></li>
+                                <li><a href="faq.html">FAQ</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="login.html">Log in</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Money-back guarantee!</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="cart.html">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-64 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-middle -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p>
+                <!-- End .footer-copyright -->
+                <ul class="footer-menu">
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul><!-- End .footer-menu -->
+                <div class="social-icons social-icons-color">
+                    <span class="social-label"></span>
+                    <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                            class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                            class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                            class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                            class="icon-youtube"></i></a>
+                    <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+                            class="icon-pinterest"></i></a>
+                </div><!-- End .soial-icons -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+    </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="home.ejs">Home</a>
+
+                    <li>
+                        <a href="/category">Shop</a>
+
+                    </li>
+                    <li>
+                        <a href="product.html" class="sf-with-ul">Product</a>
+
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+
+
+
+
+    <!-- Add this script section at the end of your EJS file -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponForm = document.getElementById('coupon-form');
+            const discountAmountElement = document.getElementById('discount-amount');
+
+            couponForm.addEventListener('blur', async function (event) {
+                event.preventDefault();
+
+                // Get the coupon code from the input field
+                const couponCode = document.getElementById('coupon-code').value;
+
+                // Make a fetch request to apply the coupon
+                const response = await fetch('/place-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `couponCode=${encodeURIComponent(couponCode)}`,
+                });
+
+
+                // Check if the response is successful
+                /* if (response.ok) {
+                     // Parse the response text as HTML
+                     const responseData = await response.text();
+ 
+                     // Replace the content of the discountAmountElement with the updated discount amount
+                     discountAmountElement.innerHTML = responseData;
+ 
+                     // Optionally, you can display a success message or update other parts of the UI
+ 
+                     // Inside your fetch response handler:*/
+
+                if (response.ok) {
+                    const responseData = await response.json(); // Parse as JSON
+
+                    // Assuming the server response includes a property called 'discountAmount'
+                    const updatedDiscountAmount = responseData.discountAmount;
+
+                    // Update the UI with the new discount amount
+                    discountAmountElement.innerHTML = `Discount: $${updatedDiscountAmount}`;
+
+
+                } else {
+                    // Handle error response, display an error message, etc.
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
+        });
+    </script>
+    <!-- Add this script section at the end of your EJS file 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const couponInput = document.getElementById('coupon-code');
+        const discountAmountElement = document.getElementById('discount-amount');
+
+        // Listen for changes in the coupon input field
+        couponInput.addEventListener('blur', async function () {
+            const couponCode = couponInput.value;
+
+            // Make a fetch request to apply the coupon
+            const response = await fetch('/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `couponCode=${encodeURIComponent(couponCode)}`,
+            });
+
+            // Check if the response is successful
+            if (response.ok) {
+                // Parse the response text as HTML
+                const responseData = await response.text();
+
+                // Update the content of the discountAmountElement with the updated discount amount
+                discountAmountElement.innerHTML = responseData;
+            } else {
+                // Handle error response, display an error message, etc.
+                console.error('Failed to apply coupon:', response.statusText);
+            }
+        });
+    });
+</script>-->
+
+
+
+
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+    <!---
+    <script>
+        function copyCouponCode(code) {
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Coupon code copied to clipboard: ' + code);
+        }
+    </script>
+
+-->
+
+    <script>
+        function copyCouponCode(code) {
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Show toast message
+            showToast('Coupon code copied to clipboard: ' + code);
+        }
+
+        function showToast(message) {
+            var toastElement = document.getElementById('toast-message');
+            toastElement.textContent = message;
+            toastElement.style.display = 'block';
+
+            // Hide the toast after 3 seconds
+            setTimeout(function () {
+                toastElement.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const totalCartPrice = parseFloat("<%= totalCartPrice.toFixed(2) %>");
+            const shippingCharge = totalCartPrice < 2000 ? 40 : 0;
+            const finalTotal = totalCartPrice + shippingCharge;
+            const codRadioButton = document.getElementById('cashOnDelivery');
+            const onlinePaymentRadioButton = document.getElementById('onlinePayment');
+            const toast = document.getElementById('toast');
+
+            codRadioButton.addEventListener('click', function () {
+                if (finalTotal > 1000) {
+                    showToast();
+                    // Prevent COD selection
+                    codRadioButton.checked = false;
+                }
+            });
+
+            function showToast() {
+                toast.style.visibility = 'visible';
+                toast.style.display = 'block'; // Make the toast visible
+                setTimeout(() => {
+                    toast.style.visibility = 'hidden';
+                    toast.style.display = 'none'; // Hide the toast after 3 seconds
+                }, 3000);
+            }
+        });
+    </script>
+
+
+
+
+
+
+    <%- include('../layouts/productfooter.ejs') %>

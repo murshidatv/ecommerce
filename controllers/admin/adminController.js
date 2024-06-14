@@ -56,7 +56,7 @@ const loadDashboard = async(req,res)=>{
 try{
     // Load user data and render the home page
     const userData = await User.findById({_id:req.session.user_id});
-    res.render('home',{admin:userData});
+    res.render('dashboard',{admin:userData});
 
 }catch(error){
     console.log(error.message);
@@ -276,13 +276,374 @@ const blockUser = async (req, res) => {
 };
 
 
+//--------------------------------------------------------------------------------------------------------------
+
+const dashBoardDetails = async ( req, res ) => {
+    const topProducts = await getTopProductsSale();
+    const topCategoryies = await getTopCategoryies();
+    const totalUsers = await usersCount();
+    const totalOrders = await orderCount();
+    const totalRevenue = await getRevenueAmount();
+    // const topBrands = await topSaledBrands();
+    const totalProducts = await Product.find({}).countDocuments();
+    return res.status(200).json({ topProducts, topCategoryies, totalUsers, totalOrders, totalRevenue, totalProducts });
+  }
+  const customDetails = async ( req, res ) => {
+    let { fromDate, toDate, filterType } = req.query;
+    try{
+        if(filterType === 'custom') {
+            if(new Date(fromDate) >= new Date(toDate)) return res.status(200).json({ error: 'from Date should be before the to Date'});
+            if(!fromDate || !toDate) return res.status(404).json({ error: 'Change the filter or choose the Date'});
+        }else if(filterType === 'daily'){
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() - 1);
+        }else if(filterType === 'weekly'){
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() - 7);
+        }else if(filterType ==='monthly'){
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear(), toDate.getMonth() - 1, toDate.getDate());
+        }else if( filterType === 'yearly') {
+            toDate = new Date();
+            fromDate = new Date(toDate.getFullYear() -1 , toDate.getMonth(), toDate.getDate());
+        }else {
+            return res.status(400).json({ message: 'wrong filter type'});
+        }
+        const topProducts = await getTopProductsSale(fromDate, toDate);
+        const topCategoryies = await getTopCategoryies(fromDate, toDate);
+        const totalUsers = await usersCount(fromDate, toDate);
+        const totalOrders = await orderCount(fromDate, toDate);
+        const totalRevenue = await getRevenueAmount(fromDate, toDate);
+        // const topBrands = await topSaledBrands(fromDate, toDate);
+        const totalProducts = await Product.find({}).countDocuments();
+        return res.status(200).json({ topProducts, topCategoryies, totalUsers, totalOrders, totalRevenue, totalProducts, topBrands });
+    }catch(err){
+        console.log(`Error inside customDetails : \n${err}`);
+    }
+  }
+  async function usersCount(fromDate, toDate) {
+    let noOfUsers;
+    if(fromDate && toDate){
+        noOfUsers = await User.find({ created_at: { $gte: new Date(fromDate), $lte: new Date(toDate) }}).countDocuments();
+    }else {
+        noOfUsers = await User.find({}).countDocuments();
+    }
+    return noOfUsers;
+  }
+  
+  async function orderCount(fromDate, toDate) {
+    let noOfOrders;
+    if(fromDate && toDate){
+        noOfOrders = await Order.find({ deliveredAt: { $gte: new Date(fromDate), $lte: new Date(toDate) }}).countDocuments();
+    }else {
+        noOfOrders = await Order.find({}).countDocuments();
+    }
+    return noOfOrders;
+  }
+  
+  
+  const getRevenueAmount = async (fromDate, toDate) => {
+    try {
+      let matchStage = {
+        $or: [
+          { payment: 'onlinePayment' },
+          {
+            payment: 'COD',
+            status: 'Delivered',
+            returned: { $ne: true },
+            'cancellation.isCancelled': { $ne: true }
+          }
+        ]
+      };
+  
+      if (fromDate && toDate) {
+        matchStage.deliveredAt = {
+          $gte: new Date(fromDate),
+          $lte: new Date(toDate)
+        };
+      }
+  
+      const orders = await Order.find(matchStage);
+  
+      // Calculate total revenue
+      let totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
+  
+      return totalRevenue;
+    } catch (error) {
+      console.error('Error calculating total revenue:', error);
+      return null;
+    }
+  };
+  
+  
+  
+  
+  const getTopProductsSale = async (fromDate, toDate) => {
+      try {
+          let pipeline = [];
+  
+          if (fromDate && toDate) {
+              pipeline = [
+                  {
+                      $match: {
+                          deliveredAt: {
+                              $gte: new Date(fromDate),
+                              $lte: new Date(toDate)
+                          }
+                      }
+                  }
+              ];
+          }
+  
+          pipeline.push(
+              {
+                  $unwind: '$products'
+              },
+              {
+                  $group: {
+                      _id: '$products.product', // Corrected field reference
+                      count: { $sum: '$products.quantity' } // Consider the quantity of each product
+                  }
+              },
+              {
+                  $lookup: {
+                      from: 'products',
+                      localField: '_id',
+                      foreignField: '_id',
+                      as: 'productInfo'
+                  }
+              },
+              {
+                  $project: {
+                      _id: 1,
+                      count: 1,
+                      productName: { $arrayElemAt: ['$productInfo.productName', 0] } // Ensure correct field reference
+                  }
+              }
+          );
+  
+          const productsSale = await Order.aggregate(pipeline);
+          return productsSale;
+      } catch (error) {
+          console.error('Error getting top products sale:', error);
+          throw error;
+      }
+  };
+  
+  
+  
+  const getTopCategoryies = async (fromDate, toDate) => {
+    try {
+      let pipeline = [];
+  
+      if (fromDate && toDate) {
+        pipeline = [
+          {
+            $match: {
+              orderDate: {
+                $gte: new Date(fromDate),
+                $lte: new Date(toDate)
+              }
+            }
+          }
+        ];
+      }
+  
+      pipeline.push(
+        {
+          $unwind: '$products'
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'products.product',
+            foreignField: '_id',
+            as: 'productInfo'
+          }
+        },
+        {
+          $unwind: '$productInfo'
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'productInfo.category',
+            foreignField: '_id',
+            as: 'categoryInfo'
+          }
+        },
+        {
+          $unwind: '$categoryInfo'
+        },
+        {
+          $group: {
+            _id: '$categoryInfo.categoryName',
+            count: { $sum: '$products.quantity' } // Assuming each product has a 'quantity' field
+          }
+        },
+        {
+          $project: {
+            categoryName: '$_id',
+            count: 1,
+            _id: 0
+          }
+        }
+      );
+  
+      const categoriesSale = await Order.aggregate(pipeline);
+      return categoriesSale;
+    } catch (error) {
+      console.error('Error getting top categories sale:', error);
+      throw error;
+    }
+  }
+  
+  
+  
+  async function getNoOfPayments(fromDate, toDate) {
+    try {
+        const pipeline = [];
+  
+        // Match orders within the specified date range
+        if (fromDate && toDate) {
+            pipeline.push({
+                $match: {
+                    deliveredAt: {
+                        $gte: new Date(fromDate),
+                        $lte: new Date(toDate)
+                    }
+                }
+            });
+        }
+  
+        // Group by payment method
+        pipeline.push({
+            $group: {
+                _id: "$paymentMethod",
+                count: { $sum: 1 }
+            }
+        });
+  
+        const noOfPayment = await Order.aggregate(pipeline);
+        return noOfPayment;
+    } catch (err) {
+        console.log(`Error on getNoOfPayments ${err}`);
+        throw err; // Rethrow the error to be handled by the caller
+    }
+  }
+  
+  
+  async function getProductStatus(fromDate, toDate) {
+    try {
+        const pipeline = [];
+  
+        // Match orders within the specified date range
+        if (fromDate && toDate) {
+            pipeline.push({
+                $match: {
+                    "products.deliveredAt": {
+                        $gte: new Date(fromDate),
+                        $lte: new Date(toDate)
+                    }
+                }
+            });
+        }
+        
+        // Unwind the products array to work with each product separately
+        pipeline.push({ $unwind: "$products" });
+  
+        // Project fields and define status based on product fields
+        pipeline.push({
+            $project: {
+                _id: "$products._id",
+                productId: "$products.productId",
+                orderStatus: "$products.orderStatus",
+                returned: "$products.returned",
+                orderValid: "$products.orderValid",
+                status: {
+                    $cond: {
+                        if: { $eq: ["$products.orderStatus", true] },
+                        then: "Delivered",
+                        else: {
+                            $cond: {
+                                if: { $eq: ["$products.orderValid", true] },
+                                then: "Arriving",
+                                else: {
+                                    $cond: {
+                                        if: { $eq: ["$products.returned", true] },
+                                        then: "Returned",
+                                        else: "Cancelled"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+  
+        // Group by status and count the number of products in each status group
+        pipeline.push({
+            $group: {
+                _id: "$status",
+                count: { $sum: 1 }
+            }
+        });
+  
+        const productStatus = await Order.aggregate(pipeline);
+        return productStatus;
+    } catch (err) {
+        console.log(`Error on getProductStatus: ${err}`);
+        throw err;
+    }
+  }
+  
+  
+  // async function topSaledBrands(fromDate, toDate) {
+  //   try {
+  //     const pipeline = [];
+  
+  //     // Filter by date range (if provided)
+  //     if (fromDate && toDate) {
+  //       pipeline.push({
+  //         $match: {
+  //           deliveredAt: {
+  //             $gte: new Date(fromDate),
+  //             $lte: new Date(toDate),
+  //           },
+  //         },
+  //       });
+  //     }
+  
+  //     // Group by brand and count documents
+  //     pipeline.push({
+  //       $group: {
+  //         _id: "$brand",
+  //         count: { $sum: 1 },
+  //       },
+  //     });
+  
+  //     // Sort by count in descending order
+  //     pipeline.push({
+  //       $sort: {
+  //         count: -1,
+  //       },
+  //     });
+  
+  //     const brands = await Product.aggregate(pipeline);
+  //     return brands
+  //   } catch (err) {
+  //     console.log(`Error at topSaledBrands: ${err}`);
+  //   }
+  // }
+  
+  
 
 module.exports = {
     loadlogin,
     verifyLogin,
     logout,
-    getUserDetailsAndOrders,
-    getTotalRevenue,
+   
     adminDashboard,
     loadDashboard,
     /*newUserLoad,
@@ -291,6 +652,13 @@ module.exports = {
     updateUsers,
     deleteUser,
     */
+    getTopProductsSale,
+    getTopCategoryies,
+     
+    getUserDetailsAndOrders,
+    getTotalRevenue,
+    dashBoardDetails,
+    customDetails,
     listUser,
-    blockUser
+    blockUser,
 }

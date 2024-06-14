@@ -8,7 +8,6 @@ const fs = require('fs');
 const util = require('util');
 const pdf = require('html-pdf');
 const ExcelJS = require('exceljs');
-const moment = require('moment');
 
 const puppeteer = require('puppeteer');
 const { order } = require('./orderController');
@@ -32,49 +31,12 @@ const getDashboardData = async (req, res) => {
       console.log("Total Revenue:",totalRevenue)
       const blockUser = await User.countDocuments({ isBlocked: true });
       console.log("Total blocked Users Count:",blockUser)
-
-
-    // Fetch most selling product
-    const mostSellingProduct = await Order.aggregate([
-      { $match: { status: 'delivered' } },
-      { $unwind: '$items' },
-      {
-        $group: {
-          _id: '$items.product',
-          totalQuantity: { $sum: '$items.quantity' }
-        }
-      },
-      { $sort: { totalQuantity: -1 } },
-      { $limit: 1 },
-      {
-        $lookup: {
-          from: 'products',
-          localField: '_id',
-          foreignField: '_id',
-          as: 'product'
-        }
-      },
-      { $unwind: '$product' }
-    ]);
-
-    const mostSellingProductDetails = mostSellingProduct.length > 0 ? mostSellingProduct[0].product : null;
-
-    res.render('report', { 
-      totalUsers, 
-      totalOrders, 
-      cancelledOrders, 
-      blockUser, 
-      totalproduct, 
-      totalRevenue, 
-      mostSellingProduct: mostSellingProductDetails 
-    });
+      res.render('report', { totalUsers, totalOrders, cancelledOrders,blockUser,totalproduct,totalRevenue});
   } catch (error) {
-    console.error('Error fetching dashboard data:', error.message);
-    res.status(500).send('Internal Server Error');
+      console.error('Error fetching dashboard data:', error.message);
+      res.status(500).send('Internal Server Error');
   }
 };
-
-    
 const salesReport= async (req, res) => {
   try {
       const orders = await Order.find({ status: 'delivered' });
@@ -318,55 +280,7 @@ const dashboardData = async (req, res) => {
   }
 };
 
-const getSalesData = async (req, res) => {
-  try {
-    const { period, startDate, endDate } = req.query;
 
-    let matchCondition = { status: 'delivered' };
-
-    if (startDate && endDate) {
-      matchCondition.createdAt = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate)
-      };
-    }
-
-    let groupBy;
-    switch (period) {
-      case 'daily':
-        groupBy = { $dayOfMonth: '$createdAt' };
-        break;
-      case 'weekly':
-        groupBy = { $week: '$createdAt' };
-        break;
-      case 'monthly':
-        groupBy = { $month: '$createdAt' };
-        break;
-      case 'yearly':
-        groupBy = { $year: '$createdAt' };
-        break;
-      default:
-        return res.status(400).json({ error: 'Invalid period' });
-    }
-
-    const salesData = await Order.aggregate([
-      { $match: matchCondition },
-      {
-        $group: {
-          _id: groupBy,
-          totalSales: { $sum: '$totalAmount' },
-          count: { $sum: 1 }
-        }
-      },
-      { $sort: { "_id": 1 } }
-    ]);
-
-    res.json(salesData);
-  } catch (error) {
-    console.error('Error fetching sales data:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
 
 
 module.exports ={
@@ -379,6 +293,4 @@ module.exports ={
   getUserDetailsAndOrders,
   downloadSalesReportsExcel,
   getYearlyRevenue,
-  getSalesData,
-
 }
