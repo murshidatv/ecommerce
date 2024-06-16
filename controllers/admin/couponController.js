@@ -116,8 +116,8 @@ const editCoupon = async (req, res) => {
             {
                 couponname,
                 code,
-                type: discountType, // Ensure the field name matches the schema
-                value: discountValue, // Correct field name to match the schema
+                type: discountType, 
+                value: discountValue, 
                 //discountType,
                 //discountValue,
                 expirationDate,

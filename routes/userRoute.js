@@ -167,7 +167,10 @@ user_route.post('/razorpay-callback', userController.handleRazorpayCallback);
 
 //coupon management
 user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
-
+//coupon management
+user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
+user_route.post('/applycoupon', auth.isLogin, couponController.applyCoupon);
+user_route.post('/removecoupon', auth.isLogin, couponController.removeCoupon);
 
 
 //invoice
@@ -176,6 +179,5 @@ user_route.get('/invoices/:id/pdf', invoiceController.generateInvoicePdf);
 
 
 
-user_route.post('/apply-coupon', userController.applyCoupon);
 
 module.exports = user_route;

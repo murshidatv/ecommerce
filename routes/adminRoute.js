@@ -33,7 +33,7 @@ const orderController=require('../controllers/admin/orderController');
 const couponController=require('../controllers/admin/couponController');
 const salesReportController = require('../controllers/admin/salesreportController');
 //const { confirmOrderReturn, viewReturnedOrders } = require('../controllers/admin/orderController');
-
+const admSalesReportController=require('../controllers/admin/admSalesReportController');
 
 
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
@@ -132,12 +132,19 @@ admin_route.post('/edit-coupon/:couponId', couponController.editCoupon);
 admin_route.get('/loadcoupon/:couponId',couponController.deleteCoupon);
 
 
-
+/*
 admin_route.get('/sales-report/daily', salesReportController.getDailyReport);
 admin_route.get('/sales-report/weekly', salesReportController.getWeeklyReport);
 admin_route.get('/sales-report/monthly', salesReportController.getMonthlyReport);
-admin_route.post('/sales-report/custom', salesReportController.getCustomReport);
+admin_route.post('/sales-report/custom', salesReportController.getCustomReport);*/
 
+admin_route.get('/sales-report/', auth.isLogin, admSalesReportController.salesReportGet );
+admin_route.get('/sales-report/:reportType', auth.isLogin, admSalesReportController.customSalesReportGet);
+admin_route.get('/sales/pdf/:reportType', auth.isLogin, admSalesReportController.genPdfGet );
+admin_route.get('/sales-report-total', auth.isLogin, admSalesReportController.salesReportTotalGet );
+admin_route.get('/sales/excel/:reportType', auth.isLogin, admSalesReportController.salesReportExcelGet );
+
+admin_route.get('/top-categories', auth.isLogin, admSalesReportController.getTopCategories);
 
 admin_route.get('*',function(req,res){
 

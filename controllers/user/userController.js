@@ -1337,6 +1337,7 @@ const applyCoupon = async (req, res) => {
 };
 
 // Helper function to calculate the discount amount based on coupon type
+
 function calculateDiscount(totalAmount, coupon) {
   const currentDate = new Date();
   const expirationDate = new Date(coupon.expirationDate);
@@ -1359,6 +1360,40 @@ function calculateDiscount(totalAmount, coupon) {
     return 0;
   }
 }
+ /*
+function calculateDiscount(totalAmount, coupon) {
+  const currentDate = new Date();
+  const expirationDate = new Date(coupon.expirationDate);
+
+  try {
+    if (currentDate > expirationDate) {
+      toastr.error('Coupon has expired.');
+      throw new Error('Coupon has expired.');
+    }
+    if (totalAmount < coupon.conditions.minOrderAmount) {
+      toastr.warning('Total amount does not meet the minimum order amount condition.');
+      throw new Error('Total amount does not meet the minimum order amount condition.');
+    }
+    if (coupon.usageLimits.totalUses <= 0) {
+      toastr.error('Coupon has reached the overall usage limit.');
+      throw new Error('Coupon has reached the overall usage limit.');
+    }
+
+    let discount = 0;
+    if (coupon.type === 'percentage') {
+      discount = (coupon.value / 100) * totalAmount;
+    } else if (coupon.type === 'fixed') {
+      discount = coupon.value;
+    }
+
+    toastr.success('Coupon applied successfully!');
+    return discount;
+  } catch (error) {
+    console.error(error.message);
+    return 0;
+  }
+}
+*/
 
 const razorpayPage = async (req, res) => {
   try {
