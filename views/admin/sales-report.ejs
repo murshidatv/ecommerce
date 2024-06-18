@@ -1,4 +1,3 @@
-<!-- sales-report.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +13,13 @@
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #6f4242;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h2 {
+        h2, h3 {
             margin-top: 0;
         }
         table {
@@ -31,88 +30,119 @@
         th, td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #881d1d;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #c0a8a8;
         }
         p {
             margin: 0;
+        }
+        .section-title {
+            margin-top: 20px;
+            text-decoration: underline;
+        }
+        .monthly-logins {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+        .monthly-logins div {
+            padding: 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .card {
+            padding: 20px;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Render monthly logins as a 6x2 grid -->
+        <h2>Monthly Logins hiiii</h2>
+        <div class="monthly-logins">
+            <% mergedData.forEach(monthlyLogin => { %>
+            <div>
+                <strong><%= monthlyLogin.monthName %></strong><br>
+                <%= monthlyLogin.count %>
+            </div>
+            <% }); %>
+        </div>
         
-        <!-- Render monthly logins -->
-        <h2>Monthly Logins</h2>
-<table>
-    <tr>
-        <th>Month</th>
-        <th>Number of Logins</th>
-    </tr>
-    <% mergedData.forEach(monthlyLogin => { %>
-    <tr>
-        <td><%= monthlyLogin.monthName %></td>
-        <td><%= monthlyLogin.count %></td>
-    </tr>
-    <% }); %>
-</table>
-<br>
-        <!-- Render total users -->
-       <h3><u>Users Details</u></h3>
-        Total Users:<p><%= totalUsers %></p>
-       Block User Count:<p><%= blockUser%></p>
-        <!-- Render total orders -->
-    <h3> <u> Orders Details</u></h3>
-       Total Order: <p><%= totalOrders %></p>
+        <!-- Render user details, order details, etc. as cards in a grid -->
+        <div class="cards-container">
+            <!-- User Details Card -->
+            <div class="card">
+                <h3>Users Details</h3>
+                <p>Total Users: <%= totalUsers %></p>
+                <p>Blocked User Count: <%= blockUser %></p>
+            </div>
+            
+            <!-- Order Details Card -->
+            <div class="card">
+                <h3>Orders Details</h3>
+                <p>Total Orders: <%= totalOrders %></p>
+                <p>Total Pending Orders: <%= pendingOrdersCount %></p>
+                <p>Total Returned Orders: <%= returnOrderCount %></p>
+                <p>Total Cancelled Orders: <%= cancelledOrders %></p>
+                <p>Online Payment Count: <%= onlinePayment %></p>
+            </div>
+            
+            <!-- Product Details Card -->
+            <div class="card">
+                <h3>Total Products</h3>
+                <p><%= totalProduct %></p>
+            </div>
+        </div>
 
-    Total Pending order:<p> <%= pendingOrdersCount %></p>
-    Total Returned orders:<p> <%= returnOrderCount %></p>
-        <!-- Render cancelled orders -->
-    Total Cancelled Orders<p><%= cancelledOrders %></p>
-
-    Online payment count: <p><%= onlinePayment%></p>
-        <!-- Render total products -->
-    <h3><u>Total Products</u></h3>
-        <p><%= totalProduct %></p>
-      <!-- Most Selling Product -->
-<h2>Most Selling Product</h2>
-<% if (mostSellingProduct && mostSellingProduct.productName) { %>
-  <p>Name: <%= mostSellingProduct.productName %></p>
-  <p>Description: <%= mostSellingProduct.description %></p>
-  <p>Price: <%= mostSellingProduct.price %></p>
-<% } else { %>
-  <p>No most selling product found</p>
-<% } %>
-
-
-        <!-- Render delivered orders -->
-<h3><u>Delivered Orders Details</u></h3>
-<table>
-    <tr>
-      <th>Order ID</th>
-      <th>Customer Name</th>
-      <th>Products</th>
-    </tr>
-    <% deliveredOrders.forEach(order => { %>
-    <tr>
-      <td><%= order._id %></td>
-      <td><%= order.userId.name %></td> <!-- Accessing the customer's name -->
-      <td>
-        <ul>
-          <% order.products.forEach(product => { %>
-          <li><%= product.product.productName %> - Quantity: <%= product.quantity %> - Price: <%= product.product.price %></li>
-          <% }); %>
-        </ul>
-      </td>
-    </tr>
-    <% }); %>
-  </table>
-  
-   
-        <!-- Render total revenue -->
-    <h3><u>Total Revenue</u></h3>
+        <!-- Most Selling Product -->
+        <h2>Most Selling Product</h2>
+        <div class="card">
+            <% if (mostSellingProduct && mostSellingProduct.productName) { %>
+            <p>Name: <%= mostSellingProduct.productName %></p>
+            <p>Description: <%= mostSellingProduct.description %></p>
+            <p>Price: <%= mostSellingProduct.price %></p>
+            <% } else { %>
+            <p>No most selling product found</p>
+            <% } %>
+        </div>
+        
+        <!-- Delivered Orders Details -->
+        <h3 class="section-title">Delivered Orders Details</h3>
+        <table>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Products</th>
+            </tr>
+            <% deliveredOrders.forEach(order => { %>
+            <tr>
+                <td><%= order._id %></td>
+                <td><%= order.userId.name %></td> <!-- Accessing the customer's name -->
+                <td>
+                    <ul>
+                        <% order.products.forEach(product => { %>
+                        <li><%= product.product.productName %> - Quantity: <%= product.quantity %> - Price: <%= product.product.price %></li>
+                        <% }); %>
+                    </ul>
+                </td>
+            </tr>
+            <% }); %>
+        </table>
+        
+        <!-- Total Revenue -->
+        <h3 class="section-title">Total Revenue</h3>
         <p><%= totalRevenue %></p>
     </div>
 </body>

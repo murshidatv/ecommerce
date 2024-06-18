@@ -1,0 +1,629 @@
+<aside class="col-lg-3">
+    <div class="summary">
+        <h3 class="summary-title text-center">Your Order</h3><!-- End .summary-title -->
+
+        <div class="table-responsive">
+            <table class="table table-summary text-center">
+                <table class="table">
+                    <thead style="background-color: #f6c2c2;">
+                        <tr>
+                            <th style="font-weight: bold; color: black;">Product</th>
+                            <th style="font-weight: bold; color: black;">Quantity</th>
+                            <th style="font-weight: bold; color: black;">Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% if (user.cart && user.cart.length> 0) { %>
+                            <% let totalCartPrice=0; %>
+                                <% user.cart.forEach(cartItem=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= cartItem.product &&
+                                                cartItem.product.productName ?
+                                                cartItem.product.productName
+                                                : 'Product Name Not Available' %>
+                                        </td>
+                                        <td>
+                                            <%= cartItem.quantity %>
+                                        </td>
+                                        <% let itemTotal=cartItem.product &&
+                                            cartItem.product.price ? cartItem.quantity *
+                                            cartItem.product.price : 0 %>
+                                            <td>
+                                                <%= `Rs.${itemTotal.toFixed(2)}` %>
+                                            </td>
+                                            <% totalCartPrice +=itemTotal; %>
+                                    </tr>
+                                    <% }) %>
+                                        <tr class="summary-total"
+                                            style="background-color: #f6c2c2; font-weight: bold;">
+                                            <td colspan="2"
+                                                style="text-align: right; padding-right: 10px;">
+                                                Total:</td>
+                                            <td style="text-align: center;">
+                                                <%= `Rs.${totalCartPrice.toFixed(2)}` %>
+                                            </td>
+                                        </tr>
+
+                                        <% if (totalCartPrice < 2000) { %>
+                                            <tr class="summary-shipping"
+                                                style="background-color: #f6c2c2; font-weight: bold;">
+                                                <td colspan="2"
+                                                    style="text-align: right; padding-right: 10px;">
+                                                    Shipping Charge:</td>
+                                                <td style="text-align: center;">
+                                                    <%= `Rs.${40}` %>
+                                                </td>
+                                            </tr>
+                                            <% } else { %>
+                                                <div id="shipping-free-message"
+                                                    class="shipping-free-message">
+                                                    Shipping is free for orders above Rs.
+                                                    2000!
+                                                </div>
+                                                <% } %>
+
+                                                    <tr class="summary-final-total"
+                                                        style="background-color: #f6c2c2; font-weight: bold;">
+                                                        <td colspan="2"
+                                                            style="text-align: right; padding-right: 10px;">
+                                                            Final Total:</td>
+                                                        <td style="text-align: center;">
+                                                            <%= `Rs.${(totalCartPrice +
+                                                                (totalCartPrice < 2000 ? 40
+                                                                : 0)).toFixed(2)}` %>
+                                                        </td>
+                                                    </tr>
+
+                                                    <% } else { %>
+                                                        <tr>
+                                                            <td colspan="3">No items in the
+                                                                cart.</td>
+                                                        </tr>
+                                                        <% } %>
+                    </tbody>
+                </table>
+
+        </div><!-- End .table-responsive -->
+
+        <div class="accordion-summary" id="accordion-payment">
+            <!-- Your accordion content goes here -->
+        </div><!-- End .accordion-summary -->
+
+        <tr>
+            <td colspan="3">
+                <!-- HTML for applying a coupon -->
+
+
+                <form id="coupon-form">
+                    <input type="text" class="form-control" name="couponCode"
+                        placeholder="Have a coupon code?" id="coupon-code">
+
+                    <!-- HTML for applying a coupon -->
+                 
+                    <button  class="btn btn-outline-primary-2 btn-order mt-1" onclick="applyCoupon()">Apply Coupon</button>
+
+                    <!-- HTML for removing a coupon -->
+                    <button class="btn btn-outline-primary-2 btn-order mt-1" onclick="removeCoupon()">Remove Coupon</button><br>
+<br>
+                </form>
+            </td>
+        </tr>
+        
+        <tr>
+            <div class="coupon-section" style="background-color: #f7e7e7; display: flex;">
+                <div style="flex: 3; padding: 10px;">
+                    <label for="couponCode" style="color: #333; display: block; margin-bottom: 5px;">Have a coupon code?</label>
+                    <input type="text" class="form-control" name="couponCode" placeholder="" id="couponCode" style="border-color: #f1c9c9;">
+                </div>
+                <div style="flex: 2; display: flex; flex-direction: column;">
+                    <button type="button" class="btn btn-primary" id="applyCoupon" style="margin-bottom: 10px;">Apply</button>
+                    <button type="button" class="btn btn-secondary" id="removeCoupon">Remove</button>
+                </div>
+            </div>
+            <div class="toast" id="coupon-toast" style="display: none; background-color: lightblue; color: black; padding: 10px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+                Coupon successfully added!
+            </div>
+            <td id="discount-amount" >Discount Amount : Rs.<%= discountAmount.toFixed(2) %><br>
+            </td>
+        </tr>
+        <!--
+        <div class="checkout-discount" style="background-color: #f7e7e7; padding: 10px;">
+            <label for="couponCode" style="color: #333;">Have a coupon code?</label>
+            <input type="text" class="form-control" name="couponCode" placeholder=""
+                id="couponCode" style="border-color: #f1c9c9;">
+        </div>-->
+        <br>
+        <div class="card">
+            <div class="card-header" id="heading-3"style="margin-top: 5px;margin-bottom: 5px;">
+                <h2 class="card-title">
+                    <input type="radio" name="paymentMethod" value="cashOnDelivery"
+                        id="cashOnDelivery" required>
+                    <label for="cashOnDelivery"
+                        style="font-size: 16px; font-weight: bold;">COD </label>
+
+                    <input type="radio" name="paymentMethod" value="onlinePayment"
+                        id="onlinePayment" required>
+                    <label for="onlinePayment"
+                        style="font-size: 16px; font-weight: bold;">Online Payment</label>
+                </h2>
+            </div><!-- End .card-header -->
+        </div>
+      
+
+        <!-- Toast message container -->
+        <div id="toast"
+            style="visibility: hidden; display: none; min-width: 250px; margin-left: -125px; background-color: #c66; color: rgb(235, 220, 220); text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1; left: 50%; bottom: 30px; font-size: 17px;">
+            You can't choose COD for the amount that exceeds Rs. 1000
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-outline-primary-2 btn-order mt-3">
+                <span class="btn-text">Place Order</span>
+                <span class="btn-hover-text">Proceed to Checkout</span>
+            </button>
+        </div>
+    </div><!-- End .summary -->
+</aside>
+<!-- End .col-lg-3 -->
+</div><!-- End .row -->
+</form>
+</div><!-- End .container -->
+</div><!-- End .checkout -->
+</div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+
+
+
+
+    <!-- Add this script section at the end of your EJS file -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponCodeInput = document.getElementById('couponCode');
+            const applyCouponButton = document.getElementById('applyCoupon');
+            const removeCouponButton = document.getElementById('removeCoupon');
+            const couponToast = document.getElementById('coupon-toast');
+            const finalTotalElement = document.getElementById('final-total');
+        
+            applyCouponButton.addEventListener('click', async function () {
+                const couponCode = couponCodeInput.value;
+        
+                const response = await fetch('/applycoupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: '<%= user._id %>', // Ensure user ID is available in the template context
+                        couponCode: couponCode
+                    }),
+                });
+        
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const { discountAmount, totalAmountAfterDiscount } = responseData;
+        
+                    // Update UI to reflect the discount
+                    couponToast.style.display = 'block';
+                    finalTotalElement.innerHTML = `Rs${totalAmountAfterDiscount.toFixed(2)}`;
+        
+                    // Optionally, you can display a success message or update other parts of the UI
+                } else {
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
+        
+            removeCouponButton.addEventListener('click', async function () {
+                const response = await fetch('/removecoupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: '<%= user._id %>', // Ensure user ID is available in the template context
+                    }),
+                });
+        
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const { cartTotal } = responseData;
+        
+                    // Update UI to remove the coupon and revert to original total
+                    couponToast.style.display = 'none';
+                    finalTotalElement.innerHTML = `Rs${cartTotal.toFixed(2)}`;
+        
+                    // Clear the coupon input field
+                    couponCodeInput.value = '';
+        
+                    // Optionally, you can display a success message or update other parts of the UI
+                } else {
+                    console.error('Failed to remove coupon:', response.statusText);
+                }
+            });
+        });
+        </script>
+         <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponCodeInput = document.getElementById('couponCode');
+            const applyCouponButton = document.getElementById('applyCoupon');
+            const removeCouponButton = document.getElementById('removeCoupon');
+            const couponToast = document.getElementById('coupon-toast');
+            const finalTotalElement = document.getElementById('final-total');
+        
+            applyCouponButton.addEventListener('click', async function () {
+                const couponCode = couponCodeInput.value;
+        
+                const response = await fetch('/apply-coupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: '<%= user._id %>',
+                        couponCode: couponCode
+                    }),
+                });
+        
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const { discountAmount, totalAmountAfterDiscount } = responseData;
+        
+                    // Update UI to reflect the discount
+                    couponToast.style.display = 'block';
+                    finalTotalElement.innerHTML = `Rs${totalAmountAfterDiscount.toFixed(2)}`;
+        
+                    // Optionally, you can display a success message or update other parts of the UI
+                } else {
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
+        
+            removeCouponButton.addEventListener('click', async function () {
+                const response = await fetch('/remove-coupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: '<%= user._id %>',
+                    }),
+                });
+        
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const { cartTotal } = responseData;
+        
+                    // Update UI to remove the coupon and revert to original total
+                    couponToast.style.display = 'none';
+                    finalTotalElement.innerHTML = `Rs${cartTotal.toFixed(2)}`;
+        
+                    // Optionally, you can display a success message or update other parts of the UI
+                } else {
+                    console.error('Failed to remove coupon:', response.statusText);
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponForm = document.getElementById('coupon-form');
+            const discountAmountElement = document.getElementById('discount-amount');
+            const finalTotalElement = document.getElementById('final-total');
+
+            couponForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const couponCode = document.getElementById('couponCode').value;
+
+                const response = await fetch('/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `couponCode=${encodeURIComponent(couponCode)}`,
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const updatedDiscountAmount = responseData.discountAmount;
+                    const updatedFinalTotal = responseData.totalAmountAfterDiscount;
+
+                    discountAmountElement.innerHTML = `Discount: Rs.${updatedDiscountAmount.toFixed(2)}`;
+                    finalTotalElement.innerHTML = `Final Total: Rs.${updatedFinalTotal.toFixed(2)}`;
+                } else {
+                    const errorData = await response.json();
+                    alert(`Failed to apply coupon: ${errorData.error}`);
+                }
+            });
+        });
+    </script>
+
+
+    <!-- Add this script section at the end of your EJS file -->
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponForm = document.getElementById('coupon-form');
+            const discountAmountElement = document.getElementById('discount-amount');
+
+            couponForm.addEventListener('blur', async function (event) {
+                event.preventDefault();
+
+                // Get the coupon code from the input field
+                const couponCode = document.getElementById('coupon-code').value;
+
+                // Make a fetch request to apply the coupon
+                const response = await fetch('/place-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `couponCode=${encodeURIComponent(couponCode)}`,
+                });
+
+
+                // Check if the response is successful
+                /* if (response.ok) {
+                     // Parse the response text as HTML
+                     const responseData = await response.text();
+ 
+                     // Replace the content of the discountAmountElement with the updated discount amount
+                     discountAmountElement.innerHTML = responseData;
+ 
+                     // Optionally, you can display a success message or update other parts of the UI
+ 
+                     // Inside your fetch response handler:*/
+
+                if (response.ok) {
+                    const responseData = await response.json(); // Parse as JSON
+
+                    // Assuming the server response includes a property called 'discountAmount'
+                    const updatedDiscountAmount = responseData.discountAmount;
+
+                    // Update the UI with the new discount amount
+                    discountAmountElement.innerHTML = `Discount: $${updatedDiscountAmount}`;
+
+
+                } else {
+                    // Handle error response, display an error message, etc.
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
+        });
+    </script>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const couponForm = document.getElementById('coupon-form');
+            const discountAmountElement = document.getElementById('discount-amount');
+
+            couponForm.addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                // Get the coupon code from the input field
+                const couponCode = document.getElementById('coupon-code').value;
+
+                // Make a fetch request to apply the coupon
+                const response = await fetch('/apply-coupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `couponCode=${encodeURIComponent(couponCode)}`,
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json(); // Parse as JSON
+
+                    // Assuming the server response includes a property called 'discountAmount'
+                    const updatedDiscountAmount = responseData.discountAmount;
+
+                    // Update the UI with the new discount amount
+                    discountAmountElement.innerHTML = `Discount: Rs.${updatedDiscountAmount.toFixed(2)}`;
+
+                    // Update the final total amount in the UI
+                    const finalTotalElement = document.getElementById('final-total');
+                    const totalCartPrice = parseFloat(document.getElementById('total-cart-price').innerText.replace('Rs.', ''));
+                    const finalTotal = totalCartPrice - updatedDiscountAmount;
+                    finalTotalElement.innerHTML = `Rs.${finalTotal.toFixed(2)}`;
+
+                } else {
+                    // Handle error response, display an error message, etc.
+                    console.error('Failed to apply coupon:', response.statusText);
+                }
+            });
+        });
+    </script>
+
+    <!-- Add this script section at the end of your EJS file 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const couponInput = document.getElementById('coupon-code');
+        const discountAmountElement = document.getElementById('discount-amount');
+
+        // Listen for changes in the coupon input field
+        couponInput.addEventListener('blur', async function () {
+            const couponCode = couponInput.value;
+
+            // Make a fetch request to apply the coupon
+            const response = await fetch('/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `couponCode=${encodeURIComponent(couponCode)}`,
+            });
+
+            // Check if the response is successful
+            if (response.ok) {
+                // Parse the response text as HTML
+                const responseData = await response.text();
+
+                // Update the content of the discountAmountElement with the updated discount amount
+                discountAmountElement.innerHTML = responseData;
+            } else {
+                // Handle error response, display an error message, etc.
+                console.error('Failed to apply coupon:', response.statusText);
+            }
+        });
+    });
+</script>-->
+
+
+
+
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+    <!---
+    <script>
+        function copyCouponCode(code) {
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Coupon code copied to clipboard: ' + code);
+        }
+    </script>
+
+-->
+
+    <script>
+        function copyCouponCode(code) {
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Show toast message
+            showToast('Coupon code copied to clipboard: ' + code);
+        }
+
+        function showToast(message) {
+            var toastElement = document.getElementById('toast-message');
+            toastElement.textContent = message;
+            toastElement.style.display = 'block';
+
+            // Hide the toast after 3 seconds
+            setTimeout(function () {
+                toastElement.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const totalCartPrice = parseFloat("<%= totalCartPrice.toFixed(2) %>");
+            const shippingCharge = totalCartPrice < 2000 ? 40 : 0;
+            const finalTotal = totalCartPrice + shippingCharge;
+            const codRadioButton = document.getElementById('cashOnDelivery');
+            const onlinePaymentRadioButton = document.getElementById('onlinePayment');
+            const toast = document.getElementById('toast');
+
+            codRadioButton.addEventListener('click', function () {
+                if (finalTotal > 1000) {
+                    showToast();
+                    // Prevent COD selection
+                    codRadioButton.checked = false;
+                }
+            });
+
+            function showToast() {
+                toast.style.visibility = 'visible';
+                toast.style.display = 'block'; // Make the toast visible
+                setTimeout(() => {
+                    toast.style.visibility = 'hidden';
+                    toast.style.display = 'none'; // Hide the toast after 3 seconds
+                }, 3000);
+            }
+        });
+    </script>
+      <!-- Your HTML content -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script>
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    };
+  </script>
+  <script>
+    function calculateDiscount(totalAmount, coupon) {
+      const currentDate = new Date();
+      const expirationDate = new Date(coupon.expirationDate);
+
+      try {
+        if (currentDate > expirationDate) {
+          toastr.error('Coupon has expired.');
+          throw new Error('Coupon has expired.');
+        }
+        if (totalAmount < coupon.conditions.minOrderAmount) {
+          toastr.warning('Total amount does not meet the minimum order amount condition.');
+          throw new Error('Total amount does not meet the minimum order amount condition.');
+        }
+        if (coupon.usageLimits.totalUses <= 0) {
+          toastr.error('Coupon has reached the overall usage limit.');
+          throw new Error('Coupon has reached the overall usage limit.');
+        }
+
+        let discount = 0;
+        if (coupon.type === 'percentage') {
+          discount = (coupon.value / 100) * totalAmount;
+        } else if (coupon.type === 'fixed') {
+          discount = coupon.value;
+        }
+
+        toastr.success('Coupon applied successfully!');
+        return discount;
+      } catch (error) {
+        console.error(error.message);
+        return 0;
+      }
+    }
+  </script>
+
+
+
+

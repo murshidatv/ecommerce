@@ -34,7 +34,7 @@ const couponController=require('../controllers/admin/couponController');
 const salesReportController = require('../controllers/admin/salesreportController');
 //const { confirmOrderReturn, viewReturnedOrders } = require('../controllers/admin/orderController');
 const admSalesReportController=require('../controllers/admin/admSalesReportController');
-
+const reportController = require('../controllers/admin/reportController');
 
 admin_route.get('/',auth.isLogout,adminController.loadlogin);
 
@@ -145,6 +145,29 @@ admin_route.get('/sales-report-total', auth.isLogin, admSalesReportController.sa
 admin_route.get('/sales/excel/:reportType', auth.isLogin, admSalesReportController.salesReportExcelGet );
 
 admin_route.get('/top-categories', auth.isLogin, admSalesReportController.getTopCategories);
+
+
+//const { generateReport, renderDashboard } = require('../controllers/admin/reportController');
+
+
+//admin_route.get('/dashboard', renderDashboard);
+
+
+
+
+//const {  generateReport,renderGenerateReportPage} = require('../controllers/admin/reportController');
+//admin_route.get('/dashboard', renderDashboard);
+//admin_route.get('/report', generateReport);
+//const reportController = require('../controllers/admin/reportController');
+
+//admin_route.get('/dashboard', reportController.renderDashboard);
+//admin_route.get('/generate-report', reportController.generateReport);*/
+//const reportController = require('../controllers/admin/reportController');
+admin_route.get('/generate-report', reportController.renderGenerateReportPage);
+admin_route.get('/generate-report-data', reportController.generateReport);
+
+
+
 
 admin_route.get('*',function(req,res){
 

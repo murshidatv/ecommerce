@@ -186,34 +186,37 @@
                                         font-family: 'Courier New', Courier, monospace;
                                         color: green;
                                     }
+
                                     .charts-container {
-      width: 50%;
-      display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Creates two equal-width columns */
-    gap: 50px; /* Adjusts space between the cards */
-      /*display: flex;
+                                        width: 50%;
+                                        display: grid;
+                                        grid-template-columns: repeat(2, 1fr);
+                                        /* Creates two equal-width columns */
+                                        gap: 50px;
+                                        /* Adjusts space between the cards */
+                                        /*display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 20px;*/
-  }
-  
-  
-  .product-chart-div {
-      max-width: 1000px;
-      width: 500px;
-      display: flex;
-      justify-content: center;
-  }
-  
-  .line-chart-div {
-      max-width: 1000px;
-      width: 500px;
-      display: flex;
-      justify-content: center;
-  }
-  
+                                    }
 
-                                   
+
+                                    .product-chart-div {
+                                        max-width: 1000px;
+                                        width: 500px;
+                                        display: flex;
+                                        justify-content: center;
+                                    }
+
+                                    .line-chart-div {
+                                        max-width: 1000px;
+                                        width: 500px;
+                                        display: flex;
+                                        justify-content: center;
+                                    }
+
+
+
 
 
                                     .box-items {
@@ -450,11 +453,12 @@
                                                 </form>
                                             </div>-->
 
-                                              
+
 
                                                     <!-- Dashboard stats -->
                                                     <div class="row">
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin" style="width: 300px; height: 180px; margin: 10px; ">
+                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin"
+                                                            style="width: 300px; height: 180px; margin: 10px; ">
                                                             <div
                                                                 class="card bg-gradient-danger card-img-holder text-white">
                                                                 <div class="card-body">
@@ -468,7 +472,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin" style="width: 300px; height: 180px;  margin: 10px;">
+                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin"
+                                                            style="width: 300px; height: 180px;  margin: 10px;">
                                                             <div
                                                                 class="card bg-gradient-info card-img-holder text-white">
                                                                 <div class="card-body">
@@ -482,7 +487,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin" style="width: 300px; height: 180px; margin: 10px;">
+                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin"
+                                                            style="width: 300px; height: 180px; margin: 10px;">
                                                             <div
                                                                 class="card bg-gradient-success card-img-holder text-white">
                                                                 <div class="card-body">
@@ -497,7 +503,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin" style="width: 300px; height: 180px; margin: 10px;">
+                                                        <div class="col-lg-3 col-md-6 col-sm-12 stretch-card grid-margin"
+                                                            style="width: 300px; height: 180px; margin: 10px;">
                                                             <div
                                                                 class="card bg-gradient-warning card-img-holder text-white">
                                                                 <div class="card-body">
@@ -507,7 +514,7 @@
                                                                             class="mdi mdi-cube-outline mdi-24px float-end"></i>
                                                                     </h4>
                                                                     <h2 class="mb-5 total-products"></h2>
-                                                                    <h6 class="card-text">Updated now</h6>
+
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -520,217 +527,379 @@
                                                             <div class="line-chart-div">
                                                                 <canvas id="myChart-lines"></canvas>
                                                             </div>
-                                                                <div class="product-chart-div" >
-                                                                    <canvas id="myChart-products"></canvas>
-                                                                </div>
-                                                          
-                                                           
+                                                            <div class="product-chart-div">
+                                                                <canvas id="myChart-products"></canvas>
+                                                            </div>
+
+
                                                         </div>
                                                     </div>
+                                                   
+  <!----                                               
+<div class="report-container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Sales Report</h4>
+        </div>
+        <div class="card-body">
+            <form id="filter-form" action="/admin/report" method="get">
+                <div class="form-row">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate">
+                </div>
+                <div class="form-row">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                <div class="form-row">
+                    <label for="report-type">Report Type:</label>
+                    <select id="report-type" name="type">
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Generate Report</button>
+            </form>
+            <div class="button-group">
+                <button onclick="setDateRange('daily')">Daily</button>
+                <button onclick="setDateRange('weekly')">Weekly</button>
+                <button onclick="setDateRange('monthly')">Monthly</button>
+                <button onclick="setDateRange('yearly')">Yearly</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <style>
+  .report-container {
+    width: 100%;
+    max-width: 600px;
+    margin :0 auto;
+    padding: 20px;
+  }
+  
+  .card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .card-header {
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+  }
+  
+  .card-header h4 {
+    margin: 0;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .form-row {
+    margin-bottom: 10px;
+  }
+  
+  .form-row label {
+    display: block;
+  }
+  
+  .form-row input,
+  .form-row select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .btn-submit {
+    display: block;
+    width: 94%;
+    padding: 10px;
+    margin-top: 20px;
+    background: #28a745;
+    color: white;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  .button-group button {
+    width: calc(25% - 10px);
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #17a2b8;
+    color: white;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  @media (max-width: 768px) {
+    .button-group button {
+        width: calc(50% - 10px);
+    }
+  }
+  
+  </style>
+  
+-->
 
-                                                    <div class="row">
-                                                        <div class="col-md-6 grid-margin stretch-card">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <h4 class="card-title">Products</h4>
-                                                                    <div class="table-responsive">
-                                                                        <table class="table product-table">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Products</th>
-                                                                                    <th>Count</th>
 
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="product-table-body">
-                                                                                <!-- Top products will be dynamically inserted here -->
-                                                                            </tbody>
-                                                                        </table>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 grid-margin stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h4 class="card-title">Products</h4>
+                                                                        <div class="table-responsive">
+                                                                            <table class="table product-table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Products</th>
+                                                                                        <th>Count</th>
+
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody class="product-table-body">
+                                                                                    <!-- Top products will be dynamically inserted here -->
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-6 grid-margin stretch-card">
-                                                            <div class="card">
-                                                                <div class="card-body">
-                                                                    <h4 class="card-title">Categories</h4>
-                                                                    <div class="table-responsive">
-                                                                        <table class="table category-table ">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Categories</th>
-                                                                                    <th>count</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody class="category-table-body">
-                                                                                <!-- Top categories will be dynamically inserted here -->
-                                                                            </tbody>
-                                                                        </table>
+                                                            <div class="col-md-6 grid-margin stretch-card">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h4 class="card-title">Categories</h4>
+                                                                        <div class="table-responsive">
+                                                                            <table class="table category-table ">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Categories</th>
+                                                                                        <th>count</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody class="category-table-body">
+                                                                                    <!-- Top categories will be dynamically inserted here -->
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
+
                                                         </div>
+                                                        </main>
 
                                                     </div>
-                                                    </main>
+<!---
+                                                    <h1>Sales Report</h1>
+                                                    <form id="filter-form" action="/admin/report" method="get">
+                                                        <label for="startDate">Start Date:</label>
+                                                        <input type="date" id="startDate" name="startDate">
+                                                        <label for="endDate">End Date:</label>
+                                                        <input type="date" id="endDate" name="endDate">
 
+                                                        <select id="report-type" name="type">
+                                                            <option value="pdf">PDF</option>
+                                                            <option value="excel">Excel</option>
+                                                        </select>
+
+                                                        <button type="submit">Generate Report</button>
+                                                    </form>
+
+                                                    <button onclick="setDateRange('daily')">Daily</button>
+                                                    <button onclick="setDateRange('weekly')">Weekly</button>
+                                                    <button onclick="setDateRange('monthly')">Monthly</button>
+                                                    <button class="btn btn-gradient-primary mb-2 btn-apply"
+                                                        type="button" onclick="setDateRange('yearly')">Yearly</button>
+
+
+                                                -->
+
+                                                    <!-- content-wrapper ends -->
                                                 </div>
-
-
-
-
-                                                <!-- content-wrapper ends -->
+                                                <!-- main-panel ends -->
                                     </div>
-                                    <!-- main-panel ends -->
+                                    <!-- page-body-wrapper ends -->
                             </div>
-                            <!-- page-body-wrapper ends -->
+                            <!-- container-scroller -->
+                            <!-- plugins:js -->
+                            <script src="/asset-temp/vendors/js/vendor.bundle.base.js"></script>
+                            <!-- endinject -->
+                            <!-- Plugin js for this page -->
+                            <script src="/asset-temp/vendors/chart.js/chart.umd.js"></script>
+                            <script src="/asset-temp/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+                            <!-- End plugin js for this page -->
+                            <!-- inject:js -->
+                            <script src="/asset-temp/js/off-canvas.js"></script>
+                            <script src="/asset-temp/js/misc.js"></script>
+                            <script src="/asset-temp/js/settings.js"></script>
+                            <script src="/asset-temp/js/todolist.js"></script>
+                            <script src="/asset-temp/js/jquery.cookie.js"></script>
+                            <!-- endinject -->
+                            <!-- Custom js for this page -->
+                            <script src="/asset-temp/js/dashboard.js"></script>
+                            <!-- End custom js for this page -->
+                            <!-- Fetch and Display Dashboard Data -->
+                            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+                            <script>
+                                let productsChart, categoryChart, myChartProducts, myChartLines;
+
+                                document.addEventListener("DOMContentLoaded", async function () {
+                                    const response = await fetch("/admin/dashboard/data");
+                                    const data = await response.json();
+                                    updateDashboard(data);
+                                });
+
+                                async function updateDashboard(data) {
+                                    document.querySelector(".total-users").textContent = `Users: ${data.totalUsers}`;
+                                    document.querySelector(".total-orders").textContent = `Orders: ${data.totalOrders}`;
+                                    document.querySelector(".total-revenue").textContent = `Revenue: ₹${data.totalRevenue}`;
+                                    document.querySelector(".total-products").textContent = `Products: ${data.totalProducts}`;
+
+                                    populateTable(data);
+                                    createCharts(data);
+                                }
+
+                                function populateTable(data) {
+                                    const productBody = document.querySelector('.product-table tbody');
+                                    const categoryBody = document.querySelector('.category-table tbody');
+
+                                    productBody.innerHTML = data.topProducts.map(item => `<tr><td>${item.productName || 'Unknown'}</td><td>${item.count || 'Unknown'}</td></tr>`).join('');
+                                    categoryBody.innerHTML = data.topCategoryies.map(item => `<tr><td>${item.categoryName || 'Unknown'}</td><td>${item.count || 'Unknown'}</td></tr>`).join('');
+                                }
+
+                                function createCharts(data) {
+                                    if (productsChart) productsChart.destroy();
+                                    if (categoryChart) categoryChart.destroy();
+
+                                    const myChartProducts = document.getElementById("myChart-products");
+                                    categoryChart = new Chart(myChartProducts, {
+                                        type: "bar",
+                                        data: {
+                                            labels: [...data.topCategoryies.map((item) => item.categoryName)],
+                                            datasets: [
+                                                {
+                                                    label: "Most Selling Category",
+                                                    data: [...data.topCategoryies.map((item) => item.count)],
+                                                    borderWidth: 1,
+                                                },
+                                            ],
+                                        },
+                                        options: {
+                                            animation: {
+                                                duration: 0 // Disable animation
+                                            },
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true,
+                                                },
+                                            },
+                                        },
+                                    });
+
+                                    const myChartLines = document.getElementById("myChart-lines");
+                                    productsChart = new Chart(myChartLines, {
+                                        type: "line",
+                                        data: {
+                                            labels: [...data.topProducts.map((item) => item.productName)],
+                                            datasets: [
+                                                {
+                                                    label: "Most Selling Products",
+                                                    data: [...data.topProducts.map((item) => item.count)],
+                                                    borderWidth: 1,
+                                                },
+                                            ],
+                                        },
+                                        options: {
+                                            animation: {
+                                                duration: 0 // Disable animation
+                                            },
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true,
+                                                },
+                                            },
+                                        },
+                                    });
+                                }
+
+                                const filterForm = document.querySelector("#filter-form");
+                                filterForm.addEventListener("submit", async (event) => {
+                                    event.preventDefault();
+                                    let fromDate = filterForm.elements["from-date"].value;
+                                    let toDate = filterForm.elements["to-date"].value;
+                                    const filterType = document.querySelector("#filter-type").value;
+
+                                    const response = await fetch(`/admin/dashboard/data/custom?filterType=${filterType}&fromDate=${fromDate}&toDate=${toDate}`);
+                                    const data = await response.json();
+                                    if (data.error) return Swal.fire({ text: data.error, background: "red", color: "white", showConfirmButton: false });
+
+                                    updateDashboard(data);
+                                });
+
+                                function successMessage(message) {
+                                    Swal.fire({
+                                        text: message,
+                                        position: "top",
+                                        timer: 2000,
+                                        background: "green",
+                                        color: "white",
+                                        showConfirmButton: false,
+                                    });
+                                }
+
+                                function failureMessage(message) {
+                                    Swal.fire({
+                                        text: message,
+                                        position: "top",
+                                        timer: 2000,
+                                        background: "red",
+                                        color: "white",
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            </script>
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
+                            <script>
+                                function setDateRange(range) {
+                                    const now = new Date();
+                                    let startDate, endDate;
+
+                                    switch (range) {
+                                        case 'daily':
+                                            startDate = endDate = now.toISOString().split('T')[0];
+                                            break;
+                                        case 'weekly':
+                                            const firstDayOfWeek = now.getDate() - now.getDay();
+                                            startDate = new Date(now.setDate(firstDayOfWeek)).toISOString().split('T')[0];
+                                            endDate = new Date(now.setDate(firstDayOfWeek + 6)).toISOString().split('T')[0];
+                                            break;
+                                        case 'monthly':
+                                            startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+                                            endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+                                            break;
+                                        case 'yearly':
+                                            startDate = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+                                            endDate = new Date(now.getFullYear(), 11, 31).toISOString().split('T')[0];
+                                            break;
+                                        default:
+                                            return;
+                                    }
+
+                                    document.getElementById('startDate').value = startDate;
+                                    document.getElementById('endDate').value = endDate;
+                                }
+                            </script>
+
                         </div>
-                        <!-- container-scroller -->
-                        <!-- plugins:js -->
-                        <script src="/asset-temp/vendors/js/vendor.bundle.base.js"></script>
-                        <!-- endinject -->
-                        <!-- Plugin js for this page -->
-                        <script src="/asset-temp/vendors/chart.js/chart.umd.js"></script>
-                        <script src="/asset-temp/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
-                        <!-- End plugin js for this page -->
-                        <!-- inject:js -->
-                        <script src="/asset-temp/js/off-canvas.js"></script>
-                        <script src="/asset-temp/js/misc.js"></script>
-                        <script src="/asset-temp/js/settings.js"></script>
-                        <script src="/asset-temp/js/todolist.js"></script>
-                        <script src="/asset-temp/js/jquery.cookie.js"></script>
-                        <!-- endinject -->
-                        <!-- Custom js for this page -->
-                        <script src="/asset-temp/js/dashboard.js"></script>
-                        <!-- End custom js for this page -->
-                        <!-- Fetch and Display Dashboard Data -->
-                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-                        <script>
-                            let productsChart, categoryChart, myChartProducts, myChartLines;
-
-                            document.addEventListener("DOMContentLoaded", async function () {
-                                const response = await fetch("/admin/dashboard/data");
-                                const data = await response.json();
-                                updateDashboard(data);
-                            });
-
-                            async function updateDashboard(data) {
-                                document.querySelector(".total-users").textContent = `Users: ${data.totalUsers}`;
-                                document.querySelector(".total-orders").textContent = `Orders: ${data.totalOrders}`;
-                                document.querySelector(".total-revenue").textContent = `Revenue: ₹${data.totalRevenue}`;
-                                document.querySelector(".total-products").textContent = `Products: ${data.totalProducts}`;
-
-                                populateTable(data);
-                                createCharts(data);
-                            }
-
-                            function populateTable(data) {
-                                const productBody = document.querySelector('.product-table tbody');
-                                const categoryBody = document.querySelector('.category-table tbody');
-
-                                productBody.innerHTML = data.topProducts.map(item => `<tr><td>${item.productName || 'Unknown'}</td><td>${item.count || 'Unknown'}</td></tr>`).join('');
-                                categoryBody.innerHTML = data.topCategoryies.map(item => `<tr><td>${item.categoryName || 'Unknown'}</td><td>${item.count || 'Unknown'}</td></tr>`).join('');
-                            }
-
-                            function createCharts(data) {
-                                if (productsChart) productsChart.destroy();
-                                if (categoryChart) categoryChart.destroy();
-
-                                const myChartProducts = document.getElementById("myChart-products");
-                                categoryChart = new Chart(myChartProducts, {
-                                    type: "bar",
-                                    data: {
-                                        labels: [...data.topCategoryies.map((item) => item.categoryName)],
-                                        datasets: [
-                                            {
-                                                label: "Most Selling Category",
-                                                data: [...data.topCategoryies.map((item) => item.count)],
-                                                borderWidth: 1,
-                                            },
-                                        ],
-                                    },
-                                    options: {
-                                        animation: {
-                                            duration: 0 // Disable animation
-                                        },
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true,
-                                            },
-                                        },
-                                    },
-                                });
-
-                                const myChartLines = document.getElementById("myChart-lines");
-                                productsChart = new Chart(myChartLines, {
-                                    type: "line",
-                                    data: {
-                                        labels: [...data.topProducts.map((item) => item.productName)],
-                                        datasets: [
-                                            {
-                                                label: "Most Selling Products",
-                                                data: [...data.topProducts.map((item) => item.count)],
-                                                borderWidth: 1,
-                                            },
-                                        ],
-                                    },
-                                    options: {
-                                        animation: {
-                                            duration: 0 // Disable animation
-                                        },
-                                        scales: {
-                                            y: {
-                                                beginAtZero: true,
-                                            },
-                                        },
-                                    },
-                                });
-                            }
-
-                            const filterForm = document.querySelector("#filter-form");
-                            filterForm.addEventListener("submit", async (event) => {
-                                event.preventDefault();
-                                let fromDate = filterForm.elements["from-date"].value;
-                                let toDate = filterForm.elements["to-date"].value;
-                                const filterType = document.querySelector("#filter-type").value;
-
-                                const response = await fetch(`/admin/dashboard/data/custom?filterType=${filterType}&fromDate=${fromDate}&toDate=${toDate}`);
-                                const data = await response.json();
-                                if (data.error) return Swal.fire({ text: data.error, background: "red", color: "white", showConfirmButton: false });
-
-                                updateDashboard(data);
-                            });
-
-                            function successMessage(message) {
-                                Swal.fire({
-                                    text: message,
-                                    position: "top",
-                                    timer: 2000,
-                                    background: "green",
-                                    color: "white",
-                                    showConfirmButton: false,
-                                });
-                            }
-
-                            function failureMessage(message) {
-                                Swal.fire({
-                                    text: message,
-                                    position: "top",
-                                    timer: 2000,
-                                    background: "red",
-                                    color: "white",
-                                    showConfirmButton: false,
-                                });
-                            }
-                        </script>
-                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-
-
-
                     </div>
                 </div>
-            </div>
 
-            <%- include('../layouts/adminFooters.ejs') %>
+                <%- include('../layouts/adminFooters.ejs') %>

@@ -88,8 +88,6 @@ console.log("years",years,"revenueData",revenueData);
   }
 };
 
-
-
 const downloadSalesReports = async (req, res) => {
   try {
     // Get necessary data
@@ -106,86 +104,122 @@ const downloadSalesReports = async (req, res) => {
     doc.pipe(res);
 
     // Add content to the PDF document
-    doc.fontSize(20).font('Helvetica-Bold').text('Sales Report', { align: 'center' }).moveDown(0.5);
+    doc.fontSize(20).font('Helvetica-Bold').text('Sales Report', { align: 'center' }).moveDown(1);
 
     // Add table for monthly logins
     doc.fontSize(16).text('Monthly Logins', { align: 'left' }).moveDown(0.5);
+
+    const drawTable = (doc, data, startX, startY, columnWidths) => {
+      const tableTop = startY;
+      let currentY = tableTop;
+
+      // Draw table headers
+      doc.font('Helvetica-Bold');
+      data.headers.forEach((header, i) => {
+        doc.text(header, startX + columnWidths.slice(0, i).reduce((a, b) => a + b, 0), currentY);
+      });
+      currentY += 20;
+      doc.font('Helvetica');
+
+      // Draw table rows
+      data.rows.forEach(row => {
+        row.forEach((cell, j) => {
+          doc.text(cell, startX + columnWidths.slice(0, j).reduce((a, b) => a + b, 0), currentY);
+        });
+        currentY += 20;
+      });
+
+      return currentY;
+    };
+
+    // Define column widths for the monthly logins table
+    const columnWidths = [150, 150];
     const monthlyLoginsTable = {
       headers: ['Month', 'Number of Logins'],
       rows: mergedData.map(({ monthName, count }) => [monthName, count])
     };
+    const tableStartY = drawTable(doc, monthlyLoginsTable, 50, doc.y + 20, columnWidths);
 
-    const tableTop = doc.y;
-    const initialY = tableTop;
-    const initialX = 50;
-    const cellPadding = 10;
+    // Add user details and order details as separate tables
+    doc.addPage();
+    doc.fontSize(16).text('User Details', { align: 'left' }).moveDown(0.5);
 
-    // Calculate column widths based on the longest content in each column
-    const columnWidths = monthlyLoginsTable.headers.map((header, i) => {
-      const maxLength = Math.max(...monthlyLoginsTable.rows.map(row => row[i].toString().length));
-      return doc.widthOfString(header) > maxLength * 8 ? doc.widthOfString(header) : maxLength * 8; // Adjust column width as needed
-    });
+    const userDetailsTable = {
+      headers: ['Detail', 'Count'],
+      rows: [
+        ['Total Users', totalUsers],
+        ['Blocked Users', blockUser]
+      ]
+    };
+    drawTable(doc, userDetailsTable, 50, doc.y + 20, columnWidths);
 
-    // Draw table headers
-    monthlyLoginsTable.headers.forEach((header, i) => {
-      doc.text(header, initialX + i * (columnWidths[i] + cellPadding), doc.y);
-    });
+    doc.moveDown(2);
+    doc.fontSize(16).text('Order Details', { align: 'left' }).moveDown(0.5);
 
-    doc.moveDown();
-    // Draw table rows
-    monthlyLoginsTable.rows.forEach((row, i) => {
-      row.forEach((cell, j) => {
-        doc.text(cell.toString(), initialX + j * (columnWidths[j] + cellPadding), doc.y);
-      });
-      doc.moveDown();
-    });
+    const orderDetailsTable = {
+      headers: ['Detail', 'Count'],
+      rows: [
+        ['Total Orders', totalOrders],
+        ['Cancelled Orders', cancelledOrders],
+        ['Returned Orders', returnOrderCount],
+        ['Pending Orders', pendingOrdersCount],
+        ['Online Payments', onlinePayment]
+      ]
+    };
+    drawTable(doc, orderDetailsTable, 50, doc.y + 20, columnWidths);
 
-    // Add other details
-    doc.text('User Details', { underline: true });
-    doc.moveDown(); // Move down to leave space after the heading
+    doc.addPage();
 
-    doc.text(`Total Users: ${totalUsers}`);
-    doc.text(`Blocked Users: ${blockUser}`);
-    doc.moveDown();
-    doc.text('Order Details', { underline: true });
-    doc.moveDown(); // Move down to leave space after the heading
+    // Add other details as cards
+    const drawCard = (doc, title, content, startX, startY) => {
+      const cardWidth = 500;
+      const cardHeight = 100;
+      doc.rect(startX, startY, cardWidth, cardHeight).stroke();
+      doc.font('Helvetica-Bold').text(title, startX + 10, startY + 10);
+      doc.font('Helvetica').text(content, startX + 10, startY + 30);
+      return startY + cardHeight + 20;
+    };
 
-    doc.text(`Total Orders: ${totalOrders}`);
-    doc.text(`Cancelled Orders: ${cancelledOrders}`);
-    doc.text(`Total ReturnOrderCount: ${returnOrderCount}`);
-    doc.text(`Total PendingOrdersCount: ${pendingOrdersCount}`);
+    let cardStartY = 50;
+    cardStartY = drawCard(doc, 'Total Products', `Total Products: ${totalProduct}`, 50, cardStartY);
+    cardStartY = drawCard(doc, 'Total Revenue', `Total Revenue: ${totalRevenue}`, 50, cardStartY);
 
-    
-    doc.text(`Total Product: ${totalProduct}`);
-    const deliveredOrdersCount = deliveredOrders.length;
+    doc.addPage();
+    doc.fontSize(16).text('Most Selling Product', { underline: true, align: 'left' }).moveDown(0.5);
+    if (mostSellingProduct) {
+      const productDetails = `
+        Product Name: ${mostSellingProduct.productName}
+        Description: ${mostSellingProduct.description}
+        Price: ${mostSellingProduct.price}
+        Stock: ${mostSellingProduct.stock}
+        Size: ${mostSellingProduct.size}
+        Offer: ${mostSellingProduct.offer ? mostSellingProduct.offer.amount : 'No offer available'}
+      `;
+      doc.text(productDetails);
+    } else {
+      doc.text('No most selling product found');
+    }
 
-    doc.text(`Total Delivered Orders: ${deliveredOrdersCount}`);
-    doc.moveDown();
+    // Add delivered orders table
+   // doc.addPage();
+    doc.fontSize(16).text('Delivered Orders Details', { underline: true, align: 'left' }).moveDown(0.5);
 
-    doc.text('Total Revenue', { underline: true });
-    doc.text(`Total Revenue: ${totalRevenue}`);
-
-    doc.moveDown();
-    doc.text('Most Selling Product', { underline: true });
-
-if (mostSellingProduct) {
-  const productDetails = `
-    Product Name: ${mostSellingProduct.productName}
-    Description: ${mostSellingProduct.description}
-    Price: ${mostSellingProduct.price}
-    Stock: ${mostSellingProduct.stock}
-    Size: ${mostSellingProduct.size}
-    Offer: ${mostSellingProduct.offer ? mostSellingProduct.offer.amount : 'No offer available'}
-  `;
-  doc.text(productDetails);
-} else {
-  doc.text('No most selling product found');
-}
-    // Add more details as needed...
+    const deliveredOrdersTable = {
+      headers: ['Order ID', 'Customer Name', 'Products'],
+      rows: deliveredOrders.map(order => [
+        order._id,
+        order.userId.name,
+        order.products.map(p => `${p.product.productName} (Qty: ${p.quantity})`).join(', ')
+      ])
+    };
+    drawTable(doc, deliveredOrdersTable, 50, doc.y + 20, [200, 200, 250]);
 
     // Finalize the PDF document
     doc.end();
-  } catch (error) {
+  } 
+
+ 
+    catch (error) {
     console.error('Error:', error);
     res.status(500).send('An error occurred');
   }
@@ -204,19 +238,19 @@ const downloadSalesReportsExcel = async (req, res) => {
     // Add data to the worksheet
     worksheet.columns = [
       { header: 'Total Users', key: 'totalUsers' },
-      { header: 'Blocked Users', key: 'blockUser' },
+      //{ header: 'Blocked Users', key: 'blockUser' },
       { header: 'Total Orders', key: 'totalOrders' },
-      { header: 'CancelledOrders ', key: 'cancelledOrders' },
-      { header: 'TotalProduct ', key: 'totalProduct' },
-      { header: 'TotalRevenue ', key: 'totalRevenue' },
-      { header: 'DeliveredOrders ', key: 'deliveredOrders' },
-      { header: 'onlinePayment ', key: 'onlinePayment' },
-      { header: 'returnOrderCount ', key: 'returnOrderCount' },
+     // { header: 'CancelledOrders ', key: 'cancelledOrders' },
+      { header: 'Total Product ', key: 'totalProduct' },
+      { header: 'Total Revenue ', key: 'totalRevenue' },
+      //{ header: 'DeliveredOrders ', key: 'deliveredOrders' },
+      { header: 'Online Payment ', key: 'onlinePayment' },
+      { header: 'Return OrderCount ', key: 'returnOrderCount' },
 
       
     ];
 
-    worksheet.addRow({ totalUsers, blockUser,onlinePayment,totalOrders,totalProduct ,totalRevenue,deliveredOrders,returnOrderCount});
+    worksheet.addRow({ totalUsers,/* blockUser*/onlinePayment,totalOrders,totalProduct ,totalRevenue,/*deliveredOrders,*/returnOrderCount});
 
     // Write the Excel file to a stream
     const stream = new require('stream').PassThrough();

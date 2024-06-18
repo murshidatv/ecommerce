@@ -41,6 +41,7 @@ app.set('view engine', 'ejs');
 
 // Replace with the actual path to your views directory
 app.set('views', path.join(__dirname, 'views'));
+console.log('Views directory:', app.get('views'));
 
 // Serve static files from the 'public' directory
 app.use('/static', express.static(path.join(__dirname, 'public')));

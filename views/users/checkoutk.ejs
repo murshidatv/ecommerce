@@ -1,0 +1,624 @@
+
+<%- include('../layouts/productheader') %>
+
+    <div class="header-middle sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
+
+                <a href="/home" class="logo">
+                    <h2 style="color: #c66;;">KenZ</h2>
+                </a>
+
+                <nav class="main-nav">
+                    <ul class="menu sf-arrows">
+                        <li class="megamenu-container active">
+                            <a href="/home" class="sf-with-ul">Home</a>
+
+
+                        </li>
+                        <li>
+                            <a href="/product-list" class="sf-with-ul">Shop</a>
+
+                            <div class="megamenu megamenu-md">
+                                <div class="row no-gutters">
+                                    <div class="col-md-8">
+
+                                    </div><!-- End .col-md-8 -->
+
+
+                                </div><!-- End .row -->
+                            </div><!-- End .megamenu megamenu-md -->
+                        </li>
+
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-left -->
+
+            <div class="header-right">
+
+                <div class="dropdown compare-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static" title="Compare Products"
+                        aria-label="Compare Products">
+                        <i class="icon-random"></i>
+                    </a>
+
+
+                </div><!-- End .compare-dropdown -->
+
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false" data-display="static">
+                        <i class="icon-shopping-cart"></i>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-cart-products">
+
+
+                        </div><!-- End .cart-product -->
+
+                        <div class="dropdown-cart-total">
+
+                        </div>
+                        <div class="dropdown-cart-action">
+                            <a href="/cartList" class="btn btn-primary">View Cart</a>
+                        </div><!-- End .dropdown-cart-total -->
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-middle -->
+    </header><!-- End .header -->
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUZTqYvv38DZhhKiWQ4qEMiQpvB8S2zfRNp-DPYG8v-JrQqLl5_lcnD_-b8oozMh5D9Yw&usqp=CAU')">
+            <div class="container">
+                <h1 class="page-title">Checkout<span>Shop</span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="product-list">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+                    <!-- <div class="checkout-discount">
+                <form action="#">
+                    <input type="text" class="form-control" required id="checkout-discount-input">
+                    <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+                </form> -->
+                    <!-- </div>End .checkout-discount -->
+                    <form action="/place-order" method="post">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <a href="/loadcoupon" >  
+                                    <p style="border: 3px solid #c66; width: 150px;"><b>Available Coupons</b></p>  
+                                 </a>
+                                <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+                                <div class="row">
+                                    <% console.log(chosenAddress); %>
+
+                                        <div class="col-sm-6">
+                                            <label>First Name *</label>
+                                            <input type="text" class="form-control"
+                                                value="<%= chosenAddress ? chosenAddress.address[0].name : 'Not specified' %>"
+                                                required>
+                                        </div><!-- End .col-sm-6 -->
+
+                                        <div class="col-sm-6">
+                                            <label>Mobile Number</label>
+                                            <input type="text" class="form-control"
+                                                value="<%= chosenAddress ? chosenAddress.address[0].mobile : 'Not specified' %>"
+                                                required>
+                                        </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+
+
+                                <label>Address</label>
+                                <input type="text" class="form-control"
+                                    value="<%= chosenAddress ? chosenAddress.address[0].address : 'Not specified' %>"
+                                    required>
+
+                                <!-- <label>Street address *</label>
+                            <input type="text" class="form-control" placeholder="House number and Street name" required>
+                            <input type="text" class="form-control" placeholder="Appartments, suite, unit etc ..." required> -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Town / City *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].city : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>District *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].district : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>State *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].state : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+
+                                    <div class="col-sm-6">
+                                        <label>Pincode *</label>
+                                        <input type="text" class="form-control"
+                                            value="<%= chosenAddress ? chosenAddress.address[0].pincode : 'Not specified' %>"
+                                            required>
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+
+
+
+
+
+
+                            </div><!-- End .col-lg-9 -->
+                            <aside class="col-lg-3">
+                                <div class="summary">
+                                    <h3 class="summary-title text-center">Your Order</h3>
+                            
+                                    <div class="table-responsive">
+                                        <div class="table-container" style="display: flex; flex-direction: column; max-width: 100%; overflow: auto;">
+                                            <div class="table-summary-header" style="background-color: #f6c2c2; display: flex;">
+                                                <div style="flex: 1; font-weight: bold; color: black;">Product</div>
+                                                <div style="flex: 1; font-weight: bold; color: black;">Quantity</div>
+                                                <div style="flex: 1; font-weight: bold; color: black;">Total</div>
+                                            </div>
+                                            <div>
+                                                <% if (user.cart && user.cart.length > 0) { %>
+                                                    <% let totalCartPrice = 0; %>
+                                                    <% user.cart.forEach(cartItem => { %>
+                                                        <div class="table-row" style="display: flex;">
+                                                            <div style="flex: 1;"><%= cartItem.product && cartItem.product.productName ? cartItem.product.productName : 'Product Name Not Available' %></div>
+                                                            <div style="flex: 1;"><%= cartItem.quantity %></div>
+                                                            <% let itemTotal = cartItem.product && cartItem.product.price ? cartItem.quantity * cartItem.product.price : 0 %>
+                                                            <div style="flex: 1;">Rs<%= itemTotal.toFixed(2) %></div>
+                                                            <% totalCartPrice += itemTotal; %>
+                                                        </div>
+                                                    <% }) %>
+                                                    <div class="summary-total" style="background-color: #f6c2c2; font-weight: bold; display: flex;">
+                                                        <div style="flex: 2; text-align: right; padding-right: 10px;">Total:</div>
+                                                        <div style="flex: 1; text-align: center;">Rs<%= totalCartPrice.toFixed(2) %></div>
+                                                    </div>
+                                                    
+                                                    <% if (totalCartPrice < 2000) { %>
+                                                        <div class="summary-shipping" style="background-color: #f6c2c2; font-weight: bold; display: flex;">
+                                                            <div style="flex: 2; text-align: right; padding-right: 10px;">Shipping Charge:</div>
+                                                            <div style="flex: 1; text-align: center;">Rs40</div>
+                                                        </div>
+                                                    <% } else { %>
+                                                        <div id="shipping-free-message" class="shipping-free-message">Shipping is free for orders above Rs. 2000!</div>
+                                                    <% } %>
+                                                    
+                                                    <div class="coupon-section" style="background-color: #f7e7e7; display: flex;">
+    <div style="flex: 3; padding: 10px;">
+        <label for="couponCode" style="color: #333; display: block; margin-bottom: 5px;">Have a coupon code?</label>
+        <input type="text" class="form-control" name="couponCode" placeholder="" id="couponCode" style="border-color: #f1c9c9;">
+    </div>
+    <div style="flex: 2; display: flex; flex-direction: column;">
+        <button type="button" class="btn btn-primary" id="applyCoupon" style="margin-bottom: 10px;">Apply</button>
+        <button type="button" class="btn btn-secondary" id="removeCoupon">Remove</button>
+    </div>
+</div>
+<div class="toast" id="coupon-toast" style="display: none; background-color: lightblue; color: black; padding: 10px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
+    Coupon successfully added!
+</div>
+
+<div class="summary-final-total" style="background-color: #f6c2c2; font-weight: bold; display: flex;">
+    <div style="flex: 2; text-align: right; padding-right: 10px;">Final Total:</div>
+    <div id="final-total" style="flex: 1; text-align: center;">Rs<%= totalCartPrice.toFixed(2) %></div>
+</div>
+                                                <% } else { %>
+                                                    <div>No items in the cart.</div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                            
+                                    <div class="accordion-summary" id="accordion-payment">
+                                        <!-- Your accordion content goes here -->
+                                    </div>
+                            
+                                    <div class="card">
+                                        <div class="card-header" id="heading-3">
+                                            <h2 class="card-title">
+                                                <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cashOnDelivery" required>
+                                                <label for="cashOnDelivery" style="font-size: 16px; font-weight: bold;">COD</label>
+                                                <input type="radio" name="paymentMethod" value="onlinePayment" id="onlinePayment" required>
+                                                <label for="onlinePayment" style="font-size: 16px; font-weight: bold;">Online Payment</label>
+                                            </h2>
+                                        </div>
+                                    </div>
+                            
+                                    <div id="toast" style="visibility: hidden; display: none; min-width: 250px; margin-left: -125px; background-color: #333; color: red; text-align: center; border-radius: 2px; padding: 16px; position: fixed; z-index: 1; left: 50%; bottom: 30px; font-size: 17px;">
+                                        You can't choose COD for the amount that exceeds Rs. 1000
+                                    </div>
+                            
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-outline-primary-2 btn-order mt-3">
+                                            <span class="btn-text">Place Order</span>
+                                            <span class="btn-hover-text">Proceed to Checkout</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </aside>
+                            
+                            <script>
+                                document.getElementById('applyCoupon').addEventListener('click', function() {
+                                    // Logic to apply the coupon
+                                });
+                            
+                                document.getElementById('removeCoupon').addEventListener('click', function() {
+                                    // Logic to remove the coupon
+                                });
+                            </script>
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            <!--  -->
+                            
+                            <!-- End .col-lg-3 -->
+                        </div><!-- End .row -->
+                    </form>
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+    <footer class="footer footer-2">
+        <div class="footer-middle border-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="widget widget-about">
+
+
+                            <div class="widget-about-info">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                        <a href="tel:123456789">+0123 456 789</a>
+                                    </div><!-- End .col-sm-6 -->
+                                    <div class="col-sm-6 col-md-8">
+                                        <span class="widget-about-title">Payment Method</span>
+                                        <figure class="footer-payments">
+                                            <img src="assets/images/payments.png" alt="Payment methods" width="272"
+                                                height="20">
+                                        </figure><!-- End .footer-payments -->
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .widget-about-info -->
+                        </div><!-- End .widget about-widget -->
+                    </div><!-- End .col-sm-12 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="about.html">About KenZ</a></li>
+                                <li><a href="#">How to shop on KenZ</a></li>
+                                <li><a href="faq.html">FAQ</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="login.html">Log in</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Money-back guarantee!</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="cart.html">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-64 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-middle -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">Copyright © 2024 KenZ Store. All Rights Reserved.</p>
+                <!-- End .footer-copyright -->
+                <ul class="footer-menu">
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul><!-- End .footer-menu -->
+                <div class="social-icons social-icons-color">
+                    <span class="social-label"></span>
+                    <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                            class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                            class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                            class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                            class="icon-youtube"></i></a>
+                    <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+                            class="icon-pinterest"></i></a>
+                </div><!-- End .soial-icons -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+    </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="home.ejs">Home</a>
+
+                    <li>
+                        <a href="/category">Shop</a>
+
+                    </li>
+                    <li>
+                        <a href="/product-list" class="sf-with-ul">Product</a>
+
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+
+
+
+    <!-- Add this script section at the end of your EJS file -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const couponCodeInput = document.getElementById('couponCode');
+        const applyCouponButton = document.getElementById('applyCoupon');
+        const removeCouponButton = document.getElementById('removeCoupon');
+        const couponToast = document.getElementById('coupon-toast');
+        const finalTotalElement = document.getElementById('final-total');
+    
+        applyCouponButton.addEventListener('click', async function () {
+            const couponCode = couponCodeInput.value;
+    
+            const response = await fetch('/applycoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: '<%= user._id %>', // Ensure user ID is available in the template context
+                    couponCode: couponCode
+                }),
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                const { discountAmount, totalAmountAfterDiscount } = responseData;
+    
+                // Update UI to reflect the discount
+                couponToast.style.display = 'block';
+                finalTotalElement.innerHTML = `Rs${totalAmountAfterDiscount.toFixed(2)}`;
+    
+                // Optionally, you can display a success message or update other parts of the UI
+            } else {
+                console.error('Failed to apply coupon:', response.statusText);
+            }
+        });
+    
+        removeCouponButton.addEventListener('click', async function () {
+            const response = await fetch('/removecoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: '<%= user._id %>', // Ensure user ID is available in the template context
+                }),
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                const { cartTotal } = responseData;
+    
+                // Update UI to remove the coupon and revert to original total
+                couponToast.style.display = 'none';
+                finalTotalElement.innerHTML = `Rs${cartTotal.toFixed(2)}`;
+    
+                // Clear the coupon input field
+                couponCodeInput.value = '';
+    
+                // Optionally, you can display a success message or update other parts of the UI
+            } else {
+                console.error('Failed to remove coupon:', response.statusText);
+            }
+        });
+    });
+    </script>
+     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const couponCodeInput = document.getElementById('couponCode');
+        const applyCouponButton = document.getElementById('applyCoupon');
+        const removeCouponButton = document.getElementById('removeCoupon');
+        const couponToast = document.getElementById('coupon-toast');
+        const finalTotalElement = document.getElementById('final-total');
+    
+        applyCouponButton.addEventListener('click', async function () {
+            const couponCode = couponCodeInput.value;
+    
+            const response = await fetch('/apply-coupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: '<%= user._id %>',
+                    couponCode: couponCode
+                }),
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                const { discountAmount, totalAmountAfterDiscount } = responseData;
+    
+                // Update UI to reflect the discount
+                couponToast.style.display = 'block';
+                finalTotalElement.innerHTML = `Rs${totalAmountAfterDiscount.toFixed(2)}`;
+    
+                // Optionally, you can display a success message or update other parts of the UI
+            } else {
+                console.error('Failed to apply coupon:', response.statusText);
+            }
+        });
+    
+        removeCouponButton.addEventListener('click', async function () {
+            const response = await fetch('/remove-coupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: '<%= user._id %>',
+                }),
+            });
+    
+            if (response.ok) {
+                const responseData = await response.json();
+                const { cartTotal } = responseData;
+    
+                // Update UI to remove the coupon and revert to original total
+                couponToast.style.display = 'none';
+                finalTotalElement.innerHTML = `Rs${cartTotal.toFixed(2)}`;
+    
+                // Optionally, you can display a success message or update other parts of the UI
+            } else {
+                console.error('Failed to remove coupon:', response.statusText);
+            }
+        });
+    });
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const couponForm = document.getElementById('coupon-form');
+          const discountAmountElement = document.getElementById('discount-amount');
+      
+          couponForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+      
+            // Get the coupon code from the input field
+            const couponCode = document.getElementById('coupon-code').value;
+      
+            // Make a fetch request to apply the coupon
+            const response = await fetch('/place-order', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: `couponCode=${encodeURIComponent(couponCode)}`,
+            });
+      
+            // Check if the response is successful
+            if (response.ok) {
+              // Parse the response text as HTML
+              const responseData = await response.text();
+      
+              // Replace the content of the discountAmountElement with the updated discount amount
+              discountAmountElement.innerHTML = responseData;
+      
+              // Optionally, you can display a success message or update other parts of the UI
+            } else {
+              // Handle error response, display an error message, etc.
+              console.error('Failed to apply coupon:', response.statusText);
+            }
+          });
+        });
+      </script>
+      <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const totalCartPrice = parseFloat("<%= totalCartPrice.toFixed(2) %>");
+            const shippingCharge = totalCartPrice < 2000 ? 40 : 0;
+            const finalTotal = totalCartPrice + shippingCharge;
+            const codRadioButton = document.getElementById('cashOnDelivery');
+            const onlinePaymentRadioButton = document.getElementById('onlinePayment');
+            const toast = document.getElementById('toast');
+    
+            codRadioButton.addEventListener('click', function() {
+                if (finalTotal > 1000) {
+                    showToast();
+                    // Prevent COD selection
+                    codRadioButton.checked = false;
+                }
+            });
+    
+            function showToast() {
+                toast.style.visibility = 'visible';
+                toast.style.display = 'block'; // Make the toast visible
+                setTimeout(() => {
+                    toast.style.visibility = 'hidden';
+                    toast.style.display = 'none'; // Hide the toast after 3 seconds
+                }, 3000);
+            }
+        });
+    </script>
+    
+    <%- include('../layouts/productfooter.ejs') %>

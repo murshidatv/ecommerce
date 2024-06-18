@@ -21,6 +21,10 @@ const verifyLogin = async(req,res)=>{
         // Retrieve email and password from request body
         const email = req.body.email;
         const password = req.body.password;
+          // Check if email or password is blank
+          if (!email || !password) {
+            return res.render('login', { message: "Email and password are required." });
+        }
         // Find user by email
         const userData = await User.findOne({email:email});
         if(userData){
@@ -29,7 +33,9 @@ const verifyLogin = async(req,res)=>{
             if(passwordMatch){
                 // If user is an admin, set session and redirect to admin home
                 if(userData.is_admin === 0){
-                    res.render('login',{message:"Email or password is incorrect."});
+                   // res.render('login',{message:"Email or password is incorrect."});
+                   // Render the login page without any message
+                return res.render('login');
                     
                 }
                 else{
@@ -39,11 +45,15 @@ const verifyLogin = async(req,res)=>{
             }
             else{
                 res.render('login',{message:"Email or password is incorrect."});
+                // Render the login page without any message
+               // return res.render('login');
             }
 
         }
         else{
             res.render('login',{message:"Email or password is incorrect."});
+            // Render the login page without any message
+           // return res.render('login');
         }
 
     }catch(error){
