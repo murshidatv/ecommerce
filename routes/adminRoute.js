@@ -147,26 +147,30 @@ admin_route.get('/sales/excel/:reportType', auth.isLogin, admSalesReportControll
 admin_route.get('/top-categories', auth.isLogin, admSalesReportController.getTopCategories);
 
 
-//const { generateReport, renderDashboard } = require('../controllers/admin/reportController');
+const { generateReport, renderDashboard } = require('../controllers/admin/reportController');
 
 
-//admin_route.get('/dashboard', renderDashboard);
+admin_route.get('/dashboard', renderDashboard);
 
 
 
 
 //const {  generateReport,renderGenerateReportPage} = require('../controllers/admin/reportController');
 //admin_route.get('/dashboard', renderDashboard);
-//admin_route.get('/report', generateReport);
+admin_route.get('/report', generateReport);
 //const reportController = require('../controllers/admin/reportController');
 
 //admin_route.get('/dashboard', reportController.renderDashboard);
 //admin_route.get('/generate-report', reportController.generateReport);*/
 //const reportController = require('../controllers/admin/reportController');
-admin_route.get('/generate-report', reportController.renderGenerateReportPage);
-admin_route.get('/generate-report-data', reportController.generateReport);
+//admin_route.get('/generate-report', reportController.renderGenerateReportPage);
+//admin_route.get('/generate-report-data', reportController.generateReport);
 
+// Route to render the generate report page
+//admin_route.get('/generate-report', reportController.renderGenerateReportPage);
 
+// Route to handle form submission for generating reports
+//admin_route.get('/generate-report', reportController.generateReport);
 
 
 admin_route.get('*',function(req,res){

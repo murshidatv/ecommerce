@@ -1,4 +1,4 @@
-/*
+
 
 const Order = require('../../models/orderModel');
 const moment = require('moment');
@@ -119,18 +119,22 @@ const generateExcel = (orders, res) => {
     }
   });
 };
-*/
+
+
+/*
 const Order = require('../../models/orderModel');
 const moment = require('moment');
 const PDFDocument = require('pdfkit');
+const ejs = require('ejs');
 const json2xls = require('json2xls');
 const fs = require('fs');
 const path = require('path');
 
+
 const renderGenerateReportPage = (req, res) => {
   res.render('admin/generateReport');
 };
-
+/*
 const generateReport = async (req, res) => {
   const { type, startDate, endDate } = req.query;
 
@@ -152,6 +156,37 @@ const generateReport = async (req, res) => {
       generateExcel(reportData, res);
     } else {
       res.status(400).send('Invalid report type');
+    }
+  } catch (err) {
+    console.error(err); // Log any errors
+    res.status(500).send(err.message);
+  }
+};
+*/
+/*
+const generateReport = async (req, res) => {
+  const { type, startDate, endDate } = req.query;
+
+  let start = startDate ? moment(startDate).startOf('day') : moment().startOf('year');
+  let end = endDate ? moment(endDate).endOf('day') : moment().endOf('day');
+
+  try {
+    const orders = await Order.find({
+      orderDate: { $gte: start.toDate(), $lte: end.toDate() }
+    }).populate('userId');
+
+    console.log(`Orders found: ${orders.length}`); // Logging the number of orders found
+
+    const reportData = aggregateReportData(orders);
+
+    // Determine the appropriate response based on the report type
+    if (type === 'pdf') {
+      generatePDF(reportData, res);
+    } else if (type === 'excel') {
+      generateExcel(reportData, res);
+    } else {
+      // If neither pdf nor excel, render the view with reportData
+      res.render('admin/generateReport', { reportData });
     }
   } catch (err) {
     console.error(err); // Log any errors
@@ -313,4 +348,4 @@ const generateExcel = (reportData, res) => {
 module.exports ={
   generateReport,
   renderGenerateReportPage,
-}
+}*/

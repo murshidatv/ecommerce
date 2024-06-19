@@ -585,7 +585,114 @@
                                                 -->
                                                     
                                                     
- 
+                                                    
+                                                
+<div class="report-container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Sales Report</h4>
+        </div>
+        <div class="card-body">
+            <form id="filter-form" action="/admin/report" method="get">
+                <div class="form-row">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" name="startDate">
+                </div>
+                <div class="form-row">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" name="endDate">
+                </div>
+                <div class="form-row">
+                    <label for="report-type">Report Type:</label>
+                    <select id="report-type" name="type">
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Generate Report</button>
+            </form>
+            <div class="button-group">
+                <button onclick="setDateRange('daily')">Daily</button>
+                <button onclick="setDateRange('weekly')">Weekly</button>
+                <button onclick="setDateRange('monthly')">Monthly</button>
+                <button onclick="setDateRange('yearly')">Yearly</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <style>
+  .report-container {
+    width: 100%;
+    max-width: 600px;
+    margin :0 auto;
+    padding: 20px;
+  }
+  
+  .card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .card-header {
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+  }
+  
+  .card-header h4 {
+    margin: 0;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .form-row {
+    margin-bottom: 10px;
+  }
+  
+  .form-row label {
+    display: block;
+  }
+  
+  .form-row input,
+  .form-row select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .btn-submit {
+    display: block;
+    width: 94%;
+    padding: 10px;
+    margin-top: 20px;
+    background: #28a745;
+    color: white;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  .button-group button {
+    width: calc(25% - 10px);
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #17a2b8;
+    color: white;
+    border-radius: 4px;
+    border: none;
+  }
+  
+  @media (max-width: 768px) {
+    .button-group button {
+        width: calc(50% - 10px);
+    }
+  }
+  
+  </style>
   
 
 
@@ -847,6 +954,3 @@
                 </div>
 
                 <%- include('../layouts/adminFooters.ejs') %>
-
-
-
