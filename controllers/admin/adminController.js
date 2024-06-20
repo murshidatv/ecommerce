@@ -5,79 +5,76 @@ const randomstring = require('randomstring');
 const securePassword = require('secure-password');
 const Product = require('../../models/productModel');
 const Add_User = require("../../models/adminModel");
- 
 
-const loadlogin = async(req,res)=>{
-    try{
-    // Render the login page
+
+const loadlogin = async (req, res) => {
+    try {
+        // Render the login page
         res.render('login');
-    }catch(error){
+    } catch (error) {
         console.log(error.meassage);
     }
 
 }
-const verifyLogin = async(req,res)=>{
-    try{
+const verifyLogin = async (req, res) => {
+    try {
         // Retrieve email and password from request body
         const email = req.body.email;
         const password = req.body.password;
-          // Check if email or password is blank
-          if (!email || !password) {
+        // Check if email or password is blank
+        if (!email || !password) {
             return res.render('login', { message: "Email and password are required." });
         }
         // Find user by email
-        const userData = await User.findOne({email:email});
-        if(userData){
-        // Compare passwords
-            const passwordMatch = await bcrypt.compare(password,userData.password);
-            if(passwordMatch){
+        const userData = await User.findOne({ email: email });
+        if (userData) {
+            // Compare passwords
+            const passwordMatch = await bcrypt.compare(password, userData.password);
+            if (passwordMatch) {
                 // If user is an admin, set session and redirect to admin home
-                if(userData.is_admin === 0){
-                   // res.render('login',{message:"Email or password is incorrect."});
-                   // Render the login page without any message
-                return res.render('login');
-                    
+                if (userData.is_admin === 0) {
+                    // res.render('login',{message:"Email or password is incorrect."});
+                    // Render the login page without any message
+                    return res.render('login');
+
                 }
-                else{
+                else {
                     req.session.user_id = userData._id;
                     res.redirect("/admin/home");
                 }
             }
-            else{
-                res.render('login',{message:"Email or password is incorrect."});
+            else {
+               // res.render('login', { message: "Email or password is incorrect." });
                 // Render the login page without any message
-               // return res.render('login');
+                 return res.render('login');
             }
 
         }
-        else{
-            res.render('login',{message:"Email or password is incorrect."});
+        else {
+           // res.render('login', { message: "Email or password is incorrect." });
             // Render the login page without any message
-           // return res.render('login');
+           return res.render('login');
         }
 
-    }catch(error){
+    } catch (error) {
         console.log(error.message);
 
     }
 }
 
-const loadDashboard = async(req,res)=>{
-try{
-    // Load user data and render the home page
-    const userData = await User.findById({_id:req.session.user_id});
-    res.render('dashboard',{admin:userData});
+const loadDashboard = async (req, res) => {
+    try {
+        // Load user data and render the home page
+        const userData = await User.findById({ _id: req.session.user_id });
+        res.render('dashboard', { admin: userData });
 
-}catch(error){
-    console.log(error.message);
+    } catch (error) {
+        console.log(error.message);
+    }
 }
-}
 
 
-
-
-
-const getUserDetailsAndOrders  = async () => {
+const getUserDetailsAndOrders = async () => {
     try {
         // Aggregate user logins by month with month names
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -96,7 +93,7 @@ const getUserDetailsAndOrders  = async () => {
             },
             { $sort: { "_id": 1 } }
         ]);
-        
+
         // Generate data for all months, filling in missing months with count 0
         const allMonths = Array.from({ length: 12 }, (_, index) => {
             const month = index + 1;
@@ -163,68 +160,58 @@ const getUserDetailsAndOrders  = async () => {
 };
 const getTotalRevenue = async () => {
     try {
-      const orders = await Order.find({
-        $or: [
-          { payment: 'onlinePayment' }, // Only consider orders with online payment
-          { $and: [ 
-            { payment: 'COD' },
-            { status: 'Delivered' },
-            { returned: { $ne: true } },
-            { 'cancellation.isCancelled': { $ne: true } }
-          ]}
-        ]
-      });
-  
-      // Calculate total revenue
-      let totalRevenue = 0;
-      orders.forEach(order => {
-        totalRevenue += order.totalAmount;
-      });
-  
-      return totalRevenue;
+        const orders = await Order.find({
+            $or: [
+                { payment: 'onlinePayment' }, // Only consider orders with online payment
+                {
+                    $and: [
+                        { payment: 'COD' },
+                        { status: 'Delivered' },
+                        { returned: { $ne: true } },
+                        { 'cancellation.isCancelled': { $ne: true } }
+                    ]
+                }
+            ]
+        });
+
+        // Calculate total revenue
+        let totalRevenue = 0;
+        orders.forEach(order => {
+            totalRevenue += order.totalAmount;
+        });
+
+        return totalRevenue;
     } catch (error) {
-      console.error('Error calculating total revenue:', error);
-      return null;
+        console.error('Error calculating total revenue:', error);
+        return null;
     }
-  };
-  
+};
 
-
-
-
-
-
-
-
-const logout = async(req,res)=>{
-    try{
+const logout = async (req, res) => {
+    try {
         // Destroy session and redirect to admin login page
         req.session.destroy();
         res.redirect('/admin');
 
-    }catch(error){
+    } catch (error) {
         console.log(error.message);
     }
 }
 
 
-
-
-
-
-const adminDashboard = async(req,res)=>{
-    try{
+const adminDashboard = async (req, res) => {
+    try {
         // Retrieve regular users and render the user list page
-        const usersData = await User.find({is_admin:0});
-        res.render('userlist',{users:usersData});
-  
+        const usersData = await User.find({ is_admin: 0 });
+        res.render('userlist', { users: usersData });
+
         /*const adminData = await Add_User.find();
         res.render('dashboard',{users:adminData});*/
 
-    }catch(error){
+    } catch (error) {
         console.log(error.message);
     }
-   
+
 }
 
 const listUser = async (req, res) => {
@@ -236,7 +223,7 @@ const listUser = async (req, res) => {
 
         // Filtering
         const filter = {};
-       
+
 
         // Search
         const searchQuery = req.query.search;
@@ -288,7 +275,7 @@ const blockUser = async (req, res) => {
 
 //--------------------------------------------------------------------------------------------------------------
 
-const dashBoardDetails = async ( req, res ) => {
+const dashBoardDetails = async (req, res) => {
     const topProducts = await getTopProductsSale();
     const topCategoryies = await getTopCategoryies();
     const totalUsers = await usersCount();
@@ -297,27 +284,27 @@ const dashBoardDetails = async ( req, res ) => {
     // const topBrands = await topSaledBrands();
     const totalProducts = await Product.find({}).countDocuments();
     return res.status(200).json({ topProducts, topCategoryies, totalUsers, totalOrders, totalRevenue, totalProducts });
-  }
-  const customDetails = async ( req, res ) => {
+}
+const customDetails = async (req, res) => {
     let { fromDate, toDate, filterType } = req.query;
-    try{
-        if(filterType === 'custom') {
-            if(new Date(fromDate) >= new Date(toDate)) return res.status(200).json({ error: 'from Date should be before the to Date'});
-            if(!fromDate || !toDate) return res.status(404).json({ error: 'Change the filter or choose the Date'});
-        }else if(filterType === 'daily'){
+    try {
+        if (filterType === 'custom') {
+            if (new Date(fromDate) >= new Date(toDate)) return res.status(200).json({ error: 'from Date should be before the to Date' });
+            if (!fromDate || !toDate) return res.status(404).json({ error: 'Change the filter or choose the Date' });
+        } else if (filterType === 'daily') {
             toDate = new Date();
             fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() - 1);
-        }else if(filterType === 'weekly'){
+        } else if (filterType === 'weekly') {
             toDate = new Date();
             fromDate = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate() - 7);
-        }else if(filterType ==='monthly'){
+        } else if (filterType === 'monthly') {
             toDate = new Date();
             fromDate = new Date(toDate.getFullYear(), toDate.getMonth() - 1, toDate.getDate());
-        }else if( filterType === 'yearly') {
+        } else if (filterType === 'yearly') {
             toDate = new Date();
-            fromDate = new Date(toDate.getFullYear() -1 , toDate.getMonth(), toDate.getDate());
-        }else {
-            return res.status(400).json({ message: 'wrong filter type'});
+            fromDate = new Date(toDate.getFullYear() - 1, toDate.getMonth(), toDate.getDate());
+        } else {
+            return res.status(400).json({ message: 'wrong filter type' });
         }
         const topProducts = await getTopProductsSale(fromDate, toDate);
         const topCategoryies = await getTopCategoryies(fromDate, toDate);
@@ -327,193 +314,190 @@ const dashBoardDetails = async ( req, res ) => {
         // const topBrands = await topSaledBrands(fromDate, toDate);
         const totalProducts = await Product.find({}).countDocuments();
         return res.status(200).json({ topProducts, topCategoryies, totalUsers, totalOrders, totalRevenue, totalProducts, topBrands });
-    }catch(err){
+    } catch (err) {
         console.log(`Error inside customDetails : \n${err}`);
     }
-  }
-  async function usersCount(fromDate, toDate) {
+}
+async function usersCount(fromDate, toDate) {
     let noOfUsers;
-    if(fromDate && toDate){
-        noOfUsers = await User.find({ created_at: { $gte: new Date(fromDate), $lte: new Date(toDate) }}).countDocuments();
-    }else {
+    if (fromDate && toDate) {
+        noOfUsers = await User.find({ created_at: { $gte: new Date(fromDate), $lte: new Date(toDate) } }).countDocuments();
+    } else {
         noOfUsers = await User.find({}).countDocuments();
     }
     return noOfUsers;
-  }
-  
-  async function orderCount(fromDate, toDate) {
+}
+
+async function orderCount(fromDate, toDate) {
     let noOfOrders;
-    if(fromDate && toDate){
-        noOfOrders = await Order.find({ deliveredAt: { $gte: new Date(fromDate), $lte: new Date(toDate) }}).countDocuments();
-    }else {
+    if (fromDate && toDate) {
+        noOfOrders = await Order.find({ deliveredAt: { $gte: new Date(fromDate), $lte: new Date(toDate) } }).countDocuments();
+    } else {
         noOfOrders = await Order.find({}).countDocuments();
     }
     return noOfOrders;
-  }
-  
-  
-  const getRevenueAmount = async (fromDate, toDate) => {
+}
+
+
+const getRevenueAmount = async (fromDate, toDate) => {
     try {
-      let matchStage = {
-        $or: [
-          { payment: 'onlinePayment' },
-          {
-            payment: 'COD',
-            status: 'Delivered',
-            returned: { $ne: true },
-            'cancellation.isCancelled': { $ne: true }
-          }
-        ]
-      };
-  
-      if (fromDate && toDate) {
-        matchStage.deliveredAt = {
-          $gte: new Date(fromDate),
-          $lte: new Date(toDate)
+        let matchStage = {
+            $or: [
+                { payment: 'onlinePayment' },
+                {
+                    payment: 'COD',
+                    status: 'Delivered',
+                    returned: { $ne: true },
+                    'cancellation.isCancelled': { $ne: true }
+                }
+            ]
         };
-      }
-  
-      const orders = await Order.find(matchStage);
-  
-      // Calculate total revenue
-      let totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
-  
-      return totalRevenue;
-    } catch (error) {
-      console.error('Error calculating total revenue:', error);
-      return null;
-    }
-  };
-  
-  
-  
-  
-  const getTopProductsSale = async (fromDate, toDate) => {
-      try {
-          let pipeline = [];
-  
-          if (fromDate && toDate) {
-              pipeline = [
-                  {
-                      $match: {
-                          deliveredAt: {
-                              $gte: new Date(fromDate),
-                              $lte: new Date(toDate)
-                          }
-                      }
-                  }
-              ];
-          }
-  
-          pipeline.push(
-              {
-                  $unwind: '$products'
-              },
-              {
-                  $group: {
-                      _id: '$products.product', // Corrected field reference
-                      count: { $sum: '$products.quantity' } // Consider the quantity of each product
-                  }
-              },
-              {
-                  $lookup: {
-                      from: 'products',
-                      localField: '_id',
-                      foreignField: '_id',
-                      as: 'productInfo'
-                  }
-              },
-              {
-                  $project: {
-                      _id: 1,
-                      count: 1,
-                      productName: { $arrayElemAt: ['$productInfo.productName', 0] } // Ensure correct field reference
-                  }
-              }
-          );
-  
-          const productsSale = await Order.aggregate(pipeline);
-          return productsSale;
-      } catch (error) {
-          console.error('Error getting top products sale:', error);
-          throw error;
-      }
-  };
-  
-  
-  
-  const getTopCategoryies = async (fromDate, toDate) => {
-    try {
-      let pipeline = [];
-  
-      if (fromDate && toDate) {
-        pipeline = [
-          {
-            $match: {
-              orderDate: {
+
+        if (fromDate && toDate) {
+            matchStage.deliveredAt = {
                 $gte: new Date(fromDate),
                 $lte: new Date(toDate)
-              }
-            }
-          }
-        ];
-      }
-  
-      pipeline.push(
-        {
-          $unwind: '$products'
-        },
-        {
-          $lookup: {
-            from: 'products',
-            localField: 'products.product',
-            foreignField: '_id',
-            as: 'productInfo'
-          }
-        },
-        {
-          $unwind: '$productInfo'
-        },
-        {
-          $lookup: {
-            from: 'categories',
-            localField: 'productInfo.category',
-            foreignField: '_id',
-            as: 'categoryInfo'
-          }
-        },
-        {
-          $unwind: '$categoryInfo'
-        },
-        {
-          $group: {
-            _id: '$categoryInfo.categoryName',
-            count: { $sum: '$products.quantity' } // Assuming each product has a 'quantity' field
-          }
-        },
-        {
-          $project: {
-            categoryName: '$_id',
-            count: 1,
-            _id: 0
-          }
+            };
         }
-      );
-  
-      const categoriesSale = await Order.aggregate(pipeline);
-      return categoriesSale;
+
+        const orders = await Order.find(matchStage);
+
+        // Calculate total revenue
+        let totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
+
+        return totalRevenue;
     } catch (error) {
-      console.error('Error getting top categories sale:', error);
-      throw error;
+        console.error('Error calculating total revenue:', error);
+        return null;
     }
-  }
-  
-  
-  
-  async function getNoOfPayments(fromDate, toDate) {
+};
+
+const getTopProductsSale = async (fromDate, toDate) => {
+    try {
+        let pipeline = [];
+
+        if (fromDate && toDate) {
+            pipeline = [
+                {
+                    $match: {
+                        deliveredAt: {
+                            $gte: new Date(fromDate),
+                            $lte: new Date(toDate)
+                        }
+                    }
+                }
+            ];
+        }
+
+        pipeline.push(
+            {
+                $unwind: '$products'
+            },
+            {
+                $group: {
+                    _id: '$products.product', // Corrected field reference
+                    count: { $sum: '$products.quantity' } // Consider the quantity of each product
+                }
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'productInfo'
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    count: 1,
+                    productName: { $arrayElemAt: ['$productInfo.productName', 0] } // Ensure correct field reference
+                }
+            }
+        );
+
+        const productsSale = await Order.aggregate(pipeline);
+        return productsSale;
+    } catch (error) {
+        console.error('Error getting top products sale:', error);
+        throw error;
+    }
+};
+
+
+
+const getTopCategoryies = async (fromDate, toDate) => {
+    try {
+        let pipeline = [];
+
+        if (fromDate && toDate) {
+            pipeline = [
+                {
+                    $match: {
+                        orderDate: {
+                            $gte: new Date(fromDate),
+                            $lte: new Date(toDate)
+                        }
+                    }
+                }
+            ];
+        }
+
+        pipeline.push(
+            {
+                $unwind: '$products'
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'products.product',
+                    foreignField: '_id',
+                    as: 'productInfo'
+                }
+            },
+            {
+                $unwind: '$productInfo'
+            },
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: 'productInfo.category',
+                    foreignField: '_id',
+                    as: 'categoryInfo'
+                }
+            },
+            {
+                $unwind: '$categoryInfo'
+            },
+            {
+                $group: {
+                    _id: '$categoryInfo.categoryName',
+                    count: { $sum: '$products.quantity' } // Assuming each product has a 'quantity' field
+                }
+            },
+            {
+                $project: {
+                    categoryName: '$_id',
+                    count: 1,
+                    _id: 0
+                }
+            }
+        );
+
+        const categoriesSale = await Order.aggregate(pipeline);
+        return categoriesSale;
+    } catch (error) {
+        console.error('Error getting top categories sale:', error);
+        throw error;
+    }
+}
+
+
+
+async function getNoOfPayments(fromDate, toDate) {
     try {
         const pipeline = [];
-  
+
         // Match orders within the specified date range
         if (fromDate && toDate) {
             pipeline.push({
@@ -525,7 +509,7 @@ const dashBoardDetails = async ( req, res ) => {
                 }
             });
         }
-  
+
         // Group by payment method
         pipeline.push({
             $group: {
@@ -533,20 +517,20 @@ const dashBoardDetails = async ( req, res ) => {
                 count: { $sum: 1 }
             }
         });
-  
+
         const noOfPayment = await Order.aggregate(pipeline);
         return noOfPayment;
     } catch (err) {
         console.log(`Error on getNoOfPayments ${err}`);
         throw err; // Rethrow the error to be handled by the caller
     }
-  }
-  
-  
-  async function getProductStatus(fromDate, toDate) {
+}
+
+
+async function getProductStatus(fromDate, toDate) {
     try {
         const pipeline = [];
-  
+
         // Match orders within the specified date range
         if (fromDate && toDate) {
             pipeline.push({
@@ -558,10 +542,10 @@ const dashBoardDetails = async ( req, res ) => {
                 }
             });
         }
-        
+
         // Unwind the products array to work with each product separately
         pipeline.push({ $unwind: "$products" });
-  
+
         // Project fields and define status based on product fields
         pipeline.push({
             $project: {
@@ -591,7 +575,7 @@ const dashBoardDetails = async ( req, res ) => {
                 }
             }
         });
-  
+
         // Group by status and count the number of products in each status group
         pipeline.push({
             $group: {
@@ -599,72 +583,27 @@ const dashBoardDetails = async ( req, res ) => {
                 count: { $sum: 1 }
             }
         });
-  
+
         const productStatus = await Order.aggregate(pipeline);
         return productStatus;
     } catch (err) {
         console.log(`Error on getProductStatus: ${err}`);
         throw err;
     }
-  }
-  
-  
-  // async function topSaledBrands(fromDate, toDate) {
-  //   try {
-  //     const pipeline = [];
-  
-  //     // Filter by date range (if provided)
-  //     if (fromDate && toDate) {
-  //       pipeline.push({
-  //         $match: {
-  //           deliveredAt: {
-  //             $gte: new Date(fromDate),
-  //             $lte: new Date(toDate),
-  //           },
-  //         },
-  //       });
-  //     }
-  
-  //     // Group by brand and count documents
-  //     pipeline.push({
-  //       $group: {
-  //         _id: "$brand",
-  //         count: { $sum: 1 },
-  //       },
-  //     });
-  
-  //     // Sort by count in descending order
-  //     pipeline.push({
-  //       $sort: {
-  //         count: -1,
-  //       },
-  //     });
-  
-  //     const brands = await Product.aggregate(pipeline);
-  //     return brands
-  //   } catch (err) {
-  //     console.log(`Error at topSaledBrands: ${err}`);
-  //   }
-  // }
-  
-  
+}
+
 
 module.exports = {
     loadlogin,
     verifyLogin,
     logout,
-   
+
     adminDashboard,
     loadDashboard,
-    /*newUserLoad,
-    addUser,
-    editUserLoad,
-    updateUsers,
-    deleteUser,
-    */
+    
     getTopProductsSale,
     getTopCategoryies,
-     
+
     getUserDetailsAndOrders,
     getTotalRevenue,
     dashBoardDetails,

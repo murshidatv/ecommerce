@@ -1,4 +1,4 @@
-// const moment = require('moment');
+
 const Order = require('../../models/orderModel');
 const User = require("../../models/userModel");
 const Product = require("../../models/productModel");
@@ -6,6 +6,7 @@ const Category = require("../../models/categoryModel");
 const excel4node = require('excel4node');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+// const moment = require('moment');
 const salesReportGet = async (req, res) => {
     try {
         let orders = await Order.find({}).populate('userId');
@@ -411,10 +412,6 @@ async function getProductStatus(fromDate, toDate) {
     }
 }
   
-  
-  
-  
-  
 const genPdfGet = async (req, res) => {
     try {
         const reportType = req.params.reportType;
@@ -542,9 +539,6 @@ function generateHr(doc, y) {
         .stroke();
 }
 
-  
-  
-  
   
 const salesReportExcelGet = async (req, res) => {
     try {

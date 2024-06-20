@@ -28,10 +28,6 @@ const razorpayInstance = new Razorpay({
   key_secret: RAZORPAY_SECRET_KEY,
 });
 
-
-
-
-
 const { product } = require('../admin/categoryController');
 const { render } = require('ejs');
 
@@ -47,120 +43,6 @@ const strongPassword = async (password) => {
   }
 }
 
-/*
-
-const googleAuth = async (req, res) => {
-  try {
-    const user = req.body.user;
-    
-    const email = user.email;
-    // Check if user already exists
-    let userData;
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      // User already exists, set session for existing user
-      req.session.user_id = existingUser._id;
-      userData = existingUser;
-    } else {
-      // Create a new user
-      const newuser = new User({
-        name: user.displayName,
-        email: user.email,
-        mobile: user.phoneNumber,
-      });
-
-      userData = await newuser.save();
-    }
-
-    // If user data is successfully obtained, respond with success message
-    if (userData) {
-      
-      return res.json({
-        success: true,
-        message: "User data saved successfully",
-      });
-    } else {
-      // If user data retrieval fails, render registration page with error message
-      return res.render("signUp", { errmessage: "." });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
-*/
-/*
-const { google } = require('googleapis');
-const { OAuth2Client } = require('google-auth-library');
-
-require('dotenv').config();
-
-const googleClient = new OAuth2Client({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    redirectUri: process.env.GOOGLE_REDIRECT_URI
-});
-
-const generateToken = (userId) => {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET);
-    return token;
-};
-
-const googleAuthCallback = async (req, res) => {
-    try {
-        const { code } = req.query;
-
-        // Exchange authorization code for access token
-        const { tokens } = await googleClient.getToken(code);
-        googleClient.setCredentials(tokens);
-
-        // Retrieve user info using access token
-        const { data } = await googleClient.request({
-            url: 'https://www.googleapis.com/oauth2/v3/userinfo',
-            method: 'GET',
-        });
-
-        // Extract user's email and name from the response data
-        const email = data.email;
-        const name = data.name;
-
-        // Find or create the user based on the Google profile data
-        let user = await User.findOne({ email });
-        if (!user) {
-            user = await User.create({ email, name });
-        }
-
-        // Generate JWT token
-        const jwtToken = generateToken(user._id);
-        user.jwt_token = jwtToken;
-        await user.save();
-
-        // Redirect to home page with JWT token
-        res.cookie('jwt', jwtToken, { httpOnly: true });
-        res.redirect('/home');
-    } catch (error) {
-        console.error('Error in Google Auth Callback:', error);
-        res.redirect('/login');
-    }
-};
-
-const googleAuth = async (req, res) => {
-    try {
-        const redirectUri = 'http://localhost:4000/userVerification/google/callback'; // Replace with your actual redirect URI
-        const url = googleClient.generateAuthUrl({
-            access_type: 'offline',
-            scope: ['email', 'profile'],
-            redirect_uri: redirectUri // Specify the redirect URI here
-        });
-        res.redirect(url);
-    } catch (error) {
-        console.error('Error initiating Google Auth:', error);
-        res.redirect('/login');
-    }
-};
-*/
 // send mail
 const verifyMail = async (name, email, otp) => {
   try {
@@ -200,8 +82,6 @@ const verifyMail = async (name, email, otp) => {
 
 const resetPassword = async (name, email, token) => {
   try {
-
-
 
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -494,9 +374,6 @@ const homepage = async (req, res) => {
   }
 };
 
-
-
-
 //forgot
 const forgotLoad = async (req, res) => {
   try {
@@ -578,17 +455,6 @@ const viewProduct = async (req, res) => {
   }
 }
 
-
-// const viewProductList=async(req,res)=>{
-//     try {
-//         const products = await Product.find();
-//         const categories=await Category.find();
-//         res.render('productList',{ products, categories })
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
-
 const viewProductList = async (req, res) => {
   try {
     const categories = await Category.find();
@@ -619,10 +485,10 @@ const viewProductList = async (req, res) => {
     let sortCriteria = {};
     switch (sortOption) {
       case 'priceAsc':
-        sortCriteria = { Price: 1 };
+        sortCriteria = { price: 1 };
         break;
       case 'priceDesc':
-        sortCriteria = { Price: -1 };
+        sortCriteria = { price: -1 };
         break;
       case 'nameAsc':
         sortCriteria = { productName: 1 };
@@ -645,13 +511,6 @@ const viewProductList = async (req, res) => {
       .sort(sortCriteria)
       .skip((page - 1) * perPage)
       .limit(perPage);
-
-    /* const products = await Product.find(query)
-       .populate('category')
-       .sort({ Price: sortOption === 'asc' ? 1 : -1 })
-       .skip((page - 1) * perPage)
-       .limit(perPage);
-       */
 
     // Fetch offered categories
     //const offeredCategories = await Category.find({ offer: { $exists: true } });
@@ -738,10 +597,6 @@ const viewEditProfileImage = async (req, res) => {
   }
 
 };
-
-
-
-
 
 
 
@@ -871,16 +726,13 @@ const addtoCart = async (req, res) => {
       }
     }
     await user.save();
-    //res.status(200).json({ message: 'Item added to cart successfully!' });
-    //req.flash('success', `${product.productName} added to the cart!`);
+
     return res.redirect('/product-list');
   } catch (error) {
     console.log(error.message);
-    //req.flash('error', 'Failed to add the product to the cart.');
     return res.status(500).send('Internal Server Error');
   }
 };
-
 
 const updateQuantity = async (req, res) => {
   const productId = req.params.productId;
@@ -918,65 +770,6 @@ const deleteCart = async (req, res) => {
   }
 };
 
-
-
-/*
-
-const loadcheckout = async (req, res) => {
-  try {
-    const userId = req.session.user_id;
-    const user = await User.findById(userId).populate('chosenAddress  cart.product');
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-   const coupon = await Coupon.find();
-   
-    const chosenAddress = user.chosenAddress;
-    
-    
-   
-
-    const cartTotal = calculateTotalAmount(user.cart);
-
-    // Helper function to calculate the total amount of the cart
-function calculateTotalAmount(cart) {
-  return cart.reduce((total, cartItem) => {
-      const itemTotal = cartItem.product.price * cartItem.quantity;
-      return total + itemTotal;
-  }, 0);
-}
-    // Check for a coupon code
-    const couponCode = req.body.couponCode;
-
-    let discountAmount = 0;
-
-    if (couponCode) {
-      const coupon = await Coupon.findOne({ code: couponCode });
-
-      if (coupon) {
-        // Apply discount
-        discountAmount = calculateDiscount(cartTotal, coupon);
-        console.log(`${discountAmount}`);
-        // Update coupon usage limits
-        coupon.usageLimits.totalUses -= 1;
-        await coupon.save();
-        
-      } else {
-        return res.status(400).send('Invalid coupon code.');
-      }
-    }
-   
-    // Calculate the total amount after applying discount
-    const totalAmountAfterDiscount = cartTotal - discountAmount;
-    res.render('checkout', { user, chosenAddress, coupon, cartTotal, discountAmount });
-   // res.render('checkout', { user, chosenAddress, coupon });
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-*/
 const loadorderHistory = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -1030,7 +823,6 @@ const placeorder = async (req, res) => {
       }, 0);
     }
 
-
     // Check for a coupon code
     const couponCode = req.body.couponCode;
 
@@ -1041,25 +833,8 @@ const placeorder = async (req, res) => {
 
       if (coupon) {
         // Apply discount
-        //discountAmount = calculateDiscount(cartTotal, coupon);
-        // Inside loadcheckout function
 
-
-        // Inside your placeorder route
-
-        // Store discountAmount in locals
-        // res.locals.discountAmount = discountAmount;
-        // Inside your placeorder route (or order saving logic)
         discountAmount = calculateDiscount(cartTotal, coupon); // Assuming you've already calculated this
-
-        // Store discountAmount in locals
-        // res.locals.discountAmount = discountAmount;
-
-        console.log(`Discount Amount (before rendering): ${discountAmount}`);
-        // req.session.discountAmount = discountAmount;
-
-        // Redirect to the checkout page after selecting the address
-
         // Update coupon usage limits
         coupon.usageLimits.totalUses -= 1;
         await coupon.save();
@@ -1251,8 +1026,6 @@ const loadcheckout = async (req, res) => {
     // Determine shipping charge
     let shippingCharge = totalCartPrice < 2000 ? 40 : 0;
 
-
-
     const cartTotal = calculateTotalAmount(user.cart);
 
     // Helper function to calculate the total amount of the cart
@@ -1282,29 +1055,22 @@ const loadcheckout = async (req, res) => {
         return res.status(400).send('Invalid coupon code.');
       }
     }
-    // console.log(`Discount Amount (before rendering): ${discountAmount}`);
+
     // Calculate the total amount after applying discount
 
+    res.render('checkout', { user, chosenAddress, discountAmount, cartTotal, coupon, totalCartPrice, shippingCharge });
 
-
-
-
-    res.render('checkout', { user, chosenAddress,discountAmount,cartTotal, coupon ,totalCartPrice, shippingCharge });
-    // res.render('checkout', { user, chosenAddress, coupon });
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Internal Server Error');
   }
 };
 
-
-
-
 const applyCoupon = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const user = await User.findById(userId).populate('cart.product');
-    
+
     if (!user || user.cart.length === 0) {
       return res.status(400).send('Cart is empty. Cannot apply a coupon to an empty cart.');
     }
@@ -1360,40 +1126,6 @@ function calculateDiscount(totalAmount, coupon) {
     return 0;
   }
 }
- /*
-function calculateDiscount(totalAmount, coupon) {
-  const currentDate = new Date();
-  const expirationDate = new Date(coupon.expirationDate);
-
-  try {
-    if (currentDate > expirationDate) {
-      toastr.error('Coupon has expired.');
-      throw new Error('Coupon has expired.');
-    }
-    if (totalAmount < coupon.conditions.minOrderAmount) {
-      toastr.warning('Total amount does not meet the minimum order amount condition.');
-      throw new Error('Total amount does not meet the minimum order amount condition.');
-    }
-    if (coupon.usageLimits.totalUses <= 0) {
-      toastr.error('Coupon has reached the overall usage limit.');
-      throw new Error('Coupon has reached the overall usage limit.');
-    }
-
-    let discount = 0;
-    if (coupon.type === 'percentage') {
-      discount = (coupon.value / 100) * totalAmount;
-    } else if (coupon.type === 'fixed') {
-      discount = coupon.value;
-    }
-
-    toastr.success('Coupon applied successfully!');
-    return discount;
-  } catch (error) {
-    console.error(error.message);
-    return 0;
-  }
-}
-*/
 
 const razorpayPage = async (req, res) => {
   try {
@@ -1606,11 +1338,6 @@ const viewOrder = async (req, res) => {
   }
 }
 
-
-
-
-
-
 const requestReturn = async (req, res) => {
   const orderId = req.params.orderId;
   const returnReason = req.body.returnReason;
@@ -1689,7 +1416,7 @@ const addwhitelist = async (req, res) => {
 
     const userId = req.session.user_id;
     if (!userId) {
-      // req.flash('error', 'Please log in to add products to your cart.');
+
       return res.redirect('/login');
     }
 
@@ -1701,7 +1428,7 @@ const addwhitelist = async (req, res) => {
 
       if (existingProductItem) {
         // Display a message and redirect only if the item already exists in the whitelist
-        // req.flash('info', 'Already added to the whitelist');
+
         return res.redirect('/product-list');
       } else {
         // Add the product to the whitelist if it doesn't already exist
@@ -1760,64 +1487,6 @@ const deletewishlist = async (req, res) => {
   }
 };
 
-
-
-
-/*
-const wishlist =async(req,res)=>{
-  try {
-    const productId= req.params.productId;
-    const product = await Product.findById(productId);
-    const userId = req.session.user_id;
-    const user = await User.findById(userId).populate('wishlist.product');
-    const wishlistCount = user.wishlist.length;
-    res.render('wishLists', { user ,wishlistCount,userId,product});
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
-
-const googleAuth = async (req, res) => {
-  try {
-    const user = req.body.user;
-    
-    const email = user.email;
-    // Check if user already exists
-    let userData;
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      // User already exists, set session for existing user
-      req.session.user_id = existingUser._id;
-      userData = existingUser;
-    } else {
-      // Create a new user
-      const newuser = new User({
-        name: user.name,
-        email: user.email,
-        mobile: user.mobile,
-      });
-
-      userData = await newuser.save();
-    }
-
-    // If user data is successfully obtained, respond with success message
-    if (userData) {
-      
-      return res.json({
-        success: true,
-        message: "User data saved successfully",
-      });
-    } else {
-      // If user data retrieval fails, render registration page with error message
-      return res.render("register", { errmessage: "." });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-*/
 const wallet = async (req, res) => {
   try {
     const userId = req.session.user_id;
@@ -1829,11 +1498,8 @@ const wallet = async (req, res) => {
   }
 }
 
-
-
 module.exports = {
-  //googleAuthCallback,
-  //googleAuth,
+
   register,
   userData,
   verify,

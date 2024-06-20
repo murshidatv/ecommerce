@@ -1,18 +1,18 @@
 const { request } = require('express');
-const Coupon=require('../../models/couponModel');
+const Coupon = require('../../models/couponModel');
 
-const coupon = async(req,res)=>{
+const coupon = async (req, res) => {
     try {
         const coupon = await Coupon.find();
-        res.render('couponmanagement',{coupon})
+        res.render('couponmanagement', { coupon })
     } catch (error) {
         console.log(error.message);
     }
 }
 
-const LoadaddCoupon=async(req,res)=>{
+const LoadaddCoupon = async (req, res) => {
     try {
-        
+
         res.render('add-coupon');
     } catch (error) {
         console.log(error.message);
@@ -20,7 +20,7 @@ const LoadaddCoupon=async(req,res)=>{
 }
 
 
-const addcoupon=async(req,res)=>{
+const addcoupon = async (req, res) => {
     try {
         const {
             couponname,
@@ -84,7 +84,7 @@ const loadeditCoupon = async (req, res) => {
 const editCoupon = async (req, res) => {
     try {
         const couponId = req.params.couponId;
-        const { couponname,code, discountType, discountValue, expirationDate, totalUses, perUser, minOrderAmount, description } = req.body;
+        const { couponname, code, discountType, discountValue, expirationDate, totalUses, perUser, minOrderAmount, description } = req.body;
 
         const existingCoupon = await Coupon.findOne({ code, _id: { $ne: couponId } });
         /*if(minOrderAmount>discountValue){
@@ -108,18 +108,13 @@ const editCoupon = async (req, res) => {
             });
         }
 
-
-
-
         const updatedCoupon = await Coupon.findByIdAndUpdate(
             couponId,
             {
                 couponname,
                 code,
-                type: discountType, 
-                value: discountValue, 
-                //discountType,
-                //discountValue,
+                type: discountType,
+                value: discountValue,
                 expirationDate,
                 usageLimits: {
                     totalUses,
@@ -130,7 +125,7 @@ const editCoupon = async (req, res) => {
                 },
                 description,
             },
-            { new: true } 
+            { new: true }
         );
 
         if (!updatedCoupon) {
@@ -145,7 +140,7 @@ const editCoupon = async (req, res) => {
 };
 
 
-const deleteCoupon=async (req,res)=>{
+const deleteCoupon = async (req, res) => {
     try {
         await Coupon.findByIdAndDelete(req.params.couponId);
         res.redirect('/admin/loadcoupon');

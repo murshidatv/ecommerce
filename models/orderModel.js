@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: 'COD',
   },
-  
+
   address: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -64,16 +64,16 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
- 
 
- orderDate:{
-  type: Date,
-  default:Date.now
-},
-deliveredAt: {
-  type: Date,
-  // default: Date.now
-},
+
+  orderDate: {
+    type: Date,
+    default: Date.now
+  },
+  deliveredAt: {
+    type: Date,
+    // default: Date.now
+  },
   returned: {
     type: Boolean,
     default: false,

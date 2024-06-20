@@ -17,9 +17,9 @@ const createInvoiceFromOrder = async (req, res) => {
       return res.status(404).json({ error: 'Order not found' });
     }
 
-if (order.status === 'Cancelled' || order.status === 'Returned') {
-  return res.status(400).json({ error: `Order is ${order.status}` });
-}
+    if (order.status === 'Cancelled' || order.status === 'Returned') {
+      return res.status(400).json({ error: `Order is ${order.status}` });
+    }
     const invoice = new Invoice({ orderId: order._id });
     await invoice.save();
 
@@ -32,30 +32,28 @@ if (order.status === 'Cancelled' || order.status === 'Returned') {
 // Function to generate an invoice PDF
 const generateInvoicePdf = async (req, res) => {
   try {
-    
 
+    const invoice = await Invoice.findById(req.params.id).populate({
+      path: 'orderId',
+      populate: [
+        { path: 'products.product' }, { path: 'coupon' },
+        { path: 'userId', populate: { path: 'chosenAddress' } },
+      ]
+    });
 
-const invoice = await Invoice.findById(req.params.id).populate({
-  path: 'orderId',
-  populate: [
-    { path: 'products.product' },    { path: 'coupon' },
-    { path: 'userId', populate: { path: 'chosenAddress' } },
-  ]
-});
+    if (!invoice) {
+      return res.status(404).json({ error: 'Invoice not found' });
+    }
 
-if (!invoice) {
-  return res.status(404).json({ error: 'Invoice not found' });
-}
+    const order = invoice.orderId;
+    const user = order.userId;
 
-const order = invoice.orderId;
-const user = order.userId;
+    if (!user || !user.chosenAddress) {
+      return res.status(404).json({ error: 'User or address not found' });
+    }
 
-if (!user || !user.chosenAddress) {
-  return res.status(404).json({ error: 'User or address not found' });
-}
+    const address = user.chosenAddress;
 
-const address = user.chosenAddress;
-  
 
     // Ensure the invoices directory exists
     const invoicesDir = path.join(__dirname, '../invoices');
@@ -70,11 +68,11 @@ const address = user.chosenAddress;
     // Pipe the PDF document to a file and the response
     doc.pipe(fs.createWriteStream(filePath));
     doc.pipe(res);
- // Add invoice title
- doc.fontSize(25).text('Invoice', { align: 'center' });
- doc.moveDown(2);
+    // Add invoice title
+    doc.fontSize(25).text('Invoice', { align: 'center' });
+    doc.moveDown(2);
 
-      // Draw a line after the title
+    // Draw a line after the title
     doc.moveTo(50, doc.y)
       .lineTo(550, doc.y)
       .stroke();
@@ -104,52 +102,39 @@ const address = user.chosenAddress;
     doc.moveTo(50, currentY)
       .lineTo(550, currentY)
       .stroke();
-
-    
-      doc.moveDown(2);
- 
-   
-
+    doc.moveDown(2);
 
     // Add order details
-  
-     
- doc.fontSize(10).text(`Date: ${order.orderDate.toDateString()}`, { align: 'left' });
 
- doc.fontSize(10).text(`Customer Name: ${order.userId.name}`, { align: 'left' });
- 
-    
- doc.moveDown(2);
-    doc.fontSize(10).text(`Order Id: ${order._id}`, { align: 'left' });
-   
-    doc.fontSize(10).text(`Order Status: ${order.status}`, { align: 'left' });
-   
-    doc.fontSize(10).text(`Payment Method: ${order.payment}`, { align: 'left' });
-    
+    doc.fontSize(10).text(`Date: ${order.orderDate.toDateString()}`, { align: 'left' });
+
+    doc.fontSize(10).text(`Customer Name: ${order.userId.name}`, { align: 'left' });
+
     doc.moveDown(2);
-   
-// Extract address details if available
+    doc.fontSize(10).text(`Order Id: ${order._id}`, { align: 'left' });
 
+    doc.fontSize(10).text(`Order Status: ${order.status}`, { align: 'left' });
+
+    doc.fontSize(10).text(`Payment Method: ${order.payment}`, { align: 'left' });
+
+    doc.moveDown(2);
+
+    // Extract address details if available
 
     currentY += 10;  // Add some space after the line
 
+    // Ensure all fields are accessible and construct the address string
+    let addressDetails = '';
 
-// Ensure all fields are accessible and construct the address string
-let addressDetails = '';
+    if (order.userId.chosenAddress) {
+      const { name, mobile, address, city, pincode, district, state } = order.userId.chosenAddress;
 
-if (order.userId.chosenAddress) {
-  const { name, mobile, address, city, pincode, district, state } = order.userId.chosenAddress;
-  
-  addressDetails = `${name ? name + '\n' : ''}${mobile ? mobile + '\n' : ''}${address ? address + ', ' : ''}${city ? city + ', ' : ''}${pincode ? pincode + ', ' : ''}${district ? district + ', ' : ''}${state ? state : ''}`;
-}
+      addressDetails = `${name ? name + '\n' : ''}${mobile ? mobile + '\n' : ''}${address ? address + ', ' : ''}${city ? city + ', ' : ''}${pincode ? pincode + ', ' : ''}${district ? district + ', ' : ''}${state ? state : ''}`;
+    }
 
     doc.fontSize(10).text(`Address: ${addressDetails}`, rightColumnX, currentY);
     currentY += 10;  // Move down before drawing another line
     doc.moveDown(4);
-
-
-
-
 
 
     // Add table header

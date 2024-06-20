@@ -1,24 +1,24 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
- const productSchema = new mongoose.Schema({
-    
-    productName:{
-        type:String,
-        required:true,
+const productSchema = new mongoose.Schema({
+
+    productName: {
+        type: String,
+        required: true,
         index: true
     },
-    category:{
+    category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
-        
+
     },
-    status:{
-        type:Boolean,
-        default:true
+    status: {
+        type: Boolean,
+        default: true
     },
-    size:{
-        type:String,
-        required:true
+    size: {
+        type: String,
+        required: true
     },
     blocked: {
         type: Boolean,
@@ -32,10 +32,10 @@ const mongoose=require("mongoose");
 
     },
 
-    stock:{
-        type:Number,
+    stock: {
+        type: Number,
         required: true,
-        min: 0, 
+        min: 0,
     },
     offer: {
         type: {
@@ -49,17 +49,17 @@ const mongoose=require("mongoose");
         },
     },
 
-    description:{
-        type:String
+    description: {
+        type: String
     },
-    images:{
-        type:[String],
-    
-    },
-    deleted:{
-        type:Boolean,
-        default:false
-    },
- })
+    images: {
+        type: [String],
 
- module.exports=mongoose.model('Product',productSchema)
+    },
+    deleted: {
+        type: Boolean,
+        default: false
+    },
+})
+
+module.exports = mongoose.model('Product', productSchema)

@@ -3,11 +3,11 @@ const user_route = express();
 const path = require('path');
 const addressController = require('../controllers/user/address');
 const userController = require('../controllers/user/userController');
-const couponController=require('../controllers/user/couponController');
+const couponController = require('../controllers/user/couponController');
 const invoiceController = require('../controllers/user/invoiceController');
-const razorpayInstance=require('../config/razorpayConfig')
+const razorpayInstance = require('../config/razorpayConfig')
 
-//user_route.use(session({secret:config.sessionSecret}));
+
 const auth = require("../middleware/auth");
 
 user_route.set('view engine', 'ejs');
@@ -15,17 +15,12 @@ user_route.set('views', './views/users');
 
 const session = require("express-session");
 const config = require("../config/config");
-/*
-user_route.get('/google/callback', userController.googleAuthCallback);
-user_route.get('/google', userController.googleAuth);
 
-*/
 const passport = require('passport'); //for login using google
 require('../middleware/passport');
 user_route.use(passport.initialize());
 user_route.use(passport.session());  //for login using google
 
-//user_route.get('/verify',userController.verify)
 user_route.get('/google/Verify', passport.authenticate('google', {
     scope: ['email', 'profile']
 }));
@@ -41,9 +36,6 @@ user_route.use(session({
     resave: false,  // Set to false to avoid deprecated warning
     saveUninitialized: false  // Set to false to avoid deprecated warning
 }));
-
-
-
 
 const bodyParser = require('body-parser');
 user_route.use(bodyParser.json());
@@ -61,10 +53,6 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage: storage });
-
-
-
-
 
 user_route.get('/register', auth.isLogout, userController.register);
 user_route.get("/", auth.isLogout, userController.homepage);
@@ -85,10 +73,6 @@ user_route.get('/forgot', userController.forgotLoad);
 user_route.post('/forgot', userController.forgotPass);
 user_route.get('/forgot-password', userController.forgotpassword);
 user_route.post('/forgot-password', userController.restPassword);
-
-
-
-
 
 user_route.get('/view-offered-categories', userController.viewOfferedCategories);
 user_route.get('/category/:categoryId/products', userController.viewOfferedCategoriesProducts);
@@ -122,7 +106,7 @@ user_route.post('/changepass', auth.isLogin, userController.changepassword);
 user_route.get('/cartList', auth.isLogin, userController.loadCartList);
 user_route.get('/add-to-cart/:productId', userController.addtoCart);
 user_route.get('/deleteCartItem/:userId/:productId', userController.deleteCart);
-user_route.post('/updateCartItemQuantity/:productId',userController.updateQuantity)
+user_route.post('/updateCartItemQuantity/:productId', userController.updateQuantity)
 //user_route.get('/search', userController.search);
 
 
@@ -156,19 +140,16 @@ user_route.get('/wishlist', auth.isLogin, userController.whitelist);
 user_route.get('/addwhitelist/:productId', auth.isLogin, userController.addwhitelist);
 user_route.get('/wishlist/:productId', userController.deletewishlist);
 
-user_route.get('/wallet',auth.isLogin,userController.wallet);
+user_route.get('/wallet', auth.isLogin, userController.wallet);
 
-user_route.get('/razorpayPage',userController.razorpayPage)
-user_route.post('/capture-payment',userController.capturePayment)
+user_route.get('/razorpayPage', userController.razorpayPage)
+user_route.post('/capture-payment', userController.capturePayment)
 
 user_route.post('/razorpay-callback', userController.handleRazorpayCallback);
 
-
-
 //coupon management
-user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
-//coupon management
-user_route.get('/loadcoupon',auth.isLogin,couponController.loadCoupon);
+
+user_route.get('/loadcoupon', auth.isLogin, couponController.loadCoupon);
 user_route.post('/applycoupon', auth.isLogin, couponController.applyCoupon);
 user_route.post('/removecoupon', auth.isLogin, couponController.removeCoupon);
 
@@ -176,8 +157,5 @@ user_route.post('/removecoupon', auth.isLogin, couponController.removeCoupon);
 //invoice
 user_route.post('/invoices/from-order/:orderId', invoiceController.createInvoiceFromOrder);
 user_route.get('/invoices/:id/pdf', invoiceController.generateInvoicePdf);
-
-
-
 
 module.exports = user_route;

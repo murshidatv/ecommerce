@@ -1,22 +1,22 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
 
- const categorySchema = new mongoose.Schema({
-    
-    categoryName:{
-        type:String,
-        required:true
+const categorySchema = new mongoose.Schema({
+
+    categoryName: {
+        type: String,
+        required: true
     },
-   
-    status:{
-        type:Boolean,
-        default:true
+
+    status: {
+        type: Boolean,
+        default: true
     },
     blocked: {
         type: Boolean,
-        default: false, 
-      },
-     
-   
+        default: false,
+    },
+
+
     offer: {
         type: {
             type: String,
@@ -28,7 +28,7 @@ const mongoose=require("mongoose");
             type: Date,
         },
     },
-     
- });
 
- module.exports=mongoose.model('Category',categorySchema);
+});
+
+module.exports = mongoose.model('Category', categorySchema);

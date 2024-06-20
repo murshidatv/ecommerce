@@ -1,6 +1,6 @@
 const User = require('../../models/userModel');
 const Order = require('../../models/orderModel');
-const Product=require('../../models/productModel')
+const Product = require('../../models/productModel')
 const PDFDocument = require('pdfkit');
 const table = require('pdfkit-table');
 const ejs = require('ejs');
@@ -11,49 +11,49 @@ const ExcelJS = require('exceljs');
 
 const puppeteer = require('puppeteer');
 const { order } = require('./orderController');
-const { getUserDetailsAndOrders } =require('./adminController')
+const { getUserDetailsAndOrders } = require('./adminController')
 
-const { getTotalRevenue } =require('./adminController')
+const { getTotalRevenue } = require('./adminController')
 
 const getDashboardData = async (req, res) => {
   try {
-      // Fetch total users count
-      const totalUsers = await User.countDocuments();
-      console.log("Total Users Count:",totalUsers );
-      // Fetch total orders count
-      const totalOrders = await Order.countDocuments();
-      console.log("Total orderrs Count:",totalOrders)
-      const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
-      console.log("Total Cancelled Orders Count:",cancelledOrders)
-      const totalproduct= await Product.countDocuments();
-      console.log("Total products Count:",totalproduct)
-      const totalRevenue = await getTotalRevenue();
-      console.log("Total Revenue:",totalRevenue)
-      const blockUser = await User.countDocuments({ isBlocked: true });
-      console.log("Total blocked Users Count:",blockUser)
-      res.render('report', { totalUsers, totalOrders, cancelledOrders,blockUser,totalproduct,totalRevenue});
+    // Fetch total users count
+    const totalUsers = await User.countDocuments();
+    console.log("Total Users Count:", totalUsers);
+    // Fetch total orders count
+    const totalOrders = await Order.countDocuments();
+    console.log("Total orderrs Count:", totalOrders)
+    const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
+    console.log("Total Cancelled Orders Count:", cancelledOrders)
+    const totalproduct = await Product.countDocuments();
+    console.log("Total products Count:", totalproduct)
+    const totalRevenue = await getTotalRevenue();
+    console.log("Total Revenue:", totalRevenue)
+    const blockUser = await User.countDocuments({ isBlocked: true });
+    console.log("Total blocked Users Count:", blockUser)
+    res.render('report', { totalUsers, totalOrders, cancelledOrders, blockUser, totalproduct, totalRevenue });
   } catch (error) {
-      console.error('Error fetching dashboard data:', error.message);
-      res.status(500).send('Internal Server Error');
+    console.error('Error fetching dashboard data:', error.message);
+    res.status(500).send('Internal Server Error');
   }
 };
-const salesReport= async (req, res) => {
+const salesReport = async (req, res) => {
   try {
-      const orders = await Order.find({ status: 'delivered' });
-      res.json(orders);
+    const orders = await Order.find({ status: 'delivered' });
+    res.json(orders);
   } catch (err) {
-      console.error(err);
-      res.status(500).send('Server Error');
+    console.error(err);
+    res.status(500).send('Server Error');
   }
 }
-const downloadSalesReport=async (req, res) => {
+const downloadSalesReport = async (req, res) => {
   try {
-      const pdf = await generatePDF();
-      res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length });
-      res.send(pdf);
+    const pdf = await generatePDF();
+    res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length });
+    res.send(pdf);
   } catch (error) {
-      console.error(error);
-      res.status(500).send('An error occurred while generating the PDF.');
+    console.error(error);
+    res.status(500).send('An error occurred while generating the PDF.');
   }
 }
 
@@ -64,7 +64,7 @@ const getYearlyRevenue = async (req, res) => {
     const yearlyRevenue = await Order.aggregate([
       {
         $match: {
-          status: 'delivered' 
+          status: 'delivered'
         }
       },
       {
@@ -79,7 +79,7 @@ const getYearlyRevenue = async (req, res) => {
     // Extract years and revenue data for chart rendering
     const years = yearlyRevenue.map(entry => entry._id);
     const revenueData = yearlyRevenue.map(entry => entry.totalRevenue);
-console.log("years",years,"revenueData",revenueData);
+    console.log("years", years, "revenueData", revenueData);
     // Send the yearly revenue data as JSON
     res.json({ years, revenueData });
   } catch (error) {
@@ -201,7 +201,7 @@ const downloadSalesReports = async (req, res) => {
     }
 
     // Add delivered orders table
-   // doc.addPage();
+    // doc.addPage();
     doc.fontSize(16).text('Delivered Orders Details', { underline: true, align: 'left' }).moveDown(0.5);
 
     const deliveredOrdersTable = {
@@ -216,10 +216,10 @@ const downloadSalesReports = async (req, res) => {
 
     // Finalize the PDF document
     doc.end();
-  } 
+  }
 
- 
-    catch (error) {
+
+  catch (error) {
     console.error('Error:', error);
     res.status(500).send('An error occurred');
   }
@@ -240,17 +240,17 @@ const downloadSalesReportsExcel = async (req, res) => {
       { header: 'Total Users', key: 'totalUsers' },
       //{ header: 'Blocked Users', key: 'blockUser' },
       { header: 'Total Orders', key: 'totalOrders' },
-     // { header: 'CancelledOrders ', key: 'cancelledOrders' },
+      // { header: 'CancelledOrders ', key: 'cancelledOrders' },
       { header: 'Total Product ', key: 'totalProduct' },
       { header: 'Total Revenue ', key: 'totalRevenue' },
       //{ header: 'DeliveredOrders ', key: 'deliveredOrders' },
       { header: 'Online Payment ', key: 'onlinePayment' },
       { header: 'Return OrderCount ', key: 'returnOrderCount' },
 
-      
+
     ];
 
-    worksheet.addRow({ totalUsers,/* blockUser*/onlinePayment,totalOrders,totalProduct ,totalRevenue,/*deliveredOrders,*/returnOrderCount});
+    worksheet.addRow({ totalUsers,/* blockUser*/onlinePayment, totalOrders, totalProduct, totalRevenue,/*deliveredOrders,*/returnOrderCount });
 
     // Write the Excel file to a stream
     const stream = new require('stream').PassThrough();
@@ -270,54 +270,52 @@ const downloadSalesReportsExcel = async (req, res) => {
 
 const dashboardData = async (req, res) => {
   try {
-      // Fetch the data for each period
-      const weeklyData = await User.aggregate([
-          { 
-              $group: {
-                  _id: { $week: "$createdAt" },
-                  count: { $sum: 1 }
-              }
-          },
-          { $sort: { "_id": 1 } }
-      ]);
+    // Fetch the data for each period
+    const weeklyData = await User.aggregate([
+      {
+        $group: {
+          _id: { $week: "$createdAt" },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ]);
 
-      const monthlyData = await User.aggregate([
-          { 
-              $group: {
-                  _id: { $month: "$createdAt" },
-                  count: { $sum: 1 }
-              }
-          },
-          { $sort: { "_id": 1 } }
-      ]);
+    const monthlyData = await User.aggregate([
+      {
+        $group: {
+          _id: { $month: "$createdAt" },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ]);
 
-      const yearlyData = await User.aggregate([
-          { 
-              $group: {
-                  _id: { $year: "$createdAt" },
-                  count: { $sum: 1 }
-              }
-          },
-          { $sort: { "_id": 1 } }
-      ]);
+    const yearlyData = await User.aggregate([
+      {
+        $group: {
+          _id: { $year: "$createdAt" },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ]);
 
-      // Prepare data for the chart
-      const labels = weeklyData.map(entry => entry._id); // Assuming the labels are the same for all periods
-      const weeklyCounts = weeklyData.map(entry => entry.count);
-      const monthlyCounts = monthlyData.map(entry => entry.count);
-      const yearlyCounts = yearlyData.map(entry => entry.count);
+    // Prepare data for the chart
+    const labels = weeklyData.map(entry => entry._id); // Assuming the labels are the same for all periods
+    const weeklyCounts = weeklyData.map(entry => entry.count);
+    const monthlyCounts = monthlyData.map(entry => entry.count);
+    const yearlyCounts = yearlyData.map(entry => entry.count);
 
-      res.json({ labels, weeklyData: weeklyCounts, monthlyData: monthlyCounts, yearlyData: yearlyCounts });
+    res.json({ labels, weeklyData: weeklyCounts, monthlyData: monthlyCounts, yearlyData: yearlyCounts });
   } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-      res.status(500).send('Internal Server Error');
+    console.error('Error fetching dashboard data:', error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
 
-
-
-module.exports ={
+module.exports = {
   getDashboardData,
   dashboardData,
   downloadSalesReports,

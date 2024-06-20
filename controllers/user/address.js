@@ -6,8 +6,7 @@ const loadAddress = async (req, res) => {
     try {
         const userId = req.session.user_id;
         const addresses = await Address.find({ user: userId });
-        // console.log("Addresses:", addresses); 
-        // Render the 'address' view with the retrieved addresses
+
         res.render('address', { addresses, user_id: userId });
     } catch (error) {
         console.log(error.message);
@@ -133,10 +132,6 @@ const SelectedAddress = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
-
-
-
-
 
 // Render the 'chooseaddAddress' view
 

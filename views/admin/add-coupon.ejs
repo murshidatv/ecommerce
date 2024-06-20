@@ -1,297 +1,295 @@
-
- 
 <%- include('../layouts/adminHeaders') %>
 
-  <style>
-    /* Reset some default styles */
-    body,
-    h1,
-    h2,
-    p,
-    ul,
-    form {
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    #add_user {
-      max-width: 450px;
-      margin: 50px auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      color: #333;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .radio {
-      margin-right: 10px;
-    }
-
-    .btn {
-      background-color: rgb(85, 145, 213);
-      ;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #c66;
-    }
-
-    #inputState {
-      width: 25rem;
-      border-radius: 5px;
-      height: 2rem;
-    }
-
-    nav {
-      background-color: #333;
-      padding: 10px 0;
-      text-align: center;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-  </style>
-
-  <div class="container-scroller">
-    
-<%- include('../layouts/adminHeadersmid') %>
-    <!-- partial:../../partials/_navbar.html -->
- 
-      <!-- partial -->
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-
-          <h2 style="color: rgb(10, 109, 170);text-align: center;">Add Coupon</h2>
-
-          <div class="col-md-12 grid-margin stretch-card">
-
-        <!-- partial -->
-
-        <form action="/admin/add-coupon" method="POST" id="add_user" onsubmit="return couponValidation(event)">
-            <div class="new_uaer">
-                
-                <div class="form-group">
-                    Coupon Name:<label for="couponname" class="text-light">Coupon Name:</label>
-                    <input type="hidden" name="id" value="">
-                    <input type="text" id="couponname" name="couponname"><br>
-                    <span id="couponnameError" style="color: red;"></span>
-
-                </div>
-                <div class="form-group">
-                    Coupon Code:<label for="code" class="text-light">Coupon Code:</label>
-                   <input type="hidden" name="id" value="">
-                    <input type="text" id="code" name="code"><br>
-                    <span id="codeError" style="color: red;"></span>
-                    <% if (typeof message !=='undefined' ) { %>
-                        <div id="message" style="color: red;">
-                            <%= message %>
-                        </div>
-                        <% } %>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="discountType">Discount Type:</label>
-               <select id="discountType" name="discountType" class="form-control">
-                        <option value="percentage">Percentage</option>
-                        <option value="fixed">Fixed</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="discountValue" class="text-light">Discount Value:</label>
-                    Discount Value:<input type="number" id="discountValue" name="discountValue"><br>
-                    <span id="discountValueError" style="color: red;"></span>
-                </div>
-                <div class="form-group">
-                    Expiration Date:<label for="expirationDate" class="text-light">Expiration Date:</label>
-
-                    <input type="date" id="expirationDate" name="expirationDate"><br>
-                    <span id="expirationDateError" style="color: red;"></span>
-
-                </div>
-                <div class="form-group">
-                    Total Uses: <label for="totalUses" class="text-light">Total Uses: </label>
-
-                    <input type="number" id="totalUses" name="totalUses" value="1" required><br>
-                    <span id="totalUsesError" style="color: red;"></span>
-
-                </div>
-                <div class="form-group">
-                    Uses Per User:<label for="perUser" class="text-light">Uses Per User:</label>
-
-                    <input type="number" id="perUser" name="perUser" value="1"><br>
-                    <span id="perUserError" style="color: red;"></span>
-
-                </div>
-                <div class="form-group">
-                    Min Order Amount:<label for="minOrderAmount" class="text-light">Min Order Amount:</label>
-
-                    <input type="number" id="minOrderAmount" name="minOrderAmount" value="0" required><br>
-                    <span id="minOrderAmountError" style="color: red;"></span>
-
-                </div>
-
-
-                <div class="form-group">
-                    Description <br>
-                    <textarea name="description" id="description" cols="50" rows="10"></textarea><br>
-                    <span id="discriptionError" style="color: red;"></span>
-
-                </div>
-            
-            <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
-                <div class="form-group">
-                    <button type="submit" class="btn text-dark update">Save</button>
-                </div>
-            </div>
-            </div>
-        </form>
-    </div>
-
-
-
-    <script>
-        function couponValidation(event) {
-            // Reset error messages
-            document.getElementById('couponnameError').innerHTML = '';
-            document.getElementById('codeError').innerHTML = '';
-            document.getElementById('discountValueError').innerHTML = '';
-            document.getElementById('expirationDateError').innerHTML = '';
-            document.getElementById('totalUsesError').innerHTML = '';
-            document.getElementById('perUserError').innerHTML = '';
-            document.getElementById('minOrderAmountError').innerHTML = '';
-            document.getElementById('discriptionError').innerHTML = '';
-
-            // Get form values
-            var couponname = document.getElementById('couponname').value;
-            var code = document.getElementById('code').value;
-            var discountValue = document.getElementById('discountValue').value;
-            var expirationDate = document.getElementById('expirationDate').value;
-            var totalUses = document.getElementById('totalUses').value;
-            var perUser = document.getElementById('perUser').value;
-            var minOrderAmount = document.getElementById('minOrderAmount').value;
-            var description = document.getElementById('description').value;
-
-            var discountType = document.getElementById('discountType').value;
-            // Validate each field
-            if (couponname.trim() === '') {
-                document.getElementById('couponnameError').innerHTML = 'Coupon Name is required';
-                event.preventDefault();
-            }
-
-            if (!/^[a-zA-Z]+$/.test(couponname)) {
-                document.getElementById('couponnameError').innerHTML = "couponname Must Be Charecters";
-                event.preventDefault();
-            }
-
-            if (code.trim() === '') {
-                document.getElementById('codeError').innerHTML = 'Coupon Code is required';
-                event.preventDefault();
-            } else {
-                var codeRegex = /^[a-zA-Z0-9]+$/;
-
-                if (!codeRegex.test(code)) {
-                    document.getElementById('codeError').innerHTML = 'Code must contain only letters and numbers';
-                    event.preventDefault();
-                }
-            }
-
-
-            if (discountValue.trim() === '') {
-                document.getElementById('discountValueError').innerHTML = 'Discount Value is required';
-                event.preventDefault();
-            } else if (discountType === 'percentage' && Number(discountValue) > 100) {
-                document.getElementById('discountValueError').innerHTML = 'Discount value cannot be greater than 100% for percentage type.';
-                event.preventDefault();
-            } else {
-                var discountValueRegex = /^\d+$/;
-
-                if (!discountValueRegex.test(discountValue) || parseInt(discountValue) <= 0) {
-                    document.getElementById('discountValueError').innerHTML = 'Discount Value must be a valid positive integer';
-                    event.preventDefault();
-                }
-            }
-
-            if (expirationDate.trim() === '') {
-                document.getElementById('expirationDateError').innerHTML = 'Expiration Date is required';
-                event.preventDefault();
-            }
-
-            if (totalUses.trim() === '') {
-                document.getElementById('totalUsesError').innerHTML = 'Total Uses is required';
-                event.preventDefault();
-            } else {
-                var totalUsesRegex = /^\d+$/;
-
-                if (!totalUsesRegex.test(totalUses) || parseInt(totalUses) <= 0) {
-                    document.getElementById('totalUsesError').innerHTML = 'totalUses must be a valid positive integer';
-                    event.preventDefault();
-                }
-            }
-
-            if (perUser.trim() === '') {
-                document.getElementById('perUserError').innerHTML = 'Uses Per User is required';
-                event.preventDefault();
-            } else {
-                var perUserRegex = /^\d+$/;
-
-                if (!perUserRegex.test(perUser) || parseInt(perUser) <= 0) {
-                    document.getElementById('perUserError').innerHTML = 'perUser must be a valid positive integer';
-                    event.preventDefault();
-                }
-            }
-
-            if (minOrderAmount.trim() === '') {
-                document.getElementById('minOrderAmountError').innerHTML = 'Min Order Amount is required';
-                event.preventDefault();
-            } else {
-                var minOrderAmountRegex = /^\d+$/;
-
-                if (!minOrderAmountRegex.test(minOrderAmount) || parseInt(minOrderAmount) <= 0) {
-                    document.getElementById('minOrderAmountError').innerHTML = 'minOrderAmount must be a valid positive integer';
-                    event.preventDefault();
-                }
-            }
-
-            if (description.trim() === '') {
-                document.getElementById('discriptionError').innerHTML = 'Description is required';
-                event.preventDefault();
-            }
+    <style>
+        /* Reset some default styles */
+        body,
+        h1,
+        h2,
+        p,
+        ul,
+        form {
+            margin: 0;
+            padding: 0;
         }
-    </script>
 
-<%- include('../layouts/adminFooters') %>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        #add_user {
+            max-width: 450px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .radio {
+            margin-right: 10px;
+        }
+
+        .btn {
+            background-color: rgb(85, 145, 213);
+            ;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #c66;
+        }
+
+        #inputState {
+            width: 25rem;
+            border-radius: 5px;
+            height: 2rem;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <div class="container-scroller">
+
+        <%- include('../layouts/adminHeadersmid') %>
+      
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+
+                    <h2 style="color: rgb(10, 109, 170);text-align: center;">Add Coupon</h2>
+
+                    <div class="col-md-12 grid-margin stretch-card">
+
+                        <!-- partial -->
+
+                        <form action="/admin/add-coupon" method="POST" id="add_user"
+                            onsubmit="return couponValidation(event)">
+                            <div class="new_uaer">
+
+                                <div class="form-group">
+                                    Coupon Name:<label for="couponname" class="text-light">Coupon Name:</label>
+                                    <input type="hidden" name="id" value="">
+                                    <input type="text" id="couponname" name="couponname"><br>
+                                    <span id="couponnameError" style="color: red;"></span>
+
+                                </div>
+                                <div class="form-group">
+                                    Coupon Code:<label for="code" class="text-light">Coupon Code:</label>
+                                    <input type="hidden" name="id" value="">
+                                    <input type="text" id="code" name="code"><br>
+                                    <span id="codeError" style="color: red;"></span>
+                                    <% if (typeof message !=='undefined' ) { %>
+                                        <div id="message" style="color: red;">
+                                            <%= message %>
+                                        </div>
+                                        <% } %>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="discountType">Discount Type:</label>
+                                    <select id="discountType" name="discountType" class="form-control">
+                                        <option value="percentage">Percentage</option>
+                                        <option value="fixed">Fixed</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="discountValue" class="text-light">Discount Value:</label>
+                                    Discount Value:<input type="number" id="discountValue" name="discountValue"><br>
+                                    <span id="discountValueError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+                                    Expiration Date:<label for="expirationDate" class="text-light">Expiration
+                                        Date:</label>
+
+                                    <input type="date" id="expirationDate" name="expirationDate"><br>
+                                    <span id="expirationDateError" style="color: red;"></span>
+
+                                </div>
+                                <div class="form-group">
+                                    Total Uses: <label for="totalUses" class="text-light">Total Uses: </label>
+
+                                    <input type="number" id="totalUses" name="totalUses" value="1" required><br>
+                                    <span id="totalUsesError" style="color: red;"></span>
+
+                                </div>
+                                <div class="form-group">
+                                    Uses Per User:<label for="perUser" class="text-light">Uses Per User:</label>
+
+                                    <input type="number" id="perUser" name="perUser" value="1"><br>
+                                    <span id="perUserError" style="color: red;"></span>
+
+                                </div>
+                                <div class="form-group">
+                                    Min Order Amount:<label for="minOrderAmount" class="text-light">Min Order
+                                        Amount:</label>
+
+                                    <input type="number" id="minOrderAmount" name="minOrderAmount" value="0"
+                                        required><br>
+                                    <span id="minOrderAmountError" style="color: red;"></span>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    Description <br>
+                                    <textarea name="description" id="description" cols="50" rows="10"></textarea><br>
+                                    <span id="discriptionError" style="color: red;"></span>
+
+                                </div>
+
+                                <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn text-dark update">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <script>
+                        function couponValidation(event) {
+                            // Reset error messages
+                            document.getElementById('couponnameError').innerHTML = '';
+                            document.getElementById('codeError').innerHTML = '';
+                            document.getElementById('discountValueError').innerHTML = '';
+                            document.getElementById('expirationDateError').innerHTML = '';
+                            document.getElementById('totalUsesError').innerHTML = '';
+                            document.getElementById('perUserError').innerHTML = '';
+                            document.getElementById('minOrderAmountError').innerHTML = '';
+                            document.getElementById('discriptionError').innerHTML = '';
+
+                            // Get form values
+                            var couponname = document.getElementById('couponname').value;
+                            var code = document.getElementById('code').value;
+                            var discountValue = document.getElementById('discountValue').value;
+                            var expirationDate = document.getElementById('expirationDate').value;
+                            var totalUses = document.getElementById('totalUses').value;
+                            var perUser = document.getElementById('perUser').value;
+                            var minOrderAmount = document.getElementById('minOrderAmount').value;
+                            var description = document.getElementById('description').value;
+
+                            var discountType = document.getElementById('discountType').value;
+                            // Validate each field
+                            if (couponname.trim() === '') {
+                                document.getElementById('couponnameError').innerHTML = 'Coupon Name is required';
+                                event.preventDefault();
+                            }
+
+                            if (!/^[a-zA-Z]+$/.test(couponname)) {
+                                document.getElementById('couponnameError').innerHTML = "couponname Must Be Charecters";
+                                event.preventDefault();
+                            }
+
+                            if (code.trim() === '') {
+                                document.getElementById('codeError').innerHTML = 'Coupon Code is required';
+                                event.preventDefault();
+                            } else {
+                                var codeRegex = /^[a-zA-Z0-9]+$/;
+
+                                if (!codeRegex.test(code)) {
+                                    document.getElementById('codeError').innerHTML = 'Code must contain only letters and numbers';
+                                    event.preventDefault();
+                                }
+                            }
+
+
+                            if (discountValue.trim() === '') {
+                                document.getElementById('discountValueError').innerHTML = 'Discount Value is required';
+                                event.preventDefault();
+                            } else if (discountType === 'percentage' && Number(discountValue) > 100) {
+                                document.getElementById('discountValueError').innerHTML = 'Discount value cannot be greater than 100% for percentage type.';
+                                event.preventDefault();
+                            } else {
+                                var discountValueRegex = /^\d+$/;
+
+                                if (!discountValueRegex.test(discountValue) || parseInt(discountValue) <= 0) {
+                                    document.getElementById('discountValueError').innerHTML = 'Discount Value must be a valid positive integer';
+                                    event.preventDefault();
+                                }
+                            }
+
+                            if (expirationDate.trim() === '') {
+                                document.getElementById('expirationDateError').innerHTML = 'Expiration Date is required';
+                                event.preventDefault();
+                            }
+
+                            if (totalUses.trim() === '') {
+                                document.getElementById('totalUsesError').innerHTML = 'Total Uses is required';
+                                event.preventDefault();
+                            } else {
+                                var totalUsesRegex = /^\d+$/;
+
+                                if (!totalUsesRegex.test(totalUses) || parseInt(totalUses) <= 0) {
+                                    document.getElementById('totalUsesError').innerHTML = 'totalUses must be a valid positive integer';
+                                    event.preventDefault();
+                                }
+                            }
+
+                            if (perUser.trim() === '') {
+                                document.getElementById('perUserError').innerHTML = 'Uses Per User is required';
+                                event.preventDefault();
+                            } else {
+                                var perUserRegex = /^\d+$/;
+
+                                if (!perUserRegex.test(perUser) || parseInt(perUser) <= 0) {
+                                    document.getElementById('perUserError').innerHTML = 'perUser must be a valid positive integer';
+                                    event.preventDefault();
+                                }
+                            }
+
+                            if (minOrderAmount.trim() === '') {
+                                document.getElementById('minOrderAmountError').innerHTML = 'Min Order Amount is required';
+                                event.preventDefault();
+                            } else {
+                                var minOrderAmountRegex = /^\d+$/;
+
+                                if (!minOrderAmountRegex.test(minOrderAmount) || parseInt(minOrderAmount) <= 0) {
+                                    document.getElementById('minOrderAmountError').innerHTML = 'minOrderAmount must be a valid positive integer';
+                                    event.preventDefault();
+                                }
+                            }
+
+                            if (description.trim() === '') {
+                                document.getElementById('discriptionError').innerHTML = 'Description is required';
+                                event.preventDefault();
+                            }
+                        }
+                    </script>
+
+                    <%- include('../layouts/adminFooters') %>

@@ -1,9 +1,7 @@
 const Category =require('../../models/categoryModel');
 const Product=require('../../models/productModel');
 const Order=require('../../models/orderModel');
-
 const User = require('../../models/userModel');
-
 const PDFDocument = require('pdfkit');
 const table = require('pdfkit-table');
 const ejs = require('ejs');
@@ -11,19 +9,9 @@ const fs = require('fs');
 const util = require('util');
 const pdf = require('html-pdf');
 const ExcelJS = require('exceljs');
-
 const puppeteer = require('puppeteer');
-
 const { getUserDetailsAndOrders } =require('../../controllers/admin/adminController')
-
-
 const renderFileAsync = util.promisify(ejs.renderFile);
-
-
-
-
-
-
 
 
 //orderManagement
@@ -175,80 +163,11 @@ const viewReturnedOrders = async (req, res) => {
 };
 
 
-/*
-const viewReturnedOrders = async (req, res) => {
-  try {
-    // Fetch all returned orders
-    const returnedOrders = await Order.find({ returned: true }).populate('userId').populate('products.product');
-
-    // Update product stock for returned items
-    for (const order of returnedOrders) {
-      for (const orderItem of order.products) {
-        const product = orderItem.product;
-        const returnedQuantity = orderItem.quantity;
-
-        // Increase stock for the returned product
-        product.stock += returnedQuantity;
-
-        // Save the updated product
-        await product.save();
-      }
-    }
-
-    // Render the view and pass the returned orders
-    res.render('return-order', { returnedOrders });
-  } catch (error) {
-    console.error('Error fetching or updating returned orders:', error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-*/
-/*
-const viewReturnedOrders = async (req, res) => {
-  try {
-    // Fetch all returned orders
-    const returnedOrders = await Order.find({ returned: true }).populate('userId').populate('products.product');
-
-    // Create a map to track updated products
-    const updatedProductsMap = new Map();
-
-    // Update product stock for returned items
-    for (const order of returnedOrders) {
-      for (const orderItem of order.products) {
-        const product = orderItem.product;
-        const returnedQuantity = orderItem.quantity;
-
-        // Check if this product has already been updated
-        if (!updatedProductsMap.has(product._id)) {
-          // Increase stock for the returned product
-          product.stock += returnedQuantity;
-
-          // Save the updated product
-          await product.save();
-
-          // Mark this product as updated
-          updatedProductsMap.set(product._id, true);
-        }
-      }
-    }
-
-    // Render the view and pass the returned orders
-    res.render('return-order', { returnedOrders });
-  } catch (error) {
-    console.error('Error fetching or updating returned orders:', error.message);
-    res.status(500).send('Internal Server Error');
-  }
-};
-
-*/
-
 module.exports = {
 order,
 updateStatus,
 confirmOrderCancellation,
 viewCanceledOrders,
-//confirmOrderReturn,
 viewReturnedOrders,
 
 
