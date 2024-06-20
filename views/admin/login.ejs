@@ -24,12 +24,7 @@ if(typeof message !== 'undefined'){
   <%
     
 }
-
-
 %>
-
-
-
 <div class="container mt-5 col-md-3">
   
   <form class="login" method="POST" onsubmit="return formValidation()">
@@ -50,12 +45,6 @@ if(typeof message !== 'undefined'){
     </form>
      
 </div>
-
-
-
-
-
-
 
 
 <script>
@@ -95,39 +84,5 @@ if(typeof message !== 'undefined'){
     }
   </script>
 
-
-
-<!--
-
-  <script>
-    function formValidation() {
-        var email = document.querySelector('[name="email"]');
-        if (ValidateEmail(email)) {
-            return true;
-        }
-        return false;
-    }
-
-    function ValidateEmail(email) {
-        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        if (email.value.match(mailformat)) {
-            return true;
-        } else {
-            alert("You have entered an invalid email address!");
-            email.focus();
-            return false;
-        }
-    }
-</script>
-
-</div>
-</body>
-
-
-
-
-
-
-  
 
 <%include('../layouts/footer.ejs') %>

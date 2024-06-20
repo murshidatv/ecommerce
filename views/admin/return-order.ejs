@@ -1,116 +1,115 @@
 <%- include('../layouts/adminHeaders.ejs') %>
 
-   
-    
-<div class="container-scroller">
+
+
+  <div class="container-scroller">
     <!-- partial:../../partials/_navbar.html -->
     <%- include('../layouts/adminHeadersmid.ejs') %>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <!-- partial:../../partials/_sidebar.html -->
-     
       <!-- partial -->
-       <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
 
-       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="col-md-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Return Orders</h2><br><br>
-                <div class="container">
-  
-            
+        <!-- partial -->
+        <!-- partial -->
+
+        <div class="main-panel">
+          <div class="content-wrapper">
             <div class="col-md-12 grid-margin stretch-card">
-             
-                  <table class="table table-hover">
-                 
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Return Orders</h2><br><br>
+                  <div class="container">
+
+
+                    <div class="col-md-12 grid-margin stretch-card">
+
+                      <table class="table table-hover">
+
                         <tr>
-                            <th>User Name</th>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Return Reason</th>
-                              <!--- <th> Action</th>-->
-                            <!-- Add more columns as needed -->
+                          <th>User Name</th>
+                          <th>Product</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th>Return Reason</th>
+                          <!--- <th> Action</th>-->
+                          <!-- Add more columns as needed -->
                         </tr>
-                        <% returnedOrders.forEach(order => { %>
-                            <tr>
-                                <td><%= order.userId.name %></td> <!-- Change userName to name -->
-                                <% if (order.products[0] && order.products[0].product) { %>
-                                    <td><%= order.products[0].product.productName %></td>
-                                    <td><%= order.products[0].product.price %></td>
-                                <% } else { %>
-                                    <td colspan="2">Product not found</td>
-                                <% } %>
-                                <td><%= order.products[0].quantity %></td>
-                                <td><%= order.returnReason %></td>
-                                <!-- Add more data as needed -->
-
-                                <td>
-                                  <div class="button-container">
-                                    <!-- <form action="/confirm-return/<%= order.id %>" method="POST">
-                                          <!-- Include any form input fields if needed 
-                                          <button type="submit" class="confirm-button" onclick="return confirmReturn()">
-                                              Confirm Return Order
-                                          </button>
-                                      </form>-->
-                                      
-                                  </div>
+                        <% returnedOrders.forEach(order=> { %>
+                          <tr>
+                            <td>
+                              <%= order.userId.name %>
+                            </td> <!-- Change userName to name -->
+                            <% if (order.products[0] && order.products[0].product) { %>
+                              <td>
+                                <%= order.products[0].product.productName %>
                               </td>
-                            </tr>
-                        <% }); %>
-                    </table>
-               
+                              <td>
+                                <%= order.products[0].product.price %>
+                              </td>
+                              <% } else { %>
+                                <td colspan="2">Product not found</td>
+                                <% } %>
+                                  <td>
+                                    <%= order.products[0].quantity %>
+                                  </td>
+                                  <td>
+                                    <%= order.returnReason %>
+                                  </td>
+                                  <!-- Add more data as needed -->
 
-                
-            
-          </div>
-          <a href="/admin/loadorder">Back to order details</a>
-          <script>
-            function confirmReturn() {
-                var isConfirmed = confirm("Are you sure you want to confirm retun order?");
-                return isConfirmed;
-            }
-          </script>
+                                  <td>
+                                    <div class="button-container">
 
 
-<script>
-  async function confirmReturn(orderId) {
-    try {
-      const response = await fetch(`/admin/order/${orderId}/confirm-return`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
+                                    </div>
+                                  </td>
+                          </tr>
+                          <% }); %>
+                      </table>
 
-      const result = await response.json();
+                    </div>
+                    <a href="/admin/loadorder">Back to order details</a>
+                    <script>
+                      function confirmReturn() {
+                        var isConfirmed = confirm("Are you sure you want to confirm retun order?");
+                        return isConfirmed;
+                      }
+                    </script>
 
-      if (result.success) {
-        alert('Order return confirmed');
-        document.getElementById(`order-status-${orderId}`).textContent = 'Returned';
-        // Optionally, update the UI to reflect the change
-      } else {
-        alert('Failed to confirm order return');
-      }
-    } catch (error) {
-      console.error('Error confirming order return:', error);
-      alert('An error occurred while confirming the return.');
-    }
-  }
-</script>
 
-        </div>
-        <!-- content-wrapper ends -->
-  
+                    <script>
+                      async function confirmReturn(orderId) {
+                        try {
+                          const response = await fetch(`/admin/order/${orderId}/confirm-return`, {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json'
+                            }
+                          });
+
+                          const result = await response.json();
+
+                          if (result.success) {
+                            alert('Order return confirmed');
+                            document.getElementById(`order-status-${orderId}`).textContent = 'Returned';
+                            // Optionally, update the UI to reflect the change
+                          } else {
+                            alert('Failed to confirm order return');
+                          }
+                        } catch (error) {
+                          console.error('Error confirming order return:', error);
+                          alert('An error occurred while confirming the return.');
+                        }
+                      }
+                    </script>
+
+                  </div>
+                  <!-- content-wrapper ends -->
+
+                </div>
               </div>
             </div>
           </div>
-        </div>
-       
-   
-         
-    
- <!-- partial:../../partials/_footer.html -->
- <%- include('../layouts/adminFooters.ejs') %>
+
+          <!-- partial:../../partials/_footer.html -->
+          <%- include('../layouts/adminFooters.ejs') %>

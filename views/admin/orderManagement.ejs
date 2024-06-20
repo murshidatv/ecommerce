@@ -1,233 +1,223 @@
 <%- include('../layouts/adminHeaders.ejs') %>
-    <div class="container-scroller">
-      <!-- partial:../../partials/_navbar.html -->
-      <%- include('../layouts/adminHeadersmid.ejs') %>
-        <!-- partial -->
-        <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-         <div class="page-header">
-             
-              
-              <div class="col-md-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Order Management</h2><br><br>
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <%- include('../layouts/adminHeadersmid.ejs') %>
+      <!-- partial -->
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="page-header">
+
+
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Order Management</h2>
+                  <br><br>
+                  <div class="container">
+
+                    <form action="/admin/loadorder" method="GET">
+                      <input type="text" name="search" placeholder="Search by User Name..." value="<%= searchQuery %>">
+                      <select name="status">
+                        <option value="">All Statuses</option>
+                        <% statuses.forEach(status=> { %>
+                          <option value="<%= status %>" <%=status===filterStatus ? 'selected' : '' %>><%= status %>
+                          </option>
+                          <% }) %>
+                      </select>
+                      <button type="submit">Search</button>
+                    </form>
+
+                    <br>
                     <div class="container">
-                    
-                          <form action="/admin/loadorder" method="GET">
-                            <input type="text" name="search" placeholder="Search by User Name..." value="<%= searchQuery %>">
-                            <select name="status">
-                                <option value="">All Statuses</option>
-                                <% statuses.forEach(status => { %>
-                                    <option value="<%= status %>" <%=  status === filterStatus ? 'selected' : '' %>><%= status %></option>
-                                <% }) %>
-                            </select>
-                            <button type="submit">Search</button>
-                        </form>
-
-                       
 
 
+                      <button class="btn1" onclick="location.href='/admin/canceled-orders'" type="button">
+                        Cancelled Orders Details
+                      </button>
 
-                        <br>
-                    <div class="container">
-                           
-                        
-              <button class="btn1" onclick="location.href='/admin/canceled-orders'" type="button">
-                Cancelled Orders Details
-              </button> 
+                      <button class="btn1" onclick="location.href='/admin/order-return'" type="button">
+                        Return Orders Details
+                      </button>
+                      <br><br>
+                      <hr>
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <!--<th scope="col">SL.NO</th>-->
+                            <th>Order Date</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Product<br>Count</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Discount<br>Amount</th>
+                            <th scope="col">Total<br>Amount</th>
+                            <th scope="col">Payment<br>Method</th>
 
-              <button class="btn1" onclick="location.href='/admin/order-return'" type="button">
-                Return Orders Details
-              </button>
-                       <br><br> <hr>    
-                            <table class="table table-hover">
-                                <thead>
-                                        <tr>
-                                          <!--<th scope="col">SL.NO</th>-->
-                                          <th>Order Date</th>
-                                          <th scope="col">Name</th>
-                                          <th scope="col">Product<br>Count</th>
-                                          <th scope="col">Product Name</th>
-                                          <th scope="col">Discount<br>Amount</th>
-                                           <th scope="col">Total<br>Amount</th>
-                                          <th scope="col">Payment<br>Method</th>
-                                          
-                                          <th scope="col">New<br>Status</th>
-                                          <th scope="col"> Update<br>Status</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <% for (var i=0; i < order.length; i++) { %>
-                                          <tr>
-                                           <!-- <td>
+                            <th scope="col">New<br>Status</th>
+                            <th scope="col"> Update<br>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for (var i=0; i < order.length; i++) { %>
+                            <tr>
+                              <!-- <td>
                                               <%= i+1 %>
                                             </td>-->
-                                            <td><%= new Date(order[i].orderDate).toLocaleDateString()  %></td>
-                                            <td>
-                      
-                                              <%= order[i].userName %>
-                                            </td>
-                                            <td>
-                                              <% if (order[i].products && order[i].products.length> 0) { %>
-                                                <%= order[i].products.length %> products
-                                                  <% } else { %>
-                                                    0 <!-- If no products, display 0 -->
-                                                    <% } %>
-                                            </td>
-                                            <td>
-                                              <% if (order[i].products && order[i].products.length> 0) { %>
-                                                <% order[i].products.forEach(product=> { %>
-                                                  <% if (product.product && product.product.productName) { %>
-                                                    <strong>Product Name:</strong>
-                                                    <%= product.product.productName %><br>
-                                                      <% } else { %>
-                                                        <strong><br>Product Name:</strong> N/A<br>
-                                                        <% } %>
-                      
-                                                          <strong><br>Quantity:</strong>
-                                                          <%= product.quantity %><br>
-                      
-                                                            <% if (product.product && product.product.price) { %>
-                                                              <strong><br>Price:</strong> Rs.<%= product.product.price %><br>
-                                                                <% } else { %>
-                                                                <!---  <strong><br>Price:</strong>Rs. N/A<br>-->
-                                                                  <% } %>
-                      
-                                                                    <!-- Add other product details as needed -->
-                                                                    <br> <!-- Add a line break between each product's details -->
-                                                                    <% }); %>
-                                                                      <% } else { %>
-                                                                        No products
-                                                                        <% } %>
-                                            </td>
-                                            <td>
-                                              <% if (order[i].discountAmount !== undefined && order[i].discountAmount > 0) { %>
-                                                Rs<%= order[i].discountAmount %>
-                                              <% } else { %>
-                                                no discount
-                                                <% console.log("No discountAmount found in order:", order[i]); %>
-                                              <% } %>
-                                            </td>
-                                            <td>
-                                              <% if (order[i].totalAmount !==undefined && order[i].totalAmount> 0) { %>
-                                                Rs.<%= order[i].totalAmount %>
-                                                  <% } else { %>
-                                                    N/A
-                                                    <% console.log("No Price found in order:", order[i]); %>
-                                                      <% } %>
-                                            </td>
-                      
-                                            <td>
-                                              <% if (order[i].payment && order[i].payment.length> 0) { %>
-                                                <%= order[i].payment %>
-                                                  <% } else { %>
-                                                    N/A
-                                                    <% console.log("No payment found in order:", order[i]); %>
-                                                      <% } %>
-                                            </td>
-                                            
-                                            
-                                            <td>
-                                              <%= newStatus ? newStatus : order[i].status %>
-                                            </td>
-                      <!--
-                                            <td>
-                                              <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
-                                                <select name="newStatus">
-                                                  <option value="processing">Processing</option>
-                                                  <option value="pending">Pending</option>
-                                                  <option value="shipped">Shipped</option>
-                                                  <option value="delivered">Delivered</option>
-                      
-                                                </select>
-                                                <button type="submit">Update Status</button>
-                                              </form>
-                                            </td>-->
-                                            <td>
-                                              <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
-                                                <select name="newStatus">
-                                                  <% if (order[i].status !== 'processing') { %>
-                                                    <option value="processing">Processing</option>
-                                                  <% } %>
-                                                  <% if (order[i].status !== 'pending') { %>
-                                                    <option value="pending">Pending</option>
-                                                  <% } %>
-                                                  <% if (order[i].status !== 'shipped') { %>
-                                                    <option value="shipped">Shipped</option>
-                                                  <% } %>
-                                                  <% if (order[i].status !== 'delivered') { %>
-                                                    <option value="delivered">Delivered</option>
-                                                  <% } %>
-                                                </select>
-                                                <button type="submit">Update Status</button>
-                                              </form>
-                                            </td>
-                                            
-                                          </tr>
+                              <td>
+                                <%= new Date(order[i].orderDate).toLocaleDateString() %>
+                              </td>
+                              <td>
+
+                                <%= order[i].userName %>
+                              </td>
+                              <td>
+                                <% if (order[i].products && order[i].products.length> 0) { %>
+                                  <%= order[i].products.length %> products
+                                    <% } else { %>
+                                      0 <!-- If no products, display 0 -->
+                                      <% } %>
+                              </td>
+                              <td>
+                                <% if (order[i].products && order[i].products.length> 0) { %>
+                                  <% order[i].products.forEach(product=> { %>
+                                    <% if (product.product && product.product.productName) { %>
+                                      <strong>Product Name:</strong>
+                                      <%= product.product.productName %><br>
+                                        <% } else { %>
+                                          <strong><br>Product Name:</strong> N/A<br>
                                           <% } %>
-                                      </tbody>
-                      
-                                    </table>
-                                    <a href="/admin/home">Back To Home</a>
-                         
-<br><br>
 
-<nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      <% if (currentPage> 1) { %>
-        <li class="page-item"><a class="page-link"
-            href="/admin/loadorder?page=1&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">First</a>
-        </li>
-        <li class="page-item"><a class="page-link"
-            href="/admin/loadorder?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Previous</a>
-        </li>
-        <% } %>
+                                            <strong><br>Quantity:</strong>
+                                            <%= product.quantity %><br>
 
-          <% for (var i=1; i <=totalPages; i++) { %>
-            <li class="page-item <%= currentPage === i ? 'active' : '' %>"><a class="page-link"
-                href="/admin/loadorder?page=<%= i %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">
-                <%= i %>
-              </a></li>
-            <% } %>
+                                              <% if (product.product && product.product.price) { %>
+                                                <strong><br>Price:</strong> Rs.<%= product.product.price %><br>
+                                                  <% } else { %>
+                                                    <!---  <strong><br>Price:</strong>Rs. N/A<br>-->
+                                                    <% } %>
 
-              <% if (currentPage < totalPages) { %>
-                <li class="page-item"><a class="page-link"
-                    href="/admin/loadorder?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Next</a>
-                </li>
-                <li class="page-item"><a class="page-link"
-                    href="/admin/loadorder?page=<%= totalPages %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Last</a>
-                </li>
-                <% } %>
-    </ul>
-  </nav>
-                    </div>
+                                                      <!-- Add other product details as needed -->
+                                                      <br> <!-- Add a line break between each product's details -->
+                                                      <% }); %>
+                                                        <% } else { %>
+                                                          No products
+                                                          <% } %>
+                              </td>
+                              <td>
+                                <% if (order[i].discountAmount !==undefined && order[i].discountAmount> 0) { %>
+                                  Rs<%= order[i].discountAmount %>
+                                    <% } else { %>
+                                      no discount
+                                      <% console.log("No discountAmount found in order:", order[i]); %>
+                                        <% } %>
+                              </td>
+                              <td>
+                                <% if (order[i].totalAmount !==undefined && order[i].totalAmount> 0) { %>
+                                  Rs.<%= order[i].totalAmount %>
+                                    <% } else { %>
+                                      N/A
+                                      <% console.log("No Price found in order:", order[i]); %>
+                                        <% } %>
+                              </td>
+
+                              <td>
+                                <% if (order[i].payment && order[i].payment.length> 0) { %>
+                                  <%= order[i].payment %>
+                                    <% } else { %>
+                                      N/A
+                                      <% console.log("No payment found in order:", order[i]); %>
+                                        <% } %>
+                              </td>
+
+
+                              <td>
+                                <%= newStatus ? newStatus : order[i].status %>
+                              </td>
+                             
+                              <td>
+                                <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
+                                  <select name="newStatus">
+                                    <% if (order[i].status !=='processing' ) { %>
+                                      <option value="processing">Processing</option>
+                                      <% } %>
+                                        <% if (order[i].status !=='pending' ) { %>
+                                          <option value="pending">Pending</option>
+                                          <% } %>
+                                            <% if (order[i].status !=='shipped' ) { %>
+                                              <option value="shipped">Shipped</option>
+                                              <% } %>
+                                                <% if (order[i].status !=='delivered' ) { %>
+                                                  <option value="delivered">Delivered</option>
+                                                  <% } %>
+                                  </select>
+                                  <button type="submit">Update Status</button>
+                                </form>
+                              </td>
+
+                            </tr>
+                            <% } %>
+                        </tbody>
+
+                      </table>
+                      <a href="/admin/home">Back To Home</a>
+
+                      <br><br>
+
+                      <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                          <% if (currentPage> 1) { %>
+                            <li class="page-item"><a class="page-link"
+                                href="/admin/loadorder?page=1&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">First</a>
+                            </li>
+                            <li class="page-item"><a class="page-link"
+                                href="/admin/loadorder?page=<%= currentPage - 1 %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Previous</a>
+                            </li>
+                            <% } %>
+
+                              <% for (var i=1; i <=totalPages; i++) { %>
+                                <li class="page-item <%= currentPage === i ? 'active' : '' %>"><a class="page-link"
+                                    href="/admin/loadorder?page=<%= i %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">
+                                    <%= i %>
+                                  </a></li>
+                                <% } %>
+
+                                  <% if (currentPage < totalPages) { %>
+                                    <li class="page-item"><a class="page-link"
+                                        href="/admin/loadorder?page=<%= currentPage + 1 %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Next</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link"
+                                        href="/admin/loadorder?page=<%= totalPages %>&limit=<%= limit %>&search=<%= searchQuery %>&status=<%= filterStatus %>">Last</a>
+                                    </li>
+                                    <% } %>
+                        </ul>
+                      </nav>
                     </div>
                   </div>
                 </div>
               </div>
-         </div></div>
-  <script>
-    // Get the current path of the URL
-    var path = window.location.pathname;
+            </div>
+          </div>
+        </div>
+        <script>
+          // Get the current path of the URL
+          var path = window.location.pathname;
 
-    // Remove trailing slash if it exists
-    path = path.replace(/\/$/, "");
+          // Remove trailing slash if it exists
+          path = path.replace(/\/$/, "");
 
-    // Get all navigation links
-    var navLinks = document.querySelectorAll('.navbar-nav a');
+          // Get all navigation links
+          var navLinks = document.querySelectorAll('.navbar-nav a');
 
-    // Iterate through each link and check if its href matches the current path
-    navLinks.forEach(function (link) {
-      // Remove the "active" class from all links
-      link.classList.remove('active');
+          // Iterate through each link and check if its href matches the current path
+          navLinks.forEach(function (link) {
+            // Remove the "active" class from all links
+            link.classList.remove('active');
 
-      // Check if the link's href matches the current path
-      if (link.getAttribute('href') === path) {
-        // Add the "active" class to the matching link
-        link.classList.add('active');
-      }
-    });
-</script>
-<%- include('../layouts/adminFooters.ejs') %>
+            // Check if the link's href matches the current path
+            if (link.getAttribute('href') === path) {
+              // Add the "active" class to the matching link
+              link.classList.add('active');
+            }
+          });
+        </script>
+        <%- include('../layouts/adminFooters.ejs') %>

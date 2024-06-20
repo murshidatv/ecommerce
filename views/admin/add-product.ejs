@@ -319,13 +319,7 @@
             document.getElementById('imageError').innerText = "image is required";
             return false;
           }
-          // var selectedImageCount = [productImage1, productImage2, productImage3].filter(Boolean).length;
-
-          // if (selectedImageCount < 1) {
-          //     document.getElementById('imageError').innerText = 'Please select exactly one image';
-          //     event.preventDefault();
-          // } 
-
+          
           if (!isValidImage(productImage1) || !isValidImage(productImage2) || !isValidImage(productImage3)) {
             document.getElementById('imageError').innerText = 'Please select valid image files for each field';
             event.preventDefault();
@@ -345,7 +339,6 @@
           }
           return true;
         }
-
 
 
         // Product offer validation

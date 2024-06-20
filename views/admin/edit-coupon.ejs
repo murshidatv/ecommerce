@@ -1,67 +1,73 @@
 <%- include('../layouts/adminHeaders.ejs') %>
     <style>
         /* Reset some default styles */
-    body, h1, h2, p, ul, form {
-        margin: 0;
-        padding: 0;
-    }
-    
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-    }
-    
-    #add_user {
-        max-width: 450px;
-        margin: 50px auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .form-group {
-        margin-bottom: 15px;
+        body,
+        h1,
+        h2,
+        p,
+        ul,
+        form {
+            margin: 0;
+            padding: 0;
+        }
 
-    }
-    
-    label {
-        display: block;
-        margin-bottom: 5px;
-        color: #333;
-    }
-    
-    input[type="text"] {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    
-    .radio {
-        margin-right: 10px;
-    }
-    
-    .btn {
-      background-color: rgb(85, 145, 213);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
 
-    .btn:hover {
-      background-color: #c66;
-    }
+        #add_user {
+            max-width: 450px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    #inputState{
-        width: 25rem;
-        border-radius: 5px;
-        height: 2rem;
-    }
-    nav {
+        .form-group {
+            margin-bottom: 15px;
+
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .radio {
+            margin-right: 10px;
+        }
+
+        .btn {
+            background-color: rgb(85, 145, 213);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #c66;
+        }
+
+        #inputState {
+            width: 25rem;
+            border-radius: 5px;
+            height: 2rem;
+        }
+
+        nav {
             background-color: #333;
             padding: 10px 0;
             text-align: center;
@@ -76,241 +82,245 @@
         nav a:hover {
             text-decoration: underline;
         }
+    </style>
 
-       </style>   
-          
-          <div class="container-scroller">
-            <!-- partial:../../partials/_navbar.html -->
-            <%- include('../layouts/adminHeadersmid.ejs') %>
-              <!-- partial -->
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <%- include('../layouts/adminHeadersmid.ejs') %>
+            <!-- partial -->
 
-              <div class="main-panel">
+            <div class="main-panel">
                 <div class="content-wrapper">
-      
-                  <h2 style="color: rgb(10, 109, 170);text-align: center;">Edit Coupon</h2>
-      
-                  <div class="col-md-12 grid-margin stretch-card">
-      
+
+                    <h2 style="color: rgb(10, 109, 170);text-align: center;">Edit Coupon</h2>
+
+                    <div class="col-md-12 grid-margin stretch-card">
+
+                        <form action="/admin/edit-coupon/<%= coupon._id %>" method="POST" id="add_user"
+                            onsubmit="return couponValidation(event)">
+                            <div class="new_uaer">
+
+                                <div class="form-group">
+
+                                    Coupon Name:<label for="couponname" class="text-light"></label>
+                                    <input type="hidden" name="id" value="<%= coupon._id %>">
+                                    <input type="text" id="couponname" name="couponname"
+                                        value="<%= coupon.couponname %>"><br>
+                                    <span id="couponnameError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+
+                                    Coupon Code: <label for="code" class="text-light"></label>
+                                    <input type="hidden" name="id" value="<%= coupon._id %>">
+                                    <input type="text" id="code" name="code" value="<%= coupon.code %>"><br>
+                                    <span id="codeError" style="color: red;"></span>
+                                    <% if (typeof message !=='undefined' ) { %>
+                                        <div id="message" style="color: red;">
+                                            <%= message %>
+                                        </div>
+                                        <% } %>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="discountType">Discount Type:</label>
+                                    <select id="discountType" name="discountType" class="form-control">
+                                        <option value="percentage" <%=coupon.type==='percentage' ? 'selected' : '' %>
+                                            >Percentage</option>
+                                        <option value="fixed" <%=coupon.type==='fixed' ? 'selected' : '' %>>Fixed
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    Discount Value: <label for="discountValue" class="text-light"></label>
+                                    <input type="number" id="discountValue" name="discountValue"
+                                        value="<%= coupon.value %>"><br>
+                                    <span id="discountValueError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+                                    Expiration Date: <label for="expirationDate" class="text-light"></label>
+                                    <input type="date" id="expirationDate" name="expirationDate"
+                                        value="<%= (coupon.expirationDate instanceof Date) ? coupon.expirationDate.toISOString().split('T')[0] : '' %>"><br>
+                                    <span id="expirationDateError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+                                    Total Uses: <label for="totalUses" class="text-light"></label>
+                                    <input type="number" id="totalUses" name="totalUses"
+                                        value="<%= (coupon.usageLimits && coupon.usageLimits.totalUses) ? coupon.usageLimits.totalUses : '' %>"><br>
+                                    <span id="totalUsesError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+                                    Uses Per User: <label for="perUser" class="text-light"></label>
+                                    <input type="number" id="perUser" name="perUser"
+                                        value="<%= (coupon.usageLimits && coupon.usageLimits.perUser) ? coupon.usageLimits.perUser : '' %>"><br>
+                                    <span id="perUserError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+                                    Min Order Amount:<label for="minOrderAmount" class="text-light"></label>
+                                    <input type="number" id="minOrderAmount" name="minOrderAmount"
+                                        value="<%= (coupon.conditions && coupon.conditions.minOrderAmount) ? coupon.conditions.minOrderAmount : '' %>"><br>
+                                    <span id="minOrderAmountError" style="color: red;"></span>
+                                </div>
+                                <div class="form-group">
+                                    Description:<label for="description"></label>
+                                    <textarea name="description" id="description" cols="50"
+                                        rows="10"><%= coupon.description %></textarea><br>
+                                    <span id="discriptionError" style="color: red;"></span>
+                                </div>
+                                <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
+
+                                    <div class="form-group">
+                                        <button style="color: #ccc;" type="submit" class="btn text-dark update">Save
+                                            Changes</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <script>
+                            async function checkCouponCodeExists(couponId, code) {
+                                try {
+                                    const response = await fetch(`/admin/edit-coupon/${couponId}/check-code-exists`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ code }),
+                                    });
+
+                                    return await response.text();
+                                } catch (error) {
+                                    console.error('Error checking coupon code:', error);
+                                    return 'Error checking coupon code';
+                                }
+                            }
+
+                            async function couponValidation(event) {
+                                // Reset error messages
+                                document.getElementById('couponnameError').innerHTML = '';
+                                document.getElementById('codeError').innerHTML = '';
+                                document.getElementById('discountValueError').innerHTML = '';
+                                document.getElementById('expirationDateError').innerHTML = '';
+                                document.getElementById('totalUsesError').innerHTML = '';
+                                document.getElementById('perUserError').innerHTML = '';
+                                document.getElementById('minOrderAmountError').innerHTML = '';
+                                document.getElementById('discriptionError').innerHTML = '';
+
+                                // Get form values
+                                var couponname = document.getElementById('couponname').value;
+                                var code = document.getElementById('code').value;
+                                var discountValue = document.getElementById('discountValue').value;
+                                var expirationDate = document.getElementById('expirationDate').value;
+                                var totalUses = document.getElementById('totalUses').value;
+                                var perUser = document.getElementById('perUser').value;
+                                var minOrderAmount = document.getElementById('minOrderAmount').value;
+                                var description = document.getElementById('description').value;
+
+                                // Validate each field
+                                if (couponname.trim() === '') {
+                                    document.getElementById('couponnameError').innerHTML = 'Coupon Name is required';
+                                    event.preventDefault();
+                                }
+
+                                if (!/^[a-zA-Z]+$/.test(couponname)) {
+                                    document.getElementById('couponnameError').innerHTML = 'Coupon Name must be characters only';
+                                    event.preventDefault();
+                                }
+
+                                if (code.trim() === '') {
+                                    document.getElementById('codeError').innerHTML = 'Coupon Code is required';
+                                    event.preventDefault();
+                                } else {
+                                    var codeRegex = /^[a-zA-Z0-9]+$/;
+
+                                    if (!codeRegex.test(code)) {
+                                        document.getElementById('codeError').innerHTML = 'Code must contain only letters and numbers';
+                                        event.preventDefault();
+                                    } else {
+                                        // Check if the coupon code already exists
+                                        const message = await checkCouponCodeExists(couponId, code);
+
+                                        if (message.includes('Coupon code already exists')) {
+                                            // Display the custom error message to the user
+                                            document.getElementById('codeError').innerHTML = 'Coupon code already exists. Please choose a different code.';
+                                            event.preventDefault();
+                                        } else if (message.includes('Coupon code is available')) {
+                                            // Optionally, you can update the UI to inform the user that the code is available
+                                            document.getElementById('codeError').innerHTML = 'Coupon code is available';
+                                        } else {
+                                            // Display a generic error message
+                                            document.getElementById('codeError').innerHTML = 'Internal Server Error';
+                                            event.preventDefault();
+                                        }
+                                    }
+                                }
+
+                                if (discountValue.trim() === '') {
+                                    document.getElementById('discountValueError').innerHTML = 'Discount Value is required';
+                                    event.preventDefault();
+                                } else {
+                                    var discountValueRegex = /^\d+$/;
+
+                                    if (!discountValueRegex.test(discountValue) || parseInt(discountValue) <= 0) {
+                                        document.getElementById('discountValueError').innerHTML = 'Discount Value must be a valid positive integer';
+                                        event.preventDefault();
+                                    }
+                                }
+
+                                if (expirationDate.trim() === '') {
+                                    document.getElementById('expirationDateError').innerHTML = 'Expiration Date is required';
+                                    event.preventDefault();
+                                }
+
+                                if (totalUses.trim() === '') {
+                                    document.getElementById('totalUsesError').innerHTML = 'Total Uses is required';
+                                    event.preventDefault();
+                                } else {
+                                    var totalUsesRegex = /^\d+$/;
+
+                                    if (!totalUsesRegex.test(totalUses) || parseInt(totalUses) <= 0) {
+                                        document.getElementById('totalUsesError').innerHTML = 'Total Uses must be a valid positive integer';
+                                        event.preventDefault();
+                                    }
+                                }
+
+                                if (perUser.trim() === '') {
+                                    document.getElementById('perUserError').innerHTML = 'Uses Per User is required';
+                                    event.preventDefault();
+                                } else {
+                                    var perUserRegex = /^\d+$/;
+
+                                    if (!perUserRegex.test(perUser) || parseInt(perUser) <= 0) {
+                                        document.getElementById('perUserError').innerHTML = 'Uses Per User must be a valid positive integer';
+                                        event.preventDefault();
+                                    }
+                                }
+
+                                if (minOrderAmount.trim() === '') {
+                                    document.getElementById('minOrderAmountError').innerHTML = 'Min Order Amount is required';
+                                    event.preventDefault();
+                                } else {
+                                    var minOrderAmountRegex = /^\d+$/;
+
+                                    if (!minOrderAmountRegex.test(minOrderAmount) || parseInt(minOrderAmount) <= 0) {
+                                        document.getElementById('minOrderAmountError').innerHTML = 'Min Order Amount must be a valid positive integer';
+                                        event.preventDefault();
+                                    }
+                                }
+
+                                if (description.trim() === '') {
+                                    document.getElementById('discriptionError').innerHTML = 'Description is required';
+                                    event.preventDefault();
+                                }
+                            }
+
+                        </script>
 
 
-
-     <form action="/admin/edit-coupon/<%= coupon._id %>" method="POST" id="add_user" onsubmit="return couponValidation(event)">
-        <div class="new_uaer">
-            
-            <div class="form-group">
-                
-                Coupon Name:<label for="couponname" class="text-light"></label>
-                <input type="hidden" name="id" value="<%= coupon._id %>">
-                <input type="text" id="couponname" name="couponname" value="<%= coupon.couponname %>" ><br>
-                <span id="couponnameError" style="color: red;"></span>
-            </div>
-        <div class="form-group">
-           
-            Coupon Code: <label for="code" class="text-light"></label>
-            <input type="hidden" name="id" value="<%= coupon._id %>">
-            <input type="text" id="code" name="code" value="<%= coupon.code %>" ><br>
-            <span id="codeError" style="color: red;"></span>
-              <% if (typeof message !== 'undefined') { %>
-                    <div id="message" style="color: red;">
-                      <%= message %>
                     </div>
-                  <% } %>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="discountType">Discount Type:</label>
-            <select id="discountType" name="discountType" class="form-control">
-                <option value="percentage" <%= coupon.type === 'percentage' ? 'selected' : '' %>>Percentage</option>
-                <option value="fixed" <%= coupon.type === 'fixed' ? 'selected' : '' %>>Fixed</option>
-            </select>
-        </div>
-        <div class="form-group">
-            Discount Value: <label for="discountValue" class="text-light"></label>
-            <input type="number" id="discountValue" name="discountValue" value="<%= coupon.value %>" ><br>
-            <span id="discountValueError" style="color: red;"></span>
-        </div>
-        <div class="form-group">
-            Expiration Date:  <label for="expirationDate" class="text-light"></label>
-            <input type="date" id="expirationDate" name="expirationDate" value="<%= (coupon.expirationDate instanceof Date) ? coupon.expirationDate.toISOString().split('T')[0] : '' %>" ><br>
-            <span id="expirationDateError" style="color: red;"></span>
-        </div>
-        <div class="form-group">
-            Total Uses: <label for="totalUses" class="text-light"></label>
-            <input type="number" id="totalUses" name="totalUses" value="<%= (coupon.usageLimits && coupon.usageLimits.totalUses) ? coupon.usageLimits.totalUses : '' %>" ><br>
-            <span id="totalUsesError" style="color: red;"></span>
-        </div>
-        <div class="form-group">
-            Uses Per User: <label for="perUser" class="text-light"></label>
-            <input type="number" id="perUser" name="perUser" value="<%= (coupon.usageLimits && coupon.usageLimits.perUser) ? coupon.usageLimits.perUser : '' %>" ><br>
-            <span id="perUserError" style="color: red;"></span>
-        </div>
-        <div class="form-group">
-            Min Order Amount:<label for="minOrderAmount" class="text-light"></label>
-            <input type="number" id="minOrderAmount" name="minOrderAmount" value="<%= (coupon.conditions && coupon.conditions.minOrderAmount) ? coupon.conditions.minOrderAmount : '' %>" ><br>
-            <span id="minOrderAmountError" style="color: red;"></span>
-        </div>
-        <div class="form-group">
-            Description:<label for="description"></label>
-            <textarea name="description" id="description" cols="50" rows="10"><%= coupon.description %></textarea><br>
-            <span id="discriptionError" style="color: red;"></span>
-        </div>
-        <div class="mb-3 mt-4 mb-lg-4 d-grid gap-2">
-           
-            <div class="form-group">
-                <button style="color: #ccc;" type="submit" class="btn text-dark update">Save Changes</button>
-              </div>
-        </div>
-
-    </div>
-    </form>
-
-<script>
-    async function checkCouponCodeExists(couponId, code) {
-    try {
-        const response = await fetch(`/admin/edit-coupon/${couponId}/check-code-exists`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code }),
-        });
-
-        return await response.text();
-    } catch (error) {
-        console.error('Error checking coupon code:', error);
-        return 'Error checking coupon code';
-    }
-}
-
-async function couponValidation(event) {
-    // Reset error messages
-    document.getElementById('couponnameError').innerHTML = '';
-    document.getElementById('codeError').innerHTML = '';
-    document.getElementById('discountValueError').innerHTML = '';
-    document.getElementById('expirationDateError').innerHTML = '';
-    document.getElementById('totalUsesError').innerHTML = '';
-    document.getElementById('perUserError').innerHTML = '';
-    document.getElementById('minOrderAmountError').innerHTML = '';
-    document.getElementById('discriptionError').innerHTML = '';
-
-    // Get form values
-    var couponname = document.getElementById('couponname').value;
-    var code = document.getElementById('code').value;
-    var discountValue = document.getElementById('discountValue').value;
-    var expirationDate = document.getElementById('expirationDate').value;
-    var totalUses = document.getElementById('totalUses').value;
-    var perUser = document.getElementById('perUser').value;
-    var minOrderAmount = document.getElementById('minOrderAmount').value;
-    var description = document.getElementById('description').value;
-
-    // Validate each field
-    if (couponname.trim() === '') {
-        document.getElementById('couponnameError').innerHTML = 'Coupon Name is required';
-        event.preventDefault();
-    }
-
-    if (!/^[a-zA-Z]+$/.test(couponname)) {
-        document.getElementById('couponnameError').innerHTML = 'Coupon Name must be characters only';
-        event.preventDefault();
-    }
-
-    if (code.trim() === '') {
-        document.getElementById('codeError').innerHTML = 'Coupon Code is required';
-        event.preventDefault();
-    } else {
-        var codeRegex = /^[a-zA-Z0-9]+$/;
-
-        if (!codeRegex.test(code)) {
-            document.getElementById('codeError').innerHTML = 'Code must contain only letters and numbers';
-            event.preventDefault();
-        } else {
-            // Check if the coupon code already exists
-            const message = await checkCouponCodeExists(couponId, code);
-
-            if (message.includes('Coupon code already exists')) {
-                // Display the custom error message to the user
-                document.getElementById('codeError').innerHTML = 'Coupon code already exists. Please choose a different code.';
-                event.preventDefault();
-            } else if (message.includes('Coupon code is available')) {
-                // Optionally, you can update the UI to inform the user that the code is available
-                document.getElementById('codeError').innerHTML = 'Coupon code is available';
-            } else {
-                // Display a generic error message
-                document.getElementById('codeError').innerHTML = 'Internal Server Error';
-                event.preventDefault();
-            }
-        }
-    }
-
-    if (discountValue.trim() === '') {
-        document.getElementById('discountValueError').innerHTML = 'Discount Value is required';
-        event.preventDefault();
-    } else {
-        var discountValueRegex = /^\d+$/;
-
-        if (!discountValueRegex.test(discountValue) || parseInt(discountValue) <= 0) {
-            document.getElementById('discountValueError').innerHTML = 'Discount Value must be a valid positive integer';
-            event.preventDefault();
-        }
-    }
-
-    if (expirationDate.trim() === '') {
-        document.getElementById('expirationDateError').innerHTML = 'Expiration Date is required';
-        event.preventDefault();
-    }
-
-    if (totalUses.trim() === '') {
-        document.getElementById('totalUsesError').innerHTML = 'Total Uses is required';
-        event.preventDefault();
-    } else {
-        var totalUsesRegex = /^\d+$/;
-
-        if (!totalUsesRegex.test(totalUses) || parseInt(totalUses) <= 0) {
-            document.getElementById('totalUsesError').innerHTML = 'Total Uses must be a valid positive integer';
-            event.preventDefault();
-        }
-    }
-
-    if (perUser.trim() === '') {
-        document.getElementById('perUserError').innerHTML = 'Uses Per User is required';
-        event.preventDefault();
-    } else {
-        var perUserRegex = /^\d+$/;
-
-        if (!perUserRegex.test(perUser) || parseInt(perUser) <= 0) {
-            document.getElementById('perUserError').innerHTML = 'Uses Per User must be a valid positive integer';
-            event.preventDefault();
-        }
-    }
-
-    if (minOrderAmount.trim() === '') {
-        document.getElementById('minOrderAmountError').innerHTML = 'Min Order Amount is required';
-        event.preventDefault();
-    } else {
-        var minOrderAmountRegex = /^\d+$/;
-
-        if (!minOrderAmountRegex.test(minOrderAmount) || parseInt(minOrderAmount) <= 0) {
-            document.getElementById('minOrderAmountError').innerHTML = 'Min Order Amount must be a valid positive integer';
-            event.preventDefault();
-        }
-    }
-
-    if (description.trim() === '') {
-        document.getElementById('discriptionError').innerHTML = 'Description is required';
-        event.preventDefault();
-    }
-}
-
-</script>
 
 
+                </div>
+                <!-- content-wrapper ends -->
+                <!-- partial:../../partials/_footer.html -->
 
-
-
-</div>
-
-
-</div>
-<!-- content-wrapper ends -->
-<!-- partial:../../partials/_footer.html -->
-
-<%- include('../layouts/adminFooters.ejs') %>
+                <%- include('../layouts/adminFooters.ejs') %>

@@ -1,109 +1,123 @@
 <%- include('../layouts/adminHeaders') %>
-    
-<div class="container-scroller">
-    <!-- partial:../../partials/_navbar.html -->
-    <%- include('../layouts/adminHeadersmid') %>
-      <!-- partial -->
-       <!-- partial -->
 
-       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="col-md-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Cancelled Orders</h2><br><br>
-                <div class="container">
-  
-            
-            <div class="col-md-12 grid-margin stretch-card">
-                
-           
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <%- include('../layouts/adminHeadersmid') %>
+            <!-- partial -->
+            <!-- partial -->
 
-                <% if (canceledOrders.length === 0) { %>
-                    <p>No cancelled orders found.</p>
-                <% } else { %>
-                  <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>User Name</th>
-                                <th>Product Details</th>
-                                <th>Total amount</th>
-                                <th>Cancellation Reason</th>
-                              <!--- <th> Action</th>-->
-                            </tr>
-                        </thead>
-                        <tbody>
-                          
-                            <% canceledOrders.forEach(order => { %>
-                                <tr>
-                                  
-                                    <td><%= order._id %></td>
-                                    <td><%= order.userName %></td>
-                                    <td>
-                                        <% if (order.products && order.products.length > 0) { %>
-                                            <% order.products.forEach(product => { %>
-                                                <p>
-                                                    <% if (product.product && product.product.productName) { %>
-                                                        Product Name: <%= product.product.productName %>,<br>
-                                                    <% } else { %>
-                                                        Product Name: N/A,<br>
-                                                    <% } %>
-                                    
-                                                    <% if (product.product && product.product.price) { %>
-                                                        Product Price: <%= product.product.price %><br>
-                                                    <% } else { %>
-                                                        Product Price: N/A<br>
-                                                    <% } %>
-                                                    Product Quantity: <%= product.quantity %><br>
-            
-                                                </p>
-                                            <% }) %>
-                                        <% } else { %>
-                                            No products
-                                        <% } %>
-                                    </td>
-                                    <td><%= order.totalAmount %></td>
-                                    <td><%= order.cancellation.reason %></td>
-                                    <td>
-                                        <div class="button-container">
-                                           <!---<form action="/admin/confirm-order-cancellation/<%= order.id %>" method="POST">
-                                                <!-- Include any form input fields if needed -
-                                                <button type="submit" class="confirm-button" onclick="return confirmCancellation()">
-                                                    Confirm Cancellation
-                                                </button>
-                                            </form>-->
-                                        </div>
-                                    </td>
-                                    
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                <% } %>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="col-md-12 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Cancelled
+                                    Orders</h2><br><br>
+                                <div class="container">
 
-           
-            
-          </div>
-          <a href="/admin/loadorder">Back to order details</a>
-            <script>
-              function confirmCancellation() {
-                  var isConfirmed = confirm("Are you sure you want to confirm the order cancellation?");
-                  return isConfirmed;
-              }
-            </script>
 
-            
-        </div>
-        <!-- content-wrapper ends -->
-  
-              </div>
-            </div>
-          </div>
-        </div>
-       
-   
-         
-    
- <!-- partial:../../partials/_footer.html -->
- <%- include('../layouts/adminFooters') %>
+                                    <div class="col-md-12 grid-margin stretch-card">
+
+                                        <% if (canceledOrders.length===0) { %>
+                                            <p>No cancelled orders found.</p>
+                                            <% } else { %>
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Order ID</th>
+                                                            <th>User Name</th>
+                                                            <th>Product Details</th>
+                                                            <th>Total amount</th>
+                                                            <th>Cancellation Reason</th>
+                                                            <!--- <th> Action</th>-->
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        <% canceledOrders.forEach(order=> { %>
+                                                            <tr>
+
+                                                                <td>
+                                                                    <%= order._id %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= order.userName %>
+                                                                </td>
+                                                                <td>
+                                                                    <% if (order.products && order.products.length> 0) {
+                                                                        %>
+                                                                        <% order.products.forEach(product=> { %>
+                                                                            <p>
+                                                                                <% if (product.product &&
+                                                                                    product.product.productName) { %>
+                                                                                    Product Name: <%=
+                                                                                        product.product.productName %>
+                                                                                        ,<br>
+                                                                                        <% } else { %>
+                                                                                            Product Name: N/A,<br>
+                                                                                            <% } %>
+
+                                                                                                <% if (product.product
+                                                                                                    &&
+                                                                                                    product.product.price)
+                                                                                                    { %>
+                                                                                                    Product Price: <%=
+                                                                                                        product.product.price
+                                                                                                        %><br>
+                                                                                                        <% } else { %>
+                                                                                                            Product
+                                                                                                            Price:
+                                                                                                            N/A<br>
+                                                                                                            <% } %>
+                                                                                                                Product
+                                                                                                                Quantity:
+                                                                                                                <%= product.quantity
+                                                                                                                    %>
+                                                                                                                    <br>
+
+                                                                            </p>
+                                                                            <% }) %>
+                                                                                <% } else { %>
+                                                                                    No products
+                                                                                    <% } %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= order.totalAmount %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= order.cancellation.reason %>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="button-container">
+
+                                                                    </div>
+                                                                </td>
+
+                                                            </tr>
+                                                            <% }) %>
+                                                    </tbody>
+                                                </table>
+                                                <% } %>
+
+
+
+                                    </div>
+                                    <a href="/admin/loadorder">Back to order details</a>
+                                    <script>
+                                        function confirmCancellation() {
+                                            var isConfirmed = confirm("Are you sure you want to confirm the order cancellation?");
+                                            return isConfirmed;
+                                        }
+                                    </script>
+
+
+                                </div>
+                                <!-- content-wrapper ends -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- partial:../../partials/_footer.html -->
+                <%- include('../layouts/adminFooters') %>

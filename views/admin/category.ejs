@@ -1,124 +1,137 @@
 <%- include('../layouts/adminHeaders') %>
 
     <div class="container-scroller">
-      <!-- partial:../../partials/_navbar.html -->
-      <%- include('../layouts/adminHeadersmid') %>
-        <!-- partial -->
-        <!-- partial -->
-        <div class="main-panel">
-          <div class="content-wrapper">
-            <div class="page-header">
-             
-              
-              <div class="col-md-12 grid-margin stretch-card">
-                <div class="card">
-                  <div class="card-body">
-                    <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Category List</h2>
-                    <p class="card-description"> <code></code>
-                    </p>
-                    <h5><a href="/admin/add-category">Add Category</a></h5>
-                    <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">
-                            <label class="control control--checkbox"></label>
-                            </th>
-                            <th scope="col">Category</th>
-                           
-                            <th scope="col">Offer Amount</th>
-                            <th scope="col">Offer Type</th>
-                            <th scope="col">Offer End Date</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        <!-- partial:../../partials/_navbar.html -->
+        <%- include('../layouts/adminHeadersmid') %>
+            <!-- partial -->
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="page-header">
 
-                      <tbody>
-                        <% for (var i = 0; i < categories.length; i++) { %>
-                            <tr>
-                                <td><%= i+1 %></td>
-                                <td><%= categories[i].categoryName %></td>
-                               
-                                <td>
-                                    <% if (categories[i].offer && categories[i].offer.amount!=='') { %>
-                                        <%= categories[i].offer.amount %> 
-                                    <% } else { %>
-                                       
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <% if (categories[i].offer ) { %>
-                                        <%= categories[i].offer.type %> 
-                                    <% } else { %>
-                                       
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <% if (categories[i].offer && categories[i].offer.endDate) { %>
-                                        <%= categories[i].offer.endDate ? categories[i].offer.endDate.toLocaleDateString() : 'N/A' %>
-                                    <% } else { %>
-                                      
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <form action="/admin/category/<%= categories[i]._id %>/update-status" method="post" onclick="return confirm('Are you sure you want to block/unblock this user?')">
-                                        
-                                          <button type="submit" style="border: 2px solid 1px rgb(92, 91, 91); background-color: rgb(255, 253, 253);text-decoration-color: black;">
-                                            <% if (categories[i].blocked) { %>
-                                                <span style="color: red;">Blocked</span>
-                                            <% } else { %>
-                                                <span style="color: green;">Active</span>
-                                            <% } %>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td>
-                                    <button class="btn"> <a href="/admin/load-edit/<%= categories[i]._id %>">Edit</a></button>
-                                </td>
-                            </tr>
-                        <% } %>
-                          </tbody>
 
-            </table>
-            <br>
-            <br>
-            <a href="/admin/home">Back To Home</a>
-        </div>
+                        <div class="col-md-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h2 class="card-title" style="color: rgb(10, 109, 170);text-align: center;">Category
+                                        List</h2>
+                                    <p class="card-description"> <code></code>
+                                    </p>
+                                    <h5><a href="/admin/add-category">Add Category</a></h5>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">
+                                                    <label class="control control--checkbox"></label>
+                                                </th>
+                                                <th scope="col">Category</th>
+
+                                                <th scope="col">Offer Amount</th>
+                                                <th scope="col">Offer Type</th>
+                                                <th scope="col">Offer End Date</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tbody>
+                                            <% for (var i=0; i < categories.length; i++) { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= i+1 %>
+                                                    </td>
+                                                    <td>
+                                                        <%= categories[i].categoryName %>
+                                                    </td>
+
+                                                    <td>
+                                                        <% if (categories[i].offer && categories[i].offer.amount!=='' )
+                                                            { %>
+                                                            <%= categories[i].offer.amount %>
+                                                                <% } else { %>
+
+                                                                    <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (categories[i].offer ) { %>
+                                                            <%= categories[i].offer.type %>
+                                                                <% } else { %>
+
+                                                                    <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (categories[i].offer && categories[i].offer.endDate) { %>
+                                                            <%= categories[i].offer.endDate ?
+                                                                categories[i].offer.endDate.toLocaleDateString() : 'N/A'
+                                                                %>
+                                                                <% } else { %>
+
+                                                                    <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <form
+                                                            action="/admin/category/<%= categories[i]._id %>/update-status"
+                                                            method="post"
+                                                            onclick="return confirm('Are you sure you want to block/unblock this user?')">
+
+                                                            <button type="submit"
+                                                                style="border: 2px solid 1px rgb(92, 91, 91); background-color: rgb(255, 253, 253);text-decoration-color: black;">
+                                                                <% if (categories[i].blocked) { %>
+                                                                    <span style="color: red;">Blocked</span>
+                                                                    <% } else { %>
+                                                                        <span style="color: green;">Active</span>
+                                                                        <% } %>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn"> <a
+                                                                href="/admin/load-edit/<%= categories[i]._id %>">Edit</a></button>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+
+                                    </table>
+                                    <br>
+                                    <br>
+                                    <a href="/admin/home">Back To Home</a>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            function confirmDelete(categoryId) {
+                                var confirmDelete = confirm("Are you sure you want to delete this category?");
+                                if (confirmDelete) {
+                                    window.location.href = "/admin/category/" + categoryId;
+                                }
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
     </div>
-</div>
-<script>
-    function confirmDelete(categoryId) {
-        var confirmDelete = confirm("Are you sure you want to delete this category?");
-        if (confirmDelete) {
-            window.location.href = "/admin/category/" + categoryId;
-        }
-    }
-</script>
-</div> 
-</div> 
-</div> 
-<!-- Footer End -->
-</div>
-<!-- Content End -->
+    <!-- Content End -->
 
-<script>
+    <script>
 
-    var path = window.location.pathname;
+        var path = window.location.pathname;
 
-    path = path.replace(/\/$/, "");
+        path = path.replace(/\/$/, "");
 
-    var navLinks = document.querySelectorAll('.navbar-nav a');
+        var navLinks = document.querySelectorAll('.navbar-nav a');
 
-    navLinks.forEach(function(link) {
-    link.classList.remove('active');
+        navLinks.forEach(function (link) {
+            link.classList.remove('active');
 
-    if (link.getAttribute('href') === path) {
-    // Add the "active" class to the matching link
-    link.classList.add('active');
-    }
-    });
-</script>
-<!-- content-wrapper ends -->
-<!-- partial:../../partials/_footer.html -->
-<%- include('../layouts/adminFooters') %>
+            if (link.getAttribute('href') === path) {
+                // Add the "active" class to the matching link
+                link.classList.add('active');
+            }
+        });
+    </script>
+    <!-- content-wrapper ends -->
+    <!-- partial:../../partials/_footer.html -->
+    <%- include('../layouts/adminFooters') %>
