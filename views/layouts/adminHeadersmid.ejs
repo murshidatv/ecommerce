@@ -1,11 +1,11 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-      <a class="navbar-brand brand-logo" href="home">
+      <a class="navbar-brand brand-logo" href="dashboard">
         <h1 style="color: rgb(10, 109, 170);font-size: 60px;">Zouq</h1>
         </style>
         </h1>
       </a>
-      <a class="navbar-brand brand-logo-mini " href="home"></a>
+      <a class="navbar-brand brand-logo-mini " href="dashboard"></a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
       <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -37,7 +37,7 @@
             <a class="dropdown-item" href="#">
               <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item" href="/admin/logout">
               <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
           </div>
         </li>
@@ -139,7 +139,7 @@
           </div>
         </li>
         <li class="nav-item nav-logout d-none d-lg-block">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="admin/logout">
             <i class="mdi mdi-power"></i>
           </a>
         </li>
@@ -188,24 +188,7 @@
           </a>
         </li>
       
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/sales-report">
-              <span class="menu-title">Sales Report1</span>
-              <i class="mdi mdi-chart-bar menu-icon"></i>
-            </a>
-            </li><!--
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/adm-sales-report">
-                <span class="menu-title">Sales Report2</span>
-                <i class="mdi mdi-chart-bar menu-icon"></i>
-              </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/admin/dashboardReport">
-                  <span class="menu-title">Sales Report3</span>
-                  <i class="mdi mdi-chart-bar menu-icon"></i>
-                </a>
-              </li>-->
+         
         <li class="nav-item">
           <a class="nav-link" href="/admin/listUser">
             <span class="menu-title">User Management</span>
@@ -236,15 +219,6 @@
             <i class="mdi mdi-table-large menu-icon"></i>
           </a>
         </li>
-        <!---
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#">
-            <span class="menu-title">Banner Management</span>
-
-            <i class="mdi mdi-medical-bag menu-icon"></i>
-          </a>
-
-        </li>
-      -->
+        
       </ul>
     </nav>

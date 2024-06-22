@@ -33,8 +33,7 @@ const verifyLogin = async (req, res) => {
             if (passwordMatch) {
                 // If user is an admin, set session and redirect to admin home
                 if (userData.is_admin === 0) {
-                    // res.render('login',{message:"Email or password is incorrect."});
-                    // Render the login page without any message
+                    
                     return res.render('login');
 
                 }
@@ -44,16 +43,14 @@ const verifyLogin = async (req, res) => {
                 }
             }
             else {
-               // res.render('login', { message: "Email or password is incorrect." });
-                // Render the login page without any message
-                 return res.render('login');
+               
+                return res.render('login');
             }
 
         }
         else {
-           // res.render('login', { message: "Email or password is incorrect." });
-            // Render the login page without any message
-           return res.render('login');
+          
+            return res.render('login');
         }
 
     } catch (error) {
@@ -205,8 +202,6 @@ const adminDashboard = async (req, res) => {
         const usersData = await User.find({ is_admin: 0 });
         res.render('userlist', { users: usersData });
 
-        /*const adminData = await Add_User.find();
-        res.render('dashboard',{users:adminData});*/
 
     } catch (error) {
         console.log(error.message);
@@ -600,7 +595,7 @@ module.exports = {
 
     adminDashboard,
     loadDashboard,
-    
+
     getTopProductsSale,
     getTopCategoryies,
 

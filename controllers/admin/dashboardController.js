@@ -19,18 +19,18 @@ const getDashboardData = async (req, res) => {
   try {
     // Fetch total users count
     const totalUsers = await User.countDocuments();
-    console.log("Total Users Count:", totalUsers);
+  
     // Fetch total orders count
     const totalOrders = await Order.countDocuments();
-    console.log("Total orderrs Count:", totalOrders)
+   
     const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
-    console.log("Total Cancelled Orders Count:", cancelledOrders)
+   
     const totalproduct = await Product.countDocuments();
-    console.log("Total products Count:", totalproduct)
+
     const totalRevenue = await getTotalRevenue();
-    console.log("Total Revenue:", totalRevenue)
+  
     const blockUser = await User.countDocuments({ isBlocked: true });
-    console.log("Total blocked Users Count:", blockUser)
+  
     res.render('report', { totalUsers, totalOrders, cancelledOrders, blockUser, totalproduct, totalRevenue });
   } catch (error) {
     console.error('Error fetching dashboard data:', error.message);

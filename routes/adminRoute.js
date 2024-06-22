@@ -31,9 +31,9 @@ const dashboardController = require("../controllers/admin/dashboardController");
 const categoryController = require('../controllers/admin/categoryController');
 const orderController = require('../controllers/admin/orderController');
 const couponController = require('../controllers/admin/couponController');
-const salesReportController = require('../controllers/admin/salesreportController');
+//const salesReportController = require('../controllers/admin/salesreportController');
 //const { confirmOrderReturn, viewReturnedOrders } = require('../controllers/admin/orderController');
-const admSalesReportController = require('../controllers/admin/admSalesReportController');
+//const admSalesReportController = require('../controllers/admin/admSalesReportController');
 const reportController = require('../controllers/admin/reportController');
 
 admin_route.get('/', auth.isLogout, adminController.loadlogin);
@@ -57,7 +57,7 @@ admin_route.get('/dashboard/data', auth.isLogin, adminController.dashBoardDetail
 
 
 admin_route.get('/home', auth.isLogin, adminController.loadDashboard);
-
+//admin_route.get('/dashboard', auth.isLogin, adminController.loadDashboard);
 admin_route.get('/listuser', auth.isLogin, adminController.adminDashboard);
 admin_route.get('/dashboard', auth.isLogin, dashboardController.getDashboardData);
 admin_route.get('/dashboard-data', auth.isLogin, dashboardController.dashboardData);
@@ -126,7 +126,7 @@ admin_route.get('/edit-coupon/:couponId', couponController.loadeditCoupon);
 admin_route.post('/edit-coupon/:couponId', couponController.editCoupon);
 admin_route.get('/loadcoupon/:couponId', couponController.deleteCoupon);
 
-
+/*
 admin_route.get('/sales-report/', auth.isLogin, admSalesReportController.salesReportGet);
 admin_route.get('/sales-report/:reportType', auth.isLogin, admSalesReportController.customSalesReportGet);
 admin_route.get('/sales/pdf/:reportType', auth.isLogin, admSalesReportController.genPdfGet);
@@ -134,7 +134,7 @@ admin_route.get('/sales-report-total', auth.isLogin, admSalesReportController.sa
 admin_route.get('/sales/excel/:reportType', auth.isLogin, admSalesReportController.salesReportExcelGet);
 
 admin_route.get('/top-categories', auth.isLogin, admSalesReportController.getTopCategories);
-
+*/
 const { generateReport, renderDashboard } = require('../controllers/admin/reportController');
 
 admin_route.get('/dashboard', renderDashboard);

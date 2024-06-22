@@ -129,11 +129,21 @@
                                         </option>
                                     </select>
                                 </div>
+
+
+
+
+
+
+
+
                                 <div class="form-group">
                                     Discount Value: <label for="discountValue" class="text-light"></label>
-                                    <input type="number" id="discountValue" name="discountValue"
-                                        value="<%= coupon.value %>"><br>
+
+                                    <input type="number" id="discountValue" name="discountValue" min="0"
+                                        onchange="validatediscountValue()" value="<%= coupon.value %>"><br>
                                     <span id="discountValueError" style="color: red;"></span>
+
                                 </div>
                                 <div class="form-group">
                                     Expiration Date: <label for="expirationDate" class="text-light"></label>
@@ -254,17 +264,6 @@
                                     }
                                 }
 
-                                if (discountValue.trim() === '') {
-                                    document.getElementById('discountValueError').innerHTML = 'Discount Value is required';
-                                    event.preventDefault();
-                                } else {
-                                    var discountValueRegex = /^\d+$/;
-
-                                    if (!discountValueRegex.test(discountValue) || parseInt(discountValue) <= 0) {
-                                        document.getElementById('discountValueError').innerHTML = 'Discount Value must be a valid positive integer';
-                                        event.preventDefault();
-                                    }
-                                }
 
                                 if (expirationDate.trim() === '') {
                                     document.getElementById('expirationDateError').innerHTML = 'Expiration Date is required';
@@ -314,8 +313,27 @@
                             }
 
                         </script>
+                      
+ 
+  
 
 
+                        <script>
+                            function validatediscountValue() {
+                                const discountValueInput = document.getElementById('discountValue');
+                                const discountValue = discountValueInput.value.trim();
+                                const discountValueNum = parseFloat(discountValue);
+
+
+                                if (discountValue === '' || parseFloat(discountValue) <= 0 ) {
+                                    document.getElementById('discountValueError').innerText = "Discount Value must be a valid positive number";
+                                    return false;
+                                }
+
+                                document.getElementById('discountValueError').innerText = "";
+                                return true;
+                            }
+                        </script>
                     </div>
 
 
