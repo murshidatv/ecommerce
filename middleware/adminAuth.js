@@ -1,31 +1,31 @@
-const isLogin = async(req,res,next)=>{
-    try{
+const isLogin = async (req, res, next) => {
+    try {
 
-        if(req.session.user_id){
-        
-        next();
+        if (req.session.user_id) {
+
+            next();
         }
-        else{
+        else {
             res.redirect('/admin');
         }
 
 
-    }catch(error){
+    } catch (error) {
         console.log(error.message);
     }
 }
 
-const isLogout = async (req,res,next)=>{
-    try{
+const isLogout = async (req, res, next) => {
+    try {
 
-        if(req.session.user_id){
+        if (req.session.user_id) {
             res.redirect('/admin/home');
-        }else{
+        } else {
             next();
         }
 
 
-    }catch(error){
+    } catch (error) {
 
         console.log(error.message);
     }

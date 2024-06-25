@@ -1,6 +1,6 @@
-const Category =require('../../models/categoryModel');
-const Product=require('../../models/productModel');
-const Order=require('../../models/orderModel');
+const Category = require('../../models/categoryModel');
+const Product = require('../../models/productModel');
+const Order = require('../../models/orderModel');
 const User = require('../../models/userModel');
 const PDFDocument = require('pdfkit');
 const table = require('pdfkit-table');
@@ -10,7 +10,7 @@ const util = require('util');
 const pdf = require('html-pdf');
 const ExcelJS = require('exceljs');
 const puppeteer = require('puppeteer');
-const { getUserDetailsAndOrders } =require('../../controllers/admin/adminController')
+const { getUserDetailsAndOrders } = require('../../controllers/admin/adminController')
 const renderFileAsync = util.promisify(ejs.renderFile);
 
 
@@ -36,8 +36,8 @@ const order = async (req, res) => {
     }
 
     const order = await Order.find(query)
-    .sort({ orderDate: -1 }) 
-    
+      .sort({ orderDate: -1 })
+
       .skip((page - 1) * limit)
       .limit(limit)
       .populate({
@@ -71,19 +71,19 @@ const order = async (req, res) => {
 
 const updateStatus = async (req, res) => {
   try {
-      const { orderId } = req.params;
-      const { newStatus } = req.body;
-      console.log('Received parameters:', { orderId, newStatus });
-      const updatedOrder = await Order.findByIdAndUpdate(
-          orderId,
-          { status: newStatus },
-          { new: true }
-      );
-      const newstatus=newStatus;
-      res.redirect('/admin/loadorder');
+    const { orderId } = req.params;
+    const { newStatus } = req.body;
+    console.log('Received parameters:', { orderId, newStatus });
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { status: newStatus },
+      { new: true }
+    );
+    const newstatus = newStatus;
+    res.redirect('/admin/loadorder');
   } catch (error) {
-      console.log(error.message);
-      res.status(500).send('Internal Server Error');
+    console.log(error.message);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -114,19 +114,19 @@ const confirmOrderCancellation = async (req, res) => {
       if (order.payment === 'onlinePayment') {
         const canceledAmount = order.totalAmount;
         // increment wallet and add transaction to history
-        await User.findByIdAndUpdate(userId, { 
-          $inc: { wallet: canceledAmount } ,
-          $push:{
-            walletHistory:{
-              type:'credit',
-              amount:canceledAmount,
+        await User.findByIdAndUpdate(userId, {
+          $inc: { wallet: canceledAmount },
+          $push: {
+            walletHistory: {
+              type: 'credit',
+              amount: canceledAmount,
             }
           }
         });
       }
     }
 
-    res.redirect('/admin/canceled-orders'); 
+    res.redirect('/admin/canceled-orders');
   } catch (error) {
     console.error('Error confirming order cancellation:', error.message);
     res.status(500).send('Internal Server Error');
@@ -145,7 +145,7 @@ const viewCanceledOrders = async (req, res) => {
     res.status(500).send('Internal Server Error');
 
 
-    
+
   }
 };
 
@@ -164,11 +164,11 @@ const viewReturnedOrders = async (req, res) => {
 
 
 module.exports = {
-order,
-updateStatus,
-confirmOrderCancellation,
-viewCanceledOrders,
-viewReturnedOrders,
+  order,
+  updateStatus,
+  confirmOrderCancellation,
+  viewCanceledOrders,
+  viewReturnedOrders,
 
 
 }

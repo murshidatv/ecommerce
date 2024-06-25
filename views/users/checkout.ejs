@@ -173,18 +173,18 @@
                                 <div id="toast-message"></div>
                                 <style>
                                     #toast-message {
-                                      display: none;
-                                      position: fixed;
-                                      bottom: 20px;
-                                      right: 20px;
-                                      background-color: #c66;
-                                      color: #fff;
-                                      padding: 10px 20px;
-                                      border-radius: 5px;
-                                      z-index: 1000;
-                                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                                        display: none;
+                                        position: fixed;
+                                        bottom: 20px;
+                                        right: 20px;
+                                        background-color: #c66;
+                                        color: #fff;
+                                        padding: 10px 20px;
+                                        border-radius: 5px;
+                                        z-index: 1000;
+                                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                                     }
-                                  </style>
+                                </style>
                                 <div class="accordion" id="couponAccordion">
                                     <% for (var i=0; i < coupon.length; i++) { %>
                                         <div class="card">
@@ -272,7 +272,7 @@
                                                                     <% totalCartPrice +=itemTotal; %>
                                                             </div>
                                                             <% }) %>
-                                                                
+
 
                                                                 <% if (totalCartPrice < 2000) { %>
                                                                     <div class="summary-shipping"
@@ -282,20 +282,21 @@
                                                                             Shipping Charge:</div>
                                                                         <div style="flex: 1; text-align: center;">Rs.40
                                                                         </div>
-                                                                       
+
                                                                     </div>
                                                                     <div class="summary-total"
-                                                                    style="background-color: #f6c2c2; font-weight: bold; display: flex;">
-                                                                    <div
-                                                                        style="flex: 2; text-align: right; padding-right: 10px;">
-                                                                        Total:</div>
-                                                                    <div style="flex: 1; text-align: center;">Rs.<%=
-                                                                            totalCartPrice +40 %>
+                                                                        style="background-color: #f6c2c2; font-weight: bold; display: flex;">
+                                                                        <div
+                                                                            style="flex: 2; text-align: right; padding-right: 10px;">
+                                                                            Total:</div>
+                                                                        <div style="flex: 1; text-align: center;">Rs.<%=
+                                                                                totalCartPrice +40 %>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
                                                                     <% } else { %>
                                                                         <div id="shipping-free-message"
-                                                                            class="shipping-free-message" style="color: red;">Shipping is
+                                                                            class="shipping-free-message"
+                                                                            style="color: red;">Shipping is
                                                                             free for orders above Rs. 2000!</div>
                                                                         <% } %>
 
@@ -316,10 +317,10 @@
                                                                                     <button type="button"
                                                                                         class="btn btn-primary"
                                                                                         id="applyCoupon"
-                                                                                        style="margin-bottom: 10px;" >Apply</button>
+                                                                                        style="margin-bottom: 10px;">Apply</button>
                                                                                     <button type="button"
                                                                                         class="btn btn-secondary"
-                                                                                        id="removeCoupon" >Remove</button>
+                                                                                        id="removeCoupon">Remove</button>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="toast" id="coupon-toast"
@@ -332,18 +333,22 @@
                                                                                 <div
                                                                                     style="flex: 2; text-align: right; padding-right: 10px;">
                                                                                     Final Total:</div>
-                                                                                    <% if (totalCartPrice < 2000) { %>
-                                                                                   
-                                                                                <div id="final-total"
-                                                                                    style="flex: 1; text-align: center;">
-                                                                                    Rs.<%= (totalCartPrice+40).toFixed(2) %>
-                                                                                </div>
-                                                                                <% } else { %>
+                                                                                <% if (totalCartPrice < 2000) { %>
+
                                                                                     <div id="final-total"
-                                                                                    style="flex: 1; text-align: center;">
-                                                                                    Rs.<%= totalCartPrice.toFixed(2) %>
-                                                                                </div>
-                                                                                <% } %>
+                                                                                        style="flex: 1; text-align: center;">
+                                                                                        Rs.<%=
+                                                                                            (totalCartPrice+40).toFixed(2)
+                                                                                            %>
+                                                                                    </div>
+                                                                                    <% } else { %>
+                                                                                        <div id="final-total"
+                                                                                            style="flex: 1; text-align: center;">
+                                                                                            Rs.<%=
+                                                                                                totalCartPrice.toFixed(2)
+                                                                                                %>
+                                                                                        </div>
+                                                                                        <% } %>
                                                                             </div>
                                                                             <% } else { %>
                                                                                 <div>No items in the cart.</div>
@@ -764,45 +769,45 @@
         }
     </script>
 
-<script>
-    var acc = document.getElementsByClassName("accordion");
-    var i;
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
 
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-            } else {
-                panel.style.display = "block";
-            }
-        });
-    }
-</script>
-<script>
-    function copyCouponCode(code) {
-        const tempInput = document.createElement('input');
-        tempInput.value = code;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                } else {
+                    panel.style.display = "block";
+                }
+            });
+        }
+    </script>
+    <script>
+        function copyCouponCode(code) {
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
 
-        // Show toast message
-        showToast('Coupon code copied to clipboard: ' + code);
-    }
+            // Show toast message
+            showToast('Coupon code copied to clipboard: ' + code);
+        }
 
-    function showToast(message) {
-        var toastElement = document.getElementById('toast-message');
-        toastElement.textContent = message;
-        toastElement.style.display = 'block';
+        function showToast(message) {
+            var toastElement = document.getElementById('toast-message');
+            toastElement.textContent = message;
+            toastElement.style.display = 'block';
 
-        // Hide the toast after 3 seconds
-        setTimeout(function () {
-            toastElement.style.display = 'none';
-        }, 3000);
-    }
-</script>
+            // Hide the toast after 3 seconds
+            setTimeout(function () {
+                toastElement.style.display = 'none';
+            }, 3000);
+        }
+    </script>
 
     <%- include('../layouts/productfooter.ejs') %>

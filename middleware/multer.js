@@ -20,7 +20,7 @@ const upload = multer({
     },
     fileFilter: (req, file, cb) => {
         // Check file types (e.g., allow images and other file types)
-        const filetypes = /jpeg|jpg|png|gif|webp|pdf|docx|xlsx/; 
+        const filetypes = /jpeg|jpg|png|gif|webp|pdf|docx|xlsx/;
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         const mimetype = filetypes.test(file.mimetype);
         if (mimetype && extname) {

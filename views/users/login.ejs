@@ -16,12 +16,12 @@
     <div class="login">
       <h2 class="active"> LOGIN </h2>
       <form method="post" action="/login" onsubmit="return formValidation()">
-        
+
         <input type="text" class="text" name="email" placeholder="email">
         <span id="emailError" class="error" style="color: red;"></span>
         <br>
-      
-       
+
+
         <input type="password" class="text" name="password" placeholder="Password">
         <span id="passwordError" class="error" style="color: red;"></span>
         <br>
@@ -31,7 +31,8 @@
         <hr>
         <h5><a href="/forgot">Forgot Password?</a></h5>
         <h5>Don’t have an account?<a href="/register">Sign up Now !</a> </h5>
-        <button class="signin" id="g_id_onload" style="background-color: rgb(139, 190, 190); width: 150px;"><a href="/google/Verify" >SignIn with Google</a><br> </button>
+        <button class="signin" id="g_id_onload" style="background-color: rgb(139, 190, 190); width: 150px;"><a
+            href="/google/Verify">SignIn with Google</a><br> </button>
         </a><br> </button>
 
       </form>
@@ -85,185 +86,88 @@
 
     </div>
 
-<!---
+    <script>
+      function onSignIn(googleUser) {
+        // Retrieve user profile information
+        var profile = googleUser.getBasicProfile();
 
+        // Retrieve email
+        var email = profile.getEmail();
 
-login.ejs 
-<button onclick="signInWithGoogle()">Login with Google</button>
- Other login form elements -->
-<!-- Inside your EJS template (e.g., login.ejs) -->
-<!-- Include the Google Sign-In library -
-<script src="https://apis.google.com/js/platform.js" async defer></script>
+        // Send email and password to the backend
+        signInWithGoogle(email);
+      }
 
-<script>
-    function signInWithGoogle() {
-        // Initialize the Google Sign-In API
-        gapi.load('auth2', function() {
-            gapi.auth2.init({
-  client_id: '523074244618-6rvr4c3cc210bj18otum0m4rg9grlrib.apps.googleusercontent.com'
-            }).then(function(auth2) {
-                // Sign in with Google
-                auth2.signIn().then(function(googleUser) {
-                    // Handle successful sign-in
-                    const profile = googleUser.getBasicProfile();
-                    const email = profile.getEmail();
+      function signInWithGoogle(email) {
+        // Fetch URL
+        var url = '/googleAuth';
 
-                    // Send the email to your backend for authentication
-                    // You can use fetch or any other method to make an HTTP request
-                    // Example:
-                    fetch('/auth/google', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ email: email }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data); // Log the response from the backend
-                        // Redirect to dashboard or handle other actions
-                    })
-                    .catch(error => {
-                        console.error('Error during authentication:', error);
-                        // Handle error (e.g., show an error message)
-                    });
-                }).catch(function(error) {
-                    console.error('Error during sign-in:', error);
-                    // Handle sign-in error (e.g., show an error message)
-                });
-            });
-        });
-    }
-</script>
-<script>
-function onSignIn(googleUser) {
-  // Retrieve user profile information
-  var profile = googleUser.getBasicProfile();
+        // Request body
+        var data = {
+          email: email
+        };
 
-  // Retrieve email
-  var email = profile.getEmail();
-
-  // Send email and password to the backend
-  signInWithGoogle(email);
-}
-
-function signInWithGoogle(email) {
-// Fetch URL
-var url = '/googleAuth';
-
-// Request body
-var data = {
-    email: email
-};
-
-// Fetch options
-var options = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-};
-
-// Make the Fetch request
-fetch(url, options)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data); // Log response from the backend
-    })
-    .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-    });
-}
-
-</script>-->
-<script>
-  function onSignIn(googleUser) {
-      // Retrieve user profile information
-      var profile = googleUser.getBasicProfile();
-
-      // Retrieve email
-      var email = profile.getEmail();
-
-      // Send email and password to the backend
-      signInWithGoogle(email);
-  }
-
-  function signInWithGoogle(email) {
-    // Fetch URL
-    var url = '/googleAuth';
-
-    // Request body
-    var data = {
-        email: email
-    };
-
-    // Fetch options
-    var options = {
-        method: 'POST',
-        headers: {
+        // Fetch options
+        var options = {
+          method: 'POST',
+          headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    };
+          },
+          body: JSON.stringify(data)
+        };
 
-    // Make the Fetch request
-    fetch(url, options)
-        .then(response => {
+        // Make the Fetch request
+        fetch(url, options)
+          .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+              throw new Error('Network response was not ok');
             }
             return response.json();
-        })
-        .then(data => {
+          })
+          .then(data => {
             console.log(data); // Log response from the backend
-        })
-        .catch(error => {
+          })
+          .catch(error => {
             console.error('There was a problem with your fetch operation:', error);
-        });
-}
+          });
+      }
 
-</script>
+    </script>
 
-<script>
-    function callFetchToSendEmailToBackend(user){
-      console.log("..l", user);
-      console.log("..l", typeof(user));
-  
-      let options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ user })
-      };
-  
-      fetch('/googleAuth', options)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log("Response worked by google auth");
-          console.log(data); // Log response from the backend
-          
-          if (data.message) {
-            // Display an alert with the message from the backend
-            // alert(data.message);
-            window.location.href='/'
-          }
-        })
-        .catch(error => {
-          console.error('There was a problem with your fetch operation:', error);
-        });
-    }
-  </script>
+    <script>
+      function callFetchToSendEmailToBackend(user) {
+        console.log("..l", user);
+        console.log("..l", typeof (user));
+
+        let options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ user })
+        };
+
+        fetch('/googleAuth', options)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log("Response worked by google auth");
+            console.log(data); // Log response from the backend
+
+            if (data.message) {
+              // Display an alert with the message from the backend
+              // alert(data.message);
+              window.location.href = '/'
+            }
+          })
+          .catch(error => {
+            console.error('There was a problem with your fetch operation:', error);
+          });
+      }
+    </script>
 
     <% include('../layouts/footer.ejs') %>

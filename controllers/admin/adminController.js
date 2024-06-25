@@ -33,7 +33,7 @@ const verifyLogin = async (req, res) => {
             if (passwordMatch) {
                 // If user is an admin, set session and redirect to admin home
                 if (userData.is_admin === 0) {
-                    
+
                     return res.render('login');
 
                 }
@@ -43,13 +43,13 @@ const verifyLogin = async (req, res) => {
                 }
             }
             else {
-               
+
                 return res.render('login');
             }
 
         }
         else {
-          
+
             return res.render('login');
         }
 

@@ -9,8 +9,8 @@
             cursor: pointer;
             /* Change cursor to pointer (hand) when hovering over the input */
         }
-    
-    #referralCodeField {
+
+        #referralCodeField {
             width: 50%;
             padding: 10px;
             font-size: 16px;
@@ -20,12 +20,13 @@
             margin-bottom: 20px;
             cursor: pointer;
         }
+
         #referralCodeField:focus {
             outline: none;
             border-color: #007bff;
             background-color: #fff;
         }
-       
+
         button {
             background-color: #007bff;
             color: #fff;
@@ -96,8 +97,8 @@
                 </div><!-- End .compare-dropdown -->
 
                 <div class="dropdown cart-dropdown">
-                    <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false" data-display="static">
+                    <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" data-display="static">
                         <i class="icon-shopping-cart"></i>
                     </a>
 
@@ -144,14 +145,14 @@
                         <div class="card-body text-center">
                             <div class="mt-3 mb-4">
 
-                                <% if (user && user.image!== 'default.jpeg') { %>
+                                <% if (user && user.image!=='default.jpeg' ) { %>
                                     <img src="/userImages/<%= user.image %>" class="rounded-circle img-fluid" id="image"
                                         style="width: 100px; position: relative; left: 170px;" />
                                     <br>
                                     <!--<button class="btn"><a href="/editProfileImage">Edit</a></button>-->
                                     <% } else { %>
                                         <img src="/images/default.jpeg" class="rounded-circle img-fluid" id="image"
-                                        style="width: 100px; position: relative; left: 170px;" />
+                                            style="width: 100px; position: relative; left: 170px;" />
                                         <% } %>
                             </div>
                             <button class="btn"><a href="/editProfileImage">Edit</a></button>
@@ -195,12 +196,12 @@
                                     <p>User data not available</p>
                                     <% } %>
 
-                                    <a href="/wishlist"><button type="button"
-                                        class="btn  btn-primary btn-rounded btn-lg" style="width: 300px;">
-                                        MY WISHLIST
-                                    </button>
-                                </a>
-                                <br><br>
+                                        <a href="/wishlist"><button type="button"
+                                                class="btn  btn-primary btn-rounded btn-lg" style="width: 300px;">
+                                                MY WISHLIST
+                                            </button>
+                                        </a>
+                                        <br><br>
                                         <a href="/order-history"><button type="button"
                                                 class="btn  btn-primary btn-rounded btn-lg" style="width: 300px;">
                                                 MY ORDERS
@@ -211,126 +212,131 @@
                                                 class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
                                                 ADDRESS
                                             </button></a>
-                                            <br><br>
-                                            <a href="/wallet" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
+                                        <br><br>
+                                        <a href="/wallet"> <button type="button"
+                                                class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
                                                 WALLET
-                                               </button></a><br><br>
-                                               <a href="/checkout" >  <button type="button" class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
+                                            </button></a><br><br>
+                                        <a href="/checkout"> <button type="button"
+                                                class="btn btn-primary btn-rounded btn-lg" style="width: 300px;">
                                                 CHECK OUT
-                                               </button></a>
+                                            </button></a>
                                         <br><br>
                                         <h4>Your Referral Code:</h4>
-                                        <input type="text" id="referralCodeField" value="<%=user.referralCode%>" readonly>
-                                        <button class= "btn btn-primary btn-rounded btn-lg" onclick="copyReferralCode()">Copy</button>
+                                        <input type="text" id="referralCodeField" value="<%=user.referralCode%>"
+                                            readonly>
+                                        <button class="btn btn-primary btn-rounded btn-lg"
+                                            onclick="copyReferralCode()">Copy</button>
                                         <script>
-                                          function copyReferralCode() {
-                                              const referralCodeField = document.getElementById("referralCodeField");
-                                              referralCodeField.select(); // Select the text inside the input field
-                                              document.execCommand("copy"); // Copy the selected text to clipboard
-                                              alert("Referral code copied!"); // Show a confirmation message
-                                          }
-                                      </script> 
-                         
-
-        </div>
-        </section>
-        </aside>
-        <div class="container ">
+                                            function copyReferralCode() {
+                                                const referralCodeField = document.getElementById("referralCodeField");
+                                                referralCodeField.select(); // Select the text inside the input field
+                                                document.execCommand("copy"); // Copy the selected text to clipboard
+                                                alert("Referral code copied!"); // Show a confirmation message
+                                            }
+                                        </script>
 
 
-<p><strong>Update Your Profile</strong> </p><br>
-            <form action="/updateProfile" method="post" onsubmit="return validateForm()">
-                <div class="form-group col-md-6">
-                    <label for="editName">First Name</label>
-                    <input type="text" class="form-control" id="editName" name="name" value="<%= user.name %>" required>
-                    <span id="nameError" style="color: red;"></span>
+                        </div>
+                        </section>
+                </aside>
+                <div class="container ">
+
+
+                    <p><strong>Update Your Profile</strong> </p><br>
+                    <form action="/updateProfile" method="post" onsubmit="return validateForm()">
+                        <div class="form-group col-md-6">
+                            <label for="editName">First Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" value="<%= user.name %>"
+                                required>
+                            <span id="nameError" style="color: red;"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="editEmail">Email</label>
+                            <input type="email" class="form-control" id="editEmail" name="email"
+                                value="<%= user.email %>" required>
+                            <span id="emailError" style="color: red;"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="editPhone">Mobile Number</label>
+                            <input type="text" class="form-control" id="editmobile" name="mobile"
+                                value="<%= user.mobile %>" required>
+                            <span id="phoneError" style="color: red;"></span>
+                        </div>
+                        <button class="btn btn-primary"><a href="/change-password">Change Password</a></button><br><br>
+
+                        <input type="submit" class="btn btn-primary" value="Update Profile">
+
+
+
+                    </form>
+
+
+
+                    <script>
+                        function validateForm() {
+                            var name = document.getElementById('editName').value;
+                            var email = document.getElementById('editEmail').value;
+                            var phone = document.getElementById('editPhone').value;
+
+                            // Reset error messages
+                            document.getElementById('nameError').innerHTML = '';
+                            document.getElementById('emailError').innerHTML = '';
+                            document.getElementById('phoneError').innerHTML = '';
+
+                            // Validate name
+                            if (name.trim() === '') {
+                                document.getElementById('nameError').innerHTML = 'First Name is required';
+                                return false;
+                            } else if (!isValidName(name)) {
+                                document.getElementById('nameError').innerHTML = 'Invalid characters in the name';
+                                return false;
+                            }
+
+                            // Validate email
+                            if (email.trim() === '') {
+                                document.getElementById('emailError').innerHTML = 'Email is required';
+                                return false;
+                            } else if (!isValidEmail(email)) {
+                                document.getElementById('emailError').innerHTML = 'Invalid email address';
+                                return false;
+                            }
+
+                            // Validate phone
+                            if (phone.trim() === '') {
+                                document.getElementById('mobileError').innerHTML = 'Mobile Number is required';
+                                return false;
+                            } else if (!isValidPhone(mobile)) {
+                                document.getElementById('phoneError').innerHTML = 'Invalid mobile number';
+                                return false;
+                            }
+
+
+
+                            return true;
+                        }
+
+                        function isValidName(name) {
+                            // Allow only letters, spaces, and apostrophes
+                            return /^[a-zA-Z\s']*$/i.test(name);
+                        }
+
+                        function isValidEmail(email) {
+                            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                            return emailRegex.test(email);
+                        }
+
+                        function isValidMobile(mobile) {
+                            var mobileRegex = /^(?:(?!0+$)\d{10})$/;
+                            return mobileRegex.test(mobile);
+                        }
+                    </script>
+
+
                 </div>
-
-                <div class="form-group col-md-6">
-                    <label for="editEmail">Email</label>
-                    <input type="email" class="form-control" id="editEmail" name="email" value="<%= user.email %>"
-                        required>
-                    <span id="emailError" style="color: red;"></span>
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label for="editPhone">Mobile Number</label>
-                    <input type="text" class="form-control" id="editmobile" name="mobile" value="<%= user.mobile %>"
-                        required>
-                    <span id="phoneError" style="color: red;"></span>
-                </div>
-                <button class="btn btn-primary"><a href="/change-password">Change Password</a></button><br><br>
-
-                <input type="submit" class="btn btn-primary" value="Update Profile">
-
-
-
-            </form>
-
-
-
-            <script>
-                function validateForm() {
-                    var name = document.getElementById('editName').value;
-                    var email = document.getElementById('editEmail').value;
-                    var phone = document.getElementById('editPhone').value;
-
-                    // Reset error messages
-                    document.getElementById('nameError').innerHTML = '';
-                    document.getElementById('emailError').innerHTML = '';
-                    document.getElementById('phoneError').innerHTML = '';
-
-                    // Validate name
-                    if (name.trim() === '') {
-                        document.getElementById('nameError').innerHTML = 'First Name is required';
-                        return false;
-                    } else if (!isValidName(name)) {
-                        document.getElementById('nameError').innerHTML = 'Invalid characters in the name';
-                        return false;
-                    }
-
-                    // Validate email
-                    if (email.trim() === '') {
-                        document.getElementById('emailError').innerHTML = 'Email is required';
-                        return false;
-                    } else if (!isValidEmail(email)) {
-                        document.getElementById('emailError').innerHTML = 'Invalid email address';
-                        return false;
-                    }
-
-                    // Validate phone
-                    if (phone.trim() === '') {
-                        document.getElementById('mobileError').innerHTML = 'Mobile Number is required';
-                        return false;
-                    } else if (!isValidPhone(mobile)) {
-                        document.getElementById('phoneError').innerHTML = 'Invalid mobile number';
-                        return false;
-                    }
-
-
-
-                    return true;
-                }
-
-                function isValidName(name) {
-                    // Allow only letters, spaces, and apostrophes
-                    return /^[a-zA-Z\s']*$/i.test(name);
-                }
-
-                function isValidEmail(email) {
-                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    return emailRegex.test(email);
-                }
-
-                function isValidMobile(mobile) {
-                    var mobileRegex = /^(?:(?!0+$)\d{10})$/;
-                    return mobileRegex.test(mobile);
-                }
-            </script>
-
-
-        </div>
-        </div>
+            </div>
         </div>
         <!-- End .col-lg-3 -->
 
@@ -502,5 +508,3 @@
     <!-- zouq/index-5.html  22 Nov 2019 09:56:18 GMT -->
 
     </html>
-
-    

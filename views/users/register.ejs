@@ -37,7 +37,7 @@
       <input type="file" class="text" name="image" id="image">
       <span id="imageError" class="error"></span>
       <br>
-      
+
       <input type="password" name="password" placeholder="Password" id="password" class="text"
         autocomplete="new-password">
       <span id="passwordError" class="error"></span>
@@ -48,19 +48,19 @@
       <span id="confirmPasswordError" class="error"></span>
       <br>
       <label for="enableInput">Referral code:(optional)</label>
-      <input type="text" id="optionalField" name="referralCodeUsed"  class="text" placeholder="Enter optional text">
+      <input type="text" id="optionalField" name="referralCodeUsed" class="text" placeholder="Enter optional text">
       <br>
       <script>
-          function toggleInput() {
-              const optionalField = document.getElementById("optionalField");
-              const enableInput = document.getElementById("enableInput");
-  
-              if (enableInput.checked) {
-                  optionalField.removeAttribute("disabled");
-              } else {
-                  optionalField.setAttribute("disabled", true);
-              }
+        function toggleInput() {
+          const optionalField = document.getElementById("optionalField");
+          const enableInput = document.getElementById("enableInput");
+
+          if (enableInput.checked) {
+            optionalField.removeAttribute("disabled");
+          } else {
+            optionalField.setAttribute("disabled", true);
           }
+        }
       </script>
 
 
@@ -169,16 +169,7 @@
         document.getElementById('mobileError').innerText = 'Invalid mobile number format.';
         return false;
       }
-     /* if (image.files.length === 0) {
-        document.getElementById('imageError').innerText = 'Image is required.';
-        return false;
-      }
-      var allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']; // Add more types if needed
-      if (!allowedTypes.includes(image.files[0].type)) {
-        document.getElementById('imageError').innerText = 'Please select a valid image file (JPEG, PNG, GIF).';
-        return false;
-      }*/
-      // If validation passes, the form is submitted
+
       return true;
     }
   </script>

@@ -172,7 +172,7 @@
                 <hr>
                 <br>
                 <label class="sign-form-label" for="form3Example4cd">Product Images</label><br>
-            
+
                 <form action="/upload-image" method="post" enctype="multipart/form-data"
                   onsubmit="return validateImageUpload()">
                   <input type="file" name="images" multiple id="images" accept="image/*">
@@ -259,7 +259,7 @@
                   document.getElementById('offerTypeError').innerText = "";
                   document.getElementById('offerAmountError').innerText = "";
                   document.getElementById('offerEndDateError').innerText = "";
-               
+
 
                   document.getElementById('productNameError').innerText = "";
                   document.getElementById('sizeError').innerText = "";
@@ -270,7 +270,7 @@
                   var offerType = document.getElementById('offerType').value;
                   var offerAmount = document.getElementById('offerAmount').value;
                   var offerEndDate = document.getElementById('offerEndDate').value;
-               
+
 
                   // Validate product Name
                   if (productName.trim() === "") {
@@ -343,7 +343,7 @@
 
 
               </script>
-            
+
 
               <script>
                 function validateImageUpload() {

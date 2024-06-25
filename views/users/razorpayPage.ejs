@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
       font-family: 'Arial', sans-serif;
       background-image: url('/userImages/verify.webp');
       background-color: #f5f5f5;
-    
+
       margin-left: 900px;
       margin-top: 100px;
       padding: 20px;
@@ -28,7 +29,7 @@
       padding: 20px;
       max-width: 600px;
       height: 500px;
-      margin-right:100px;
+      margin-right: 100px;
     }
 
     p {
@@ -59,14 +60,16 @@
       .payment-container {
         max-width: 100%;
       }
+
       .razorpay-btn {
         padding: 12px 24px;
         font-size: 16px;
-        left:60px;
+        left: 60px;
       }
     }
   </style>
 </head>
+
 <body>
   <div class="payment-container">
     <h2>Razorpay Payment Page</h2>
@@ -74,32 +77,27 @@
 
     <div>
       <h3>Customer Information</h3>
-      <p>Name: <%= orderDetails.userName %></p>
+      <p>Name: <%= orderDetails.userName %>
+      </p>
     </div>
-  
+
     <div>
       <h3>Payment Details</h3>
-      <p>Payment Method: <%= orderDetails.payment %></p>
-      <p>Discount Amount: Rs<%= orderDetails.discountAmount %> </p>
+      <p>Payment Method: <%= orderDetails.payment %>
+      </p>
+      <p>Discount Amount: Rs<%= orderDetails.discountAmount %>
+      </p>
       <p><b>Total Amount: Rs<%= orderDetails.totalAmount %> </b></p>
     </div>
 
     <form action="/capture-payment" method="post">
-      <script
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        data-key="rzp_test_9e69PexaUI6QFv"
-        data-amount="<%= orderDetails.totalAmount * 100 %>"
-        data-currency="INR"
-        data-order_id="<%= orderDetails.razorpayOrderId %>"
-        data-buttontext="PAY NOW"
-        data-name="Zouq"
-        data-description="Order Payment"
-        data-image=""
-        data-prefill.name="Customer Name"
-        data-prefill.email="customer@example.com"
-        data-theme.color="#F37254"
-      ></script>
+      <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="rzp_test_9e69PexaUI6QFv"
+        data-amount="<%= orderDetails.totalAmount * 100 %>" data-currency="INR"
+        data-order_id="<%= orderDetails.razorpayOrderId %>" data-buttontext="PAY NOW" data-name="Zouq"
+        data-description="Order Payment" data-image="" data-prefill.name="Customer Name"
+        data-prefill.email="customer@example.com" data-theme.color="#F37254"></script>
     </form>
   </div>
 </body>
+
 </html>

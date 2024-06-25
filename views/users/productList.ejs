@@ -148,7 +148,7 @@
                         </div><!-- End .toolbox -->
                         <div class="products mb-3">
                             <div class="row justify-content-center">
-                               
+
                                 <% products.forEach(product=> { %>
                                     <% const categoryBlocked=product.category && product.category.blocked; %>
 
@@ -169,15 +169,18 @@
                                                                 <a href="/addwhitelist/<%= product._id %>"
                                                                     class="btn-product-icon btn-wishlist btn-expandable"><span>Add
                                                                         to Wishlist</span></a>
-                                                                       
 
-                                                                        <a href="/cartList" class="btn-product-icon btn-shopping-cart btn-expandable" role="button"
-                                                                        aria-expanded="false" data-display="static">
-                                                                        <i class="icon-shopping-cart" style="size: 300px; color: rgb(27, 25, 25);"></i>
-                                                                        <span>
-                                                                      View Cart
-                                                                        </span>
-                                                                      </a> 
+
+                                                                <a href="/cartList"
+                                                                    class="btn-product-icon btn-shopping-cart btn-expandable"
+                                                                    role="button" aria-expanded="false"
+                                                                    data-display="static">
+                                                                    <i class="icon-shopping-cart"
+                                                                        style="size: 300px; color: rgb(27, 25, 25);"></i>
+                                                                    <span>
+                                                                        View Cart
+                                                                    </span>
+                                                                </a>
                                                                 <!--<a href="/cartlist>" class="btn-product-icon btn-quickview" title="Quick view"><span>View Cart</span></a>-->
                                                             </div><!-- End .product-action-vertical -->
                                                             <div class="product-action">
@@ -189,7 +192,6 @@
                                                                             Cart</span></a>
 
 
-
                                                                     <!-- Add to Cart link -->
                                                                     <!--- <a href="#" class="addToCartLink">Add to Cart</a>         class="btn-product btn-cart"-->
 
@@ -197,16 +199,7 @@
                                                                     <div id="successModal" style="display: none;">
                                                                         Item added to cart successfully!
                                                                     </div>
-                                                                    <!--- <div id="toast">Item added to cart!</div>
-
-                                                                            <form class="add-to-cart" action="/add-to-cart/<%= product._id %>" method="POST">
-                                                                              <input type="hidden" name="itemId" value="item-id-here">
-                                                                              <button type="submit">Add to Cart</button>
-                                                                            </form>-->
-                                                                    <!-- Success message (initially hidden) 
-                                                                    <p id="successMessage" style="display: none;">Item
-                                                                        added to cart successfully!</p>-->
-
+                                                                   
                                                                     <% } else { %>
                                                                         <span
                                                                             class="btn-product btn-out-of-stock"><span>Out
@@ -298,7 +291,8 @@
 
                         <!-- Pagination -->
                         <div class="toolbox-layout" style="text-align: center;">
-                            <nav class="pagination" aria-label="Pagination" style="text-align: center; padding-left: 40%;">
+                            <nav class="pagination" aria-label="Pagination"
+                                style="text-align: center; padding-left: 40%;">
                                 <ul class="pagination">
                                     <% if (currentPage> 1) { %>
                                         <li class="page-item">
@@ -567,7 +561,7 @@
 
                 addToCartLinks.forEach((link) => {
                     link.addEventListener('click', (e) => {
-                      //  e.preventDefault(); // Prevent the default link behavior (navigation)
+                        //  e.preventDefault(); // Prevent the default link behavior (navigation)
 
                         // Show the success message using SweetAlert2
                         Swal.fire({

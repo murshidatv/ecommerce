@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Form</title>
   <link rel="stylesheet" href="/user/css/login.css">
 </head>
+
 <body>
-<div class="login" style="height: 300px;">
-  <h3 class="active" style="text-align: center;" > RESET PASSWORD </h3><br>
-  <form  method="post" action="/forgot" >
-    <span>Email</span>
-    <input type="text" class="text" name="email">
-    <span id="emailError" class="error" style="color: red;"></span>
-    <br>
-    
-    <button class="signin" style="width: 300px;">
+  <div class="login" style="height: 300px;">
+    <h3 class="active" style="text-align: center;"> RESET PASSWORD </h3><br>
+    <form method="post" action="/forgot">
+      <span>Email</span>
+      <input type="text" class="text" name="email">
+      <span id="emailError" class="error" style="color: red;"></span>
+      <br>
+
+      <button class="signin" style="width: 300px;">
         Send Reset Link
       </button>
-  <br>
-  
-  <h6>SignUp now and Verify your account Here </h6>
-  <a href="/register">Click Me</a>
-  <hr>
-    
-  </form>
-  <%
-  if(typeof message !=='undefined'){
-    %>
-    <script>
-    alert('<%= message %>');
+      <br>
 
-  </script>
-    <% } %>
-</div>
+      <h6>SignUp now and Verify your account Here </h6>
+      <a href="/register">Click Me</a>
+      <hr>
+
+    </form>
+    <% if(typeof message !=='undefined' ){ %>
+      <script>
+        alert('<%= message %>');
+
+      </script>
+      <% } %>
+  </div>
 </body>
+
 </html>

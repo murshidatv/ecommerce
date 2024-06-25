@@ -19,18 +19,18 @@ const getDashboardData = async (req, res) => {
   try {
     // Fetch total users count
     const totalUsers = await User.countDocuments();
-  
+
     // Fetch total orders count
     const totalOrders = await Order.countDocuments();
-   
+
     const cancelledOrders = await Order.countDocuments({ status: 'Cancelled' });
-   
+
     const totalproduct = await Product.countDocuments();
 
     const totalRevenue = await getTotalRevenue();
-  
+
     const blockUser = await User.countDocuments({ isBlocked: true });
-  
+
     res.render('report', { totalUsers, totalOrders, cancelledOrders, blockUser, totalproduct, totalRevenue });
   } catch (error) {
     console.error('Error fetching dashboard data:', error.message);

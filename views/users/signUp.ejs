@@ -2,63 +2,64 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SignUp Form</title>
- 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp Form</title>
+
 </head>
 
 <body>
-<ul class="btn-login list_none text-center mb-15">
-                                        
-    <li><button id="signInButton" href="#" class="btn btn-google hover-up">Login With Google</li></button>
-</ul>
-<script>
-    function onSignIn(googleUser) {
-        // Retrieve user profile information
-        var profile = googleUser.getBasicProfile();
-  
-        // Retrieve email
-        var email = profile.getEmail();
-  
-        // Send email and password to the backend
-        signInWithGoogle(email);
-    }
-  
-    function signInWithGoogle(email) {
-      // Fetch URL
-      var url = '/googleAuth';
-  
-      // Request body
-      var data = {
-          email: email
-      };
-  
-      // Fetch options
-      var options = {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-      };
-  
-      // Make the Fetch request
-      fetch(url, options)
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => {
-              console.log(data); // Log response from the backend
-          })
-          .catch(error => {
-              console.error('There was a problem with your fetch operation:', error);
-          });
-  }
-  
-  </script>
+    <ul class="btn-login list_none text-center mb-15">
+
+        <li><button id="signInButton" href="#" class="btn btn-google hover-up">Login With Google</li></button>
+    </ul>
+    <script>
+        function onSignIn(googleUser) {
+            // Retrieve user profile information
+            var profile = googleUser.getBasicProfile();
+
+            // Retrieve email
+            var email = profile.getEmail();
+
+            // Send email and password to the backend
+            signInWithGoogle(email);
+        }
+
+        function signInWithGoogle(email) {
+            // Fetch URL
+            var url = '/googleAuth';
+
+            // Request body
+            var data = {
+                email: email
+            };
+
+            // Fetch options
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            // Make the Fetch request
+            fetch(url, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data); // Log response from the backend
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+        }
+
+    </script>
 </body>
+
 </html>

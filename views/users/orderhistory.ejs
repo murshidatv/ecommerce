@@ -1,348 +1,368 @@
 <%- include('../layouts/productheader') %>
-<style>
-    table {
-      border-collapse: collapse;
-      width: 100rem;
-    }
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100rem;
+        }
 
-    td {
-      padding: 20px; /* Adjust the padding for spacing */
-      border: none solid #ddd; /* Add borders for better visibility */
-    }
-  </style>
-            <div class="header-middle sticky-header">
-                <div class="container">
-                    <div class="header-left">
-                        <button class="mobile-menu-toggler">
-                            <span class="sr-only">Toggle mobile menu</span>
-                            <i class="icon-bars"></i>
-                        </button>
+        td {
+            padding: 20px;
+            /* Adjust the padding for spacing */
+            border: none solid #ddd;
+            /* Add borders for better visibility */
+        }
+    </style>
+    <div class="header-middle sticky-header">
+        <div class="container">
+            <div class="header-left">
+                <button class="mobile-menu-toggler">
+                    <span class="sr-only">Toggle mobile menu</span>
+                    <i class="icon-bars"></i>
+                </button>
 
-                        <a href="#" class="logo">
-                            <h2 style="color: #c66;;">Zouq</h2>
-	                    </a>
-                        <nav class="main-nav">
-                            <ul class="menu sf-arrows">
-                                <li>
-                                    <a href="/home" class="sf-with-ul">Home</a>
-            
-                                    <div class="megamenu megamenu-md">
-                                       
-                                </li>
-                                <li>
-                                    <a href="" class="sf-with-ul">Shop</a>
+                <a href="#" class="logo">
+                    <h2 style="color: #c66;;">Zouq</h2>
+                </a>
+                <nav class="main-nav">
+                    <ul class="menu sf-arrows">
+                        <li>
+                            <a href="/home" class="sf-with-ul">Home</a>
 
-                                    
-                                </li>
-                                   
-                               
-                            </ul><!-- End .menu -->
-                        </nav><!-- End .main-nav -->
-                    </div><!-- End .header-left -->
+                            <div class="megamenu megamenu-md">
 
-                    <div class="header-right">
-                       
-                        <div class="dropdown compare-dropdown">
-                            <div class="wishlist">
-                                <a href="/wishlist" title="Wishlist">
-                                    <i class="icon-heart-o"></i>
-                                    
-                                </a>
-                            </div><!-- End .compare-dropdown -->
+                        </li>
+                        <li>
+                            <a href="" class="sf-with-ul">Shop</a>
 
-                            
-                        </div><!-- End .compare-dropdown -->
 
-                        <div class="dropdown cart-dropdown">
-                            <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="icon-shopping-cart"></i>
-                                <span class="cart-count"></span>
-                            </a>
+                        </li>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    
-                                </div><!-- End .cart-product -->
 
-                                <div class="dropdown-cart-total">
-                                    
-                                </div><!-- End .dropdown-cart-total -->
+                    </ul><!-- End .menu -->
+                </nav><!-- End .main-nav -->
+            </div><!-- End .header-left -->
 
-                                <div class="dropdown-cart-action">
-                                    <a href="/cartList" class="btn btn-primary">View Cart</a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
-                        </div><!-- End .cart-dropdown -->
-                    </div><!-- End .header-right -->
-                </div><!-- End .container -->
-            </div><!-- End .header-middle -->
-        </header><!-- End .header -->
+            <div class="header-right">
 
-        <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-        		<div class="container">
-        			<h1 class="page-title">Order History<span></span></h1>
-        		</div><!-- End .container -->
-        	</div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav">
-                <div class="container">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/profile">profile</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Order History</li>
-                    </ol>
-                </div><!-- End .container -->
-            </nav><!-- End .breadcrumb-nav -->
-           
-         
-            <div class="page-content">
-                <div class="cart">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table class="table table-cart table-mobile ">
-                                    <thead style="text-align: center;" >
-                                        <tr>
-                                            <th>Product Count</th>
-                                            <th>Total Price</th>
-                                          <!--- <th>Discount Price</th>-->
-                                            <th>Status</th>
-                                            <th>Payment Method</th>
-                                            <th>Action</th>
-                                            <th>Return</th>
-                                            <th>View Products</th> 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% if (orders.length === 0) { %>
-                                            <tr>
-                                                <td colspan="8">No orders found.</td>
-                                            </tr>
-                                        <% } else { %>
-                                            <% orders.forEach(order => { %>
-                                                <tr>
-                                                    <td><%= order.products.length %> Products</td>
-                                                    <td>Rs.<%= order.totalAmount %></td>
-                                                 <!---  <td>Rs.<%= order.discountAmount %></td>-->
-                                                    <td><%= order.status %></td>
-                                                    <td><%= order.payment %></td>
-                                                    <td class="text-center">
-                                                        <% if (order.status === 'delivered') { %>
-                                                            <p>Product Delivered</p>
-                                                        <% } else if (order.status === 'Returned') { %>
-                                                            <p>Order Returned</p>
-                                                        <% } else if (order.status === 'Cancelled') { %>
-                                                            <p>Order Cancelled</p>
-                                                        <% } else if (order.status === 'Cancellation') { %>
-                                                            <p>Order Cancelled</p>
-                                                        <% } else { %>
-                                                            <form action="/reasonpage/<%= order.id %>" method="GET">
-                                                                <button class="btn btn-danger">Cancel Order</button>
-                                                            </form>
-                                                        <% } %>
-                                                    </td>
-                                                    
-                                                    
-                                                    <td class="text-center">
-                                                        <% if (order.status.trim() === 'delivered' && !order.returned) { %>
-                                                            <form action="/orders/<%= order._id %>/return" method="POST"  onsubmit="return confirm('Are you sure you want to request a return?');">
-                                                                <input type="text" name="returnReason" class="form-control" placeholder="Enter return reason" required>
-                                                                <button type="submit" class="btn btn-primary">Request Return</button>
-                                                            </form>                                                             
-                                                        <% } else if (order.returned) { %>
-                                                            <p>Product Returned</p>
-                                                        <% } %>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <a href="/view-order/<%= order.id %>" class="btn btn-dark">View Products</a>
-                                                    </td>
-                                                </tr>
-                                            <% }) %>
-                                        <% } %>
-                                    </tbody>
-                                </table>
-                                <div class="pagination">
-                                    <% if (page > 1) { %>
-                                      <a href="/order-history?page=<%= page - 1 %>&limit=<%= limit %>" class="btn btn-secondary">Previous</a>
-                                    <% } %>
-                                  
-                                    <% if (orders.length === limit) { %>
-                                      <a href="/order-history?page=<%= page + 1 %>&limit=<%= limit %>" class="btn btn-secondary">Next</a>
-                                    <% } %>
-                                  </div>
-                            </div><!-- End .col-lg-12 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .container -->
-                </div><!-- End .cart -->
-            </div><!-- End .page-content -->
-            
+                <div class="dropdown compare-dropdown">
+                    <div class="wishlist">
+                        <a href="/wishlist" title="Wishlist">
+                            <i class="icon-heart-o"></i>
 
-              
-        </main><!-- End .main -->
-        <footer class="footer footer-2">
-            <div class="footer-middle border-0">
+                        </a>
+                    </div><!-- End .compare-dropdown -->
+
+
+                </div><!-- End .compare-dropdown -->
+
+                <div class="dropdown cart-dropdown">
+                    <a href="/cartList" class="dropdown-toggle" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <i class="icon-shopping-cart"></i>
+                        <span class="cart-count"></span>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-cart-products">
+
+                        </div><!-- End .cart-product -->
+
+                        <div class="dropdown-cart-total">
+
+                        </div><!-- End .dropdown-cart-total -->
+
+                        <div class="dropdown-cart-action">
+                            <a href="/cartList" class="btn btn-primary">View Cart</a>
+                        </div><!-- End .dropdown-cart-total -->
+                    </div><!-- End .dropdown-menu -->
+                </div><!-- End .cart-dropdown -->
+            </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-middle -->
+    </header><!-- End .header -->
+
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+            <div class="container">
+                <h1 class="page-title">Order History<span></span></h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/profile">profile</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Order History</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+
+        <div class="page-content">
+            <div class="cart">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-12 col-lg-6">
-                            <div class="widget widget-about">
-    
-    
-                                <div class="widget-about-info">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-md-4">
-                                            <span class="widget-about-title">Got Question? Call us 24/7</span>
-                                            <a href="tel:123456789">+0123 456 789</a>
-                                        </div><!-- End .col-sm-6 -->
-                                        <div class="col-sm-6 col-md-8">
-                                            <span class="widget-about-title">Payment Method</span>
-                                            <figure class="footer-payments">
-                                                <img src="assets/images/payments.png" alt="Payment methods" width="272"
-                                                    height="20">
-                                            </figure><!-- End .footer-payments -->
-                                        </div><!-- End .col-sm-6 -->
-                                    </div><!-- End .row -->
-                                </div><!-- End .widget-about-info -->
-                            </div><!-- End .widget about-widget -->
-                        </div><!-- End .col-sm-12 col-lg-3 -->
-    
-                        <div class="col-sm-4 col-lg-2">
-                            <div class="widget">
-                                <h4 class="widget-title">Information</h4><!-- End .widget-title -->
-    
-                                <ul class="widget-list">
-                                    <li><a href="about.html">About Zouq</a></li>
-                                    <li><a href="#">How to shop on Zouq</a></li>
-                                    <li><a href="faq.html">FAQ</a></li>
-                                    <li><a href="contact.html">Contact us</a></li>
-                                    <li><a href="login.html">Log in</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-4 col-lg-3 -->
-    
-                        <div class="col-sm-4 col-lg-2">
-                            <div class="widget">
-                                <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
-    
-                                <ul class="widget-list">
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Money-back guarantee!</a></li>
-                                    <li><a href="#">Returns</a></li>
-                                    <li><a href="#">Shipping</a></li>
-                                    <li><a href="#">Terms and conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-4 col-lg-3 -->
-    
-                        <div class="col-sm-4 col-lg-2">
-                            <div class="widget">
-                                <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
-    
-                                <ul class="widget-list">
-                                    <li><a href="#">Sign In</a></li>
-                                    <li><a href="cart.html">View Cart</a></li>
-                                    <li><a href="#">My Wishlist</a></li>
-                                    <li><a href="#">Track My Order</a></li>
-                                    <li><a href="#">Help</a></li>
-                                </ul><!-- End .widget-list -->
-                            </div><!-- End .widget -->
-                        </div><!-- End .col-sm-64 col-lg-3 -->
+                        <div class="col-lg-12">
+                            <table class="table table-cart table-mobile ">
+                                <thead style="text-align: center;">
+                                    <tr>
+                                        <th>Product Count</th>
+                                        <th>Total Price</th>
+                                        <!--- <th>Discount Price</th>-->
+                                        <th>Status</th>
+                                        <th>Payment Method</th>
+                                        <th>Action</th>
+                                        <th>Return</th>
+                                        <th>View Products</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (orders.length===0) { %>
+                                        <tr>
+                                            <td colspan="8">No orders found.</td>
+                                        </tr>
+                                        <% } else { %>
+                                            <% orders.forEach(order=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= order.products.length %> Products
+                                                    </td>
+                                                    <td>Rs.<%= order.totalAmount %>
+                                                    </td>
+                                                    <!---  <td>Rs.<%= order.discountAmount %></td>-->
+                                                    <td>
+                                                        <%= order.status %>
+                                                    </td>
+                                                    <td>
+                                                        <%= order.payment %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <% if (order.status==='delivered' ) { %>
+                                                            <p>Product Delivered</p>
+                                                            <% } else if (order.status==='Returned' ) { %>
+                                                                <p>Order Returned</p>
+                                                                <% } else if (order.status==='Cancelled' ) { %>
+                                                                    <p>Order Cancelled</p>
+                                                                    <% } else if (order.status==='Cancellation' ) { %>
+                                                                        <p>Order Cancelled</p>
+                                                                        <% } else { %>
+                                                                            <form action="/reasonpage/<%= order.id %>"
+                                                                                method="GET">
+                                                                                <button class="btn btn-danger">Cancel
+                                                                                    Order</button>
+                                                                            </form>
+                                                                            <% } %>
+                                                    </td>
+
+
+                                                    <td class="text-center">
+                                                        <% if (order.status.trim()==='delivered' && !order.returned) {
+                                                            %>
+                                                            <form action="/orders/<%= order._id %>/return" method="POST"
+                                                                onsubmit="return confirm('Are you sure you want to request a return?');">
+                                                                <input type="text" name="returnReason"
+                                                                    class="form-control"
+                                                                    placeholder="Enter return reason" required>
+                                                                <button type="submit" class="btn btn-primary">Request
+                                                                    Return</button>
+                                                            </form>
+                                                            <% } else if (order.returned) { %>
+                                                                <p>Product Returned</p>
+                                                                <% } %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="/view-order/<%= order.id %>" class="btn btn-dark">View
+                                                            Products</a>
+                                                    </td>
+                                                </tr>
+                                                <% }) %>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                            <div class="pagination">
+                                <% if (page> 1) { %>
+                                    <a href="/order-history?page=<%= page - 1 %>&limit=<%= limit %>"
+                                        class="btn btn-secondary">Previous</a>
+                                    <% } %>
+
+                                        <% if (orders.length===limit) { %>
+                                            <a href="/order-history?page=<%= page + 1 %>&limit=<%= limit %>"
+                                                class="btn btn-secondary">Next</a>
+                                            <% } %>
+                            </div>
+                        </div><!-- End .col-lg-12 -->
                     </div><!-- End .row -->
                 </div><!-- End .container -->
-            </div><!-- End .footer-middle -->
-    
-            <div class="footer-bottom">
-                <div class="container">
-                    <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p>
-                    <!-- End .footer-copyright -->
-                    <ul class="footer-menu">
-                        <li><a href="#">Terms Of Use</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                    </ul><!-- End .footer-menu -->
-                    <div class="social-icons social-icons-color">
-                        <span class="social-label"></span>
-                        <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
-                                class="icon-facebook-f"></i></a>
-                        <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
-                                class="icon-twitter"></i></a>
-                        <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
-                                class="icon-instagram"></i></a>
-                        <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
-                                class="icon-youtube"></i></a>
-                        <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
-                                class="icon-pinterest"></i></a>
-                    </div><!-- End .soial-icons -->
-                </div><!-- End .container -->
-            </div><!-- End .footer-bottom -->
-        </footer><!-- End .footer -->
-        </div><!-- End .page-wrapper -->
-        <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
-    
-        <!-- Mobile Menu -->
-        <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
-    
-        <div class="mobile-menu-container mobile-menu-light">
-            <div class="mobile-menu-wrapper">
-                <span class="mobile-menu-close"><i class="icon-close"></i></span>
-    
-                <form action="#" method="get" class="mobile-search">
-                    <label for="mobile-search" class="sr-only">Search</label>
-                    <input type="search" class="form-control" name="mobile-search" id="mobile-search"
-                        placeholder="Search in..." required>
-                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                </form>
-    
-                <nav class="mobile-nav">
-                    <ul class="mobile-menu">
-                        <li class="active">
-                            <a href="home.ejs">Home</a>
-    
-                        <li>
-                            <a href="/category">Shop</a>
-    
-                        </li>
-                        <li>
-                            <a href="product.html" class="sf-with-ul">Product</a>
-    
-                        </li>
-                        <li>
-    
-                        </li>
-                    </ul>
-                </nav><!-- End .mobile-nav -->
-    
-                <div class="social-icons">
-                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
-                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
-                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
-                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
-                </div><!-- End .social-icons -->
-            </div><!-- End .mobile-menu-wrapper -->
-        </div><!-- End .mobile-menu-container -->
-    
+            </div><!-- End .cart -->
+        </div><!-- End .page-content -->
 
-   <!-- Place this script just before the closing </body> tag -->
-<!-- Place this script just before the closing </body> tag -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Add an event listener to all quantity inputs
-      const quantityInputs = document.querySelectorAll('.quantity-input');
-      quantityInputs.forEach(function (input) {
-        input.addEventListener('change', updateTotalPrice);
-      });
-  
-      // Function to update the total price based on the quantity
-      function updateTotalPrice(event) {
-        const input = event.target;
-        const rowIndex = input.closest('tr').getAttribute('data-row-index');
-        const totalSpan = document.querySelector(`tr[data-row-index="${rowIndex}"] .total-price`);
-  
-        // Update the total price
-        const totalPrice = parseInt(input.value) * parseFloat(user.cart[rowIndex].product.price);
-        totalSpan.textContent = `Rs.${totalPrice.toFixed(2)}`; // Adjust decimals as needed
-      }
-    });
-  </script>
-  
-  
+
+
+    </main><!-- End .main -->
+    <footer class="footer footer-2">
+        <div class="footer-middle border-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="widget widget-about">
+
+
+                            <div class="widget-about-info">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+                                        <span class="widget-about-title">Got Question? Call us 24/7</span>
+                                        <a href="tel:123456789">+0123 456 789</a>
+                                    </div><!-- End .col-sm-6 -->
+                                    <div class="col-sm-6 col-md-8">
+                                        <span class="widget-about-title">Payment Method</span>
+                                        <figure class="footer-payments">
+                                            <img src="assets/images/payments.png" alt="Payment methods" width="272"
+                                                height="20">
+                                        </figure><!-- End .footer-payments -->
+                                    </div><!-- End .col-sm-6 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .widget-about-info -->
+                        </div><!-- End .widget about-widget -->
+                    </div><!-- End .col-sm-12 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Information</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="about.html">About Zouq</a></li>
+                                <li><a href="#">How to shop on Zouq</a></li>
+                                <li><a href="faq.html">FAQ</a></li>
+                                <li><a href="contact.html">Contact us</a></li>
+                                <li><a href="login.html">Log in</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">Customer Service</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Payment Methods</a></li>
+                                <li><a href="#">Money-back guarantee!</a></li>
+                                <li><a href="#">Returns</a></li>
+                                <li><a href="#">Shipping</a></li>
+                                <li><a href="#">Terms and conditions</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-4 col-lg-3 -->
+
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="widget">
+                            <h4 class="widget-title">My Account</h4><!-- End .widget-title -->
+
+                            <ul class="widget-list">
+                                <li><a href="#">Sign In</a></li>
+                                <li><a href="cart.html">View Cart</a></li>
+                                <li><a href="#">My Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul><!-- End .widget-list -->
+                        </div><!-- End .widget -->
+                    </div><!-- End .col-sm-64 col-lg-3 -->
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-middle -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">Copyright © 2024 Zouq Store. All Rights Reserved.</p>
+                <!-- End .footer-copyright -->
+                <ul class="footer-menu">
+                    <li><a href="#">Terms Of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul><!-- End .footer-menu -->
+                <div class="social-icons social-icons-color">
+                    <span class="social-label"></span>
+                    <a href="#" class="social-icon social-facebook" title="Facebook" target="_blank"><i
+                            class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon social-twitter" title="Twitter" target="_blank"><i
+                            class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon social-instagram" title="Instagram" target="_blank"><i
+                            class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon social-youtube" title="Youtube" target="_blank"><i
+                            class="icon-youtube"></i></a>
+                    <a href="#" class="social-icon social-pinterest" title="Pinterest" target="_blank"><i
+                            class="icon-pinterest"></i></a>
+                </div><!-- End .soial-icons -->
+            </div><!-- End .container -->
+        </div><!-- End .footer-bottom -->
+    </footer><!-- End .footer -->
+    </div><!-- End .page-wrapper -->
+    <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+    <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+            <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+            <form action="#" method="get" class="mobile-search">
+                <label for="mobile-search" class="sr-only">Search</label>
+                <input type="search" class="form-control" name="mobile-search" id="mobile-search"
+                    placeholder="Search in..." required>
+                <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+            </form>
+
+            <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                    <li class="active">
+                        <a href="home.ejs">Home</a>
+
+                    <li>
+                        <a href="/category">Shop</a>
+
+                    </li>
+                    <li>
+                        <a href="product.html" class="sf-with-ul">Product</a>
+
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </nav><!-- End .mobile-nav -->
+
+            <div class="social-icons">
+                <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+            </div><!-- End .social-icons -->
+        </div><!-- End .mobile-menu-wrapper -->
+    </div><!-- End .mobile-menu-container -->
+
+
+    <!-- Place this script just before the closing </body> tag -->
+    <!-- Place this script just before the closing </body> tag -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add an event listener to all quantity inputs
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            quantityInputs.forEach(function (input) {
+                input.addEventListener('change', updateTotalPrice);
+            });
+
+            // Function to update the total price based on the quantity
+            function updateTotalPrice(event) {
+                const input = event.target;
+                const rowIndex = input.closest('tr').getAttribute('data-row-index');
+                const totalSpan = document.querySelector(`tr[data-row-index="${rowIndex}"] .total-price`);
+
+                // Update the total price
+                const totalPrice = parseInt(input.value) * parseFloat(user.cart[rowIndex].product.price);
+                totalSpan.textContent = `Rs.${totalPrice.toFixed(2)}`; // Adjust decimals as needed
+            }
+        });
+    </script>
+
+
     <%- include('../layouts/productfooter.ejs') %>

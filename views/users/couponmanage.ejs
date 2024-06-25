@@ -13,17 +13,7 @@
                 </a>
                 <nav class="main-nav">
                     <ul class="menu sf-arrows">
-                        <!-- <a href="/home" class="sf-with-ul">Home</a>
-
-                    <li class="megamenu-container active">
-
-                        <div class="megamenu demo">
-                           
-                        
-                            
-                        </div>
-                        End .megamenu -->
-                        <!-- </li> -->
+                       
                         <li>
                             <a href="/home" class="sf-with-ul">Home</a>
 
@@ -106,43 +96,50 @@
                             </nav><!-- End .breadcrumb-nav -->
 
                             <div class="container">
-                               
-                                <h3 style="margin: 3rem; text-align: center; ">Available Coupons</h3> 
-                                <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i
-                                    class="icon-long-arrow-right"></i></a><br>
-                            <br>
-                                <div class="row">
-                                   
 
-                                    <% for (var i = 0; i < coupon.length; i++) { %>
+                                <h3 style="margin: 3rem; text-align: center; ">Available Coupons</h3>
+                                <a href="/checkout" class="btn btn-outline-primary-2"><span>Checkout</span><i
+                                        class="icon-long-arrow-right"></i></a><br>
+                                <br>
+                                <div class="row">
+
+
+                                    <% for (var i=0; i < coupon.length; i++) { %>
                                         <div class="col-md-6">
                                             <!-- Left card -->
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h5 style="color: green;">
-                                                       <br> <%= coupon[i].couponname %> Off<br><br>
+                                                        <br>
+                                                        <%= coupon[i].couponname %> Off<br><br>
                                                     </h5>
-                                                    <h6 style="color: red;">Get Rs<%= coupon[i].value %> Off<br><br></h6>
-                                                    <h6 style="color: rgba(12, 1, 1, 0.356);">Get extra <%= coupon[i].value %> off minimum Purchase of Rs<%= coupon[i].conditions.minOrderAmount %></h6>
-                                                    <h5 style="color: rgba(12, 1, 1, 0.92);">Code: <%= coupon[i].code %></h5>
+                                                    <h6 style="color: red;">Get Rs<%= coupon[i].value %> Off<br><br>
+                                                    </h6>
+                                                    <h6 style="color: rgba(12, 1, 1, 0.356);">Get extra <%=
+                                                            coupon[i].value %> off minimum Purchase of Rs<%=
+                                                                coupon[i].conditions.minOrderAmount %>
+                                                    </h6>
+                                                    <h5 style="color: rgba(12, 1, 1, 0.92);">Code: <%= coupon[i].code %>
+                                                    </h5>
                                                     <% if (coupon[i].expirationDate) { %>
-                                                        <h6>Valid till <%= coupon[i].expirationDate.toLocaleDateString() %><br><br></h6>
-                                                    <% } else { %>
-                                                        <h6>No expiration date specified</h6>
-                                                    <% } %>
+                                                        <h6>Valid till <%= coupon[i].expirationDate.toLocaleDateString()
+                                                                %><br><br></h6>
+                                                        <% } else { %>
+                                                            <h6>No expiration date specified</h6>
+                                                            <% } %>
                                                 </div>
                                             </div>
                                         </div>
-                                        <% if ((i + 1) % 2 === 0 || i === coupon.length - 1) { %>
+                                        <% if ((i + 1) % 2===0 || i===coupon.length - 1) { %>
                                             <!-- Clear the row after every two coupons -->
                                             <div class="w-100"></div>
-                                        <% } %>
-                                    <% } %>
+                                            <% } %>
+                                                <% } %>
                                 </div>
                             </div>
 
-                              <br><br>
-                                                            
+                            <br><br>
+
                         </main><!-- End .main -->
                         <footer class="footer footer-2">
                             <div class="footer-middle border-0">

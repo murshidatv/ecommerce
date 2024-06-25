@@ -8,8 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 exports.renderDashboard = (req, res) => {
-    res.render('admin/dashboard');
-  };
+  res.render('admin/dashboard');
+};
 exports.generateReport = async (req, res) => {
   const { type, startDate, endDate } = req.query;
 

@@ -1,26 +1,27 @@
 <%- include('../layouts/productheader') %>
-<style>
-  .h3 {
+  <style>
+    .h3 {
       position: relative;
       left: 20rem;
-  }
+    }
 
-  table {
+    table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
-  }
+    }
 
-  th, td {
+    th,
+    td {
       border: 1px solid #dddddd;
       text-align: left;
       padding: 8px;
-  }
+    }
 
-  th {
+    th {
       background-color: #f2f2f2;
-  }
-</style>
+    }
+  </style>
   <div class="header-middle sticky-header">
     <div class="container">
       <div class="header-left">
@@ -66,7 +67,7 @@
             aria-expanded="false" data-display="static">
             <i class="icon-shopping-cart"></i>
             <span class="cart-count">
-              
+
             </span>
           </a>
 
@@ -107,37 +108,45 @@
     <div class="page-content">
       <h4 class="h3"></h4>
       <div class="container">
-          <br>
-          <h4 style="color: #c66"> Wallet Balance Amount: <%= walletAmount %></h6>
-      <br><br>
-          <div>
+        <br>
+        <h4 style="color: #c66"> Wallet Balance Amount: <%= walletAmount %>
+            </h6>
+            <br><br>
+            <div>
               <h4 style="text-align: center;">Wallet History</h4><br>
-      
+
               <table>
-                  <thead >
-                      <tr style="text-align: center;">
-                          <th>Date </th>
-                          <th>Type </th>
-                          <th>Amount </th>
-                          <th>Description </th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <% walletHistory.forEach(transaction => { %>
-                          <tr>
-                              <td><%= transaction.timestamp.toLocaleString() %></td>
-                              <td><%= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1) %></td>
-                              <td>Rs <%= transaction.amount.toFixed(2) %></td>
-                              <td><%= transaction.description %></td>
-                          </tr>
-                      <% }) %>
-                  </tbody>
+                <thead>
+                  <tr style="text-align: center;">
+                    <th>Date </th>
+                    <th>Type </th>
+                    <th>Amount </th>
+                    <th>Description </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% walletHistory.forEach(transaction=> { %>
+                    <tr>
+                      <td>
+                        <%= transaction.timestamp.toLocaleString() %>
+                      </td>
+                      <td>
+                        <%= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1) %>
+                      </td>
+                      <td>Rs <%= transaction.amount.toFixed(2) %>
+                      </td>
+                      <td>
+                        <%= transaction.description %>
+                      </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
               </table>
-          </div>
+            </div>
       </div>
     </div><!-- End .container -->
-  </div><!-- End .page-content -->
-</main><!-- End .main -->
+    </div><!-- End .page-content -->
+  </main><!-- End .main -->
 
   <footer class="footer footer-2">
     <div class="footer-middle border-0">

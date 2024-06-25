@@ -1,5 +1,6 @@
 <!-- cancellation-reason.ejs -->
 <html lang="en">
+
 <head>
     <style>
         body {
@@ -47,10 +48,11 @@
         }
 
         button:hover {
-            background-color:#c66;
+            background-color: #c66;
         }
     </style>
 </head>
+
 <body>
     <h2 style="margin-left:440px;">Enter Cancellation Reason</h2>
     <form action="/cancel-order/<%= order.id %>" method="POST">
@@ -60,17 +62,15 @@
             <option value="changed_mind">Changed my mind</option>
             <option value="Wrong Product Recived">Wrong Product Recived</option>
             <option value="It's a trial order">It's a trial order</option>
-            
+
         </select>
-    
+
         <br>
-    
-        <!-- <label for="customReason">Or enter a custom reason:</label>
-        <textarea id="customReason" name="customReason" rows="4" cols="50"></textarea>
-     -->
+
         <br>
-    
+
         <button type="submit">Submit Reason</button>
     </form>
 </body>
+
 </html>

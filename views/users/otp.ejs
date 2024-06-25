@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,7 +17,8 @@
         margin-top: 10px;
     }
 </style>
-<body> 
+
+<body>
     <section class="wrapper">
         <div class="container">
             <div class="col-sm-8 offset-sm-2 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3 text-center">
@@ -24,19 +26,20 @@
                     <h3 class="text-dark fw-bolder fs-4 mb-2">Two Step Verification</h3>
                     <div class="fw-normal text-muted mb-4">
                         Enter the verification code we sent to your Email.
-                    </div>  
+                    </div>
                     <div class="otp_input text-start mb-2">
                         <label for="digit">Type your 6 digit security code</label>
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <input type="text" class="form-control" name="otp" placeholder="-">
-                        </div> 
-                    </div>  
+                        </div>
+                    </div>
                     <div id="message" style="color: red;"></div>
                     <button type="submit" class="btn btn-primary submit_btn my-4">Submit</button>
                     <div class="fw-normal OTP text-muted mb-2">
-                        Didn't get the code? 
+                        Didn't get the code?
                         <span id="resendMessage"></span>
-                        <button type="button" class="btn btn-primary submit_btn my-4" onclick="resendOTP()" id="resendButton" disabled>Resend</button>
+                        <button type="button" class="btn btn-primary submit_btn my-4" onclick="resendOTP()"
+                            id="resendButton" disabled>Resend</button>
                         <div id="timerDisplay"></div>
                     </div>
                 </form>
@@ -83,13 +86,13 @@
         }
 
         // Start the timer initially
-        startTimer();   
+        startTimer();
 
-        document.querySelector('#otpForm').addEventListener('submit', async function(event) {
+        document.querySelector('#otpForm').addEventListener('submit', async function (event) {
             event.preventDefault();
             const otp = this.elements['otp'].value;
             const userId = '<%= userId %>';
-            
+
             try {
                 const response = await fetch(`/verify/${userId}`, {
                     method: 'POST',
@@ -98,7 +101,7 @@
                     },
                     body: JSON.stringify({ otp }),
                 });
-                
+
                 const data = await response.json();
                 if (data.success) {
                     window.location.href = '/email-verified';
@@ -112,4 +115,5 @@
         });
     </script>
 </body>
+
 </html>

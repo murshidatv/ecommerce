@@ -319,7 +319,7 @@
             document.getElementById('imageError').innerText = "image is required";
             return false;
           }
-          
+
           if (!isValidImage(productImage1) || !isValidImage(productImage2) || !isValidImage(productImage3)) {
             document.getElementById('imageError').innerText = 'Please select valid image files for each field';
             event.preventDefault();

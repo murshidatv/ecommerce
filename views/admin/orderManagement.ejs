@@ -133,7 +133,7 @@
                               <td>
                                 <%= newStatus ? newStatus : order[i].status %>
                               </td>
-                             
+
                               <td>
                                 <form action="/admin/update-status/<%= order[i]._id %>" method="POST">
                                   <select name="newStatus">
