@@ -310,9 +310,6 @@ const addProduct = async (req, res) => {
             images = await Promise.all(req.files.map(async (file) => {
                 const filename = file.filename;
 
-                // Log the filename being processed
-                console.log('Processing file:', filename);
-
                 // Check if file exists
                 if (!filename) {
                     throw new Error('Input file is missing: ' + filename);

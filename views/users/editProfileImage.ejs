@@ -12,6 +12,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f4f4f4;
+            background-image: url('/assets/images/bag4.webp'); 
         }
 
         form {
@@ -70,7 +71,7 @@
         <div class="current-profile-image">
             <h3>Current Profile Image:</h3>
             <% if (user && user.image) { %>
-                <img src="/userimage/<%= user.image %>" alt="Profile Image" />
+                <img src="/userimage/<%= user.image %>" alt="Profile Image"  style="width: 150px; position: relative; left: 100px;" />
                 <% } else { %>
                     <img src="/images/default.jpeg" class="rounded-circle img-fluid" id="image"
                         style="width: 100px; position: relative; left: 170px;" />
