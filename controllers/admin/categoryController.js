@@ -197,12 +197,10 @@ async function updateProductPricesForCategory(category) {
                     if (!product.oldPrice) {
                         product.oldPrice = product.price;
                     }
-                    console.log('Product Offer:', product.offer);
+                   
                     // Check if the product has its own offer
                     const hasProductOffer = product.offer && typeof product.offer.amount === 'number';
-                    console.log('Product Offer:', product.offer);
-                    console.log('hasProductOffer:', hasProductOffer);
-
+                 
                     // If the product offer is deleted, apply the category offer
                     if (!hasProductOffer || isNaN(product.offer.amount)) {
                         const categoryDiscount = categoryOffer.amount / 100;
@@ -346,7 +344,7 @@ const addProduct = async (req, res) => {
         await newProduct.save();
         await updateProductPrices(newProduct);
 
-        console.log('Product saved successfully:', newProduct);
+      
         res.redirect('/admin/product');
     } catch (error) {
         console.error('Error adding new product:', error.message);
@@ -380,7 +378,7 @@ const editProduct = async (req, res) => {
         }
 
 
-        console.log('Existing images before update:', product.images);
+     
 
         // Check if there are files and if they are an array
         if (req.files && Array.isArray(req.files)) {
@@ -390,10 +388,6 @@ const editProduct = async (req, res) => {
 
         // Ensure product.images is an array before concatenating
         images = [...(product.images || []), ...images];
-
-        console.log('New images array after concatenation:', images);
-
-
 
         // Check if the offer is being deleted
         const offerDeleted = !offerType && !offerAmount && !offerEndDate;
@@ -422,8 +416,6 @@ const editProduct = async (req, res) => {
             { new: true }
         );
 
-        console.log('Updated product:', updatedProduct);
-
         if (!updatedProduct) {
             return res.status(404).send('Product not found');
         }
@@ -445,10 +437,8 @@ const removeImage = async (req, res) => {
         }
         // Filter out the image to be removed
         product.images = product.images.filter(image => image !== imageName);
-        console.log(`${product.images}`);
         // Save the updated product
         await product.save();
-        console.log(`${product.images}`);
         // Redirect back to the edit product page or wherever appropriate
         res.redirect('/admin/edit-product/' + productId);
     } catch (error) {

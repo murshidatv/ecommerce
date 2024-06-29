@@ -50,7 +50,7 @@ const loadEditAddress = async (req, res) => {
     try {
         const addressId = req.params.addressId;
         const userAddress = await Address.findById(addressId);
-        console.log(userAddress);
+        
         res.render('editAddress', { userAddress });
     } catch (error) {
         console.log(error.message);
@@ -100,7 +100,7 @@ const chooseAddress = async (req, res) => {
     try {
         const userId = req.session.user_id;
         const addresses = await Address.find({ user: userId });
-        console.log("Addresses:", addresses);
+    
         // Render the 'choose-address' view with the list of addresses
         res.render('choose-address', { addresses, user_id: userId });
     } catch (error) {
@@ -178,7 +178,7 @@ const loadAddressEdit = async (req, res) => {
         const addressId = req.params.addressId;
         // Find the address in the database by its ID
         const userAddress = await Address.findById(addressId);
-        console.log(userAddress);
+   
         res.render('editchooseAddress', { userAddress });
     } catch (error) {
         console.log(error.message);

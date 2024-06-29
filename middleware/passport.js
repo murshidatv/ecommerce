@@ -12,8 +12,7 @@ passport.use(new GoogleStrategy({
 
 
   function (request, accessToken, refreshToken, profile, done) {
-    console.log(profile);
-
+    
     // Add this
     done(null, profile);//profile contains user information
   }

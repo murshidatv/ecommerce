@@ -1,16 +1,12 @@
 const mongoose = require("mongoose");
 require('dotenv').config();
 const path = require('path');
-/*
-const connectDB = mongoose.connect(process.env.MONGODB_ATLAS);
-mongoose.connect("mongodb+srv://murshidatv:58DbUexyYLscWnTg@zouq-pro-db.ugtfu2w.mongodb.net/?retryWrites=true&w=majority&appName=zouq-pro-db");
-*/
 
 
 // Database connection
 mongoose.connect(process.env.MONGODB_ATLAS)
   .then(() => {
-    console.log('Connected to MongoDB Atlas');
+
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);

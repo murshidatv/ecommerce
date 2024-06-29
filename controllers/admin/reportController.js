@@ -10,6 +10,8 @@ const path = require('path');
 exports.renderDashboard = (req, res) => {
   res.render('admin/dashboard');
 };
+
+
 exports.generateReport = async (req, res) => {
   const { type, startDate, endDate } = req.query;
 
@@ -21,8 +23,7 @@ exports.generateReport = async (req, res) => {
       orderDate: { $gte: start.toDate(), $lte: end.toDate() }
     }).populate('userId');
 
-    console.log(`Orders found: ${orders.length}`); // Logging the number of orders found
-
+   
     if (type === 'pdf') {
       generatePDF(orders, res);
     } else if (type === 'excel') {
@@ -44,15 +45,13 @@ const generatePDF = (orders, res) => {
   let fileName = `report_${Date.now()}.pdf`;
   let filePath = path.join(reportsDir, fileName);
 
-  const doc = new PDFDocument();
-
+  const doc = new PDFDocument({ margin: 30 });
   doc.pipe(fs.createWriteStream(filePath))
     .on('finish', () => {
       res.download(filePath, fileName, (err) => {
         if (err) {
           res.status(500).send(err.message);
         } else {
-          // Optionally, delete the file after download to clean up
           fs.unlinkSync(filePath);
         }
       });
@@ -61,27 +60,95 @@ const generatePDF = (orders, res) => {
       res.status(500).send(err.message);
     });
 
-  doc.fontSize(20).text('Sales Report', { align: 'center' });
+  const reportDate = moment().format('YYYY-MM-DD');
+  const startDate = orders.length ? moment(orders[0].orderDate).format('YYYY-MM-DD') : 'N/A';
+  const endDate = orders.length ? moment(orders[orders.length - 1].orderDate).format('YYYY-MM-DD') : 'N/A';
+
   doc.moveDown();
+  doc.fontSize(15).text('Sales Report', { align: 'center' });
+  doc.moveDown(0.5);
+  doc.fontSize(12).text('Zouqs-Bag', { align: 'center' });
+  doc.moveDown(0.5);
+  doc.fontSize(12).text('www.zouqs.shop', { align: 'center' });
+  doc.moveDown(2);
+  doc.fontSize(11).text(`Report Date: ${reportDate}`, { align: 'right' });
+  doc.moveDown(0.5);
+  doc.fontSize(11).text(`Date Range: ${startDate} - ${endDate}`, { align: 'right' });
+  doc.moveDown(2);
+
+  // Draw table header
+  const tableTop = doc.y;
+  const tableLeft = 20; // Set a fixed left position for the table
+  const cellPadding = 5;
+  const columnWidths = [150, 70, 70, 70, 60, 80, 70]; // Set column widths
+  const rowHeight = 20;
+
+  const headers = ['Order ID', 'User', 'Total Amount', 'Order Date', 'Status', 'Payment Method', 'Returned'];
+
+  doc.fontSize(10);
+  let currentLeft = tableLeft;
+  headers.forEach((header, i) => {
+    doc.rect(currentLeft, tableTop, columnWidths[i], rowHeight).stroke();
+    doc.text(header, currentLeft + cellPadding, tableTop + cellPadding);
+    currentLeft += columnWidths[i];
+  });
+
+  let currentTop = tableTop + rowHeight;
+
+  // Table rows
+  let totalAmount = 0;
+  let returnedAmount = 0;
+  let returnedOrdersCount = 0;
 
   orders.forEach(order => {
-    doc.fontSize(12).text(`Order ID: ${order._id}`);
-    doc.text(`User: ${order.userName}`);
-    doc.text(`Total Amount: $${order.totalAmount}`);
-    doc.text(`Order Date: ${moment(order.orderDate).format('YYYY-MM-DD')}`);
-    doc.text(`Status: ${order.status}`);
-    doc.text(`Payment Method: ${order.payment}`);
-    if (order.deliveredAt) {
-      doc.text(`Delivered At: ${moment(order.deliveredAt).format('YYYY-MM-DD')}`);
-    }
+    totalAmount += order.totalAmount;
     if (order.returned) {
-      doc.text(`Returned: Yes`);
-      if (order.returnReason) {
-        doc.text(`Return Reason: ${order.returnReason}`);
-      }
+      returnedAmount += order.totalAmount;
+      returnedOrdersCount++;
     }
-    doc.moveDown();
+
+    const row = [
+      order._id || 'N/A',
+      order.userName || 'N/A',
+      `Rs.${order.totalAmount}` || 'N/A',
+      moment(order.orderDate).format('YYYY-MM-DD') || 'N/A',
+      order.status || 'N/A',
+      order.payment || 'N/A',
+      order.returned ? 'Yes' : 'No',
+    ];
+
+    currentLeft = tableLeft;
+    row.forEach((cell, i) => {
+      doc.rect(currentLeft, currentTop, columnWidths[i], rowHeight).stroke();
+      doc.text(cell, currentLeft + cellPadding, currentTop + cellPadding);
+      currentLeft += columnWidths[i];
+    });
+    currentTop += rowHeight;
   });
+
+  // Calculate the net total amount after deducting returned orders
+  const netTotalAmount = totalAmount - returnedAmount;
+
+  // Add total amount and order count at the bottom
+  doc.moveDown(2);
+
+  const summaryTop = currentTop + 40; // Adjust the position further down if necessary
+  const bottomLeft = tableLeft;
+  const bottomRight = tableLeft + columnWidths.reduce((a, b) => a + b, 0);
+
+  doc.fontSize(11)
+    .text(`Total Orders: ${orders.length}`, bottomLeft, summaryTop)
+    .text(`Total Amount: Rs.${totalAmount.toFixed(2)}`, bottomRight - 150, summaryTop, { width: 150, align: 'right' });
+
+  // Add returned orders and amount details
+  doc.fontSize(11)
+    .text(`Returned Orders: ${returnedOrdersCount}`, bottomLeft, summaryTop + 20)
+    .text(`Returned Amount: Rs.${returnedAmount.toFixed(2)}`, bottomRight - 150, summaryTop + 20, { width: 150, align: 'right' });
+
+  // Add net total amount
+  doc.fontSize(11)
+   
+    .text(`Net Total Amount: Rs.${netTotalAmount.toFixed(2)}`, bottomRight - 250, summaryTop + 40, { width: 250, align: 'right' });
 
   doc.end();
 };

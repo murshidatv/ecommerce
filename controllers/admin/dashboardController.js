@@ -79,7 +79,6 @@ const getYearlyRevenue = async (req, res) => {
     // Extract years and revenue data for chart rendering
     const years = yearlyRevenue.map(entry => entry._id);
     const revenueData = yearlyRevenue.map(entry => entry.totalRevenue);
-    console.log("years", years, "revenueData", revenueData);
     // Send the yearly revenue data as JSON
     res.json({ years, revenueData });
   } catch (error) {

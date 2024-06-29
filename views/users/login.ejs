@@ -125,7 +125,7 @@
             return response.json();
           })
           .then(data => {
-            console.log(data); // Log response from the backend
+           // Log response from the backend
           })
           .catch(error => {
             console.error('There was a problem with your fetch operation:', error);
@@ -155,8 +155,8 @@
             return response.json();
           })
           .then(data => {
-            console.log("Response worked by google auth");
-            console.log(data); // Log response from the backend
+     
+   
 
             if (data.message) {
               // Display an alert with the message from the backend

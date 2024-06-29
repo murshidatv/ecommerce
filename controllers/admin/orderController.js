@@ -59,7 +59,7 @@ const order = async (req, res) => {
       limit,
       statuses
     });
-    console.log(order)
+
   } catch (error) {
     console.error('Error fetching orders:', error.message);
     res.status(500).send('Internal Server Error');
@@ -73,7 +73,7 @@ const updateStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { newStatus } = req.body;
-    console.log('Received parameters:', { orderId, newStatus });
+
     const updatedOrder = await Order.findByIdAndUpdate(
       orderId,
       { status: newStatus },

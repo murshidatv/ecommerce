@@ -70,7 +70,7 @@ const verifyMail = async (name, email, otp) => {
       if (error) {
         console.log(error);
       } else {
-        console.log("Email has been sent:", info.response);
+     
       }
     })
   } catch (error) {
@@ -106,7 +106,7 @@ const resetPassword = async (name, email, token) => {
       if (error) {
         console.log(error);
       } else {
-        console.log("Email has been sent:", info.response);
+   
       }
     })
   } catch (error) {
@@ -184,7 +184,7 @@ const userData = async (req, res) => {
       //  user.referralCode = referralCode;
 
       await user.save();
-      console.log("OTP set:", user.otp);
+   
 
       // Send OTP to email
       verifyMail(req.body.name, req.body.email, otp);
@@ -264,17 +264,11 @@ const verify = async (req, res) => {
 
 const resendOTP = async (req, res) => {
   try {
-    console.log('Resend OTP ');
+
     //   const userId = req.params.userId;
     const userId = mongoose.Types.ObjectId.createFromHexString(req.params.userId);
-
-
-
-    console.log('User ID', userId);
     // Retrieve user
     const user = await User.findById(userId);
-
-    console.log('user', user);
     if (user) {
       // Generate and store new OTP
       const newOTP = randomstring.generate({
@@ -288,9 +282,7 @@ const resendOTP = async (req, res) => {
 
       // Send new OTP to email
       verifyMail(user.name, user.email, newOTP);
-
       res.render('otp', { userId: userId, message: 'New OTP sent successfully.' });
-      console.log('New OTP is', newOTP)
     } else {
       res.status(404).send('User not found');
     }
@@ -387,7 +379,6 @@ const forgotPass = async (req, res) => {
     const email = req.body.email;
     const dataUser = await User.findOne({ email: email });
     if (dataUser) {
-      console.log(dataUser);
       if (dataUser.is_verified === false) {
         res.render('forget', { message: "please verify your mail" });
 
@@ -622,12 +613,9 @@ const updateProfile = async (req, res) => {
   try {
     const userId = req.session.user_id;
     const { name, email, mobile } = req.body;
-    console.log(name, email, mobile)
-
     if (!name || !email || !mobile) {
       return res.status(400).send('Invalid input data');
     }
-
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -964,9 +952,6 @@ function calculateDiscount(totalAmount, coupon, userTotalUsage) {
   const currentDateWithoutTime = new Date(currentDate.toISOString().split('T')[0]);
   const expirationDateWithoutTime = new Date(coupon.expirationDate.toISOString().split('T')[0]);
 
-  console.log('CURRENT DATE ', currentDateWithoutTime);
-  console.log('EXPIRED DATE ', expirationDateWithoutTime);
-
   if (currentDateWithoutTime > expirationDateWithoutTime) {
     throw new Error('Coupon has expired.');
   }
@@ -1046,7 +1031,6 @@ const loadcheckout = async (req, res) => {
       if (coupon) {
         // Apply discount
         discountAmount = calculateDiscount(cartTotal, coupon);
-        console.log(`${discountAmount}`);
         // Update coupon usage limits
         coupon.usageLimits.totalUses -= 1;
         await coupon.save();
@@ -1205,9 +1189,6 @@ const handleRazorpayCallback = async (req, res) => {
       return res.status(400).send('Invalid Razorpay order ID.');
     }
 
-    // Log the retrieved order
-    console.log('Retrieved Order:', order);
-
     // Update order status in your local database
     order.status = 'paid';
     await order.save();
@@ -1226,15 +1207,12 @@ const handleRazorpayCallback = async (req, res) => {
         order.currency
       );
 
-      console.log('Capture Response:', captureResponse);
-
       if (captureResponse.status !== 'captured') {
         console.error('Payment capture failed in Razorpay.');
         return res.status(500).send('Payment capture failed in Razorpay.');
       }
     }
 
-    console.log('Order status updated to "paid" in Razorpay and local database.');
     res.render('ordersuccess');
   } catch (error) {
     console.error('Error in handleRazorpayCallback:', error.message);
@@ -1270,7 +1248,7 @@ const retryPayment = async (req, res) => {
 // CANCEL ORDER
 
 const orderCancel = async (req, res) => {
-  console.log('Reached orderCancel route');
+
   const orderId = req.params.orderId;
   const { predefinedReason, customReason } = req.body;
 
@@ -1300,15 +1278,12 @@ const reasonpage = async (req, res) => {
   try {
 
     const orderId = req.params.orderId;
-    console.log("orderId:", orderId);
     const order = await Order.findById(orderId).populate('products.product');
 
     if (!order) {
       console.error('Order not found');
       return res.status(404).send('Order not found');
     }
-
-    console.log("reasons", orderId);
     res.render('reason', { orderId, order });
   } catch (error) {
     console.error('Error fetching order details:', error.message);
@@ -1331,7 +1306,6 @@ const viewOrder = async (req, res) => {
     const totalOrderPrice = order.products.reduce((total, productDetail) => {
       return total + (productDetail.quantity * productDetail.product.price);
     }, 0);
-    console.log(totalOrderPrice);
     res.render('viewOrder', { order, totalOrderPrice });
   } catch (error) {
 
@@ -1412,8 +1386,7 @@ const addwhitelist = async (req, res) => {
   try {
     const productId = req.params.productId;
     const product = await Product.findById(productId);
-    console.log('Product ID:', product._id);
-
+  
     const userId = req.session.user_id;
     if (!userId) {
 
