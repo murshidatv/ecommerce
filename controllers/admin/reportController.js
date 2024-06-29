@@ -67,14 +67,22 @@ const generatePDF = (orders, res) => {
   doc.moveDown();
   doc.fontSize(15).text('Sales Report', { align: 'center' });
   doc.moveDown(0.5);
-  doc.fontSize(12).text('Zouqs-Bag', { align: 'center' });
+  doc.fontSize(11).text('Zouqs-Bag', { align: 'center' });
   doc.moveDown(0.5);
-  doc.fontSize(12).text('www.zouqs.shop', { align: 'center' });
+  doc.fontSize(11).text('www.zouqs.shop', { align: 'center' });
   doc.moveDown(2);
   doc.fontSize(11).text(`Report Date: ${reportDate}`, { align: 'right' });
   doc.moveDown(0.5);
   doc.fontSize(11).text(`Date Range: ${startDate} - ${endDate}`, { align: 'right' });
   doc.moveDown(2);
+
+
+  if (orders.length === 0) {
+    doc.moveDown(6);
+    doc.fontSize(12).text('No order details found for the selected date range.', { align: 'center' });
+    doc.end();
+    return;
+  }
 
   // Draw table header
   const tableTop = doc.y;

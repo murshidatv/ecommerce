@@ -1,0 +1,12 @@
+# Set the default behavior to automatically normalize line endings.
+* text=auto
+
+# Explicitly declare text files you want to always normalize and convert to native line endings on checkout.
+*.html text
+*.css text
+*.js text
+
+# Declare binary files - do not change line endings.
+*.png binary
+*.jpg binary
+*.gif binary

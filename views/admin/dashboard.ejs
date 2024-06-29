@@ -47,10 +47,11 @@
                   </div>
                 </div>
               </div>
+              
             </div>
             <style>
               .report-container {
-
+              
                 width: 100%;
                 max-width: 600px;
                 margin: 0 auto;
@@ -131,9 +132,9 @@
             </style>
             <br>
             <br>
-
+           
           </div>
-          <a href="/admin/home">Back To Home</a>
+         
         </div>
       </div>
 
@@ -188,8 +189,11 @@
       const endDate = document.getElementById('endDate').value;
       const errorMessage = document.getElementById('error-message');
 
-      if (new Date(startDate) > new Date(endDate)) {
-        event.preventDefault();
+      if (!startDate || !endDate) {
+      event.preventDefault();
+      errorMessage.textContent = 'Both start date and end date are required.';
+    } else if (new Date(startDate) > new Date(endDate)) {
+      event.preventDefault();
         errorMessage.textContent = 'End date must be greater than or equal to start date.';
       } else {
         errorMessage.textContent = '';

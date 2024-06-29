@@ -1031,6 +1031,7 @@ const loadcheckout = async (req, res) => {
       if (coupon) {
         // Apply discount
         discountAmount = calculateDiscount(cartTotal, coupon);
+  
         // Update coupon usage limits
         coupon.usageLimits.totalUses -= 1;
         await coupon.save();
@@ -1189,6 +1190,9 @@ const handleRazorpayCallback = async (req, res) => {
       return res.status(400).send('Invalid Razorpay order ID.');
     }
 
+    // Log the retrieved order
+    console.log('Retrieved Order:', order);
+
     // Update order status in your local database
     order.status = 'paid';
     await order.save();
@@ -1207,12 +1211,15 @@ const handleRazorpayCallback = async (req, res) => {
         order.currency
       );
 
+      console.log('Capture Response:', captureResponse);
+
       if (captureResponse.status !== 'captured') {
         console.error('Payment capture failed in Razorpay.');
         return res.status(500).send('Payment capture failed in Razorpay.');
       }
     }
 
+    console.log('Order status updated to "paid" in Razorpay and local database.');
     res.render('ordersuccess');
   } catch (error) {
     console.error('Error in handleRazorpayCallback:', error.message);
@@ -1248,7 +1255,7 @@ const retryPayment = async (req, res) => {
 // CANCEL ORDER
 
 const orderCancel = async (req, res) => {
-
+  console.log('Reached orderCancel route');
   const orderId = req.params.orderId;
   const { predefinedReason, customReason } = req.body;
 
@@ -1278,12 +1285,15 @@ const reasonpage = async (req, res) => {
   try {
 
     const orderId = req.params.orderId;
+    console.log("orderId:", orderId);
     const order = await Order.findById(orderId).populate('products.product');
 
     if (!order) {
       console.error('Order not found');
       return res.status(404).send('Order not found');
     }
+
+    console.log("reasons", orderId);
     res.render('reason', { orderId, order });
   } catch (error) {
     console.error('Error fetching order details:', error.message);
@@ -1306,6 +1316,7 @@ const viewOrder = async (req, res) => {
     const totalOrderPrice = order.products.reduce((total, productDetail) => {
       return total + (productDetail.quantity * productDetail.product.price);
     }, 0);
+    console.log(totalOrderPrice);
     res.render('viewOrder', { order, totalOrderPrice });
   } catch (error) {
 
@@ -1386,7 +1397,8 @@ const addwhitelist = async (req, res) => {
   try {
     const productId = req.params.productId;
     const product = await Product.findById(productId);
-  
+    console.log('Product ID:', product._id);
+
     const userId = req.session.user_id;
     if (!userId) {
 

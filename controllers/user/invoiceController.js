@@ -105,8 +105,8 @@ const generateInvoicePdf = async (req, res) => {
     doc.moveDown(2);
 
     // Add order details
-
-    doc.fontSize(10).text(`Date: ${order.orderDate.toDateString()}`, { align: 'left' });
+    doc.moveDown(1);
+    doc.fontSize(10).text(`Order Date: ${order.orderDate.toDateString()}`, { align: 'left' });
 
     doc.fontSize(10).text(`Customer Name: ${order.userId.name}`, { align: 'left' });
 
@@ -132,14 +132,19 @@ const generateInvoicePdf = async (req, res) => {
       addressDetails = `${name ? name + '\n' : ''}${mobile ? mobile + '\n' : ''}${address ? address + ', ' : ''}${city ? city + ', ' : ''}${pincode ? pincode + ', ' : ''}${district ? district + ', ' : ''}${state ? state : ''}`;
     }
 
-    doc.fontSize(10).text(`Address: ${addressDetails}`, rightColumnX, currentY);
+    doc.fontSize(10).text(`Address: \n${addressDetails}`, rightColumnX, currentY);
     currentY += 10;  // Move down before drawing another line
-    doc.moveDown(4);
+    doc.moveDown(6);
 
+    // Calculate the center position of the page
+    const pageWidth = doc.page.width;
+    const textWidth = doc.widthOfString('Order Details');
+    const center = (pageWidth - textWidth) / 2;
 
-    // Add table header
-    doc.fontSize(14).text('Order Details', { underline: true, align: 'center' });
-    doc.moveDown(2);
+    // Draw the text centered
+    doc.fontSize(14).text('Order Details', center, doc.y, { underline: true, align: 'left' });
+    doc.moveDown(2); // Move down after the text
+
 
     // Draw table
     const tableTop = doc.y;
@@ -184,6 +189,8 @@ const generateInvoicePdf = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 module.exports = {
   createInvoiceFromOrder,
