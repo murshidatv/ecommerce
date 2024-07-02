@@ -280,7 +280,7 @@
                                                                         <div
                                                                             style="flex: 2; text-align: right; padding-right: 10px;">
                                                                             Shipping Charge:</div>
-                                                                        <div style="flex: 1; text-align: center;">Rs.40
+                                                                        <div style="flex: 1; text-align: center;">Rs.50
                                                                         </div>
 
                                                                     </div>
@@ -290,7 +290,7 @@
                                                                             style="flex: 2; text-align: right; padding-right: 10px;">
                                                                             Total:</div>
                                                                         <div style="flex: 1; text-align: center;">Rs.<%=
-                                                                                totalCartPrice +40 %>
+                                                                                totalCartPrice +50 %>
                                                                         </div>
                                                                     </div>
                                                                     <% } else { %>
@@ -338,7 +338,7 @@
                                                                                     <div id="final-total"
                                                                                         style="flex: 1; text-align: center;">
                                                                                         Rs.<%=
-                                                                                            (totalCartPrice+40).toFixed(2)
+                                                                                            (totalCartPrice+50).toFixed(2)
                                                                                             %>
                                                                                     </div>
                                                                                     <% } else { %>
@@ -650,12 +650,12 @@
 
                 if (response.ok) {
                     const responseData = await response.json();
-                    const { discountAmount, totalAmountAfterDiscount } = responseData;
+                    const { discountAmount, totalAmountAfterDiscount,finalTotal } = responseData;
 
                     // Update UI to reflect the discount
                     couponToast.style.display = 'block';
-                    finalTotalElement.innerHTML = `Rs${totalAmountAfterDiscount.toFixed(2)}`;
-
+                    //finalTotalElement.innerHTML = `Rs${totalAmountAfterDiscount.toFixed(2)}`;
+                    finalTotalElement.innerHTML = `Rs${finalTotal.toFixed(2)}`;
                     // Optionally, you can display a success message or update other parts of the UI
                 } else {
                     console.error('Failed to apply coupon:', response.statusText);
@@ -679,7 +679,7 @@
 
                     // Update UI to remove the coupon and revert to original total
                     couponToast.style.display = 'none';
-                    finalTotalElement.innerHTML = `Rs${cartTotal.toFixed(2)}`;
+                    finalTotalElement.innerHTML = `Rs.${cartTotal.toFixed(2)}`;
 
                     // Optionally, you can display a success message or update other parts of the UI
                 } else {
@@ -727,7 +727,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const totalCartPrice = parseFloat("<%= totalCartPrice.toFixed(2) %>");
-            const shippingCharge = totalCartPrice < 2000 ? 40 : 0;
+            const shippingCharge = totalCartPrice < 2000 ? 50 : 0;
             const finalTotal = totalCartPrice + shippingCharge;
             const codRadioButton = document.getElementById('cashOnDelivery');
             const applyCouponButton = document.getElementById('applyCoupon');

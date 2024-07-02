@@ -14,6 +14,7 @@
 
     body {
       font-family: Arial, sans-serif;
+     
       background-color: #f4f4f4;
     }
 
@@ -84,10 +85,13 @@
     }
   </style>
 
+
+
+
   <div class="container-scroller">
     <%- include('../layouts/adminHeadersmid') %>
-      <div class="main-panel">
-        <div class="content-wrapper">
+      <div class="main-panel"  >
+        <div class="content-wrapper bg-gradient-secondary">
           <h2 style="color: rgb(10, 109, 170); text-align: center;">Add Product</h2>
           <div class="col-md-12 grid-margin stretch-card">
             <form action="/admin/new-product" method="POST" id="add_user" onsubmit="return productValidation()"

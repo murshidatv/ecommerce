@@ -43,6 +43,7 @@
 </head>
 
 <body>
+    
     <div class="container">
         <h2>Order Details</h2>
 
@@ -60,7 +61,7 @@
 
             <tbody style="text-align: center;">
                 <% order.products.forEach((productDetail, index)=> { %>
-                    <tr>
+                    <tr style="text-align: center;" >
                         <td>
                             <%= index + 1 %>
                         </td>
@@ -68,7 +69,7 @@
                             <div class="product">
                                 <figure class="product-media">
                                     <a href="/product/<%= productDetail.product._id %>">
-                                        <img src="/images/<%= productDetail.product.images[0] %>" style="width: 250px;"
+                                        <img src="/images/<%= productDetail.product.images[0] %>" style="width: 150px;"
                                             alt="Product image">
                                     </a>
                                 </figure>

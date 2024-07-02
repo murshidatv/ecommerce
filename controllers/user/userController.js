@@ -877,6 +877,9 @@ const placeorder = async (req, res) => {
         }
       }
 
+      
+      
+
 
       // Clear the user's cart
       user.cart = [];
@@ -909,6 +912,7 @@ const placeorder = async (req, res) => {
           })),
           totalAmount: totalAmountAfterDiscount,
           discountAmount,
+       
           payment: paymentMethod,
           razorpayOrderId: razorpayOrder.id,
         };
@@ -919,6 +923,7 @@ const placeorder = async (req, res) => {
         console.error('Error creating Razorpay order:', razorpayError);
         res.status(500).send('Error creating Razorpay order');
       }
+      
     } else {
       // Handle other payment methods if needed
       res.status(400).send('Invalid payment method selected.');
